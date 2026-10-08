@@ -37,6 +37,8 @@ function cleanHebrewForSpeech(text) {
     .replace(/\bIR\b/gi, 'אוגר פקודה')
     .replace(/\bACC\b/gi, 'אוגר הצובר')
     .replace(/\bChatGPT\b/gi, 'צָ׳אט גִ׳י פִּי טִי')
+    .replace(/\bZen\b/gi, 'זֶן')
+    .replace(/\bזן\b/g, 'זֶן')
     .replace(/0\s*ו-1/g, 'אפס ואחת')
     .replace(/10₂/g, 'עשר בבינארית, שזה שתיים')
     .replace(/\+/g, ' ועוד ')

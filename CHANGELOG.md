@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.3] - 2026-10-08
+
+### Added
+- **Neural Hebrew Voice Upgrade (`he-IL-HilaNeural`)**:
+  - Replaced the sluggish, deep male voice and legacy Carmit synthesis with Microsoft's neural female educator voice `he-IL-HilaNeural`.
+  - Calibrated playback rate to `+12%` and pitch to `+3Hz` for an energetic, welcoming, and child-friendly pedagogical tone (specifically tuned for 5th graders).
+  - Fixed Hebrew pronunciation of "זן" by introducing explicit Niqqud Segol (`זֶן` /zen/) across all 41 audio files, `ZenAiTutor.jsx` knowledge base, and `NarrationEngine.js` text normalizer.
+  - Complete 41-item studio audio set in ultra-optimized MP3 format (~50 KB each, ~2.2 MB total folder size, replacing 30 MB of uncompressed `.wav` files).
+  - Dedicated `tutor_fallback.mp3` ensuring non-canned/custom student questions answered by Zen speak in the natural neural voice rather than falling back to browser robotic voices.
+
 ## [0.6.2] - 2026-10-08
 
 ### Added

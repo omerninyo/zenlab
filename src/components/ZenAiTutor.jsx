@@ -20,7 +20,7 @@ import { StorageEngine } from '../core/storage.js';
 // Comprehensive, child-friendly pedagogical knowledge base for Grade 5 (Ages 10-11)
 const CURATED_TUTOR_KNOWLEDGE = {
   lab1: {
-    welcome: 'שלום! אני זן, הרובוט החונך שלך. אנחנו חוקרים יחד פיקסלים וביטים! על מה תרצה לשאול?',
+    welcome: 'שלום! אני זֶן, הרובוט החונך שלך. אנחנו חוקרים יחד פיקסלים וביטים! על מה תרצה לשאול?',
     prompts: [
       'מה זה בעצם פיקסל?',
       'למה המחשב מבין רק 0 ו-1?',
@@ -161,7 +161,7 @@ export default function ZenAiTutor({ currentLabId = 'lab1' }) {
         id: 'welcome',
         sender: 'tutor',
         text: labKnowledge.welcome,
-        audioSrc: `/audio/tutor/${currentLabId}_welcome.wav`,
+        audioSrc: `/audio/tutor/${currentLabId}_welcome.mp3`,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }
     ]);
@@ -217,7 +217,7 @@ export default function ZenAiTutor({ currentLabId = 'lab1' }) {
     const curatedAnswer = labKnowledge.answers[questionText];
     if (curatedAnswer) {
       const promptIndex = labKnowledge.prompts.indexOf(questionText);
-      const audioSrc = promptIndex !== -1 ? `/audio/tutor/${currentLabId}_q${promptIndex}.wav` : null;
+      const audioSrc = promptIndex !== -1 ? `/audio/tutor/${currentLabId}_q${promptIndex}.mp3` : null;
 
       setTimeout(() => {
         setMessages(prev => [
@@ -287,6 +287,7 @@ export default function ZenAiTutor({ currentLabId = 'lab1' }) {
           id: 'tutor-' + Date.now(),
           sender: 'tutor',
           text: fallbackReply,
+          audioSrc: '/audio/tutor/tutor_fallback.mp3',
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         }
       ]);
