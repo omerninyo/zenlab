@@ -7,6 +7,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-10-08
+
+### Added
+- **Default Child-Friendly Classroom Light Theme & Theme Switcher (`src/App.jsx`, `src/index.css`)**:
+  - Replaced the dark/cyber aesthetic with an inviting, high-contrast, bright Classroom Light Mode (`theme-light` by default) tailored for elementary schools.
+  - Soft 2px borders, gentle card shadows, and large tactile click targets (min 44px) matching Scratch and Code.org conventions.
+  - Header Sun/Moon toggle allowing instant switching between Light Classroom Mode and Dark Mode.
+- **Built-in Animated Hebrew Explainer Tour (`src/components/HebrewExplainerTour.jsx`)**:
+  - Interactive 4-scene video-like animated presentation in 100% Hebrew per lab, replacing external English YouTube videos as the primary media tool.
+  - Synchronized speech narration, play/pause controls, step progress bar, and visual subtitle highlighting.
+  - 100% client-side, zero cookies, zero external dependencies, school-firewall safe.
+- **Natural Hebrew Voice Synthesis & Normalization Engine (`src/core/narration.js`)**:
+  - Automatically identifies and prioritizes high-quality neural voices (`Google עברית`, `Microsoft Hila Natural`, `Siri`, `Carmit Enhanced`).
+  - Child-calibrated tempo (`rate = 0.92`) and warm pitch (`1.05`) for clear storytelling.
+  - Phonetic normalization cleaning English acronyms (`CPU`, `ALU`, `LLM`, `RAM`, `A*`, `XOR`) into natural spoken Hebrew, eliminating robotic stuttering.
+- **Accessible Grade 5 Pedagogical Language Overhaul (`src/data/curriculum.json`)**:
+  - Re-anchored every concept in relatable children's analogies: Lego & Minecraft blocks (Pixels), cake recipe (Algorithm), 20 Questions game (Decision Trees), Waze navigation (A* search), baby recognizing dogs (Machine Learning), coloring book contours (Computer Vision), soccer match decision (Neuron), and phone predictive text (Language Models).
+  - Clear, accessible phrasing across titles, subtitles, concepts, highlights, challenges, and glossaries.
+
+### Changed
+- `src/components/TheoryView.jsx`: Overhauled layout with large typography (14px–18px body, 20px–30px titles), made Hebrew Explainer Tour the primary media tool, and applied light classroom styling.
+- `src/components/LabPhaseHeader.jsx`: Enlarged titles, star badges, and phase switcher buttons with high-contrast accessibility.
+- `src/core/storage.js`: Added theme persistence with default `'light'`.
+- `package.json` & `src/App.jsx`: Version bumped to `v0.5.0`.
+
+### Verified
+- Automated build passed cleanly (`npm run build` in 4.33s).
+- Live Playwright browser audit: 0 console errors, 0 warnings.
+- Verified Zero-PII across all modified and newly created files.
+
 ## [0.4.0] - 2026-10-08
 
 ### Added

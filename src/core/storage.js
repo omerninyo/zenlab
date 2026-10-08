@@ -34,7 +34,8 @@ const defaultState = {
     lab7: 'theory',
     lab8: 'theory'
   },
-  activeLabId: 'lab1'
+  activeLabId: 'lab1',
+  theme: 'light' // 'light' (default bright classroom mode) | 'dark'
 };
 
 class StorageEngineClass {
@@ -42,6 +43,18 @@ class StorageEngineClass {
     this.state = this.loadState();
     this.listeners = new Set();
     AudioEngine.setMuted(this.state.isMuted);
+
+    // Apply theme class to document
+    if (typeof document !== 'undefined') {
+      const activeTheme = this.state.theme || 'light';
+      if (activeTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+      } else {
+        document.documentElement.classList.add('light');
+        document.documentElement.classList.remove('dark');
+      }
+    }
   }
 
   loadState() {
@@ -138,6 +151,32 @@ class StorageEngineClass {
   setActiveLab(labId) {
     this.state.activeLabId = labId;
     this.saveState();
+  }
+
+  getTheme() {
+    return this.state.theme || 'light';
+  }
+
+  setTheme(theme) {
+    const validTheme = theme === 'dark' ? 'dark' : 'light';
+    this.state.theme = validTheme;
+    this.saveState();
+    if (typeof document !== 'undefined') {
+      if (validTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+      } else {
+        document.documentElement.classList.add('light');
+        document.documentElement.classList.remove('dark');
+      }
+    }
+    this.notify();
+  }
+
+  toggleTheme() {
+    const next = (this.state.theme || 'light') === 'dark' ? 'light' : 'dark';
+    this.setTheme(next);
+    return next;
   }
 
   resetProgress() {
