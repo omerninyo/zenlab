@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Production builds
+dist/
+build/
+
+# Local Environment Variables & Secrets (STRICT ZERO-PII)
+.env
+.env.local
+.env.*.local
+
+# Cloudflare Wrangler
+.wrangler/
+.wrangler-local/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# OS & Editor Files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Test Artifacts
+coverage/

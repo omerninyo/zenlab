@@ -1,0 +1,23 @@
+{
+  "system": {
+    "os": "darwin",
+    "architecture": "arm64"
+  },
+  "runtimes": {
+    "node": "v26.8.2",
+    "npm": "11.19.1"
+  },
+  "tools": {
+    "git": "git version 2.54.0",
+    "gh": "installed (unauthenticated)",
+    "pnpm": "not installed",
+    "wrangler": "npx wrangler"
+  },
+  "executionFlags": {
+    "sandboxedCommands": true,
+    "piiProtection": "enforced",
+    "cloudPlatform": "Cloudflare Pages",
+    "spaRoutingFallback": "/* /index.html 200"
+  },
+  "auditTimestamp": "2026-10-08T09:47:05Z"
+}
