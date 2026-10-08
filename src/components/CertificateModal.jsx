@@ -80,7 +80,7 @@ export default function CertificateModal({ isOpen, onClose, totalStars = 0 }) {
             </div>
 
             <div className="uppercase tracking-widest text-[11px] font-mono text-amber-400 font-bold mb-1">
-              ZenLab • מעבדת מדעי המחשב והבינה המלאכותית
+              ZenLab • From Zero to Neural
             </div>
 
             <h1 className="text-2xl sm:text-3xl font-extrabold text-white print:text-black tracking-tight mb-2">

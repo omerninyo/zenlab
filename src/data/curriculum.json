@@ -1,7 +1,8 @@
 {
   "version": "1.0.0",
   "metadata": {
-    "title": "ZenLab - מעבדת בינה מלאכותית ומדעי המחשב",
+    "title": "ZenLab - From Zero to Neural",
+    "tagline": "From Zero to Neural",
     "description": "סביבת למידה אינטראקטיבית, נגישה ומהנה לכיתה ה׳: חשיבה מחשובית, אלגוריתמיקה ובינה מלאכותית",
     "locale": "he-IL",
     "direction": "rtl"

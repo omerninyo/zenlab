@@ -161,6 +161,7 @@ export default function ZenAiTutor({ currentLabId = 'lab1' }) {
         id: 'welcome',
         sender: 'tutor',
         text: labKnowledge.welcome,
+        audioSrc: `/audio/tutor/${currentLabId}_welcome.wav`,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }
     ]);
@@ -193,8 +194,8 @@ export default function ZenAiTutor({ currentLabId = 'lab1' }) {
     AudioEngine.playSuccess();
   };
 
-  const handleSpeakText = (text) => {
-    NarrationEngine.play(text);
+  const handleSpeakText = (text, audioSrc) => {
+    NarrationEngine.play(text, audioSrc);
   };
 
   const handleSendPrompt = async (questionText) => {
@@ -215,6 +216,9 @@ export default function ZenAiTutor({ currentLabId = 'lab1' }) {
     // Check if we have a direct curated answer in the pedagogical base
     const curatedAnswer = labKnowledge.answers[questionText];
     if (curatedAnswer) {
+      const promptIndex = labKnowledge.prompts.indexOf(questionText);
+      const audioSrc = promptIndex !== -1 ? `/audio/tutor/${currentLabId}_q${promptIndex}.wav` : null;
+
       setTimeout(() => {
         setMessages(prev => [
           ...prev,
@@ -222,6 +226,7 @@ export default function ZenAiTutor({ currentLabId = 'lab1' }) {
             id: 'tutor-' + Date.now(),
             sender: 'tutor',
             text: curatedAnswer,
+            audioSrc,
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
           }
         ]);
@@ -407,7 +412,7 @@ export default function ZenAiTutor({ currentLabId = 'lab1' }) {
                       <div className="flex items-center gap-1">
                         <button
                           type="button"
-                          onClick={() => handleSpeakText(msg.text)}
+                          onClick={() => handleSpeakText(msg.text, msg.audioSrc)}
                           className="flex items-center gap-1 px-2 py-0.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-700 text-blue-600 dark:text-blue-400 font-bold transition-colors"
                           title="השמע בקול"
                         >

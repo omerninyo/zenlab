@@ -147,9 +147,12 @@ export default function App() {
                 <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700 hidden sm:inline">
                   v0.6.1
                 </span>
+                <span className="text-[11px] font-bold tracking-wide font-mono px-2.5 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-950/70 text-indigo-700 dark:text-indigo-300 border border-indigo-200/80 dark:border-indigo-800/60 hidden md:inline">
+                  From Zero to Neural
+                </span>
               </div>
               <p className="text-xs text-slate-500 dark:text-slate-400 hidden sm:block font-medium">
-                מעבדה אינטראקטיבית למדעי המחשב ובינה מלאכותית
+                From Zero to Neural • מעבדה אינטראקטיבית למדעי המחשב ובינה מלאכותית
               </p>
             </div>
           </div>
@@ -317,9 +320,14 @@ export default function App() {
                 <Sparkles className="w-6 h-6" />
               </div>
               <div className="space-y-1">
-                <h3 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white">
-                  ברוכים הבאים ל-ZenLab: מעבדת מדעי המחשב והבינה המלאכותית לכיתה ה׳!
-                </h3>
+                <div className="flex flex-wrap items-center gap-2">
+                  <h3 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white">
+                    ברוכים הבאים ל-ZenLab: מעבדת מדעי המחשב והבינה המלאכותית לכיתה ה׳!
+                  </h3>
+                  <span className="text-[11px] font-bold tracking-wider font-mono px-2 py-0.5 rounded-md bg-blue-600 text-white shadow-sm">
+                    From Zero to Neural
+                  </span>
+                </div>
                 <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-normal">
                   בחרו מעבדה מהסרגל העליון, התחילו בסיור המודרך המונפש בעברית, ועברו לארגז החול כדי להתנסות, לפתור אתגרים, לצבור עד 24 כוכבים ולזכות בתעודת הצטיינות רשמית!
                 </p>
