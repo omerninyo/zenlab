@@ -520,10 +520,18 @@
           "audioSrc": "/audio/narration/lab2.wav"
         },
         "video": {
-          "videoId": "6hfOvs8pY1k",
-          "title": "יסודות האלגוריתמיקה ומבני בקרה",
-          "channel": "CrashCourse Computer Science",
-          "duration": "11:20 דקות"
+          "videoId": "i-Lg_L_m0Uo",
+          "title": "מתכנתים את הרובוט זן",
+          "channel": "NotebookLM Video Explainer",
+          "duration": "05:48 דקות",
+          "localSrc": "/videos/lab2.mp4"
+        },
+        "podcast": {
+          "audioSrc": "/audio/explainers/lab2_podcast.m4a",
+          "title": "פודקאסט לימודי: איך אלגוריתם מונע מרובוט להיתקע בקיר",
+          "channel": "NotebookLM Audio Deep Dive",
+          "duration": "06:17 דקות",
+          "description": "שיחת עומק על תכנון אלגוריתמי, רצף פקודות, תנאים ולולאות בעולם הרובוטיקה"
         }
       },
       "svgAnimation": {
@@ -724,15 +732,23 @@
       "media": {
         "video": {
           "videoId": "7VeUPuFGJHk",
-          "title": "כיצד פועלים עצי החלטה ולמידת מכונה?",
-          "channel": "StatQuest with Josh Starmer",
-          "duration": "7:45 דקות"
+          "title": "תעלומת עץ ההחלטות",
+          "channel": "NotebookLM Video Explainer",
+          "duration": "06:52 דקות",
+          "localSrc": "/videos/lab3.mp4"
         },
         "narration": {
           "title": "הסבר קולי ידידותי: עץ החלטות בלשי",
           "duration": "0:45",
           "transcript": "שלום בלשים צעירים! שמעתם על משחק עשרים מי יודע? במעבדה הזו נלמד איך מחשב יודע לנחש על איזה בעל חיים אתם חושבים. המחשב שואל שאלות של כן ולא. כל תשובה לוקחת אותו לענף אחר בעץ, עד שהוא מגיע לתשובה הנכונה. נסו לבחור חיה ולראות איך המחשב צועד בעץ ומגלה אותה במהירות!",
           "audioSrc": "/audio/narration/lab3.wav"
+        },
+        "podcast": {
+          "audioSrc": "/audio/explainers/lab3_podcast.m4a",
+          "title": "פודקאסט לימודי: עצי החלטות במשחק עשרים מי יודע",
+          "channel": "NotebookLM Audio Deep Dive",
+          "duration": "05:38 דקות",
+          "description": "הסבר מעמיק על חלוקת מרחב החיפוש, שאלות כן/לא וקבלת החלטות מהירה במחשבים"
         }
       },
       "glossary": [
@@ -858,15 +874,23 @@
       "media": {
         "video": {
           "videoId": "-L-WgKPhEr8",
-          "title": "אלגוריתם A* ומציאת המסלול הקצר ביותר",
-          "channel": "Computerphile",
-          "duration": "10:15 דקות"
+          "title": "אלגוריתם הניווט איי-סטאר",
+          "channel": "NotebookLM Video Explainer",
+          "duration": "05:03 דקות",
+          "localSrc": "/videos/lab4.mp4"
         },
         "narration": {
           "title": "הסבר קולי ידידותי: מבוך וניווט",
           "duration": "0:50",
           "transcript": "היי חברים! איך אפליקציית ניווט בטלפון יודעת לקחת אותנו בדרך הכי מהירה בלי פקקים? במעבדה הזו הרובוט שלנו צריך למצוא את הדרך הקצרה ביותר מנקודת ההתחלה הירוקה אל היעד האדום. האלגוריתם בודק את המרחק שנותר ובוחר תמיד ללכת לכיוון שהכי מקרב אותו. ציירו קירות במבוך וראו איך הרובוט עוקף אותם בקלות!",
           "audioSrc": "/audio/narration/lab4.wav"
+        },
+        "podcast": {
+          "audioSrc": "/audio/explainers/lab4_podcast.m4a",
+          "title": "פודקאסט לימודי: איך אלגוריתם A* מחשב מסלול בשבריר שנייה",
+          "channel": "NotebookLM Audio Deep Dive",
+          "duration": "05:01 דקות",
+          "description": "ניתוח מרתק של עקרונות הניווט החכם, מציאת מסלול אופטימלי והיוריסטיקה מאחורי Waze"
         }
       },
       "glossary": [
@@ -1086,10 +1110,18 @@
           "audioSrc": "/audio/narration/lab5.wav"
         },
         "video": {
-          "videoId": "aircAruvnKk",
-          "title": "מהי למידת מכונה וכיצד פועל אלגוריתם k-NN?",
-          "channel": "3Blue1Brown & StatQuest",
-          "duration": "8:15 דקות"
+          "videoId": "Gv9_4yMHFhI",
+          "title": "למידת מכונה: איך מחשבים לומדים",
+          "channel": "NotebookLM Video Explainer",
+          "duration": "06:10 דקות",
+          "localSrc": "/videos/lab5.mp4"
+        },
+        "podcast": {
+          "audioSrc": "/audio/explainers/lab5_podcast.m4a",
+          "title": "פודקאסט לימודי: איך מחשב לומד מפיקסלים ומהי הטיה",
+          "channel": "NotebookLM Audio Deep Dive",
+          "duration": "05:02 דקות",
+          "description": "הבדל בין תכנות קלאסי ללמידת מכונה, חשיבות נתוני האימון והימנעות מהטיות אלגוריתמיות"
         }
       },
       "svgAnimation": {
@@ -1491,15 +1523,23 @@
       "media": {
         "video": {
           "videoId": "KuXjwB4LzSA",
-          "title": "כיצד פועלים פילטרים מתמטיים וקונבולוציה?",
-          "channel": "Computerphile",
-          "duration": "11:05 דקות"
+          "title": "תעלומת הראייה הממוחשבת",
+          "channel": "NotebookLM Video Explainer",
+          "duration": "05:53 דקות",
+          "localSrc": "/videos/lab6.mp4"
         },
         "narration": {
           "title": "הסבר קולי ידידותי: העיניים של המחשב",
           "duration": "0:50",
           "transcript": "שלום חוקרים! איך מכונית חכמה שנוסעת בכביש יודעת לעצור לפני מעבר חצייה? המצלמה שלה מעבירה תמונות למחשב, והמחשב מפעיל פילטר מיוחד כמו זכוכית מגדלת. הפילטר מחליק על התמונה, מוצא איפה יש קווים שחורים ולבנים, וכך הוא מבין איפה נמצא הכביש ואיפה יש מכשול. בואו ננסה להפעיל את הפילטרים בעצמנו!",
           "audioSrc": "/audio/narration/lab6.wav"
+        },
+        "podcast": {
+          "audioSrc": "/audio/explainers/lab6_podcast.m4a",
+          "title": "פודקאסט לימודי: איך ראייה ממוחשבת מזהה קצוות",
+          "channel": "NotebookLM Audio Deep Dive",
+          "duration": "06:28 דקות",
+          "description": "כיצד מחשב 'רואה' תמונות, פעולת קרנלים של קונבולוציה וגילוי גבולות וצורות"
         }
       },
       "glossary": [
@@ -1701,15 +1741,23 @@
       "media": {
         "video": {
           "videoId": "aircAruvnKk",
-          "title": "מהי רשת נוירונים עמוקה וכיצד היא לומדת?",
-          "channel": "3Blue1Brown",
-          "duration": "19:10 דקות"
+          "title": "הנוירון החכם",
+          "channel": "NotebookLM Video Explainer",
+          "duration": "06:12 דקות",
+          "localSrc": "/videos/lab7.mp4"
         },
         "narration": {
           "title": "הסבר קולי ידידותי: נוירון ורשתות",
           "duration": "0:50",
           "transcript": "שלום לכולם! איך המוח של בינה מלאכותית מקבל החלטות? בדיוק כמוכם כשאתם מחליטים אם לצאת לשחק כדורגל: אתם שוקלים האם נעים בחוץ, האם החברים באים, והאם גמרתם את שיעורי הבית. הנוירון הממוחשב לוקח את כל הרמזים האלה, נותן לכל אחד משקל, ואם יש מספיק נקודות &ndash; הוא נדלק! שחקו עם הידיות במעבדה וראו איך הנוירון מקבל החלטות בזמן אמת.",
           "audioSrc": "/audio/narration/lab7.wav"
+        },
+        "podcast": {
+          "audioSrc": "/audio/explainers/lab7_podcast.m4a",
+          "title": "פודקאסט לימודי: איך הנוירון החכם מקבל החלטות",
+          "channel": "NotebookLM Audio Deep Dive",
+          "duration": "05:48 דקות",
+          "description": "ההשראה הביולוגית של נוירונים, משקלים, ספים ופונקציות הפעלה ברשתות עצביות"
         }
       },
       "glossary": [
@@ -1962,9 +2010,17 @@
         },
         "video": {
           "videoId": "zjkBMFhNj_g",
-          "title": "איך עובדים מודלי שפה גדולים וארכיטקטורת Transformer?",
-          "channel": "3Blue1Brown",
-          "duration": "15:40 דקות"
+          "title": "הקסם מאחורי המסך: מודלי שפה",
+          "channel": "NotebookLM Video Explainer",
+          "duration": "06:08 דקות",
+          "localSrc": "/videos/lab8.mp4"
+        },
+        "podcast": {
+          "audioSrc": "/audio/explainers/lab8_podcast.m4a",
+          "title": "פודקאסט לימודי: איך בינה מלאכותית מנחשת את המילה הבאה",
+          "channel": "NotebookLM Audio Deep Dive",
+          "duration": "05:11 דקות",
+          "description": "הבנת ארכיטקטורת מודלי שפה, ניבוי הסתברותי של טוקנים, פרמטר הטמפרטורה ויצירתיות מלאכותית"
         }
       },
       "svgAnimation": {
