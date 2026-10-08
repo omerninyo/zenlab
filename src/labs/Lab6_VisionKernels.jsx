@@ -115,21 +115,17 @@ export default function Lab6_VisionKernels({ curriculum }) {
   return (
     <div className="space-y-6">
       <LabPhaseHeader
-        phase={phase}
-        setPhase={handlePhaseChange}
-        title={labData.title}
-        subtitle={labData.subtitle}
-        badge={labData.badge}
-        completedCount={completedCount}
-        totalCount={labData.challenges.length}
-        labId="lab6"
+        labData={labData}
+        currentPhase={phase}
+        onPhaseChange={handlePhaseChange}
+        earnedStars={completedCount}
+        totalLabChallenges={labData.challenges.length}
       />
 
       {phase === 'theory' && (
         <TheoryView
-          conceptData={labData.conceptExplanation}
-          mediaData={labData.media}
-          animationComponent={<SvgKernelAnimation />}
+          labData={labData}
+          animationComponent={SvgKernelAnimation}
           onProceedToInteractive={() => handlePhaseChange('interactive')}
         />
       )}

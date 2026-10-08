@@ -131,6 +131,10 @@ class AudioEngineClass {
     });
   }
 
+  playChallengeSuccess() {
+    this.playSuccess();
+  }
+
   playError() {
     if (this.muted) return;
     this.init();

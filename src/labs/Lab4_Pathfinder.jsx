@@ -192,21 +192,17 @@ export default function Lab4_Pathfinder({ curriculum }) {
   return (
     <div className="space-y-6">
       <LabPhaseHeader
-        phase={phase}
-        setPhase={handlePhaseChange}
-        title={labData.title}
-        subtitle={labData.subtitle}
-        badge={labData.badge}
-        completedCount={completedCount}
-        totalCount={labData.challenges.length}
-        labId="lab4"
+        labData={labData}
+        currentPhase={phase}
+        onPhaseChange={handlePhaseChange}
+        earnedStars={completedCount}
+        totalLabChallenges={labData.challenges.length}
       />
 
       {phase === 'theory' && (
         <TheoryView
-          conceptData={labData.conceptExplanation}
-          mediaData={labData.media}
-          animationComponent={<SvgPathfinderAnimation />}
+          labData={labData}
+          animationComponent={SvgPathfinderAnimation}
           onProceedToInteractive={() => handlePhaseChange('interactive')}
         />
       )}

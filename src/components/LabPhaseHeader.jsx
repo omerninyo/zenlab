@@ -19,10 +19,32 @@ export default function LabPhaseHeader({
   currentPhase, 
   onPhaseChange,
   earnedStars = 0,
-  totalLabChallenges = 3
+  totalLabChallenges = 3,
+  phase,
+  setPhase,
+  title,
+  subtitle,
+  badge,
+  number,
+  completedCount,
+  totalCount,
+  labId
 }) {
   const [isNarrationEnabled, setIsNarrationEnabled] = useState(() => StorageEngine.getState().isNarrationEnabled);
   const [narrationState, setNarrationState] = useState(() => NarrationEngine.getState());
+
+  const activePhase = currentPhase || phase || 'theory';
+  const setActivePhase = onPhaseChange || setPhase || (() => {});
+  const starsEarned = earnedStars || completedCount || 0;
+  const starsTotal = totalLabChallenges || totalCount || 3;
+  const data = labData || {
+    id: labId || 'unknown',
+    number: number || 1,
+    title: title || '',
+    subtitle: subtitle || '',
+    badge: badge || 'מדעי המחשב',
+    challenges: []
+  };
 
   useEffect(() => {
     const unsubStorage = StorageEngine.subscribe(state => {
@@ -43,14 +65,18 @@ export default function LabPhaseHeader({
     setIsNarrationEnabled(next);
     if (!next) {
       NarrationEngine.stop();
-    } else if (labData.media?.narration?.transcript) {
-      NarrationEngine.play(labData.media.narration.transcript, labData.media.narration.audioSrc);
+    } else if (data.media?.narration?.transcript) {
+      NarrationEngine.play(data.media.narration.transcript, data.media.narration.audioSrc);
+    } else {
+      AudioEngine.playStep();
     }
   };
 
-  const handleSelectPhase = (phase) => {
-    onPhaseChange(phase);
-    StorageEngine.setLabPhase(labData.id, phase);
+  const handleSelectPhase = (newPhase) => {
+    setActivePhase(newPhase);
+    if (data.id && data.id !== 'unknown') {
+      StorageEngine.setLabPhase(data.id, newPhase);
+    }
     AudioEngine.playStep();
   };
 
@@ -63,17 +89,17 @@ export default function LabPhaseHeader({
         <div>
           <div className="flex items-center gap-2 mb-2">
             <span className="px-2.5 py-0.5 rounded text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700">
-              {labData.badge}
+              {data.badge}
             </span>
-            <span className="text-xs text-slate-400">מעבדה {labData.number} מתוך 4</span>
+            <span className="text-xs text-slate-400">מעבדה {data.number} מתוך 8</span>
             <div className="flex items-center gap-1 mr-2 px-2 py-0.5 rounded bg-slate-950 border border-slate-800 text-amber-300 text-xs font-mono">
               <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-              <span>{earnedStars}/{totalLabChallenges} כוכבים</span>
+              <span>{starsEarned}/{starsTotal} כוכבים</span>
             </div>
           </div>
 
-          <h1 className="text-2xl font-bold text-white tracking-tight">{labData.title}</h1>
-          <p className="text-sm text-slate-400 mt-1">{labData.subtitle}</p>
+          <h1 className="text-2xl font-bold text-white tracking-tight">{data.title}</h1>
+          <p className="text-sm text-slate-400 mt-1">{data.subtitle}</p>
         </div>
 
         {/* Global Persistent Voiceover / Narration Toggle */}
@@ -104,7 +130,7 @@ export default function LabPhaseHeader({
             type="button"
             onClick={() => handleSelectPhase('theory')}
             className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2 rounded-md text-xs font-semibold transition-all ${
-              currentPhase === 'theory'
+              activePhase === 'theory'
                 ? 'bg-blue-600 text-white shadow-sm'
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
             }`}
@@ -117,7 +143,7 @@ export default function LabPhaseHeader({
             type="button"
             onClick={() => handleSelectPhase('interactive')}
             className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2 rounded-md text-xs font-semibold transition-all ${
-              currentPhase === 'interactive'
+              activePhase === 'interactive'
                 ? 'bg-blue-600 text-white shadow-sm'
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
             }`}
@@ -128,7 +154,7 @@ export default function LabPhaseHeader({
         </div>
 
         <div className="text-[11px] text-slate-400 hidden sm:block">
-          {currentPhase === 'theory' ? (
+          {activePhase === 'theory' ? (
             <span>למדו את העקרונות וההדמיה, ולאחר מכן עברו לתרגול מעשי &larr;</span>
           ) : (
             <span>מעבדת התנסות חיה: השלימו את האתגרים וצברו כוכבים &larr;</span>

@@ -46,15 +46,18 @@ const ICON_MAP = {
 };
 
 export default function TheoryView({ 
-  labData, 
+  labData = {}, 
   animationComponent: AnimationComponent,
-  onProceedToInteractive 
+  onProceedToInteractive,
+  conceptData,
+  mediaData
 }) {
   const [activeMediaTab, setActiveMediaTab] = useState('both'); // 'both' | 'audio' | 'video'
 
-  const structuredConcepts = labData.structuredConcepts || [];
-  const conceptExplanation = labData.conceptExplanation || {};
-  const media = labData.media || {};
+  const data = labData || {};
+  const structuredConcepts = data.structuredConcepts || [];
+  const conceptExplanation = data.conceptExplanation || conceptData || {};
+  const media = data.media || mediaData || {};
 
   return (
     <div className="space-y-8 animate-fadeIn">
@@ -67,13 +70,13 @@ export default function TheoryView({
                 <span className="w-2 h-2 rounded-full bg-blue-500" />
                 <span>הדמיה אינטראקטיבית של עקרון היסוד</span>
               </h2>
-              {labData.svgAnimation?.subtitle && (
-                <p className="text-xs text-slate-400 mt-0.5">{labData.svgAnimation.subtitle}</p>
+              {data.svgAnimation?.subtitle && (
+                <p className="text-xs text-slate-400 mt-0.5">{data.svgAnimation.subtitle}</p>
               )}
             </div>
           </div>
 
-          <AnimationComponent />
+          {React.isValidElement(AnimationComponent) ? AnimationComponent : <AnimationComponent />}
         </section>
       )}
 
@@ -231,7 +234,7 @@ export default function TheoryView({
       )}
 
       {/* 5. Scientific Glossary */}
-      {labData.glossary && labData.glossary.length > 0 && (
+      {data.glossary && data.glossary.length > 0 && (
         <section className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-4">
           <div className="flex items-center gap-2">
             <BookOpen className="w-4 h-4 text-blue-400" />
@@ -239,7 +242,7 @@ export default function TheoryView({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {labData.glossary.map((item, idx) => (
+            {data.glossary.map((item, idx) => (
               <div key={idx} className="p-3 bg-slate-950 rounded-lg border border-slate-800/80">
                 <span className="text-xs font-bold text-blue-400 block mb-1">{item.term}</span>
                 <span className="text-xs text-slate-300 leading-relaxed block">{item.definition}</span>
