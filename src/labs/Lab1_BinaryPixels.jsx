@@ -18,6 +18,7 @@ import { fireConfetti } from '../core/canvas-particles.js';
 import LabPhaseHeader from '../components/LabPhaseHeader.jsx';
 import TheoryView from '../components/TheoryView.jsx';
 import SvgBinaryAnimation from '../components/animations/SvgBinaryAnimation.jsx';
+import SvgLogicGatesAnimation from '../components/animations/SvgLogicGatesAnimation.jsx';
 
 export default function Lab1_BinaryPixels({ curriculum }) {
   const labData = curriculum.labs.lab1;
@@ -141,7 +142,10 @@ export default function Lab1_BinaryPixels({ curriculum }) {
       {phase === 'theory' && (
         <TheoryView
           labData={labData}
-          animationComponent={SvgBinaryAnimation}
+          animations={[
+            { id: 'binary', label: 'ביטים ופיקסלים', component: SvgBinaryAnimation },
+            { id: 'gates', label: 'שערים לוגיים ומחבר בינארי', component: SvgLogicGatesAnimation }
+          ]}
           onProceedToInteractive={() => {
             setPhase('interactive');
             StorageEngine.setLabPhase('lab1', 'interactive');

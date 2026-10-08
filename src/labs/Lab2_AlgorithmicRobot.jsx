@@ -25,6 +25,7 @@ import { fireConfetti } from '../core/canvas-particles.js';
 import LabPhaseHeader from '../components/LabPhaseHeader.jsx';
 import TheoryView from '../components/TheoryView.jsx';
 import SvgRobotAnimation from '../components/animations/SvgRobotAnimation.jsx';
+import SvgCpuPipelineAnimation from '../components/animations/SvgCpuPipelineAnimation.jsx';
 
 const DIRECTIONS = ['north', 'east', 'south', 'west'];
 
@@ -258,7 +259,10 @@ export default function Lab2_AlgorithmicRobot({ curriculum }) {
       {phase === 'theory' && (
         <TheoryView
           labData={labData}
-          animationComponent={SvgRobotAnimation}
+          animations={[
+            { id: 'robot', label: 'רובוט אלגוריתמי ולולאות', component: SvgRobotAnimation },
+            { id: 'pipeline', label: 'מחזור פעולת המעבד (Pipeline)', component: SvgCpuPipelineAnimation }
+          ]}
           onProceedToInteractive={() => {
             setPhase('interactive');
             StorageEngine.setLabPhase('lab2', 'interactive');

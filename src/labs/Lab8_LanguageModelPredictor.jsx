@@ -21,6 +21,7 @@ import { fireConfetti } from '../core/canvas-particles.js';
 import LabPhaseHeader from '../components/LabPhaseHeader.jsx';
 import TheoryView from '../components/TheoryView.jsx';
 import SvgLlmAnimation from '../components/animations/SvgLlmAnimation.jsx';
+import SvgSelfAttentionAnimation from '../components/animations/SvgSelfAttentionAnimation.jsx';
 
 export default function Lab8_LanguageModelPredictor({ curriculum }) {
   const labData = curriculum.labs.lab8;
@@ -121,7 +122,10 @@ export default function Lab8_LanguageModelPredictor({ curriculum }) {
       {phase === 'theory' && (
         <TheoryView
           labData={labData}
-          animationComponent={SvgLlmAnimation}
+          animations={[
+            { id: 'prediction', label: 'חיזוי אסימון והסתברות', component: SvgLlmAnimation },
+            { id: 'attention', label: 'תשומת לב (Self-Attention)', component: SvgSelfAttentionAnimation }
+          ]}
           onProceedToInteractive={() => {
             setPhase('interactive');
             StorageEngine.setLabPhase('lab8', 'interactive');

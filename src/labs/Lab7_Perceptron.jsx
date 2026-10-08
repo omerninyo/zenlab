@@ -18,6 +18,7 @@ import { AIService } from '../services/ai.js';
 import LabPhaseHeader from '../components/LabPhaseHeader.jsx';
 import TheoryView from '../components/TheoryView.jsx';
 import SvgPerceptronAnimation from '../components/animations/SvgPerceptronAnimation.jsx';
+import SvgLogicGatesAnimation from '../components/animations/SvgLogicGatesAnimation.jsx';
 
 export default function Lab7_Perceptron({ curriculum }) {
   const labData = curriculum.labs.lab7;
@@ -143,7 +144,10 @@ export default function Lab7_Perceptron({ curriculum }) {
       {phase === 'theory' && (
         <TheoryView
           labData={labData}
-          animationComponent={SvgPerceptronAnimation}
+          animations={[
+            { id: 'perceptron', label: 'נוירון בודד והפרדה לינארית', component: SvgPerceptronAnimation },
+            { id: 'logicGates', label: 'שערי AND/OR/XOR בחומרה', component: SvgLogicGatesAnimation }
+          ]}
           onProceedToInteractive={() => handlePhaseChange('interactive')}
         />
       )}

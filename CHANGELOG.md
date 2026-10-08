@@ -7,6 +7,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-10-08
+
+### Added
+- **Multi-Animation Pipeline in TheoryView (`src/components/TheoryView.jsx`)**:
+  - Upgraded `TheoryView` architecture to accept an array of `animations` with responsive sub-tabs, full backward-compatibility with legacy single `animationComponent` props, and synchronized auditory clicks.
+- **Interactive CPU Pipeline Simulator (`src/components/animations/SvgCpuPipelineAnimation.jsx`)**:
+  - Interactive 3-stage CPU cycle (`FETCH` $\to$ `DECODE` $\to$ `EXECUTE`).
+  - Vector hardware architecture showing Memory (RAM), Program Counter (PC), Instruction Register (IR), Control Unit (CU), and Arithmetic Logic Unit (ALU) calculating into the Accumulator (ACC).
+  - Manual clock-pulse trigger (`Tick`), auto-run playback, and real-time natural language cycle explanation.
+- **Interactive Logic Gates & Half-Adder Circuit Playground (`src/components/animations/SvgLogicGatesAnimation.jsx`)**:
+  - Dual-mode hardware explorer:
+    1. Basic Logic Gates (AND, OR, NOT, XOR, NAND) with interactive inputs, illuminated pulse wires, and dynamic truth tables.
+    2. Binary Half-Adder Circuit ($A \oplus B = \text{Sum}$, $A \cdot B = \text{Carry}$), demonstrating hardware binary addition ($1_2 + 1_2 = 10_2$).
+- **Interactive Transformer Self-Attention Visualizer (`src/components/animations/SvgSelfAttentionAnimation.jsx`)**:
+  - Dynamic token query selector with curved cubic-bezier attention weight arcs, percentage badges, and $Q \times K$ interactive attention heatmap matrix.
+- **Curriculum Parity in `src/data/curriculum.json`**:
+  - Added complete `structuredConcepts` (4 structured cards with Lucide icons) and curated educational videos (`media.video`) across all 8 micro-labs, reaching 100% pedagogical and media completeness.
+
+### Changed
+- `src/labs/Lab1_BinaryPixels.jsx`: Integrated dual animations (`SvgBinaryAnimation` and `SvgLogicGatesAnimation`).
+- `src/labs/Lab2_AlgorithmicRobot.jsx`: Integrated dual animations (`SvgRobotAnimation` and `SvgCpuPipelineAnimation`).
+- `src/labs/Lab7_Perceptron.jsx`: Integrated dual animations (`SvgPerceptronAnimation` and `SvgLogicGatesAnimation`).
+- `src/labs/Lab8_LanguageModelPredictor.jsx`: Integrated dual animations (`SvgLlmAnimation` and `SvgSelfAttentionAnimation`).
+- `package.json` & `src/App.jsx`: Version bumped to `v0.4.0`.
+
+### Verified
+- Zero console errors and zero warnings verified via automated Playwright live browser inspection.
+- Production build verified (`npm run build` in 4.11s).
+- Strict Zero-PII and child privacy regulatory compliance validated.
+
 ## [0.3.2] - 2026-10-08
 
 ### Added

@@ -130,7 +130,7 @@ export default function App() {
               <div className="flex items-center gap-2">
                 <span className="text-base font-bold tracking-tight text-white">ZenLab</span>
                 <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">
-                  v0.3.2
+                  v0.4.0
                 </span>
               </div>
               <p className="text-[11px] text-slate-400 hidden sm:block">

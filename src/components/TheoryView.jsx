@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import AudioNarrationPlayer from './AudioNarrationPlayer.jsx';
 import LiteYouTubeEmbed from './LiteYouTubeEmbed.jsx';
+import { AudioEngine } from '../core/audio.js';
 
 const ICON_MAP = {
   Binary,
@@ -48,11 +49,23 @@ const ICON_MAP = {
 export default function TheoryView({ 
   labData = {}, 
   animationComponent: AnimationComponent,
+  animations,
   onProceedToInteractive,
   conceptData,
   mediaData
 }) {
   const [activeMediaTab, setActiveMediaTab] = useState('both'); // 'both' | 'audio' | 'video'
+  const [activeAnimIdx, setActiveAnimIdx] = useState(0);
+
+  // Normalize animations list
+  const animationList = animations && animations.length > 0
+    ? animations
+    : AnimationComponent
+      ? [{ id: 'default', label: 'הדמיית עקרון', component: AnimationComponent }]
+      : [];
+
+  const currentAnim = animationList[activeAnimIdx] || animationList[0];
+  const CurrentAnimComponent = currentAnim?.component;
 
   const data = labData || {};
   const structuredConcepts = data.structuredConcepts || [];
@@ -62,9 +75,9 @@ export default function TheoryView({
   return (
     <div className="space-y-8 animate-fadeIn">
       {/* 1. Interactive SVG Principle Animation */}
-      {AnimationComponent && (
+      {CurrentAnimComponent && (
         <section className="space-y-3">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
               <h2 className="text-base font-bold text-white tracking-tight flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-blue-500" />
@@ -74,9 +87,32 @@ export default function TheoryView({
                 <p className="text-xs text-slate-400 mt-0.5">{data.svgAnimation.subtitle}</p>
               )}
             </div>
+
+            {/* Animation Sub-tabs when multiple are available */}
+            {animationList.length > 1 && (
+              <div className="flex items-center bg-slate-900 p-0.5 rounded-lg border border-slate-800 text-xs">
+                {animationList.map((anim, idx) => (
+                  <button
+                    key={anim.id || idx}
+                    type="button"
+                    onClick={() => {
+                      setActiveAnimIdx(idx);
+                      AudioEngine.playStep();
+                    }}
+                    className={`px-3 py-1 rounded text-[11px] font-medium transition-colors ${
+                      activeAnimIdx === idx
+                        ? 'bg-blue-600 text-white font-bold shadow-sm'
+                        : 'text-slate-400 hover:text-slate-200'
+                    }`}
+                  >
+                    {anim.label}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
-          {React.isValidElement(AnimationComponent) ? AnimationComponent : <AnimationComponent />}
+          {React.isValidElement(CurrentAnimComponent) ? CurrentAnimComponent : <CurrentAnimComponent />}
         </section>
       )}
 
