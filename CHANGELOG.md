@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.6] - 2026-10-08
+
+### Changed
+- **Grade 5 Pedagogical & Terminology Overhaul (`src/data/curriculum.json`, `src/labs/*`, `src/components/*`)**:
+  - Overhauled all 8 laboratory glossaries and pedagogical definitions to align with Israeli Ministry of Education (משרד החינוך) elementary guidelines for 5th grade (ages 10–11).
+  - Replaced university/academic jargon ("יוריסטיקה", "מרחב תכונות", "קונבולוציה", "דטרמיניסטי", "פרספטרון", "טוהר 100%") with concrete, playful, everyday metaphors ("משחק חם-קר", "לוח ההשוואה", "זכוכית מגדלת סורקת", "בטוח וצפוי", "נוירון החלטות", "100% דיוק").
+  - Removed intimidating technical English words in parentheses across all glossary cards and student-facing labels.
+  - Aligned laboratory sliders, animation headers, and sandbox challenge texts with joyful, encouraging elementary vocabulary.
+
 ## [0.6.5] - 2026-10-08
 
 ### Fixed

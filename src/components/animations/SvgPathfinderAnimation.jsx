@@ -36,7 +36,7 @@ export default function SvgPathfinderAnimation() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Compass className="w-4 h-4 text-blue-400" />
-          <h3 className="text-xs font-semibold text-white">הדמיית מנגנון: סריקת רוחב עיוורת (BFS) מול ניווט מונחה יוריסטיקה (A*)</h3>
+          <h3 className="text-xs font-semibold text-white">הדמיית מנגנון: חיפוש עיוור לכל הכיוונים מול מצפן חכם (A*)</h3>
         </div>
         <div className="flex items-center gap-2">
           <button
@@ -205,8 +205,8 @@ export default function SvgPathfinderAnimation() {
       <div className="flex items-center justify-between text-xs bg-slate-900/80 p-3 rounded-lg border border-slate-800">
         <span className="text-slate-400">
           {algo === 'astar' 
-            ? 'A* משתמש במרחק המשוער ליעד (יוריסטיקה) כדי להתקדם ממוקד, וחוסך משבצות מיותרות.'
-            : 'BFS בודק כל משבצת אפשרית במעגלים הולכים וגדלים, מה שגורם לסריקה איטית ומרובה.'}
+            ? 'A* משתמש במצפן חכם (משחק חם-קר) שמנחש את הכיוון למטרה, וחוסך בדיקות מיותרות.'
+            : 'חיפוש עיוור בודק כל משבצת אפשרית במעגלים לכל הכיוונים, ולכן הוא איטי בהרבה.'}
         </span>
         <span className="font-mono text-slate-300">
           צעד {step} מתוך {totalSteps}

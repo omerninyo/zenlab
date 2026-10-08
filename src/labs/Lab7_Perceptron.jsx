@@ -209,7 +209,7 @@ export default function Lab7_Perceptron({ curriculum }) {
                   {/* Slider Weight 1 */}
                   <div className="space-y-1.5">
                     <div className="flex items-center justify-between text-xs">
-                      <span className="text-slate-300 font-semibold">משקולת קלט ראשון (w₁)</span>
+                      <span className="text-slate-300 font-semibold">מידת חשיבות רמז 1 (w₁)</span>
                       <span className="font-mono text-purple-400 font-bold">{w1.toFixed(1)}</span>
                     </div>
                     <input
@@ -226,7 +226,7 @@ export default function Lab7_Perceptron({ curriculum }) {
                   {/* Slider Weight 2 */}
                   <div className="space-y-1.5">
                     <div className="flex items-center justify-between text-xs">
-                      <span className="text-slate-300 font-semibold">משקולת קלט שני (w₂)</span>
+                      <span className="text-slate-300 font-semibold">מידת חשיבות רמז 2 (w₂)</span>
                       <span className="font-mono text-purple-400 font-bold">{w2.toFixed(1)}</span>
                     </div>
                     <input
@@ -243,7 +243,7 @@ export default function Lab7_Perceptron({ curriculum }) {
                   {/* Slider Bias */}
                   <div className="space-y-1.5">
                     <div className="flex items-center justify-between text-xs">
-                      <span className="text-slate-300 font-semibold">הטיית סף (Bias b)</span>
+                      <span className="text-slate-300 font-semibold">סף ההחלטה (סף b)</span>
                       <span className="font-mono text-amber-400 font-bold">{bias.toFixed(1)}</span>
                     </div>
                     <input

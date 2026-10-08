@@ -51,7 +51,7 @@ export default function SvgKernelAnimation() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Eye className="w-4 h-4 text-amber-400" />
-          <h3 className="text-xs font-semibold text-white">הדמיית מנגנון: חלון קונבולוציה נע 3x3 ומפת מאפיינים</h3>
+          <h3 className="text-xs font-semibold text-white">הדמיית מנגנון: זכוכית מגדלת סורקת (פילטר 3x3) ומפת רמזים</h3>
         </div>
         <div className="flex items-center gap-2">
           <button

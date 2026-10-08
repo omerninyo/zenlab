@@ -59,7 +59,7 @@ export default function GlossaryModal({ isOpen, onClose, curriculum }) {
     { id: 'lab4', label: '4: מסלול' },
     { id: 'lab5', label: '5: מסווג AI' },
     { id: 'lab6', label: '6: פילטרים' },
-    { id: 'lab7', label: '7: פרספטרון' },
+    { id: 'lab7', label: '7: נוירון חכם' },
     { id: 'lab8', label: '8: מודל שפה' }
   ];
 
@@ -101,7 +101,7 @@ export default function GlossaryModal({ isOpen, onClose, curriculum }) {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="חיפוש מונח או הגדרה (למשל: ביט, אלגוריתם, פרספטרון, טוקן)..."
+            placeholder="חיפוש מונח או הסבר (למשל: ביט, אלגוריתם, נוירון, מילים)..."
             className="w-full bg-slate-950 border border-slate-800 rounded-xl pr-10 pl-4 py-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors"
           />
           {searchQuery && (

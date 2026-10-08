@@ -132,16 +132,16 @@ export default function SvgLlmAnimation() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Sliders className="w-3.5 h-3.5 text-blue-400" />
-            <span className="text-xs font-semibold text-slate-200">כיול מד הטמפרטורה (Softmax Temperature):</span>
+            <span className="text-xs font-semibold text-slate-200">כיול מד הדמיון והיצירתיות:</span>
           </div>
           <div className="flex items-center gap-1.5 font-mono text-xs font-bold px-2 py-0.5 rounded bg-slate-900 border border-slate-800">
             {temperature <= 0.05 ? (
               <span className="flex items-center gap-1 text-cyan-400">
-                <Snowflake className="w-3 h-3" /> T = 0.0 (דטרמיניסטי וחד)
+                <Snowflake className="w-3 h-3" /> T = 0.0 (בטוח וצפוי)
               </span>
             ) : temperature >= 0.9 ? (
               <span className="flex items-center gap-1 text-amber-400">
-                <Flame className="w-3 h-3" /> T = {temperature.toFixed(2)} (יצירתי ומשוטח)
+                <Flame className="w-3 h-3" /> T = {temperature.toFixed(2)} (יצירתי ומפתיע)
               </span>
             ) : (
               <span className="text-blue-400">T = {temperature.toFixed(2)} (מאוזן)</span>

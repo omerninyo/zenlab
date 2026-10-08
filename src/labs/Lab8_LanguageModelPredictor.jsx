@@ -234,19 +234,19 @@ export default function Lab8_LanguageModelPredictor({ curriculum }) {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Sliders className="w-4 h-4 text-blue-400" />
-                  <span className="text-xs font-semibold text-slate-200">מד טמפרטורה (Temperature):</span>
+                  <span className="text-xs font-semibold text-slate-200">מד יצירתיות ודמיון:</span>
                 </div>
                 <div className="flex items-center gap-1.5 font-mono text-xs font-bold text-blue-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">
                   {temperature <= 0.05 ? (
                     <span className="flex items-center gap-1 text-cyan-400">
-                      <Snowflake className="w-3 h-3" /> 0.0 (חמדני/דטרמיניסטי)
+                      <Snowflake className="w-3 h-3" /> 0.0 (בטוח וצפוי)
                     </span>
                   ) : temperature >= 0.9 ? (
                     <span className="flex items-center gap-1 text-amber-400">
-                      <Flame className="w-3 h-3" /> {temperature.toFixed(2)} (יצירתי/מגוון)
+                      <Flame className="w-3 h-3" /> {temperature.toFixed(2)} (יצירתי ומפתיע)
                     </span>
                   ) : (
-                    <span>{temperature.toFixed(2)}</span>
+                    <span>{temperature.toFixed(2)} (מאוזן)</span>
                   )}
                 </div>
               </div>

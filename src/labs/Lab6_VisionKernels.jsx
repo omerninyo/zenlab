@@ -172,7 +172,7 @@ export default function Lab6_VisionKernels({ curriculum }) {
               {/* Kernel Selector */}
               <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold text-white">בחר גרעין קונבולוציה (פילטר 3x3):</span>
+                  <span className="text-xs font-semibold text-white">בחר פילטר בלשי (זכוכית מגדלת 3x3):</span>
                   <span className="text-xs text-slate-400 font-mono">{currentKernel.description}</span>
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
