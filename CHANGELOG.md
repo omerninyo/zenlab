@@ -23,8 +23,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Long-running operation polling, automatic MP4 download, and dynamic linkage into `src/data/curriculum.json` (`localSrc`).
   - Safe `--dry-run` inspection and quota diagnostics.
 - **Dedicated Google NotebookLM Educational Content Pack (`docs/notebooklm_pack/`)**:
-  - Comprehensive suite of 10 grounded Markdown source documents covering every lab for Grade 5 elementary students.
-  - Includes pedagogical analogies (Lego, cake recipe, 20 questions, Waze, soccer decision), deep dive concepts, conversational podcast scripts, and classroom challenges.
+  - Comprehensive suite of 11 grounded Markdown source documents covering every lab for Grade 5 elementary students.
+  - Dedicated cinematic video production guide (`09_CINEMATIC_VIDEO_PROMPTS_AND_GUIDE_HE.md`) with 4-scene storyboard prompts for all 8 labs in Pixar 3D animated style.
   - Step-by-step guide (`README_NOTEBOOKLM_GUIDE_HE.md`) for generating multi-speaker Audio Overviews and educational video scripts with zero cost using Google Ultra.
 
 ## [0.5.1] - 2026-10-08
