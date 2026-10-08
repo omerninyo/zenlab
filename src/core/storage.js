@@ -35,6 +35,7 @@ const defaultState = {
     lab8: 'theory'
   },
   activeLabId: 'lab1',
+  viewMode: 'home', // 'home' (roadmap overview) | 'lab' (active lab workspace)
   theme: 'light' // 'light' (default bright classroom mode) | 'dark'
 };
 
@@ -69,7 +70,8 @@ class StorageEngineClass {
         ...defaultState,
         ...parsed,
         labStars: { ...defaultState.labStars, ...(parsed.labStars || {}) },
-        completedChallenges: { ...(parsed.completedChallenges || {}) }
+        completedChallenges: { ...(parsed.completedChallenges || {}) },
+        viewMode: parsed.viewMode || 'home'
       };
     } catch {
       return { ...defaultState };
@@ -153,6 +155,15 @@ class StorageEngineClass {
     this.saveState();
   }
 
+  getViewMode() {
+    return this.state.viewMode || 'home';
+  }
+
+  setViewMode(mode) {
+    this.state.viewMode = mode === 'lab' ? 'lab' : 'home';
+    this.saveState();
+  }
+
   getTheme() {
     return this.state.theme || 'light';
   }
@@ -204,6 +215,8 @@ class StorageEngineClass {
         lab8: 'theory'
       },
       totalStars: 0,
+      activeLabId: 'lab1',
+      viewMode: 'home',
       isMuted: this.state.isMuted,
       isNarrationEnabled: this.state.isNarrationEnabled
     };

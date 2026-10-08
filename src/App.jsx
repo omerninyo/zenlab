@@ -24,7 +24,8 @@ import {
   ChevronRight,
   ChevronLeft,
   ChevronDown,
-  MoreVertical
+  MoreVertical,
+  Home
 } from 'lucide-react';
 import curriculumData from './data/curriculum.json';
 import { StorageEngine } from './core/storage.js';
@@ -34,6 +35,7 @@ import CertificateModal from './components/CertificateModal.jsx';
 import GlossaryModal from './components/GlossaryModal.jsx';
 import ClassroomSettingsModal from './components/ClassroomSettingsModal.jsx';
 import ZenAiTutor from './components/ZenAiTutor.jsx';
+import HomeDashboard from './components/HomeDashboard.jsx';
 import Lab1_BinaryPixels from './labs/Lab1_BinaryPixels.jsx';
 import Lab2_AlgorithmicRobot from './labs/Lab2_AlgorithmicRobot.jsx';
 import Lab3_DecisionTree from './labs/Lab3_DecisionTree.jsx';
@@ -45,6 +47,7 @@ import Lab8_LanguageModelPredictor from './labs/Lab8_LanguageModelPredictor.jsx'
 
 export default function App() {
   const [activeLabId, setActiveLabId] = useState(() => StorageEngine.getState().activeLabId || 'lab1');
+  const [viewMode, setViewMode] = useState(() => StorageEngine.getViewMode?.() || 'home');
   const [isMuted, setIsMuted] = useState(() => StorageEngine.getState().isMuted);
   const [totalStars, setTotalStars] = useState(() => StorageEngine.getState().totalStars);
   const [labStars, setLabStars] = useState(() => StorageEngine.getState().labStars);
@@ -69,6 +72,8 @@ export default function App() {
       setIsMuted(state.isMuted);
       setIsNarrationEnabled(state.isNarrationEnabled);
       if (state.theme) setTheme(state.theme);
+      if (state.viewMode) setViewMode(state.viewMode);
+      if (state.activeLabId) setActiveLabId(state.activeLabId);
     });
     const unsubNarration = NarrationEngine.subscribe(state => {
       setNarrationState(state);
@@ -82,6 +87,14 @@ export default function App() {
   const handleLabSelect = (id) => {
     setActiveLabId(id);
     StorageEngine.setActiveLab(id);
+    setViewMode('lab');
+    StorageEngine.setViewMode('lab');
+    AudioEngine.playStep();
+  };
+
+  const handleGoHome = () => {
+    setViewMode('home');
+    StorageEngine.setViewMode('home');
     AudioEngine.playStep();
   };
 
@@ -149,22 +162,44 @@ export default function App() {
       <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 shadow-xs">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-2 sm:gap-4">
           
-          {/* Right (RTL): Brand Identity */}
-          <div className="flex items-center gap-2 shrink-0">
-            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-xs">
-              <Cpu className="w-4 h-4 sm:w-5 sm:h-5" />
-            </div>
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="text-sm sm:text-base font-black tracking-tight text-slate-900 dark:text-white">ZenLab</span>
-                <span className="text-[10px] sm:text-[11px] font-bold px-1.5 py-0.2 rounded-full bg-blue-100 dark:bg-slate-800 text-blue-800 dark:text-slate-300 border border-blue-200/60 dark:border-slate-700 hidden sm:inline">
-                  כיתה ה׳
-                </span>
+          {/* Right (RTL): Brand Identity & Dedicated Home Button */}
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            <button
+              type="button"
+              onClick={handleGoHome}
+              className="flex items-center gap-2 group text-right cursor-pointer"
+              title="חזרה למפת המסע של ZenLab"
+            >
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-xs group-hover:bg-blue-500 transition-colors">
+                <Cpu className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
-              <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium hidden md:block">
-                From Zero to Neural
-              </p>
-            </div>
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-sm sm:text-base font-black tracking-tight text-slate-900 dark:text-white">ZenLab</span>
+                  <span className="text-[10px] sm:text-[11px] font-bold px-1.5 py-0.2 rounded-full bg-blue-100 dark:bg-slate-800 text-blue-800 dark:text-slate-300 border border-blue-200/60 dark:border-slate-700 hidden sm:inline">
+                    כיתה ה׳
+                  </span>
+                </div>
+                <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium hidden md:block">
+                  From Zero to Neural
+                </p>
+              </div>
+            </button>
+
+            {/* Dedicated Home / Roadmap Button */}
+            <button
+              type="button"
+              onClick={handleGoHome}
+              className={`flex items-center gap-1.5 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+                viewMode === 'home'
+                  ? 'bg-blue-600 text-white shadow-xs'
+                  : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700'
+              }`}
+              title="מפת מסלול הלמידה"
+            >
+              <Home className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              <span className="hidden sm:inline">מפת המסע</span>
+            </button>
           </div>
 
           {/* Center: Kid-Friendly Apple Stepper & Lab Popover Drawer */}
@@ -221,7 +256,14 @@ export default function App() {
                 />
                 <div className="fixed inset-x-3 top-16 sm:absolute sm:top-full sm:inset-x-auto sm:mt-2 z-50 sm:w-[460px] max-h-[80vh] overflow-y-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3 sm:p-4 shadow-2xl animate-in fade-in zoom-in-95 duration-150">
                   <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-slate-100 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 font-bold">
-                    <span>בחרו מעבדה לחקירה (8 מעבדות)</span>
+                    <button
+                      type="button"
+                      onClick={() => { handleGoHome(); setIsLabMenuOpen(false); }}
+                      className="flex items-center gap-1.5 text-blue-600 dark:text-blue-400 hover:underline cursor-pointer"
+                    >
+                      <Home className="w-3.5 h-3.5" />
+                      <span>חזרה למפת המסע</span>
+                    </button>
                     <span className="font-mono text-amber-500">★ {totalStars}/24 כוכבים</span>
                   </div>
 
@@ -331,6 +373,16 @@ export default function App() {
                   />
                   <div className="absolute left-0 mt-2 z-50 w-52 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-1.5 shadow-xl animate-in fade-in zoom-in-95 duration-150 text-right">
                     
+                    {/* Home / Roadmap (Mobile) */}
+                    <button
+                      type="button"
+                      onClick={() => { handleGoHome(); setIsMoreMenuOpen(false); }}
+                      className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 transition-colors"
+                    >
+                      <Home className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                      <span>מפת המסע הראשית</span>
+                    </button>
+
                     {/* Certificate (Mobile) */}
                     <button
                       type="button"
@@ -402,15 +454,47 @@ export default function App() {
 
       {/* Main Educational Workspace */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-6">
+        {viewMode === 'home' ? (
+          <HomeDashboard
+            curriculum={curriculumData}
+            labStars={labStars}
+            totalStars={totalStars}
+            onSelectLab={handleLabSelect}
+            onOpenCertificate={() => setIsCertificateOpen(true)}
+            onOpenGlossary={() => setIsGlossaryOpen(true)}
+          />
+        ) : (
+          <div>
+            {/* Quick Breadcrumb back to Home / Roadmap */}
+            <div className="flex items-center justify-between gap-2 mb-4 pb-2.5 border-b border-slate-200/80 dark:border-slate-800 text-xs font-bold text-slate-500 dark:text-slate-400">
+              <button
+                type="button"
+                onClick={handleGoHome}
+                className="inline-flex items-center gap-1.5 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors cursor-pointer"
+              >
+                <ChevronRight className="w-4 h-4" />
+                <span>חזרה למפת המסלול</span>
+              </button>
+              <div className="flex items-center gap-2">
+                <span className="font-medium text-slate-400 dark:text-slate-500">
+                  מעבדה {currentLab.number} מתוך 8
+                </span>
+                <span className="font-mono text-amber-500">
+                  ★ {labStars[activeLabId] || 0}/3
+                </span>
+              </div>
+            </div>
 
-        {activeLabId === 'lab1' && <Lab1_BinaryPixels curriculum={curriculumData} />}
-        {activeLabId === 'lab2' && <Lab2_AlgorithmicRobot curriculum={curriculumData} />}
-        {activeLabId === 'lab3' && <Lab3_DecisionTree curriculum={curriculumData} />}
-        {activeLabId === 'lab4' && <Lab4_Pathfinder curriculum={curriculumData} />}
-        {activeLabId === 'lab5' && <Lab5_MachineLearningClassifier curriculum={curriculumData} />}
-        {activeLabId === 'lab6' && <Lab6_VisionKernels curriculum={curriculumData} />}
-        {activeLabId === 'lab7' && <Lab7_Perceptron curriculum={curriculumData} />}
-        {activeLabId === 'lab8' && <Lab8_LanguageModelPredictor curriculum={curriculumData} />}
+            {activeLabId === 'lab1' && <Lab1_BinaryPixels curriculum={curriculumData} />}
+            {activeLabId === 'lab2' && <Lab2_AlgorithmicRobot curriculum={curriculumData} />}
+            {activeLabId === 'lab3' && <Lab3_DecisionTree curriculum={curriculumData} />}
+            {activeLabId === 'lab4' && <Lab4_Pathfinder curriculum={curriculumData} />}
+            {activeLabId === 'lab5' && <Lab5_MachineLearningClassifier curriculum={curriculumData} />}
+            {activeLabId === 'lab6' && <Lab6_VisionKernels curriculum={curriculumData} />}
+            {activeLabId === 'lab7' && <Lab7_Perceptron curriculum={curriculumData} />}
+            {activeLabId === 'lab8' && <Lab8_LanguageModelPredictor curriculum={curriculumData} />}
+          </div>
+        )}
       </main>
 
       {/* Certificate Modal */}
@@ -434,7 +518,7 @@ export default function App() {
       />
 
       {/* Zen AI Tutor Floating Classroom Companion */}
-      <ZenAiTutor currentLabId={activeLabId} />
+      <ZenAiTutor currentLabId={viewMode === 'home' ? 'home' : activeLabId} />
 
       {/* Footer Notice with Zero-PII Hygiene */}
       <footer className="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-6 text-xs text-slate-500 dark:text-slate-400">

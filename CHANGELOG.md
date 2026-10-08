@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.9] - 2026-10-08
+
+### Added
+- **Dedicated Child-Friendly Home & Learning Roadmap Dashboard (`src/components/HomeDashboard.jsx`, `src/App.jsx`, `src/core/storage.js`, `src/data/curriculum.json`)**:
+  - **Inviting Mission Map & Orientation Hub ("מפת המסע: מביטים בודדים עד בינה מלאכותית")**: Created an autonomous, empowering home dashboard designed specifically for 5th-grade elementary students (ages 10–11) to guide their learning journey independently with clarity and joy.
+  - **Smart "התחנה הבאה שלך" Quick-Launch Hero Card**: Automatically identifies the student's next unfinished laboratory station (based on star progress), providing an encouraging 1-sentence teaser and a prominent one-tap CTA button (`המשיכו במעבדה ◀` / `התחילו את המעבדה ◀`) that launches them straight into their next challenge.
+  - **Scaffolded 2-Track Journey Architecture**:
+    - **מסלול א׳: עקרונות המחשב והאלגוריתמיקה** (מעבדות 1–4: ציור בפיקסלים, לתכנת רובוט, עץ החלטות בלשי, הווייז של הרובוט A*).
+    - **מסלול ב׳: בינה מלאכותית ולמידת מכונה** (מעבדות 5–8: איך מחשב לומד KNN, העיניים של המחשב, נוירון חכם, מודל שפה חכם).
+  - **8 Interactive Lab Cards**: Each card features a distinct Lucide icon, track accent, 1-line plain Hebrew concept explanation, 3-star visual tracker (`★ ★ ★`), live status pill ("הושלם בהצטיינות", "בתהליך (X/3)", "מוכן להתחלה"), and a direct launch button.
+  - **Pedagogical 3-Step Guide ("איך לומדים וחוקרים כאן?")**: Visual 3-card roadmap outlining the discovery loop (1. מבינים וחוקרים, 2. מתנסים ומשחקים, 3. פותרים ומקבלים תעודה).
+  - **Overview Progress & Rank Bar**: Displays real-time total stars earned (`X / 24`), percentage complete, completed lab counter (`X / 8`), and active developer rank (`חוקר/ת מתחיל/ה` up to `מאסטר בינה מלאכותית`).
+  - **Seamless Two-Way Navigation**:
+    - Dedicated "מפת המסע" button in top application bar (always accessible on mobile, tablet, and desktop).
+    - Quick "חזרה למפת המסלול" breadcrumb link atop active laboratory workspaces.
+    - Persistent state persistence via `StorageEngine.getViewMode()` and `setViewMode()`.
+  - **Roadmap-Aware Zen AI Tutor (`ZenAiTutor.jsx`)**: Added personalized onboarding knowledge base for `home` mode where Zen the robot explains the journey, distinguishes between the two tracks, and guides the student on where to start.
+  - **Pedagogical Copy Separation**: All Hebrew copy, track subtitles, and guidelines stored natively in `src/data/curriculum.json` under `homeRoadmap`.
+
 ## [0.6.8] - 2026-10-08
 
 ### Changed
