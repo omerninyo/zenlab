@@ -30,6 +30,27 @@ The platform runs 100% in the browser with zero backend requirements, zero telem
 
 ---
 
+## Core System Architecture
+
+```text
++-----------------------------------------------------------------------+
+|                           Vite + React SPA                            |
++-----------------------------------------------------------------------+
+|  Routing / Navigation  |  Hebrew Typography & RTL  |   Lucide Icons   |
++-----------------------------------------------------------------------+
+|                            Core Engines                               |
+|  - Web Audio API Synthesizer (Zero asset dependencies)                |
+|  - Reactive LocalStorage State & Star Manager                         |
+|  - Canvas Particle Celebration Engine                                 |
+|  - Pluggable AI Service (Deterministic Mock + Gemini Bridge)          |
++-----------------------------------------------------------------------+
+|                       Curriculum Data Layer                           |
+|  - src/data/curriculum.json (Pedagogical copy, criteria, glossary)     |
++-----------------------------------------------------------------------+
+```
+
+---
+
 ## Getting Started
 
 ### Prerequisites
