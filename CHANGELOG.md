@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-10-08
+
+### Added
+- **Zen AI Tutor: Interactive Classroom Robot Companion (`src/components/ZenAiTutor.jsx`, `src/App.jsx`)**:
+  - Interactive floating robot companion ("זן הרובוט") designed for 5th-grade elementary students.
+  - Curated, child-friendly pedagogical knowledge base and pre-canned questions across all 8 labs.
+  - Socratic guidance with everyday analogies (Lego, light switches, cake recipe, sports decisions).
+  - Integrated speech synthesis ("השמע") playing explanations out loud via `NarrationEngine`.
+  - Dynamic connection to Google's **Gemini 3 Flash** (`gemini-3-flash-preview`) for answering free-form student questions with local client-side key storage (`localStorage`).
+  - Zero-latency local fallback ensuring students always receive an encouraging, scientifically sound answer even without an API key or internet connection.
+- **Google Veo 3.1 Video Production Pipeline (`scripts/generate_video.js`)**:
+  - Standalone CLI generator utilizing Google's flagship video generation model (`models/veo-3.1-generate-preview`).
+  - 8 Pixar-style educational 3D animation prompts tailored to 10-year-olds.
+  - Long-running operation polling, automatic MP4 download, and dynamic linkage into `src/data/curriculum.json` (`localSrc`).
+  - Safe `--dry-run` inspection and quota diagnostics.
+
 ## [0.5.1] - 2026-10-08
 
 ### Added

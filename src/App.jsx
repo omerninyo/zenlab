@@ -30,6 +30,7 @@ import { NarrationEngine } from './core/narration.js';
 import CertificateModal from './components/CertificateModal.jsx';
 import GlossaryModal from './components/GlossaryModal.jsx';
 import ClassroomSettingsModal from './components/ClassroomSettingsModal.jsx';
+import ZenAiTutor from './components/ZenAiTutor.jsx';
 import Lab1_BinaryPixels from './labs/Lab1_BinaryPixels.jsx';
 import Lab2_AlgorithmicRobot from './labs/Lab2_AlgorithmicRobot.jsx';
 import Lab3_DecisionTree from './labs/Lab3_DecisionTree.jsx';
@@ -144,7 +145,7 @@ export default function App() {
                   כיתה ה׳
                 </span>
                 <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700 hidden sm:inline">
-                  v0.5.1
+                  v0.6.0
                 </span>
               </div>
               <p className="text-xs text-slate-500 dark:text-slate-400 hidden sm:block font-medium">
@@ -364,6 +365,9 @@ export default function App() {
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}
       />
+
+      {/* Zen AI Tutor Floating Classroom Companion */}
+      <ZenAiTutor currentLabId={activeLabId} />
 
       {/* Footer Notice with Zero-PII Hygiene */}
       <footer className="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-6 text-xs text-slate-500 dark:text-slate-400">
