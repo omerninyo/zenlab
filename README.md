@@ -76,6 +76,8 @@ npm run build
 npm run preview
 ```
 
+> **Detailed Guide**: For detailed step-by-step instructions, testing checklists, and troubleshooting in Hebrew, refer to [**`docs/RUN_LOCALLY.md`**](docs/RUN_LOCALLY.md).
+
 ---
 
 ## Cloudflare Pages Deployment
