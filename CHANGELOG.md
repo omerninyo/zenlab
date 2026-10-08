@@ -11,9 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - **Studio-Quality Hebrew TTS Generator CLI (`scripts/generate_audio.js`)**:
-  - Standalone Node.js script supporting ElevenLabs (`eleven_multilingual_v2`) and Google Cloud TTS (`he-IL-Neural2-A`).
-  - `--dry-run` quota inspector: calculated 2,360 characters total across all 8 labs (only 23.6% of ElevenLabs free 10k monthly quota, and 0.24% of Google Cloud free 1M quota - $0.00 cost).
-  - Automatically saves high-fidelity `.mp3` files to `public/audio/narration/` and links `audioSrc` in `src/data/curriculum.json`.
+  - Full support for **Google Gemini Flash TTS** (`gemini-2.5-flash-preview-tts` at 24kHz PCM/WAV), **Google Cloud TTS** (`he-IL-Neural2-A`), and **ElevenLabs** (`eleven_multilingual_v2`).
+  - Automatic provider detection from API key (`AQ.` / `AIzaSy` keys automatically use Gemini Ultra/Studio endpoints).
+  - Built-in rate limit throttle (20s delay) and exponential backoff retry for preview models.
+  - `--dry-run` quota inspector: calculated 2,360 characters total across all 8 labs ($0.00 marginal cost).
+- **Bundled High-Fidelity Hebrew Audio Suite for All 8 Labs (`public/audio/narration/`)**:
+  - Successfully synthesized and bundled native 24,000Hz studio audio files for all 8 labs: `lab1.wav` through `lab8.wav` (~9.4 MB total).
+  - Fully linked into `src/data/curriculum.json` across all labs for instantaneous zero-latency playback.
 - **Local HTML5 Video Support in `LiteYouTubeEmbed` and `TheoryView` (`src/components/LiteYouTubeEmbed.jsx`, `src/components/TheoryView.jsx`)**:
   - Added `localSrc` prop support to render native HTML5 video player for GenAI-generated MP4 files, eliminating third-party YouTube embeds when local media exists.
 - **Pedagogical Audio & Video Pipeline Research Specifications (`docs/research/TTS_AND_GENAI_VIDEO_PIPELINE.he.md`, `docs/research/TTS_AND_GENAI_VIDEO_PIPELINE.md`)**:
