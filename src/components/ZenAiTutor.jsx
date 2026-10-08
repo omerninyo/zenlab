@@ -307,11 +307,11 @@ export default function ZenAiTutor({ currentLabId = 'lab1' }) {
           title="שאל את זן הרובוט - חונך הבינה המלאכותית שלך"
         >
           <div className="relative">
-            <Bot className="w-6 h-6 animate-bounce" />
+            <Bot className="w-6 h-6 text-white" />
             <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-emerald-400 rounded-full ring-2 ring-blue-600" />
           </div>
           <div className="text-right">
-            <span className="block text-xs font-bold leading-tight">שאל את זן הרובוט</span>
+            <span className="block text-xs font-bold leading-tight">שאל את זֶן הרובוט</span>
             <span className="block text-[10px] text-blue-200 leading-tight">חונך AI אישי</span>
           </div>
         </button>

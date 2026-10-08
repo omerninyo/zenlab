@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.4] - 2026-10-08
+
+### Changed
+- **Apple-Minimalist & Child-Centric UX Architecture Refactoring (`src/App.jsx`, `src/components/LabPhaseHeader.jsx`, `src/components/ZenAiTutor.jsx`)**:
+  - **Eliminated AI-generated Control Clutter**: Replaced 12 scattered header tools and badges with 3 focused, harmonious Apple-style zones (Brand, Lab Stepper, Unified Tools).
+  - **Kid-Friendly Apple Stepper**: Introduced a unified central navigation stepper `< מעבדה 1 מתוך 8: ציור בפיקסלים >` with persistent, cheerful Lucide icons and one-click Previous/Next arrows.
+  - **8-Lab Interactive Popover Drawer**: Clicking the center stepper opens an elegant 2-column modal grid showcasing all 8 labs, categorized by track (Algorithms vs AI) with live star completion counters.
+  - **Saved ~350px of Vertical Chrome**: Completely removed the redundant 2-row navigation pills bar and the dismissible welcome banner, allowing elementary students to access the learning canvas immediately upon load.
+  - **Apple-Style Segmented Control for Phases**: Streamlined `LabPhaseHeader.jsx` into a clean 2-phase switcher (`שלב 1: הבנה ומדיה` / `שלב 2: מעבדה מעשית (3 אתגרים)`), removing duplicated narration triggers.
+  - **Secondary Tools Menu**: Tucked Glossary, Narration toggle, Light/Dark theme, and Classroom settings into a quiet, accessible popover menu.
+  - **Calm, Tactile Zen AI Tutor Trigger**: Removed distracting perpetual bouncing animation from the floating robot button, maintaining a gentle, welcoming Presence dot and clear vocalized label (`שאל את זֶן הרובוט`).
+
 ## [0.6.3] - 2026-10-08
 
 ### Added
