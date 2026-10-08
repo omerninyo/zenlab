@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.5] - 2026-10-08
+
+### Fixed
+- **CI / Cloudflare Build Workflow Resolution (`.github/workflows/deploy.yml`, `.node-version`)**:
+  - Resolved persistent GitHub Actions failure alert (`Unable to resolve action cloudflare/pages-action, not found`) by removing the deprecated/non-existent third-party action step.
+  - Converted GitHub workflow to a robust CI build verification pipeline (`npm ci` & `npm run build`), ensuring automated build validation on every push and pull request.
+  - Added `.node-version` (`22`) to guarantee explicit Node.js version alignment across Cloudflare Pages build environment and local development.
+  - Preserved Cloudflare Pages direct Git integration, which handles production publishing autonomously and seamlessly to `https://zenlab.ninyo.co`.
+
 ## [0.6.4] - 2026-10-08
 
 ### Changed
