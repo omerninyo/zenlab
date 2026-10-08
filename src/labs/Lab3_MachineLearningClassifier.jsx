@@ -178,12 +178,13 @@ export default function Lab3_MachineLearningClassifier({ curriculum }) {
         </div>
       </div>
 
-      {activeTab === 'lab' && (\n        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      {activeTab === 'lab' && (
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Scatter Plot 2D Canvas */}
           <div className="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-xl p-6 flex flex-col items-center">
             <div className="w-full flex items-center justify-between mb-4">
               <div className="text-xs text-slate-400">
-                מרחב תכונות דו-ממדי: ציר X (גודל בס\"מ) מול ציר Y (משקל בגרם)
+                מרחב תכונות דו-ממדי: ציר X (גודל בס"מ) מול ציר Y (משקל בגרם)
               </div>
               <div className="text-xs font-mono text-slate-400">
                 דגימות אימון: <span className="text-white font-semibold">{points.length}</span>
@@ -366,7 +367,8 @@ export default function Lab3_MachineLearningClassifier({ curriculum }) {
                   </span>
                 </div>
                 <div className="grid grid-cols-3 gap-2">
-                  {[1, 3, 5].map((val) => (\n                    <button
+                  {[1, 3, 5].map((val) => (
+                    <button
                       key={val}
                       type="button"
                       onClick={() => {

@@ -280,7 +280,7 @@ export default function Lab4_LanguageModelPredictor({ curriculum }) {
                   >
                     <div className="flex items-center justify-between mb-1.5">
                       <span className="text-xs font-semibold text-slate-200 group-hover:text-blue-400 transition-colors">
-                        \"{item.token}\"
+                        "{item.token}"
                       </span>
                       <span className="text-xs font-mono font-bold text-blue-400">
                         {item.probability}%

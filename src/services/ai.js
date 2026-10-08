@@ -151,4 +151,15 @@ export const AIService = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          contents: [{ parts: [{ text: `הסבר בקצרה ובפשטות לתלמיד בעברית: ${prompt}` }] }]\n        })\n      });\n\n      if (!response.ok) throw new Error(`HTTP ${response.status}`);\n      const data = await response.json();\n      return data?.candidates?.[0]?.content?.parts?.[0]?.text || fallbackText;\n    } catch {\n      return fallbackText;\n    }\n  }\n};\n
+          contents: [{ parts: [{ text: `הסבר בקצרה ובפשטות לתלמיד בעברית: ${prompt}` }] }]
+        })
+      });
+
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const data = await response.json();
+      return data?.candidates?.[0]?.content?.parts?.[0]?.text || fallbackText;
+    } catch {
+      return fallbackText;
+    }
+  }
+};
