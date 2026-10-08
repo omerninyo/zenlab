@@ -232,7 +232,7 @@ export default function Lab6_VisionKernels({ curriculum }) {
                 {/* Output Feature Map */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between text-xs text-slate-300">
-                    <span className="font-semibold">מפת מאפיינים מחושבת (Feature Map)</span>
+                    <span className="font-semibold">מפת רמזים ומאפיינים שנמצאו</span>
                     <span className="text-[11px] text-slate-500">לחצו לבדיקת פיקסל</span>
                   </div>
                   <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 flex justify-center">

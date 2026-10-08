@@ -137,30 +137,13 @@ export default function Lab8_LanguageModelPredictor({ curriculum }) {
       {/* Phase 2: Interactive Simulator */}
       {phase === 'interactive' && (
         <div className="space-y-6 animate-fadeIn">
-          {/* Top Return to Theory button */}
-          <div className="flex items-center justify-between text-xs">
-            <button
-              type="button"
-              onClick={() => {
-                setPhase('theory');
-                StorageEngine.setLabPhase('lab8', 'theory');
-                AudioEngine.playStep();
-              }}
-              className="flex items-center gap-1.5 text-slate-400 hover:text-slate-200 transition-colors"
-            >
-              <ArrowRight className="w-3.5 h-3.5" />
-              <span>חזרה להסבר התיאורטי והמדיה</span>
-            </button>
-            <span className="text-slate-500 font-mono">מצב התנסות פעיל (Interactive Simulator)</span>
-          </div>
-
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Sentence Builder & Stream Column */}
           <div className="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-6">
             {/* Prompt Selector */}
             <div>
-              <label className="block text-xs font-medium text-slate-400 mb-2">
-                בחר הקשר התחלתי (Prompt Context):
+              <label className="block text-xs font-semibold text-slate-300 mb-2">
+                בחר התחלה של משפט (פרומפט):
               </label>
               <div className="flex flex-wrap gap-2">
                 {labData.prompts.map(p => (
@@ -170,7 +153,7 @@ export default function Lab8_LanguageModelPredictor({ curriculum }) {
                     onClick={() => handleSelectPrompt(p.id)}
                     className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
                       selectedPromptId === p.id
-                        ? 'bg-blue-600 border-blue-500 text-white'
+                        ? 'bg-blue-600 border-blue-500 text-white shadow-xs'
                         : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-slate-200'
                     }`}
                   >
@@ -183,8 +166,8 @@ export default function Lab8_LanguageModelPredictor({ curriculum }) {
             {/* Live Token Sequence Stream */}
             <div className="bg-slate-950 p-5 rounded-xl border border-slate-800 space-y-3 min-h-[140px] flex flex-col justify-between shadow-inner">
               <div>
-                <div className="text-[11px] font-medium text-slate-500 mb-2">
-                  רצף האסימונים הנבנה (Context + Generated Tokens):
+                <div className="text-[11px] font-medium text-slate-400 mb-2">
+                  המשפט הנבנה (מילה אחר מילה):
                 </div>
                 <div className="text-base leading-relaxed text-slate-200">
                   <span className="text-slate-400 font-normal">{activePrompt.initialText}</span>
@@ -202,8 +185,8 @@ export default function Lab8_LanguageModelPredictor({ curriculum }) {
               </div>
 
               <div className="flex items-center justify-between pt-3 border-t border-slate-800/80">
-                <span className="text-xs font-mono text-slate-500">
-                  אסימונים שנוצרו: {generatedTokens.length}
+                <span className="text-xs font-mono text-slate-400">
+                  מילים שנוספו: {generatedTokens.length}
                 </span>
                 <button
                   type="button"
@@ -212,7 +195,7 @@ export default function Lab8_LanguageModelPredictor({ curriculum }) {
                   className="flex items-center gap-1 text-xs text-slate-400 hover:text-slate-200 disabled:opacity-40 transition-colors"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
-                  <span>איפוס רצף</span>
+                  <span>התחל מחדש</span>
                 </button>
               </div>
             </div>

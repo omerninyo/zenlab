@@ -239,7 +239,7 @@ export default function ZenAiTutor({ currentLabId = 'lab1' }) {
     // If student asked a custom question and has an active Gemini API key:
     if (userApiKey && userApiKey.trim().length > 10) {
       try {
-        const promptSystem = `אתה חונך בינה מלאכותית ידידותי, מעודד וסבלני לילדים בכיתה ה (גילאי 10-11) בישראל, בשם "זן הרובוט".
+        const promptSystem = `אתה חונך בינה מלאכותית ידידותי, מעודד וסבלני לילדים בכיתה ה (גילאי 10-11) בישראל, בשם "זֶן הרובוט".
 התלמיד לומד כעת בנושא: ${labKnowledge.welcome}.
 ענה בעברית פשוטה, ברורה, בגובה העיניים של ילד בן 10. השתמש באנלוגיות יומיומיות (כמו משחקי לגו, מתגי חשמל, עוגה או ספורט).
 אל תיתן תשובות ארוכות ומסובכות: עד 2-3 משפטים קצרים ומעצימים. עודד את התלמיד להמשיך לחקור במעבדה.`;
@@ -303,11 +303,11 @@ export default function ZenAiTutor({ currentLabId = 'lab1' }) {
         <button
           type="button"
           onClick={() => { setIsOpen(true); AudioEngine.playStep(); }}
-          className="fixed bottom-6 left-6 z-50 flex items-center gap-2.5 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl shadow-xl hover:shadow-2xl transition-all group scale-100 hover:scale-105 border-2 border-white/80 dark:border-slate-800"
-          title="שאל את זן הרובוט - חונך הבינה המלאכותית שלך"
+          className="fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-50 flex items-center gap-2 sm:gap-2.5 px-3 sm:px-4 py-2.5 sm:py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl shadow-xl hover:shadow-2xl transition-all group scale-100 hover:scale-105 border-2 border-white/80 dark:border-slate-800"
+          title="שאל את זֶן הרובוט - חונך הבינה המלאכותית שלך"
         >
           <div className="relative">
-            <Bot className="w-6 h-6 text-white" />
+            <Bot className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
             <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-emerald-400 rounded-full ring-2 ring-blue-600" />
           </div>
           <div className="text-right">
@@ -319,20 +319,20 @@ export default function ZenAiTutor({ currentLabId = 'lab1' }) {
 
       {/* Floating Chat Modal / Drawer */}
       {isOpen && (
-        <div className="fixed bottom-6 left-6 z-50 w-[92vw] sm:w-[420px] max-h-[82vh] h-[580px] bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-200">
+        <div className="fixed bottom-3 sm:bottom-6 left-3 sm:left-6 right-3 sm:right-auto z-50 w-auto sm:w-[420px] max-h-[85vh] h-[520px] sm:h-[580px] bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-200">
           
           {/* Header */}
-          <div className="px-5 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white flex items-center justify-between shadow-md">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center font-bold shadow-inner">
-                <Bot className="w-6 h-6 text-white" />
+          <div className="px-4 sm:px-5 py-3.5 sm:py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white flex items-center justify-between shadow-md shrink-0">
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center font-bold shadow-inner">
+                <Bot className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
               </div>
               <div className="text-right">
-                <h3 className="text-sm font-extrabold flex items-center gap-1.5">
-                  <span>זן הרובוט</span>
+                <h3 className="text-xs sm:text-sm font-extrabold flex items-center gap-1.5">
+                  <span>זֶן הרובוט</span>
                   <span className="text-[10px] px-1.5 py-0.2 bg-white/20 rounded-full font-normal">חונך כיתתי</span>
                 </h3>
-                <p className="text-[11px] text-blue-100 font-medium">כאן בשבילך לכל שאלה על המעבדה</p>
+                <p className="text-[10px] sm:text-[11px] text-blue-100 font-medium">כאן בשבילך לכל שאלה על המעבדה</p>
               </div>
             </div>
 
@@ -436,7 +436,7 @@ export default function ZenAiTutor({ currentLabId = 'lab1' }) {
             {isLoading && (
               <div className="flex items-center gap-2 text-slate-500 text-xs p-2">
                 <div className="w-2 h-2 rounded-full bg-blue-500 animate-ping" />
-                <span>זן חושב על תשובה פשוטה וברורה...</span>
+                <span>זֶן חושב על תשובה פשוטה וברורה...</span>
               </div>
             )}
             <div ref={messagesEndRef} />
@@ -474,7 +474,7 @@ export default function ZenAiTutor({ currentLabId = 'lab1' }) {
               type="text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              placeholder="כתוב שאלה לזן הרובוט..."
+              placeholder="כתוב שאלה לזֶן הרובוט..."
               className="flex-1 px-4 py-2.5 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-blue-500"
             />
             <button

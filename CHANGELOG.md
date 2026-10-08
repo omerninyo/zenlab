@@ -5,7 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.6.7] - 2026-10-08
+
+### Changed
+- **Mobile & Tablet Full Touch UX Optimization (`src/App.jsx`, `src/components/*`, `src/labs/*`)**:
+  - **Fluid Responsive Header**: Calibrated app bar padding and gap sizing for small mobile screens (360px–390px, iPhone SE & 14/15) with responsive `shortLabel` truncation so brand identity, lab stepper, and achievement stars never overlap or clip.
+  - **Mobile Bottom-Drawer Zen AI Tutor**: Converted `ZenAiTutor.jsx` from a rigid popup box into an adaptive bottom-sheet drawer (`fixed bottom-3 left-3 right-3 sm:w-[420px]`) with smooth vertical scrolling and touch targets.
+  - **Scrollable & Scaled Certificate Modal**: Added fluid mobile padding and vertical overflow container to `CertificateModal.jsx` ensuring certificates render cleanly on any viewport.
+  - **Responsive Sub-branch Layout in Lab 3**: Converted decision tree sub-branches from fixed 2-column to responsive single-column on mobile (`grid-cols-1 sm:grid-cols-2`), allowing effortless reading and selection on smartphones.
+  - **Hebrew Logical Gates in Lab 7**: Updated logic gate selector buttons to standard elementary Hebrew terminology: `שער "וגם" (AND)`, `שער "או" (OR)`, `שער "או-אבל-לא-שניהם" (XOR)`.
+  - **Intuitive XOR Visual Intuition Note**: Replaced complex academic Minsky/Papert historical narrative with clear visual geometric intuition explaining why a single straight line cannot separate diagonal points.
+  - **Eliminated Residual English Labels**: Replaced `Feature Map` with `מפת רמזים ומאפיינים שנמצאו` in Lab 6, and updated classification terminology in Lab 5 (`בחר סוג פריט להוספה`, `החלטת המחשב`, `מידת ביטחון`).
+  - **Consistent Explicit Segol Nikud**: Standardized all references to the mascot name as `זֶן הרובוט` with explicit Segol vocalization across input placeholders, system prompts, and thinking indicators.
 
 ## [0.6.6] - 2026-10-08
 

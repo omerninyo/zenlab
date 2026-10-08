@@ -184,20 +184,24 @@ export default function Lab7_Perceptron({ curriculum }) {
               </div>
 
               {/* Logic Gate Selector */}
-              <div className="flex items-center gap-2 bg-slate-950 p-2 rounded-xl border border-slate-800">
+              <div className="flex flex-wrap items-center gap-2 bg-slate-950 p-2 rounded-xl border border-slate-800">
                 <span className="text-xs text-slate-400 font-medium px-2">שער מטרה:</span>
-                {['AND', 'OR', 'XOR'].map(gate => (
+                {[
+                  { id: 'AND', label: 'שער "וגם" (AND)' },
+                  { id: 'OR', label: 'שער "או" (OR)' },
+                  { id: 'XOR', label: 'שער "או-אבל-לא-שניהם" (XOR)' }
+                ].map(gate => (
                   <button
-                    key={gate}
+                    key={gate.id}
                     type="button"
-                    onClick={() => handleSelectGate(gate)}
-                    className={`flex-1 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                      selectedGate === gate
+                    onClick={() => handleSelectGate(gate.id)}
+                    className={`flex-1 min-w-[120px] py-1.5 px-2 rounded-lg text-xs font-bold transition-all ${
+                      selectedGate === gate.id
                         ? 'bg-purple-600 text-white shadow-sm'
                         : 'bg-slate-900 text-slate-400 hover:text-slate-200 hover:bg-slate-800'
                     }`}
                   >
-                    שער {gate}
+                    {gate.label}
                   </button>
                 ))}
               </div>
@@ -332,14 +336,14 @@ export default function Lab7_Perceptron({ curriculum }) {
                 </div>
               </div>
 
-              {/* XOR Historic Warning if XOR selected */}
+              {/* XOR Intuition Callout */}
               {selectedGate === 'XOR' && (
                 <div className="bg-amber-950/40 border border-amber-800/80 rounded-xl p-4 text-xs text-amber-200 flex items-start gap-3">
                   <ShieldAlert className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="font-bold text-amber-300 mb-1">מדוע שער XOR בלתי פתיר ע"י נוירון בודד?</h4>
+                    <h4 className="font-bold text-amber-300 mb-1">מדוע שער "או-אבל-לא-שניהם" (XOR) בלתי פתיר ע״י קו בודד?</h4>
                     <p className="text-[11px] leading-relaxed text-amber-200/90">
-                      הנקודות (0,1) ו-(1,0) דורשות פלט 1, בעוד (0,0) ו-(1,1) דורשות פלט 0. לא קיים שום קו ישר בעולם שמסוגל לחצות את המישור ולהפריד ביניהן! זוהי ההוכחה ההיסטורית של מינסקי ופפרט (1969) שהובילה להמצאת רשתות רב-שכבתיות (Deep Learning).
+                      שים לב לסידור הנקודות בלוח: שתי נקודות בצבע ירוק נמצאות באלכסון אחד, ושתי נקודות כהות באלכסון השני. לא קיים שום קו ישר יחיד בעולם שיכול להפריד ביניהן! התגלית הזו הובילה את המדענים להבין שצריך לחבר מספר נוירונים ביחד כרשת (רשת עצבית עמוקה) כדי לפצח חידות מורכבות.
                     </p>
                   </div>
                 </div>

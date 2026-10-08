@@ -27,10 +27,10 @@ export default function CertificateModal({ isOpen, onClose, totalStars = 0 }) {
     : 'חוקר/ת מתחיל/ה';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="relative w-full max-w-2xl bg-slate-900 border-2 border-slate-700 rounded-2xl shadow-2xl overflow-hidden print:m-0 print:border-none print:shadow-none print:bg-white print:text-black">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="relative w-full max-w-2xl max-h-[92vh] flex flex-col bg-slate-900 border-2 border-slate-700 rounded-2xl shadow-2xl overflow-hidden print:m-0 print:border-none print:shadow-none print:bg-white print:text-black">
         {/* Modal Controls Header (Hidden in Print) */}
-        <div className="flex items-center justify-between p-4 bg-slate-950 border-b border-slate-800 print:hidden">
+        <div className="flex items-center justify-between p-3.5 sm:p-4 bg-slate-950 border-b border-slate-800 shrink-0 print:hidden">
           <div className="flex items-center gap-2">
             <Award className="w-5 h-5 text-amber-400" />
             <h3 className="text-sm font-bold text-white">תעודת הישגים והצטיינות</h3>
@@ -42,7 +42,8 @@ export default function CertificateModal({ isOpen, onClose, totalStars = 0 }) {
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-sm transition-colors"
             >
               <Printer className="w-3.5 h-3.5" />
-              <span>הדפסה / שמירה כ-PDF</span>
+              <span className="hidden xs:inline">הדפסה / שמירה כ-PDF</span>
+              <span className="xs:hidden">הדפסה</span>
             </button>
             <button
               type="button"
@@ -55,7 +56,7 @@ export default function CertificateModal({ isOpen, onClose, totalStars = 0 }) {
         </div>
 
         {/* Name Input Bar (Hidden in Print) */}
-        <div className="p-4 bg-slate-900/80 border-b border-slate-800/80 print:hidden">
+        <div className="p-3.5 sm:p-4 bg-slate-900/80 border-b border-slate-800/80 shrink-0 print:hidden">
           <label className="block text-xs font-medium text-slate-300 mb-1.5">
             הקלידו את שמכם לתעודה (נשמר במכשיר בלבד ללא שום איסוף מידע):
           </label>
@@ -64,14 +65,14 @@ export default function CertificateModal({ isOpen, onClose, totalStars = 0 }) {
             placeholder="למשל: דניאל כהן"
             value={studentName}
             onChange={e => setStudentName(e.target.value)}
-            className="w-full max-w-sm px-3.5 py-2 rounded-lg bg-slate-950 border border-slate-700 text-white text-sm focus:outline-none focus:border-blue-500"
+            className="w-full max-w-sm px-3.5 py-1.5 sm:py-2 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs sm:text-sm focus:outline-none focus:border-blue-500"
           />
         </div>
 
         {/* The Certificate Canvas (Printed Page) */}
-        <div className="p-8 sm:p-12 text-center space-y-6 print:p-8 bg-gradient-to-b from-slate-900 to-slate-950 print:from-white print:to-white">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-8 md:p-12 text-center space-y-4 sm:space-y-6 print:p-8 bg-gradient-to-b from-slate-900 to-slate-950 print:from-white print:to-white">
           {/* Certificate Border Frame */}
-          <div className="border-4 border-double border-amber-500/40 p-6 sm:p-8 rounded-xl relative">
+          <div className="border-4 border-double border-amber-500/40 p-4 sm:p-6 md:p-8 rounded-xl relative">
             {/* Top Emblem */}
             <div className="flex justify-center mb-3">
               <div className="w-16 h-16 rounded-full bg-amber-500/10 border-2 border-amber-500/50 flex items-center justify-center text-amber-400 shadow-inner">

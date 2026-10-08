@@ -117,29 +117,31 @@ export default function LabPhaseHeader({
           <button
             type="button"
             onClick={() => handleSelectPhase('theory')}
-            className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all ${
+            className={`flex-1 sm:flex-initial flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all ${
               activePhase === 'theory'
                 ? 'bg-blue-600 text-white shadow-xs'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
           >
-            <BookOpen className="w-4 h-4" />
-            <span>שלב 1: הבנה ומדיה</span>
+            <BookOpen className="w-4 h-4 shrink-0" />
+            <span className="sm:hidden">שלב 1: לומדים</span>
+            <span className="hidden sm:inline">שלב 1: הבנה ומדיה</span>
           </button>
 
           <button
             type="button"
             onClick={() => handleSelectPhase('interactive')}
-            className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all ${
+            className={`flex-1 sm:flex-initial flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all ${
               activePhase === 'interactive'
                 ? 'bg-blue-600 text-white shadow-xs'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
           >
-            <Sliders className="w-4 h-4" />
-            <span>שלב 2: מעבדה מעשית (3 אתגרים)</span>
+            <Sliders className="w-4 h-4 shrink-0" />
+            <span className="sm:hidden">שלב 2: מתנסים</span>
+            <span className="hidden sm:inline">שלב 2: מעבדה מעשית (3 אתגרים)</span>
             {starsEarned < starsTotal && (
-              <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse shrink-0" />
             )}
           </button>
         </div>

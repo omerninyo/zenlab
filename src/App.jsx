@@ -147,16 +147,16 @@ export default function App() {
     }`} dir="rtl">
       {/* Top Application Bar - Apple Minimalist & Child-Friendly */}
       <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 shadow-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2 sm:gap-4">
+        <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-1.5 sm:gap-4">
           
           {/* Right (RTL): Brand Identity */}
-          <div className="flex items-center gap-2.5 shrink-0">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-xs">
-              <Cpu className="w-5 h-5" />
+          <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-xs">
+              <Cpu className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="text-base sm:text-lg font-extrabold tracking-tight text-slate-900 dark:text-white">ZenLab</span>
+                <span className="text-sm sm:text-lg font-extrabold tracking-tight text-slate-900 dark:text-white">ZenLab</span>
                 <span className="text-[10px] sm:text-[11px] font-bold px-2 py-0.5 rounded-full bg-blue-100 dark:bg-slate-800 text-blue-800 dark:text-slate-300 border border-blue-200/60 dark:border-slate-700 hidden sm:inline">
                   כיתה ה׳
                 </span>
@@ -169,13 +169,13 @@ export default function App() {
 
           {/* Center: Kid-Friendly Apple Stepper & Lab Popover Drawer */}
           <div className="relative flex items-center justify-center">
-            <div className="flex items-center bg-slate-100 dark:bg-slate-800/80 p-1 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 shadow-inner">
+            <div className="flex items-center bg-slate-100 dark:bg-slate-800/80 p-0.5 sm:p-1 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 shadow-inner">
               {/* Prev Button (In RTL, ChevronRight moves to previous index) */}
               <button
                 type="button"
                 onClick={handlePrevLab}
                 disabled={currentIdx === 0}
-                className="p-1.5 sm:p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 disabled:opacity-30 disabled:pointer-events-none transition-colors"
+                className="p-1 sm:p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 disabled:opacity-30 disabled:pointer-events-none transition-colors"
                 title="מעבדה קודמת"
               >
                 <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -185,18 +185,19 @@ export default function App() {
               <button
                 type="button"
                 onClick={() => { setIsLabMenuOpen(!isLabMenuOpen); AudioEngine.playStep(); }}
-                className="flex items-center gap-2 px-2.5 sm:px-3.5 py-1.5 rounded-xl hover:bg-white dark:hover:bg-slate-700 text-slate-900 dark:text-white transition-colors"
+                className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3.5 py-1.5 rounded-xl hover:bg-white dark:hover:bg-slate-700 text-slate-900 dark:text-white transition-colors"
                 title="לחצו לבחירת מעבדה מתוך 8"
               >
-                <div className={`w-6 h-6 rounded-lg flex items-center justify-center text-white shrink-0 shadow-xs ${
+                <div className={`w-5 h-5 sm:w-6 sm:h-6 rounded-lg flex items-center justify-center text-white shrink-0 shadow-xs ${
                   currentLab.track === 'ai' ? 'bg-indigo-600' : 'bg-blue-600'
                 }`}>
-                  <CurrentIcon className="w-3.5 h-3.5" />
+                  <CurrentIcon className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                 </div>
-                <span className="text-xs sm:text-sm font-bold truncate max-w-[130px] sm:max-w-[200px]">
-                  {currentLab.label}
+                <span className="text-xs sm:text-sm font-bold truncate max-w-[95px] xs:max-w-[140px] sm:max-w-[220px]">
+                  <span className="sm:hidden">{currentLab.shortLabel}</span>
+                  <span className="hidden sm:inline">{currentLab.label}</span>
                 </span>
-                <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 ${isLabMenuOpen ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 shrink-0 ${isLabMenuOpen ? 'rotate-180' : ''}`} />
               </button>
 
               {/* Next Button (In RTL, ChevronLeft moves to next index) */}
@@ -204,7 +205,7 @@ export default function App() {
                 type="button"
                 onClick={handleNextLab}
                 disabled={currentIdx === navItems.length - 1}
-                className="p-1.5 sm:p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 disabled:opacity-30 disabled:pointer-events-none transition-colors"
+                className="p-1 sm:p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 disabled:opacity-30 disabled:pointer-events-none transition-colors"
                 title="מעבדה הבאה"
               >
                 <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -277,10 +278,10 @@ export default function App() {
           </div>
 
           {/* Left: Star Counter, Certificate, Audio & More Tools Menu */}
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-1 sm:gap-2 shrink-0">
             {/* Stars Achievement Badge */}
-            <div className="flex items-center gap-1.5 bg-amber-50 dark:bg-slate-950 px-2.5 sm:px-3 py-1.5 rounded-xl border border-amber-300/80 dark:border-slate-800 text-xs sm:text-sm font-bold text-amber-900 dark:text-amber-300 shadow-xs">
-              <Star className="w-4 h-4 text-amber-500 fill-amber-400" />
+            <div className="flex items-center gap-1 sm:gap-1.5 bg-amber-50 dark:bg-slate-950 px-2 sm:px-3 py-1.5 rounded-xl border border-amber-300/80 dark:border-slate-800 text-xs sm:text-sm font-bold text-amber-900 dark:text-amber-300 shadow-xs">
+              <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-500 fill-amber-400" />
               <span className="font-mono">{totalStars}</span>
               <span className="text-slate-500 font-normal hidden sm:inline">/ 24</span>
             </div>
@@ -290,9 +291,9 @@ export default function App() {
               type="button"
               onClick={() => { setIsCertificateOpen(true); AudioEngine.playStep(); }}
               title="צפייה והדפסת תעודת הצטיינות"
-              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-xl bg-amber-100 hover:bg-amber-200 dark:bg-amber-950/60 dark:hover:bg-amber-900/60 border border-amber-300 dark:border-amber-700/60 text-xs sm:text-sm font-bold text-amber-900 dark:text-amber-300 transition-colors shadow-xs"
+              className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 rounded-xl bg-amber-100 hover:bg-amber-200 dark:bg-amber-950/60 dark:hover:bg-amber-900/60 border border-amber-300 dark:border-amber-700/60 text-xs sm:text-sm font-bold text-amber-900 dark:text-amber-300 transition-colors shadow-xs"
             >
-              <Award className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+              <Award className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-600 dark:text-amber-400" />
               <span className="hidden sm:inline">תעודה</span>
             </button>
 
@@ -301,7 +302,7 @@ export default function App() {
               type="button"
               onClick={handleToggleMute}
               title={isMuted ? 'הפעל צלילים' : 'השתק צלילים'}
-              className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700 transition-colors"
+              className="p-1.5 sm:p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700 transition-colors"
             >
               {isMuted ? <VolumeX className="w-4 h-4 text-slate-400" /> : <Volume2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />}
             </button>
@@ -312,7 +313,7 @@ export default function App() {
                 type="button"
                 onClick={() => setIsMoreMenuOpen(!isMoreMenuOpen)}
                 title="אפשרויות נוספות"
-                className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700 transition-colors"
+                className="p-1.5 sm:p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700 transition-colors"
               >
                 <MoreVertical className="w-4 h-4" />
               </button>

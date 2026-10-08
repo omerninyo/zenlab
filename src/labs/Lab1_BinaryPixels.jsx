@@ -157,23 +157,6 @@ export default function Lab1_BinaryPixels({ curriculum }) {
       {/* Phase 2: Interactive Simulator */}
       {phase === 'interactive' && (
         <div className="space-y-6 animate-fadeIn">
-          {/* Top Return to Theory button */}
-          <div className="flex items-center justify-between text-xs">
-            <button
-              type="button"
-              onClick={() => {
-                setPhase('theory');
-                StorageEngine.setLabPhase('lab1', 'theory');
-                AudioEngine.playStep();
-              }}
-              className="flex items-center gap-1.5 text-slate-400 hover:text-slate-200 transition-colors"
-            >
-              <ArrowRight className="w-3.5 h-3.5" />
-              <span>חזרה להסבר התיאורטי והמדיה</span>
-            </button>
-            <span className="text-slate-500 font-mono">מצב התנסות פעיל (Interactive Simulator)</span>
-          </div>
-
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* 8x8 Grid Workspace */}
             <div className="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-xl p-6 flex flex-col items-center">

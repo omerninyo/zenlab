@@ -164,32 +164,15 @@ export default function Lab5_MachineLearningClassifier({ curriculum }) {
       {/* Phase 2: Interactive Simulator */}
       {phase === 'interactive' && (
         <div className="space-y-6 animate-fadeIn">
-          {/* Top Return to Theory button */}
-          <div className="flex items-center justify-between text-xs">
-            <button
-              type="button"
-              onClick={() => {
-                setPhase('theory');
-                StorageEngine.setLabPhase('lab5', 'theory');
-                AudioEngine.playStep();
-              }}
-              className="flex items-center gap-1.5 text-slate-400 hover:text-slate-200 transition-colors"
-            >
-              <ArrowRight className="w-3.5 h-3.5" />
-              <span>חזרה להסבר התיאורטי והמדיה</span>
-            </button>
-            <span className="text-slate-500 font-mono">מצב התנסות פעיל (Interactive Simulator)</span>
-          </div>
-
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Scatter Plot 2D Canvas */}
           <div className="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-xl p-6 flex flex-col items-center">
             <div className="w-full flex items-center justify-between mb-4">
-              <div className="text-xs text-slate-400">
-                מרחב תכונות דו-ממדי: ציר X (גודל בס"מ) מול ציר Y (משקל בגרם)
+              <div className="text-xs text-slate-300 font-medium">
+                לוח השוואת תכונות: גודל בס״מ מול משקל בגרם
               </div>
               <div className="text-xs font-mono text-slate-400">
-                דגימות אימון: <span className="text-white font-semibold">{points.length}</span>
+                דוגמאות למידה: <span className="text-white font-semibold">{points.length}</span>
               </div>
             </div>
 
@@ -286,7 +269,7 @@ export default function Lab5_MachineLearningClassifier({ curriculum }) {
             {/* Data controls */}
             <div className="w-full flex flex-wrap items-center justify-between gap-3 mt-4 pt-4 border-t border-slate-800">
               <div className="flex items-center gap-2">
-                <span className="text-xs text-slate-400">הוסף מחלקה:</span>
+                <span className="text-xs text-slate-400">בחר סוג פריט להוספה:</span>
                 <button
                   type="button"
                   onClick={() => setSelectedClass('A')}
@@ -329,7 +312,7 @@ export default function Lab5_MachineLearningClassifier({ curriculum }) {
             {/* Real-Time Classification Result */}
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-sm font-semibold text-white">תוצאת הסיווג בזמן אמת</h3>
+                <h3 className="text-sm font-semibold text-white">החלטת המחשב בזמן אמת</h3>
                 <span className="text-[11px] font-mono text-slate-400">
                   ({testPoint.x}, {testPoint.y})
                 </span>
@@ -344,13 +327,13 @@ export default function Lab5_MachineLearningClassifier({ curriculum }) {
                     {classification.predictedLabel}
                   </div>
                   <div>
-                    <div className="text-xs text-slate-400">סיווג המודל:</div>
+                    <div className="text-xs text-slate-400">זיהוי המחשב:</div>
                     <div className="text-sm font-bold text-white">{predictedInfo.name}</div>
                   </div>
                 </div>
 
                 <div className="text-left">
-                  <div className="text-xs text-slate-400">רמת ביטחון:</div>
+                  <div className="text-xs text-slate-400">מידת ביטחון:</div>
                   <div className="text-lg font-mono font-bold text-blue-400">
                     {classification.confidence}%
                   </div>
@@ -362,7 +345,7 @@ export default function Lab5_MachineLearningClassifier({ curriculum }) {
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-1.5 text-xs text-slate-300 font-medium">
                     <Sliders className="w-3.5 h-3.5 text-blue-400" />
-                    <span>ערך השכנים k:</span>
+                    <span>מספר השכנים שמשפיעים (k):</span>
                   </div>
                   <span className="text-xs font-mono font-semibold text-blue-400 bg-slate-800 px-2 py-0.5 rounded">
                     k = {kValue}

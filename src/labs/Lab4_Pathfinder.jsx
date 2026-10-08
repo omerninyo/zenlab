@@ -251,7 +251,7 @@ export default function Lab4_Pathfinder({ curriculum }) {
                     }`}
                   >
                     <Sparkles className="w-3.5 h-3.5" />
-                    <span>חיפוש חכם A*</span>
+                    <span>מצפן חכם (*A)</span>
                   </button>
                   <button
                     type="button"
@@ -263,7 +263,7 @@ export default function Lab4_Pathfinder({ curriculum }) {
                     }`}
                   >
                     <Navigation className="w-3.5 h-3.5" />
-                    <span>סריקת רוחב BFS</span>
+                    <span>חיפוש עיוור (לכל הכיוונים)</span>
                   </button>
                 </div>
 

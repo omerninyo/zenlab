@@ -163,14 +163,14 @@ export default function Lab3_DecisionTree({ curriculum }) {
                 </div>
 
                 {/* Level 1: Split Branches */}
-                <div className="grid grid-cols-2 gap-6 pt-4 border-t border-slate-800/80">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 pt-4 border-t border-slate-800/80">
                   {/* Left Branch (Yes) */}
                   <div className="flex flex-col items-center p-4 bg-slate-950/60 rounded-xl border border-slate-800 space-y-3">
                     <div className="flex items-center gap-2 text-xs font-semibold text-emerald-400">
                       <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
                       <span>אם התשובה היא כן ({evaluation.nodes.leftGroup.count} פריטים)</span>
                     </div>
-                    <span className="text-[11px] text-slate-400">שאלת פיצול משנית:</span>
+                    <span className="text-[11px] text-slate-400 font-medium">שאלת המשך:</span>
                     <select
                       value={leftAttr}
                       onChange={e => { setLeftAttr(e.target.value); AudioEngine.playStep(); }}
@@ -206,7 +206,7 @@ export default function Lab3_DecisionTree({ curriculum }) {
                       <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
                       <span>אם התשובה היא לא ({evaluation.nodes.rightGroup.count} פריטים)</span>
                     </div>
-                    <span className="text-[11px] text-slate-400">שאלת פיצול משנית:</span>
+                    <span className="text-[11px] text-slate-400 font-medium">שאלת המשך:</span>
                     <select
                       value={rightAttr}
                       onChange={e => { setRightAttr(e.target.value); AudioEngine.playStep(); }}
