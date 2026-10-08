@@ -22,6 +22,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - 8 Pixar-style educational 3D animation prompts tailored to 10-year-olds.
   - Long-running operation polling, automatic MP4 download, and dynamic linkage into `src/data/curriculum.json` (`localSrc`).
   - Safe `--dry-run` inspection and quota diagnostics.
+- **Dedicated Google NotebookLM Educational Content Pack (`docs/notebooklm_pack/`)**:
+  - Comprehensive suite of 10 grounded Markdown source documents covering every lab for Grade 5 elementary students.
+  - Includes pedagogical analogies (Lego, cake recipe, 20 questions, Waze, soccer decision), deep dive concepts, conversational podcast scripts, and classroom challenges.
+  - Step-by-step guide (`README_NOTEBOOKLM_GUIDE_HE.md`) for generating multi-speaker Audio Overviews and educational video scripts with zero cost using Google Ultra.
 
 ## [0.5.1] - 2026-10-08
 
