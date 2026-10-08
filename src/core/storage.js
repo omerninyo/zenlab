@@ -15,7 +15,11 @@ const defaultState = {
     lab1: 0,
     lab2: 0,
     lab3: 0,
-    lab4: 0
+    lab4: 0,
+    lab5: 0,
+    lab6: 0,
+    lab7: 0,
+    lab8: 0
   },
   totalStars: 0,
   isMuted: false,
@@ -24,7 +28,11 @@ const defaultState = {
     lab1: 'theory',
     lab2: 'theory',
     lab3: 'theory',
-    lab4: 'theory'
+    lab4: 'theory',
+    lab5: 'theory',
+    lab6: 'theory',
+    lab7: 'theory',
+    lab8: 'theory'
   },
   activeLabId: 'lab1'
 };
@@ -94,6 +102,10 @@ class StorageEngineClass {
     this.saveState();
 
     return { isNew: true, state: this.getState() };
+  }
+
+  recordChallengeCompletion(labId, challengeId, rewardStars = 1) {
+    return this.completeChallenge(labId, challengeId, rewardStars);
   }
 
   setMuted(isMuted) {

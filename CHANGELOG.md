@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-10-08
+
+### Added
+- **Full Hebrew Documentation Parity & Institutional Memory**:
+  - `README.he.md`: Complete Hebrew project overview, pedagogical scope, and Cloudflare Pages deployment instructions.
+  - `ROADMAP.he.md`: Hebrew engineering and educational roadmap spanning Phase 1 to Phase 3.
+  - `CHANGELOG.he.md`: Synchronized Hebrew release notes across all releases.
+  - `docs/TEACHERS_GUIDE_HE.md`: Comprehensive 45-minute modular classroom lesson plans, interactive discussion prompts, and evaluation rubric for educators.
+  - `docs/research/PEDAGOGICAL_FRAMEWORK_GRADE_5.he.md`: Institutional research codifying Israeli Ministry of Education (MOE) AI Competency Rubric, AI4K12 3–5 framework, Piaget/Bruner cognitive progressions, and Zero-Syntax guidelines.
+  - `docs/proposals/RFC_001_CORE_ARCHITECTURE.he.md` & `RFC_002_EIGHT_LAB_MASTER_SUITE.he.md`: Hebrew translations of core architecture proposals and laboratory contracts.
+- **Student Achievement Certificate Modal (`src/components/CertificateModal.jsx`)**:
+  - Client-side printable achievement certificate featuring personalized student name input, total stars tally (up to 24), rank title, and `@media print` optimized layout.
+- **Track Navigation Filter & Welcome Banner (`src/App.jsx`)**:
+  - Track filter pills ("All (8)", "Track 1: Algorithms (4)", "Track 2: AI (4)").
+  - Grade 5 friendly welcome guide banner explaining progression, stars, and certificate.
+
+### Changed
+- `src/core/storage.js`: Extended default state to support all 8 labs across completion and phase persistence, and added `recordChallengeCompletion` alias.
+
+### Verified
+- Automated build passed cleanly (`npm run build` in 3.97s).
+- Zero console errors and zero warnings.
+- Verified Zero-PII compliance across all added files and git history.
+
 ## [0.3.0] - 2026-10-08
 
 ### Added

@@ -8,6 +8,8 @@ ZenLab is an open-source, client-side educational platform designed to teach fou
 
 The platform runs 100% in the browser with zero backend requirements, zero telemetry, and full native Right-to-Left (RTL) Hebrew language support.
 
+> 🇮🇱 **Full Hebrew Documentation**: A complete Hebrew guide is available at [`README.he.md`](README.he.md), with modular lesson plans for teachers and parents at [`docs/TEACHERS_GUIDE_HE.md`](docs/TEACHERS_GUIDE_HE.md).
+
 ---
 
 ## Interactive Eight-Lab Master Suite

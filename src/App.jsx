@@ -14,12 +14,17 @@ import {
   Star, 
   BookOpen, 
   Cpu,
-  Headphones
+  Headphones,
+  Award,
+  Filter,
+  CheckCircle2,
+  X
 } from 'lucide-react';
 import curriculumData from './data/curriculum.json';
 import { StorageEngine } from './core/storage.js';
 import { AudioEngine } from './core/audio.js';
 import { NarrationEngine } from './core/narration.js';
+import CertificateModal from './components/CertificateModal.jsx';
 import Lab1_BinaryPixels from './labs/Lab1_BinaryPixels.jsx';
 import Lab2_AlgorithmicRobot from './labs/Lab2_AlgorithmicRobot.jsx';
 import Lab3_DecisionTree from './labs/Lab3_DecisionTree.jsx';
@@ -36,6 +41,10 @@ export default function App() {
   const [labStars, setLabStars] = useState(() => StorageEngine.getState().labStars);
   const [isNarrationEnabled, setIsNarrationEnabled] = useState(() => StorageEngine.getState().isNarrationEnabled);
   const [narrationState, setNarrationState] = useState(() => NarrationEngine.getState());
+
+  const [isCertificateOpen, setIsCertificateOpen] = useState(false);
+  const [selectedTrack, setSelectedTrack] = useState('all'); // 'all' | 'algorithms' | 'ai'
+  const [isWelcomeOpen, setIsWelcomeOpen] = useState(true);
 
   useEffect(() => {
     const unsubStorage = StorageEngine.subscribe(state => {
@@ -87,15 +96,20 @@ export default function App() {
   };
 
   const navItems = [
-    { id: 'lab1', label: '1. פיקסלים וביטים', icon: Binary },
-    { id: 'lab2', label: '2. רובוט אלגוריתמי', icon: Bot },
-    { id: 'lab3', label: '3. עץ החלטות בלשי', icon: GitBranch },
-    { id: 'lab4', label: '4. מבוך חיפוש ו-A*', icon: Compass },
-    { id: 'lab5', label: '5. מסווג למידת מכונה', icon: Network },
-    { id: 'lab6', label: '6. ראייה ופילטרים', icon: Eye },
-    { id: 'lab7', label: '7. מתג נוירון ו-XOR', icon: Zap },
-    { id: 'lab8', label: '8. מודל שפה וחיזוי', icon: Sparkles }
+    { id: 'lab1', label: '1. פיקסלים וביטים', track: 'algorithms', icon: Binary },
+    { id: 'lab2', label: '2. רובוט אלגוריתמי', track: 'algorithms', icon: Bot },
+    { id: 'lab3', label: '3. עץ החלטות בלשי', track: 'algorithms', icon: GitBranch },
+    { id: 'lab4', label: '4. מבוך חיפוש ו-A*', track: 'algorithms', icon: Compass },
+    { id: 'lab5', label: '5. מסווג למידת מכונה', track: 'ai', icon: Network },
+    { id: 'lab6', label: '6. ראייה ופילטרים', track: 'ai', icon: Eye },
+    { id: 'lab7', label: '7. מתג נוירון ו-XOR', track: 'ai', icon: Zap },
+    { id: 'lab8', label: '8. מודל שפה וחיזוי', track: 'ai', icon: Sparkles }
   ];
+
+  const filteredNavItems = useMemo(() => {
+    if (selectedTrack === 'all') return navItems;
+    return navItems.filter(item => item.track === selectedTrack);
+  }, [navItems, selectedTrack]);
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 font-sans selection:bg-slate-800">
@@ -120,7 +134,7 @@ export default function App() {
             </div>
           </div>
 
-          {/* Action Tools: Stars Counter, Narration Toggle, Audio Toggle, Reset */}
+          {/* Action Tools: Stars Counter, Certificate, Narration, Audio, Reset */}
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Stars Achievement Badge */}
             <div className="flex items-center gap-1.5 bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 text-xs font-semibold text-amber-300">
@@ -128,6 +142,17 @@ export default function App() {
               <span className="font-mono">{totalStars}</span>
               <span className="text-slate-500 font-normal hidden sm:inline">/ 24 כוכבים</span>
             </div>
+
+            {/* Certificate of Achievement Modal Trigger */}
+            <button
+              type="button"
+              onClick={() => { setIsCertificateOpen(true); AudioEngine.playStep(); }}
+              title="צפייה והדפסת תעודת הצטיינות"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-amber-950/40 hover:bg-amber-900/50 border border-amber-600/60 text-xs font-semibold text-amber-300 transition-colors shadow-sm"
+            >
+              <Award className="w-4 h-4 text-amber-400" />
+              <span className="hidden md:inline">תעודת הצטיינות</span>
+            </button>
 
             {/* Voiceover Narration Switch */}
             <button
@@ -167,11 +192,49 @@ export default function App() {
         </div>
       </header>
 
-      {/* Lab Selection Navigation Tabs */}
+      {/* Lab Selection Navigation Tabs with Track Filters */}
       <nav className="bg-slate-900 border-b border-slate-800/80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-2 overflow-x-auto py-2.5 no-scrollbar">
-            {navItems.map(item => {
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+          {/* Track Filter Pills */}
+          <div className="flex items-center gap-1.5 bg-slate-950 p-1 rounded-lg border border-slate-800 shrink-0 self-start md:self-auto">
+            <button
+              type="button"
+              onClick={() => { setSelectedTrack('all'); AudioEngine.playStep(); }}
+              className={`px-2.5 py-1 rounded text-[11px] font-medium transition-colors ${
+                selectedTrack === 'all'
+                  ? 'bg-blue-600 text-white font-bold'
+                  : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              כל המעבדות (8)
+            </button>
+            <button
+              type="button"
+              onClick={() => { setSelectedTrack('algorithms'); AudioEngine.playStep(); }}
+              className={`px-2.5 py-1 rounded text-[11px] font-medium transition-colors ${
+                selectedTrack === 'algorithms'
+                  ? 'bg-blue-600 text-white font-bold'
+                  : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              מסלול 1: אלגוריתמיקה
+            </button>
+            <button
+              type="button"
+              onClick={() => { setSelectedTrack('ai'); AudioEngine.playStep(); }}
+              className={`px-2.5 py-1 rounded text-[11px] font-medium transition-colors ${
+                selectedTrack === 'ai'
+                  ? 'bg-blue-600 text-white font-bold'
+                  : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              מסלול 2: בינה מלאכותית
+            </button>
+          </div>
+
+          {/* Filtered Lab Tabs */}
+          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5">
+            {filteredNavItems.map(item => {
               const Icon = item.icon;
               const isActive = activeLabId === item.id;
               const stars = labStars[item.id] || 0;
@@ -181,13 +244,13 @@ export default function App() {
                   key={item.id}
                   type="button"
                   onClick={() => handleLabSelect(item.id)}
-                  className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
                     isActive
                       ? 'bg-blue-600 text-white shadow-sm font-semibold'
                       : 'bg-slate-950 text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-slate-800'
                   }`}
                 >
-                  <Icon className="w-4 h-4 shrink-0" />
+                  <Icon className="w-3.5 h-3.5 shrink-0" />
                   <span>{item.label}</span>
                   {stars > 0 && (
                     <span className={`px-1.5 py-0.2 rounded text-[10px] font-mono ${
@@ -204,7 +267,34 @@ export default function App() {
       </nav>
 
       {/* Main Educational Workspace */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        {/* Friendly Welcome Card for Israeli 5th Graders */}
+        {isWelcomeOpen && (
+          <div className="mb-6 p-4 rounded-xl bg-gradient-to-r from-blue-950/70 to-slate-900 border border-blue-800/40 flex items-center justify-between gap-4 shadow-sm animate-in fade-in duration-300">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg bg-blue-600/20 border border-blue-500/40 flex items-center justify-center text-blue-400 shrink-0">
+                <Sparkles className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="text-xs sm:text-sm font-bold text-white mb-0.5">
+                  ברוכים הבאים ל-ZenLab: מעבדת מדעי המחשב והבינה המלאכותית לכיתה ה'
+                </h3>
+                <p className="text-[11px] sm:text-xs text-slate-300 leading-relaxed">
+                  בחרו מעבדה מהסרגל העליון, התחילו ברקע התיאורטי ובאנימציה החיה, ועברו לארגז החול כדי לפתור אתגרים, לצבור עד 24 כוכבים ולזכות בתעודת הצטיינות רשמית!
+                </p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => setIsWelcomeOpen(false)}
+              className="p-1 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-800 shrink-0"
+              title="סגירת הודעה"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        )}
+
         {activeLabId === 'lab1' && <Lab1_BinaryPixels curriculum={curriculumData} />}
         {activeLabId === 'lab2' && <Lab2_AlgorithmicRobot curriculum={curriculumData} />}
         {activeLabId === 'lab3' && <Lab3_DecisionTree curriculum={curriculumData} />}
@@ -214,6 +304,13 @@ export default function App() {
         {activeLabId === 'lab7' && <Lab7_Perceptron curriculum={curriculumData} />}
         {activeLabId === 'lab8' && <Lab8_LanguageModelPredictor curriculum={curriculumData} />}
       </main>
+
+      {/* Certificate Modal */}
+      <CertificateModal
+        isOpen={isCertificateOpen}
+        onClose={() => setIsCertificateOpen(false)}
+        totalStars={totalStars}
+      />
 
       {/* Footer Notice with Zero-PII Hygiene */}
       <footer className="bg-slate-900 border-t border-slate-800 py-6 text-xs text-slate-500">
