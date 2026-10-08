@@ -147,21 +147,21 @@ export default function App() {
     }`} dir="rtl">
       {/* Top Application Bar - Apple Minimalist & Child-Friendly */}
       <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 shadow-xs">
-        <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-1.5 sm:gap-4">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-2 sm:gap-4">
           
           {/* Right (RTL): Brand Identity */}
-          <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-xs">
+          <div className="flex items-center gap-2 shrink-0">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-xs">
               <Cpu className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="text-sm sm:text-lg font-extrabold tracking-tight text-slate-900 dark:text-white">ZenLab</span>
-                <span className="text-[10px] sm:text-[11px] font-bold px-2 py-0.5 rounded-full bg-blue-100 dark:bg-slate-800 text-blue-800 dark:text-slate-300 border border-blue-200/60 dark:border-slate-700 hidden sm:inline">
+                <span className="text-sm sm:text-base font-black tracking-tight text-slate-900 dark:text-white">ZenLab</span>
+                <span className="text-[10px] sm:text-[11px] font-bold px-1.5 py-0.2 rounded-full bg-blue-100 dark:bg-slate-800 text-blue-800 dark:text-slate-300 border border-blue-200/60 dark:border-slate-700 hidden sm:inline">
                   כיתה ה׳
                 </span>
               </div>
-              <p className="text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 font-medium hidden md:block">
+              <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium hidden md:block">
                 From Zero to Neural
               </p>
             </div>
@@ -175,7 +175,7 @@ export default function App() {
                 type="button"
                 onClick={handlePrevLab}
                 disabled={currentIdx === 0}
-                className="p-1 sm:p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 disabled:opacity-30 disabled:pointer-events-none transition-colors"
+                className="p-1 sm:p-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 disabled:opacity-30 disabled:pointer-events-none transition-colors"
                 title="מעבדה קודמת"
               >
                 <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -185,15 +185,15 @@ export default function App() {
               <button
                 type="button"
                 onClick={() => { setIsLabMenuOpen(!isLabMenuOpen); AudioEngine.playStep(); }}
-                className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3.5 py-1.5 rounded-xl hover:bg-white dark:hover:bg-slate-700 text-slate-900 dark:text-white transition-colors"
+                className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1 rounded-xl hover:bg-white dark:hover:bg-slate-700 text-slate-900 dark:text-white transition-colors"
                 title="לחצו לבחירת מעבדה מתוך 8"
               >
-                <div className={`w-5 h-5 sm:w-6 sm:h-6 rounded-lg flex items-center justify-center text-white shrink-0 shadow-xs ${
+                <div className={`w-5 h-5 rounded-lg flex items-center justify-center text-white shrink-0 shadow-xs ${
                   currentLab.track === 'ai' ? 'bg-indigo-600' : 'bg-blue-600'
                 }`}>
-                  <CurrentIcon className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                  <CurrentIcon className="w-3 h-3" />
                 </div>
-                <span className="text-xs sm:text-sm font-bold truncate max-w-[95px] xs:max-w-[140px] sm:max-w-[220px]">
+                <span className="text-xs sm:text-sm font-bold truncate max-w-[100px] xs:max-w-[140px] sm:max-w-[200px]">
                   <span className="sm:hidden">{currentLab.shortLabel}</span>
                   <span className="hidden sm:inline">{currentLab.label}</span>
                 </span>
@@ -205,7 +205,7 @@ export default function App() {
                 type="button"
                 onClick={handleNextLab}
                 disabled={currentIdx === navItems.length - 1}
-                className="p-1 sm:p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 disabled:opacity-30 disabled:pointer-events-none transition-colors"
+                className="p-1 sm:p-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 disabled:opacity-30 disabled:pointer-events-none transition-colors"
                 title="מעבדה הבאה"
               >
                 <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -216,10 +216,10 @@ export default function App() {
             {isLabMenuOpen && (
               <>
                 <div 
-                  className="fixed inset-0 z-40" 
+                  className="fixed inset-0 z-40 bg-slate-950/40 backdrop-blur-xs" 
                   onClick={() => setIsLabMenuOpen(false)} 
                 />
-                <div className="absolute top-full mt-2 z-50 w-[92vw] sm:w-[460px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3 sm:p-4 shadow-2xl animate-in fade-in zoom-in-95 duration-150">
+                <div className="fixed inset-x-3 top-16 sm:absolute sm:top-full sm:inset-x-auto sm:mt-2 z-50 sm:w-[460px] max-h-[80vh] overflow-y-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3 sm:p-4 shadow-2xl animate-in fade-in zoom-in-95 duration-150">
                   <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-slate-100 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 font-bold">
                     <span>בחרו מעבדה לחקירה (8 מעבדות)</span>
                     <span className="font-mono text-amber-500">★ {totalStars}/24 כוכבים</span>
@@ -278,31 +278,36 @@ export default function App() {
           </div>
 
           {/* Left: Star Counter, Certificate, Audio & More Tools Menu */}
-          <div className="flex items-center gap-1 sm:gap-2 shrink-0">
-            {/* Stars Achievement Badge */}
-            <div className="flex items-center gap-1 sm:gap-1.5 bg-amber-50 dark:bg-slate-950 px-2 sm:px-3 py-1.5 rounded-xl border border-amber-300/80 dark:border-slate-800 text-xs sm:text-sm font-bold text-amber-900 dark:text-amber-300 shadow-xs">
+          <div className="flex items-center gap-1.5 shrink-0">
+            {/* Stars Achievement Badge - Tapping on mobile opens Certificate */}
+            <button
+              type="button"
+              onClick={() => { setIsCertificateOpen(true); AudioEngine.playStep(); }}
+              title="כוכבים שהושגו - לחצו לצפייה בתעודה"
+              className="flex items-center gap-1 sm:gap-1.5 bg-amber-50 dark:bg-slate-950 px-2 sm:px-3 py-1.5 rounded-xl border border-amber-300/80 dark:border-slate-800 text-xs sm:text-sm font-bold text-amber-900 dark:text-amber-300 shadow-xs hover:bg-amber-100 transition-colors"
+            >
               <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-500 fill-amber-400" />
               <span className="font-mono">{totalStars}</span>
               <span className="text-slate-500 font-normal hidden sm:inline">/ 24</span>
-            </div>
+            </button>
 
-            {/* Certificate Button */}
+            {/* Certificate Button (Desktop Only) */}
             <button
               type="button"
               onClick={() => { setIsCertificateOpen(true); AudioEngine.playStep(); }}
               title="צפייה והדפסת תעודת הצטיינות"
-              className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 rounded-xl bg-amber-100 hover:bg-amber-200 dark:bg-amber-950/60 dark:hover:bg-amber-900/60 border border-amber-300 dark:border-amber-700/60 text-xs sm:text-sm font-bold text-amber-900 dark:text-amber-300 transition-colors shadow-xs"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-100 hover:bg-amber-200 dark:bg-amber-950/60 dark:hover:bg-amber-900/60 border border-amber-300 dark:border-amber-700/60 text-xs sm:text-sm font-bold text-amber-900 dark:text-amber-300 transition-colors shadow-xs"
             >
-              <Award className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-600 dark:text-amber-400" />
-              <span className="hidden sm:inline">תעודה</span>
+              <Award className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+              <span>תעודה</span>
             </button>
 
-            {/* Audio Mute Switch */}
+            {/* Audio Mute Switch (Desktop Only) */}
             <button
               type="button"
               onClick={handleToggleMute}
               title={isMuted ? 'הפעל צלילים' : 'השתק צלילים'}
-              className="p-1.5 sm:p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700 transition-colors"
+              className="hidden sm:flex p-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700 transition-colors"
             >
               {isMuted ? <VolumeX className="w-4 h-4 text-slate-400" /> : <Volume2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />}
             </button>
@@ -324,8 +329,28 @@ export default function App() {
                     className="fixed inset-0 z-40" 
                     onClick={() => setIsMoreMenuOpen(false)} 
                   />
-                  <div className="absolute left-0 mt-2 z-50 w-48 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-1.5 shadow-xl animate-in fade-in zoom-in-95 duration-150 text-right">
+                  <div className="absolute left-0 mt-2 z-50 w-52 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-1.5 shadow-xl animate-in fade-in zoom-in-95 duration-150 text-right">
                     
+                    {/* Certificate (Mobile) */}
+                    <button
+                      type="button"
+                      onClick={() => { setIsCertificateOpen(true); setIsMoreMenuOpen(false); AudioEngine.playStep(); }}
+                      className="w-full sm:hidden flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-xs sm:text-sm font-semibold text-amber-700 dark:text-amber-400 transition-colors"
+                    >
+                      <Award className="w-4 h-4 text-amber-500" />
+                      <span>תעודת הצטיינות</span>
+                    </button>
+
+                    {/* Audio Mute Switch (Mobile) */}
+                    <button
+                      type="button"
+                      onClick={() => { handleToggleMute(); setIsMoreMenuOpen(false); }}
+                      className="w-full sm:hidden flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 transition-colors"
+                    >
+                      {isMuted ? <VolumeX className="w-4 h-4 text-slate-400" /> : <Volume2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />}
+                      <span>{isMuted ? 'הפעל צלילים' : 'השתק צלילים'}</span>
+                    </button>
+
                     {/* Glossary */}
                     <button
                       type="button"

@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.8] - 2026-10-08
+
+### Changed
+- **Apple-Grade iPhone & Mobile Architecture Redesign (`src/App.jsx`, `src/components/*`, `src/labs/*`)**:
+  - **Unclipped Fluid Navigation Bar**: Slashed mobile navbar congestion by moving secondary desktop controls (`תעודה`, `Mute`) into the unified More Tools menu (`[⋮]`) and making the star counter badge an interactive tap target that opens the certificate. Prevented icon clipping and horizontal overflow across iPhone SE, 14, 15, and 16.
+  - **Centered 8-Lab Modal**: Replaced unstable anchored dropdown with a centered, backdrop-blurred mobile modal overlay (`fixed inset-x-3 top-16 max-h-[80vh]`), guaranteeing comfortable navigation with 0 horizontal overflow.
+  - **Compact Native Header Hierarchy (`LabPhaseHeader.jsx`)**: Moved the Apple-style Segmented Control (`[ שלב 1: לומדים | שלב 2: מתנסים ]`) to the top of the mobile view and condensed the header from 260px down to ~90px, recovering over 160px of vertical space so sandbox canvases and videos are immediately visible in the first fold.
+  - **Compact Circular Tutor FAB (`ZenAiTutor.jsx`)**: Converted the wide rectangular floating tutor button on mobile into a sleek, non-intrusive 48px circular FAB (`Bot` icon with presence dot), preventing it from blocking sandbox matrices, buttons, and text streams.
+  - **Native 3-Column Media Segmented Bar (`TheoryView.jsx`)**: Refactored video/podcast/tour media switcher tabs into a tidy 3-column mobile grid, eliminating awkward multiline tab wrapping.
+  - **Refined Sandbox Toolbars & Canvases (Labs 1, 4, 5, 6, 7, 8)**: Unified presets and playback controls into compact toolbars, added `touch-none` to coordinate spaces to prevent accidental mobile viewport scrolling during point dragging, and adjusted grid canvases for comfortable one-handed thumb interaction.
+
 ## [0.6.7] - 2026-10-08
 
 ### Changed

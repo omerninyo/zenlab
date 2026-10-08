@@ -159,46 +159,46 @@ export default function Lab1_BinaryPixels({ curriculum }) {
         <div className="space-y-6 animate-fadeIn">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* 8x8 Grid Workspace */}
-            <div className="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-xl p-6 flex flex-col items-center">
+            <div className="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl p-3.5 sm:p-6 flex flex-col items-center shadow-xs">
               {/* Presets and Controls Bar */}
-              <div className="w-full flex flex-wrap items-center justify-between gap-3 mb-6">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-slate-400 font-medium">תבניות מוכנות:</span>
+              <div className="w-full flex items-center justify-between gap-2 mb-4">
+                <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
+                  <span className="text-xs text-slate-400 font-medium shrink-0">תבניות:</span>
                   <button
                     type="button"
                     onClick={() => handleApplyPreset('heart')}
-                    className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 border border-slate-700 transition-colors"
+                    className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 border border-slate-700 transition-colors shrink-0"
                   >
                     לב
                   </button>
                   <button
                     type="button"
                     onClick={() => handleApplyPreset('smiley')}
-                    className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 border border-slate-700 transition-colors"
+                    className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 border border-slate-700 transition-colors shrink-0"
                   >
                     סמיילי
                   </button>
                   <button
                     type="button"
                     onClick={() => handleApplyPreset('sword')}
-                    className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 border border-slate-700 transition-colors"
+                    className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 border border-slate-700 transition-colors shrink-0"
                   >
                     חרב
                   </button>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5 shrink-0">
                   <button
                     type="button"
                     onClick={handleInvert}
-                    className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 border border-slate-700 transition-colors"
+                    className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 border border-slate-700 transition-colors"
                   >
-                    היפוך צבעים
+                    היפוך
                   </button>
                   <button
                     type="button"
                     onClick={handleClear}
-                    className="flex items-center gap-1 text-xs text-slate-400 hover:text-slate-200 bg-slate-800 px-2.5 py-1 rounded border border-slate-700 transition-colors"
+                    className="flex items-center gap-1 text-xs text-slate-400 hover:text-slate-200 bg-slate-800 px-2.5 py-1 rounded-lg border border-slate-700 transition-colors"
                     title="נקה מטריצה"
                   >
                     <RotateCcw className="w-3.5 h-3.5" />
@@ -208,9 +208,9 @@ export default function Lab1_BinaryPixels({ curriculum }) {
               </div>
 
               {/* 8x8 Pixel Matrix Canvas */}
-              <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 shadow-inner">
+              <div className="p-2 sm:p-3 bg-slate-950 rounded-2xl border border-slate-800 shadow-inner">
                 <div 
-                  className="grid grid-cols-8 gap-1.5 w-[280px] h-[280px] sm:w-[340px] sm:h-[340px] select-none"
+                  className="grid grid-cols-8 gap-1 sm:gap-1.5 w-[250px] h-[250px] sm:w-[340px] sm:h-[340px] select-none"
                   dir="ltr"
                 >
                   {grid.map((cellValue, idx) => {

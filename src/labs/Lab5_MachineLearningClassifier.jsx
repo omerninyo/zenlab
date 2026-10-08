@@ -166,23 +166,23 @@ export default function Lab5_MachineLearningClassifier({ curriculum }) {
         <div className="space-y-6 animate-fadeIn">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Scatter Plot 2D Canvas */}
-          <div className="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-xl p-6 flex flex-col items-center">
-            <div className="w-full flex items-center justify-between mb-4">
-              <div className="text-xs text-slate-300 font-medium">
-                לוח השוואת תכונות: גודל בס״מ מול משקל בגרם
+          <div className="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl p-3.5 sm:p-6 flex flex-col items-center shadow-xs">
+            <div className="w-full flex items-center justify-between mb-3">
+              <div className="text-xs text-slate-300 font-semibold">
+                לוח תכונות: גודל מול משקל
               </div>
               <div className="text-xs font-mono text-slate-400">
-                דוגמאות למידה: <span className="text-white font-semibold">{points.length}</span>
+                דוגמאות: <span className="text-white font-bold">{points.length}</span>
               </div>
             </div>
 
             {/* SVG Coordinate Space */}
-            <div className="relative bg-slate-950 p-2 rounded-xl border border-slate-800 w-full aspect-square max-w-[420px] select-none shadow-inner">
+            <div className="relative bg-slate-950 p-2 rounded-2xl border border-slate-800 w-full aspect-square max-w-[320px] sm:max-w-[420px] select-none shadow-inner touch-none">
               <svg
                 ref={svgRef}
                 viewBox="0 0 100 100"
                 onClick={handleSvgClick}
-                className="w-full h-full cursor-crosshair overflow-visible"
+                className="w-full h-full cursor-crosshair overflow-visible touch-none"
               >
                 {/* Coordinate Grid lines */}
                 <line x1="0" y1="25" x2="100" y2="25" stroke="#1e293b" strokeWidth="0.5" strokeDasharray="1,2" />

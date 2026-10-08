@@ -139,7 +139,7 @@ export default function Lab8_LanguageModelPredictor({ curriculum }) {
         <div className="space-y-6 animate-fadeIn">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Sentence Builder & Stream Column */}
-          <div className="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-6">
+          <div className="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl p-3.5 sm:p-6 space-y-4 sm:space-y-6 shadow-xs">
             {/* Prompt Selector */}
             <div>
               <label className="block text-xs font-semibold text-slate-300 mb-2">

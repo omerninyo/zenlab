@@ -133,23 +133,23 @@ export default function Lab6_VisionKernels({ curriculum }) {
       {phase === 'interactive' && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left Column: Visual Convolution Workspace */}
-          <div className="lg:col-span-8 space-y-6">
-            <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-6 shadow-sm">
-              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
+          <div className="lg:col-span-8 space-y-4 sm:space-y-6">
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-3.5 sm:p-6 space-y-4 sm:space-y-6 shadow-xs">
+              <div className="flex items-center justify-between gap-2 border-b border-slate-800 pb-3">
                 <div className="flex items-center gap-2">
                   <ScanLine className="w-5 h-5 text-amber-400" />
-                  <h2 className="text-base font-bold text-white">מעבדת ראייה ממוחשבת</h2>
+                  <h2 className="text-sm sm:text-base font-bold text-white">מעבדת ראייה ממוחשבת</h2>
                 </div>
 
                 {/* Presets */}
-                <div className="flex items-center gap-1.5 overflow-x-auto">
-                  <span className="text-xs text-slate-400 ml-1">תבניות:</span>
+                <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none">
+                  <span className="text-xs text-slate-400 ml-0.5 shrink-0">תבניות:</span>
                   {Object.entries(labData.presets).map(([k, p]) => (
                     <button
                       key={k}
                       type="button"
                       onClick={() => handleSelectPreset(k)}
-                      className={`px-2.5 py-1 rounded-lg text-xs font-medium border transition-colors ${
+                      className={`px-2 py-1 rounded-lg text-xs font-medium border transition-colors shrink-0 ${
                         selectedPreset === k
                           ? 'bg-amber-950/80 border-amber-600 text-amber-300 font-bold'
                           : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-slate-200'
@@ -161,7 +161,7 @@ export default function Lab6_VisionKernels({ curriculum }) {
                   <button
                     type="button"
                     onClick={handleClear}
-                    className="p-1 rounded bg-slate-950 text-slate-400 hover:text-slate-200 border border-slate-800 ml-1"
+                    className="p-1 rounded-lg bg-slate-950 text-slate-400 hover:text-slate-200 border border-slate-800 ml-1 shrink-0"
                     title="נקה משטח"
                   >
                     <RotateCcw className="w-3.5 h-3.5" />
@@ -170,10 +170,10 @@ export default function Lab6_VisionKernels({ curriculum }) {
               </div>
 
               {/* Kernel Selector */}
-              <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
+              <div className="bg-slate-950 p-3 sm:p-4 rounded-2xl border border-slate-800 space-y-2.5">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-semibold text-white">בחר פילטר בלשי (זכוכית מגדלת 3x3):</span>
-                  <span className="text-xs text-slate-400 font-mono">{currentKernel.description}</span>
+                  <span className="text-xs text-slate-400 font-mono hidden sm:inline">{currentKernel.description}</span>
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                   {Object.entries(labData.kernels).map(([k, item]) => (

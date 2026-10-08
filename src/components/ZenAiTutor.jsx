@@ -298,19 +298,19 @@ export default function ZenAiTutor({ currentLabId = 'lab1' }) {
 
   return (
     <>
-      {/* Floating Trigger Button in Bottom Corner */}
+      {/* Floating Trigger Button in Bottom Corner - Compact FAB on mobile, pill on desktop */}
       {!isOpen && (
         <button
           type="button"
           onClick={() => { setIsOpen(true); AudioEngine.playStep(); }}
-          className="fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-50 flex items-center gap-2 sm:gap-2.5 px-3 sm:px-4 py-2.5 sm:py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl shadow-xl hover:shadow-2xl transition-all group scale-100 hover:scale-105 border-2 border-white/80 dark:border-slate-800"
+          className="fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-50 flex items-center justify-center sm:justify-start gap-2.5 w-12 h-12 sm:w-auto sm:h-auto rounded-full sm:rounded-2xl p-0 sm:px-4 sm:py-3 bg-blue-600 hover:bg-blue-700 text-white shadow-xl hover:shadow-2xl transition-all group scale-100 hover:scale-105 border-2 border-white/90 dark:border-slate-800"
           title="שאל את זֶן הרובוט - חונך הבינה המלאכותית שלך"
         >
-          <div className="relative">
-            <Bot className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+          <div className="relative flex items-center justify-center">
+            <Bot className="w-6 h-6 sm:w-6 sm:h-6 text-white" />
             <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-emerald-400 rounded-full ring-2 ring-blue-600" />
           </div>
-          <div className="text-right">
+          <div className="text-right hidden sm:block">
             <span className="block text-xs font-bold leading-tight">שאל את זֶן הרובוט</span>
             <span className="block text-[10px] text-blue-200 leading-tight">חונך AI אישי</span>
           </div>

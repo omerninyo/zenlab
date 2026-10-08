@@ -212,67 +212,66 @@ export default function Lab4_Pathfinder({ curriculum }) {
           {/* Left Column: 8x8 Interactive Grid */}
           <div className="lg:col-span-8 space-y-6">
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-6 shadow-sm">
-              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
+              <div className="flex items-center justify-between gap-2 border-b border-slate-800 pb-3">
                 <div className="flex items-center gap-2">
                   <Compass className="w-5 h-5 text-blue-400" />
-                  <h2 className="text-base font-bold text-white">מבוך החיפוש (רשת 8x8)</h2>
+                  <h2 className="text-sm sm:text-base font-bold text-white">מבוך החיפוש (רשת 8x8)</h2>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5">
                   <button
                     type="button"
                     onClick={handleLoadPresetWall}
-                    className="px-2.5 py-1.5 rounded-lg bg-slate-950 hover:bg-slate-800 text-xs text-slate-300 border border-slate-800 transition-colors"
+                    className="px-2.5 py-1 rounded-lg bg-slate-950 hover:bg-slate-800 text-xs text-slate-300 border border-slate-800 transition-colors"
                   >
-                    טען מחסום קיר
+                    טען קיר
                   </button>
                   <button
                     type="button"
                     onClick={handleReset}
-                    className="p-1.5 rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-800 transition-colors"
+                    className="p-1 rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-800 transition-colors"
                     title="נקה מבוך"
                   >
-                    <RotateCcw className="w-4 h-4" />
+                    <RotateCcw className="w-3.5 h-3.5" />
                   </button>
                 </div>
               </div>
 
               {/* Controls bar: Algorithm selection + Playback */}
-              <div className="flex flex-wrap items-center justify-between gap-3 bg-slate-950 p-3 rounded-xl border border-slate-800">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-slate-400">אלגוריתם:</span>
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5 bg-slate-950 p-2.5 sm:p-3 rounded-2xl border border-slate-800">
+                <div className="grid grid-cols-2 gap-1.5 sm:flex items-center">
                   <button
                     type="button"
                     onClick={() => { setAlgorithm('astar'); setCurrentStepIndex(0); setIsPlaying(false); AudioEngine.playStep(); }}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
+                    className={`flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs transition-colors ${
                       algorithm === 'astar'
-                        ? 'bg-blue-600 border-blue-500 text-white font-bold'
-                        : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
+                        ? 'bg-blue-600 border border-blue-500 text-white font-bold shadow-xs'
+                        : 'bg-slate-900 border border-slate-800 text-slate-400 hover:text-slate-200'
                     }`}
                   >
-                    <Sparkles className="w-3.5 h-3.5" />
+                    <Sparkles className="w-3.5 h-3.5 shrink-0" />
                     <span>מצפן חכם (*A)</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => { setAlgorithm('bfs'); setCurrentStepIndex(0); setIsPlaying(false); AudioEngine.playStep(); }}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
+                    className={`flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs transition-colors ${
                       algorithm === 'bfs'
-                        ? 'bg-blue-600 border-blue-500 text-white font-bold'
-                        : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
+                        ? 'bg-blue-600 border border-blue-500 text-white font-bold shadow-xs'
+                        : 'bg-slate-900 border border-slate-800 text-slate-400 hover:text-slate-200'
                     }`}
                   >
-                    <Navigation className="w-3.5 h-3.5" />
-                    <span>חיפוש עיוור (לכל הכיוונים)</span>
+                    <Navigation className="w-3.5 h-3.5 shrink-0" />
+                    <span>חיפוש עיוור</span>
                   </button>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5">
                   {isPlaying ? (
                     <button
                       type="button"
                       onClick={handlePause}
-                      className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-medium text-xs transition-colors"
+                      className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs transition-colors"
                     >
                       <Pause className="w-3.5 h-3.5" />
                       <span>השהה</span>
@@ -281,7 +280,7 @@ export default function Lab4_Pathfinder({ curriculum }) {
                     <button
                       type="button"
                       onClick={handlePlay}
-                      className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs transition-colors shadow-sm"
+                      className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition-colors shadow-xs"
                     >
                       <Play className="w-3.5 h-3.5" />
                       <span>הפעל חיפוש</span>
@@ -290,7 +289,7 @@ export default function Lab4_Pathfinder({ curriculum }) {
                   <button
                     type="button"
                     onClick={() => { setCurrentStepIndex(solution.visitedOrder.length); AudioEngine.playStep(); }}
-                    className="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs border border-slate-800"
+                    className="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs border border-slate-800"
                   >
                     לסוף
                   </button>
@@ -299,7 +298,7 @@ export default function Lab4_Pathfinder({ curriculum }) {
 
               {/* 8x8 Grid Canvas */}
               <div className="flex justify-center">
-                <div className="grid grid-cols-8 gap-1.5 p-3 bg-slate-950 rounded-2xl border border-slate-800 max-w-[420px] w-full aspect-square">
+                <div className="grid grid-cols-8 gap-1 sm:gap-1.5 p-2 sm:p-3 bg-slate-950 rounded-2xl border border-slate-800 max-w-[320px] sm:max-w-[420px] w-full aspect-square">
                   {Array.from({ length: 64 }).map((_, idx) => {
                     const x = idx % 8;
                     const y = Math.floor(idx / 8);

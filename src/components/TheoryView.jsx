@@ -96,35 +96,36 @@ export default function TheoryView({
     <div className="space-y-8 animate-fadeIn" dir="rtl">
       {/* 1. Primary Media Slot: Built-in Hebrew Explainer Tour & Multimedia */}
       <section className="space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center shadow-sm">
+            <div className="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-xs shrink-0">
               <Tv className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+              <h2 className="text-sm sm:text-lg font-black text-slate-900 dark:text-white tracking-tight">
                 הסבר מודרך בעברית לילדים
               </h2>
-              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-                למדו את הרעיון המרכזי באמצעות סרטון עומק, פודקאסט מעבדה או סיור מונפש בעברית
+              <p className="text-xs text-slate-500 dark:text-slate-400 hidden sm:block">
+                סרטון עומק, פודקאסט מעבדה או סיור מונפש בעברית
               </p>
             </div>
           </div>
 
-          {/* Media Mode Tabs */}
-          <div className="flex flex-wrap items-center bg-slate-100 dark:bg-slate-900 p-1 rounded-xl border border-slate-200 dark:border-slate-800 text-xs gap-1">
+          {/* Media Mode Tabs - Single Row 3-column Grid on Mobile, Flex on Desktop */}
+          <div className="grid grid-cols-3 sm:flex items-center bg-slate-100 dark:bg-slate-900 p-1 rounded-xl border border-slate-200 dark:border-slate-800 text-xs gap-1">
             {media.video && (
               <button
                 type="button"
                 onClick={() => { setActiveMediaTab('video'); AudioEngine.playStep(); }}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                className={`py-1.5 px-2 sm:px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
                   activeMediaTab === 'video'
-                    ? 'bg-blue-600 text-white shadow-sm'
+                    ? 'bg-blue-600 text-white shadow-xs'
                     : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
                 }`}
               >
-                <Video className="w-3.5 h-3.5" />
-                <span>{media.video.localSrc ? `סרטון הסבר (${media.video.duration || '05:59'})` : 'סרטון העשרה'}</span>
+                <Video className="w-3.5 h-3.5 shrink-0" />
+                <span className="sm:hidden">סרטון</span>
+                <span className="hidden sm:inline">{media.video.localSrc ? `סרטון הסבר (${media.video.duration || '05:59'})` : 'סרטון העשרה'}</span>
               </button>
             )}
 
@@ -132,28 +133,30 @@ export default function TheoryView({
               <button
                 type="button"
                 onClick={() => { setActiveMediaTab('podcast'); AudioEngine.playStep(); }}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                className={`py-1.5 px-2 sm:px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
                   activeMediaTab === 'podcast'
-                    ? 'bg-indigo-600 text-white shadow-sm'
+                    ? 'bg-indigo-600 text-white shadow-xs'
                     : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
                 }`}
               >
-                <Radio className="w-3.5 h-3.5" />
-                <span>{`פודקאסט מעבדה (${media.podcast.duration || '05:36'})`}</span>
+                <Radio className="w-3.5 h-3.5 shrink-0" />
+                <span className="sm:hidden">פודקאסט</span>
+                <span className="hidden sm:inline">{`פודקאסט מעבדה (${media.podcast.duration || '05:36'})`}</span>
               </button>
             )}
 
             <button
               type="button"
               onClick={() => { setActiveMediaTab('tour'); AudioEngine.playStep(); }}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+              className={`py-1.5 px-2 sm:px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
                 activeMediaTab === 'tour'
-                  ? 'bg-blue-600 text-white shadow-sm'
+                  ? 'bg-blue-600 text-white shadow-xs'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
               }`}
             >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>סיור מונפש בעברית</span>
+              <Sparkles className="w-3.5 h-3.5 shrink-0" />
+              <span className="sm:hidden">סיור</span>
+              <span className="hidden sm:inline">סיור מונפש בעברית</span>
             </button>
 
             {media.narration && (
