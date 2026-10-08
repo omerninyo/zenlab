@@ -161,7 +161,7 @@ export default function ZenAiTutor({ currentLabId = 'lab1' }) {
         id: 'welcome',
         sender: 'tutor',
         text: labKnowledge.welcome,
-        audioSrc: `/audio/tutor/${currentLabId}_welcome.mp3`,
+        audioSrc: `/audio/tutor/${currentLabId}_welcome.mp3?v=0.6.3`,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }
     ]);
@@ -217,7 +217,7 @@ export default function ZenAiTutor({ currentLabId = 'lab1' }) {
     const curatedAnswer = labKnowledge.answers[questionText];
     if (curatedAnswer) {
       const promptIndex = labKnowledge.prompts.indexOf(questionText);
-      const audioSrc = promptIndex !== -1 ? `/audio/tutor/${currentLabId}_q${promptIndex}.mp3` : null;
+      const audioSrc = promptIndex !== -1 ? `/audio/tutor/${currentLabId}_q${promptIndex}.mp3?v=0.6.3` : null;
 
       setTimeout(() => {
         setMessages(prev => [
@@ -287,7 +287,7 @@ export default function ZenAiTutor({ currentLabId = 'lab1' }) {
           id: 'tutor-' + Date.now(),
           sender: 'tutor',
           text: fallbackReply,
-          audioSrc: '/audio/tutor/tutor_fallback.mp3',
+          audioSrc: '/audio/tutor/tutor_fallback.mp3?v=0.6.3',
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         }
       ]);
