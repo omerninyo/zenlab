@@ -143,10 +143,72 @@ class StorageEngineClass {
   resetProgress() {
     this.state = {
       ...defaultState,
+      completedChallenges: {},
+      labStars: {
+        lab1: 0,
+        lab2: 0,
+        lab3: 0,
+        lab4: 0,
+        lab5: 0,
+        lab6: 0,
+        lab7: 0,
+        lab8: 0
+      },
+      labPhases: {
+        lab1: 'theory',
+        lab2: 'theory',
+        lab3: 'theory',
+        lab4: 'theory',
+        lab5: 'theory',
+        lab6: 'theory',
+        lab7: 'theory',
+        lab8: 'theory'
+      },
+      totalStars: 0,
       isMuted: this.state.isMuted,
       isNarrationEnabled: this.state.isNarrationEnabled
     };
     this.saveState();
+  }
+
+  exportStateJSON() {
+    return JSON.stringify({
+      schema: 'zenlab-progress-v1',
+      exportedAt: new Date().toISOString(),
+      state: this.getState()
+    }, null, 2);
+  }
+
+  importStateJSON(jsonStr) {
+    try {
+      const parsed = JSON.parse(jsonStr);
+      const incomingState = parsed.state || parsed;
+      if (!incomingState || typeof incomingState !== 'object') {
+        return { success: false, error: 'קובץ לא תקין' };
+      }
+
+      this.state = {
+        ...defaultState,
+        ...incomingState,
+        labStars: {
+          ...defaultState.labStars,
+          ...(incomingState.labStars || {})
+        },
+        completedChallenges: {
+          ...(incomingState.completedChallenges || {})
+        },
+        labPhases: {
+          ...defaultState.labPhases,
+          ...(incomingState.labPhases || {})
+        }
+      };
+
+      this.state.totalStars = Object.values(this.state.labStars).reduce((sum, v) => sum + (Number(v) || 0), 0);
+      this.saveState();
+      return { success: true, totalStars: this.state.totalStars };
+    } catch (err) {
+      return { success: false, error: err.message || 'שגיאה בפענוח הקובץ' };
+    }
   }
 }
 

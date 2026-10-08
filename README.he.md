@@ -4,7 +4,8 @@
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
 [![Platform](https://img.shields.io/badge/platform-Cloudflare%20Pages-orange.svg)]()
 
-> **English Version**: For the English documentation, see [**`README.md`**](README.md).
+> **English Version**: For the English documentation, see [**`README.md`**](README.md).  
+> 📋 **משאבים פדגוגיים מלווים**: [מדריך למורה ומערך שיעור](docs/TEACHERS_GUIDE_HE.md) &bull; [דף עבודה ומשימות חקר לתלמיד](docs/STUDENT_WORKSHEET_HE.md) &bull; [מחקר השוואתי וחדשנות מול מערכות בעולם](docs/research/COMPETITIVE_BENCHMARK_AND_INNOVATION.he.md).
 
 **ZenLab** היא פלטפורמת למידה אינטראקטיבית בקוד פתוח, הפועלת כולה בצד הלקוח בדפדפן (Client-Side SPA), ומיועדת להקניית מושגי יסוד בחשיבה מחשובית, אלגוריתמיקה ובינה מלאכותית לתלמידי בית ספר יסודי (דגש על כיתות ה', גילאי 10–11).
 

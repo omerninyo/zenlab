@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.2] - 2026-10-08
+
+### Added
+- **Full-Curriculum Interactive Glossary Modal (`src/components/GlossaryModal.jsx`)**:
+  - Searchable by term or definition keyword across all 8 micro-labs.
+  - Filter by lab category pills ("All Concepts", "Lab 1: Pixels" ... "Lab 8: Language Model").
+  - Accessible via top navigation header (`BookOpen` icon).
+- **Classroom Settings & Progress Management Modal (`src/components/ClassroomSettingsModal.jsx`)**:
+  - One-click classroom progress reset with safety confirmation dialog (`StorageEngine.resetProgress`).
+  - Client-side JSON backup download (`StorageEngine.exportStateJSON`) and restore file picker (`StorageEngine.importStateJSON`).
+  - Auditory synthesizer toggle and live sound test trigger (`AudioEngine.playSuccess`).
+  - Strict Zero-PII privacy guarantee statement.
+- **Security & Privacy Infrastructure for Cloudflare Pages**:
+  - `public/_headers`: Enforced security headers (`X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, and child privacy permissions policy disabling camera/mic/geolocation).
+  - `index.html`: Enhanced metadata with OpenGraph (`og:title`, `og:description`), Twitter Card tags, theme color (`#020617`), and mobile web app capabilities.
+- **Pedagogical Discovery Worksheets & Global Competitive Benchmark**:
+  - `docs/STUDENT_WORKSHEET_HE.md` & `docs/STUDENT_WORKSHEET.md`: Printable 2-page student discovery inquiry sheets with 24-star coloring tracker, reflection questions, and ethics dilemmas.
+  - `docs/research/COMPETITIVE_BENCHMARK_AND_INNOVATION.he.md` & `.md`: In-depth analysis comparing ZenLab with Code.org, Scratch/MIT RAISE, Teachable Machine, Machine Learning for Kids, and Israeli MOE frameworks.
+
+### Changed
+- `src/App.jsx`: Header actions enhanced with Glossary and Settings modals; version bumped to `v0.3.2`.
+- `src/core/storage.js`: Added `exportStateJSON` and `importStateJSON` methods, hardened deep-state reset.
+
+### Verified
+- Automated build passed cleanly (`npm run build` in 4.05s).
+- Zero console errors and zero warnings.
+- Verified Zero-PII compliance across all added files and git history.
+
 ## [0.3.1] - 2026-10-08
 
 ### Added

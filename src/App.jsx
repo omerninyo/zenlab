@@ -18,13 +18,16 @@ import {
   Award,
   Filter,
   CheckCircle2,
-  X
+  X,
+  Settings
 } from 'lucide-react';
 import curriculumData from './data/curriculum.json';
 import { StorageEngine } from './core/storage.js';
 import { AudioEngine } from './core/audio.js';
 import { NarrationEngine } from './core/narration.js';
 import CertificateModal from './components/CertificateModal.jsx';
+import GlossaryModal from './components/GlossaryModal.jsx';
+import ClassroomSettingsModal from './components/ClassroomSettingsModal.jsx';
 import Lab1_BinaryPixels from './labs/Lab1_BinaryPixels.jsx';
 import Lab2_AlgorithmicRobot from './labs/Lab2_AlgorithmicRobot.jsx';
 import Lab3_DecisionTree from './labs/Lab3_DecisionTree.jsx';
@@ -43,6 +46,8 @@ export default function App() {
   const [narrationState, setNarrationState] = useState(() => NarrationEngine.getState());
 
   const [isCertificateOpen, setIsCertificateOpen] = useState(false);
+  const [isGlossaryOpen, setIsGlossaryOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [selectedTrack, setSelectedTrack] = useState('all'); // 'all' | 'algorithms' | 'ai'
   const [isWelcomeOpen, setIsWelcomeOpen] = useState(true);
 
@@ -125,7 +130,7 @@ export default function App() {
               <div className="flex items-center gap-2">
                 <span className="text-base font-bold tracking-tight text-white">ZenLab</span>
                 <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">
-                  v0.3.0
+                  v0.3.2
                 </span>
               </div>
               <p className="text-[11px] text-slate-400 hidden sm:block">
@@ -134,13 +139,13 @@ export default function App() {
             </div>
           </div>
 
-          {/* Action Tools: Stars Counter, Certificate, Narration, Audio, Reset */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          {/* Action Tools: Stars Counter, Certificate, Glossary, Narration, Audio, Settings */}
+          <div className="flex items-center gap-1.5 sm:gap-2.5">
             {/* Stars Achievement Badge */}
-            <div className="flex items-center gap-1.5 bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 text-xs font-semibold text-amber-300">
+            <div className="flex items-center gap-1.5 bg-slate-950 px-2.5 py-1.5 rounded-lg border border-slate-800 text-xs font-semibold text-amber-300">
               <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
               <span className="font-mono">{totalStars}</span>
-              <span className="text-slate-500 font-normal hidden sm:inline">/ 24 כוכבים</span>
+              <span className="text-slate-500 font-normal hidden sm:inline">/ 24</span>
             </div>
 
             {/* Certificate of Achievement Modal Trigger */}
@@ -151,7 +156,18 @@ export default function App() {
               className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-amber-950/40 hover:bg-amber-900/50 border border-amber-600/60 text-xs font-semibold text-amber-300 transition-colors shadow-sm"
             >
               <Award className="w-4 h-4 text-amber-400" />
-              <span className="hidden md:inline">תעודת הצטיינות</span>
+              <span className="hidden lg:inline">תעודת הצטיינות</span>
+            </button>
+
+            {/* Glossary Modal Trigger */}
+            <button
+              type="button"
+              onClick={() => { setIsGlossaryOpen(true); AudioEngine.playStep(); }}
+              title="מילון מונחי מדעי המחשב ובינה מלאכותית"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs font-medium text-slate-300 hover:text-white transition-colors"
+            >
+              <BookOpen className="w-4 h-4 text-blue-400" />
+              <span className="hidden lg:inline">מילון מונחים</span>
             </button>
 
             {/* Voiceover Narration Switch */}
@@ -166,7 +182,7 @@ export default function App() {
               }`}
             >
               <Headphones className={`w-4 h-4 ${narrationState.isPlaying && !narrationState.isPaused ? 'animate-pulse text-blue-400' : ''}`} />
-              <span className="hidden md:inline">ליווי קולי</span>
+              <span className="hidden lg:inline">ליווי קולי</span>
             </button>
 
             {/* Audio Mute Switch */}
@@ -174,19 +190,19 @@ export default function App() {
               type="button"
               onClick={handleToggleMute}
               title={isMuted ? 'הפעל צלילים' : 'השתק צלילים'}
-              className="p-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-800 transition-colors"
+              className="p-1.5 sm:p-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-800 transition-colors"
             >
               {isMuted ? <VolumeX className="w-4 h-4 text-slate-500" /> : <Volume2 className="w-4 h-4 text-blue-400" />}
             </button>
 
-            {/* Reset Progress Button */}
+            {/* Classroom Settings & Progress Modal Trigger */}
             <button
               type="button"
-              onClick={handleResetProgress}
-              title="איפוס התקדמות"
-              className="p-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-800 transition-colors"
+              onClick={() => { setIsSettingsOpen(true); AudioEngine.playStep(); }}
+              title="הגדרות כיתה וניהול התקדמות"
+              className="p-1.5 sm:p-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-800 transition-colors"
             >
-              <RotateCcw className="w-4 h-4" />
+              <Settings className="w-4 h-4" />
             </button>
           </div>
         </div>
@@ -310,6 +326,19 @@ export default function App() {
         isOpen={isCertificateOpen}
         onClose={() => setIsCertificateOpen(false)}
         totalStars={totalStars}
+      />
+
+      {/* Glossary Modal */}
+      <GlossaryModal
+        isOpen={isGlossaryOpen}
+        onClose={() => setIsGlossaryOpen(false)}
+        curriculum={curriculumData}
+      />
+
+      {/* Classroom Settings Modal */}
+      <ClassroomSettingsModal
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
       />
 
       {/* Footer Notice with Zero-PII Hygiene */}
