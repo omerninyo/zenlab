@@ -1,10 +1,25 @@
 import React, { useState } from 'react';
 import { Play, Video, ExternalLink } from 'lucide-react';
 
-export default function LiteYouTubeEmbed({ videoId, title, channel, duration }) {
+export default function LiteYouTubeEmbed({ videoId, title, channel, duration, localSrc }) {
   const [isActivated, setIsActivated] = useState(false);
 
-  if (!videoId) return null;
+  if (!videoId && !localSrc) return null;
+
+  if (localSrc) {
+    return (
+      <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-slate-950 border border-slate-800 shadow-md">
+        <video 
+          controls 
+          playsInline 
+          src={localSrc} 
+          className="w-full h-full object-cover"
+        >
+          הדפדפן אינו תומך בניגון וידאו זה.
+        </video>
+      </div>
+    );
+  }
 
   const handleActivate = () => {
     setIsActivated(true);

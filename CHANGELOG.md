@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.1] - 2026-10-08
+
+### Added
+- **Studio-Quality Hebrew TTS Generator CLI (`scripts/generate_audio.js`)**:
+  - Standalone Node.js script supporting ElevenLabs (`eleven_multilingual_v2`) and Google Cloud TTS (`he-IL-Neural2-A`).
+  - `--dry-run` quota inspector: calculated 2,360 characters total across all 8 labs (only 23.6% of ElevenLabs free 10k monthly quota, and 0.24% of Google Cloud free 1M quota - $0.00 cost).
+  - Automatically saves high-fidelity `.mp3` files to `public/audio/narration/` and links `audioSrc` in `src/data/curriculum.json`.
+- **Local HTML5 Video Support in `LiteYouTubeEmbed` and `TheoryView` (`src/components/LiteYouTubeEmbed.jsx`, `src/components/TheoryView.jsx`)**:
+  - Added `localSrc` prop support to render native HTML5 video player for GenAI-generated MP4 files, eliminating third-party YouTube embeds when local media exists.
+- **Pedagogical Audio & Video Pipeline Research Specifications (`docs/research/TTS_AND_GENAI_VIDEO_PIPELINE.he.md`, `docs/research/TTS_AND_GENAI_VIDEO_PIPELINE.md`)**:
+  - Detailed architectural specifications for Hebrew voice generation, quota math, and GenAI video production roadmaps (HeyGen/D-ID avatar video, Remotion code-to-video).
+
 ## [0.5.0] - 2026-10-08
 
 ### Added

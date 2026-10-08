@@ -158,11 +158,14 @@ export default function TheoryView({
 
         {activeMediaTab === 'video' && media.video && (
           <div className="bg-white dark:bg-slate-900 border-2 border-slate-200/90 dark:border-slate-800 rounded-2xl p-6 shadow-sm space-y-3">
-            <div className="text-xs font-semibold text-amber-700 bg-amber-50 border border-amber-200 p-2.5 rounded-xl">
-              שים לב: סרטון זה הוא סרטון העשרה מדעי באנגלית. מומלץ להתחיל בסיור המונפש בעברית למעלה!
-            </div>
+            {!media.video.localSrc && (
+              <div className="text-xs font-semibold text-amber-700 bg-amber-50 border border-amber-200 p-2.5 rounded-xl">
+                שים לב: סרטון זה הוא סרטון העשרה מדעי באנגלית. מומלץ להתחיל בסיור המונפש בעברית למעלה!
+              </div>
+            )}
             <LiteYouTubeEmbed
               videoId={media.video.videoId}
+              localSrc={media.video.localSrc}
               title={media.video.title}
               channel={media.video.channel}
               duration={media.video.duration}
