@@ -10,11 +10,13 @@ import {
   Star, 
   BookOpen, 
   Compass,
-  Cpu
+  Cpu,
+  Headphones
 } from 'lucide-react';
 import curriculumData from './data/curriculum.json';
 import { StorageEngine } from './core/storage.js';
 import { AudioEngine } from './core/audio.js';
+import { NarrationEngine } from './core/narration.js';
 import Lab1_BinaryPixels from './labs/Lab1_BinaryPixels.jsx';
 import Lab2_AlgorithmicRobot from './labs/Lab2_AlgorithmicRobot.jsx';
 import Lab3_MachineLearningClassifier from './labs/Lab3_MachineLearningClassifier.jsx';
@@ -25,15 +27,24 @@ export default function App() {
   const [isMuted, setIsMuted] = useState(() => StorageEngine.getState().isMuted);
   const [totalStars, setTotalStars] = useState(() => StorageEngine.getState().totalStars);
   const [labStars, setLabStars] = useState(() => StorageEngine.getState().labStars);
+  const [isNarrationEnabled, setIsNarrationEnabled] = useState(() => StorageEngine.getState().isNarrationEnabled);
+  const [narrationState, setNarrationState] = useState(() => NarrationEngine.getState());
 
   useEffect(() => {
-    const unsub = StorageEngine.subscribe(state => {
+    const unsubStorage = StorageEngine.subscribe(state => {
       setIsMuted(state.isMuted);
       setTotalStars(state.totalStars);
       setLabStars(state.labStars);
       setActiveLabId(state.activeLabId);
+      setIsNarrationEnabled(state.isNarrationEnabled);
     });
-    return unsub;
+    const unsubNarration = NarrationEngine.subscribe(state => {
+      setNarrationState(state);
+    });
+    return () => {
+      unsubStorage();
+      unsubNarration();
+    };
   }, []);
 
   const handleLabSelect = (id) => {
@@ -46,6 +57,19 @@ export default function App() {
     const nextMuted = !isMuted;
     setIsMuted(nextMuted);
     StorageEngine.setMuted(nextMuted);
+  };
+
+  const handleToggleNarration = () => {
+    const next = StorageEngine.toggleNarration();
+    setIsNarrationEnabled(next);
+    if (!next) {
+      NarrationEngine.stop();
+    } else {
+      const curLab = curriculumData.labs[activeLabId];
+      if (curLab?.media?.narration?.transcript) {
+        NarrationEngine.play(curLab.media.narration.transcript, curLab.media.narration.audioSrc);
+      }
+    }
   };
 
   const handleResetProgress = () => {
@@ -76,7 +100,7 @@ export default function App() {
               <div className="flex items-center gap-2">
                 <span className="text-base font-bold tracking-tight text-white">ZenLab</span>
                 <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">
-                  v0.1.0
+                  v0.2.0
                 </span>
               </div>
               <p className="text-[11px] text-slate-400 hidden sm:block">
@@ -85,7 +109,7 @@ export default function App() {
             </div>
           </div>
 
-          {/* Action Tools: Stars Counter, Audio Toggle, Reset */}
+          {/* Action Tools: Stars Counter, Narration Toggle, Audio Toggle, Reset */}
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Stars Achievement Badge */}
             <div className="flex items-center gap-1.5 bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 text-xs font-semibold text-amber-300">
@@ -93,6 +117,21 @@ export default function App() {
               <span className="font-mono">{totalStars}</span>
               <span className="text-slate-500 font-normal hidden sm:inline">כוכבים</span>
             </div>
+
+            {/* Voiceover Narration Switch */}
+            <button
+              type="button"
+              onClick={handleToggleNarration}
+              title={isNarrationEnabled ? 'השבת ליווי קולי' : 'הפעל ליווי קולי'}
+              className={`px-2.5 py-1.5 rounded-lg border text-xs font-medium transition-colors flex items-center gap-1.5 ${
+                isNarrationEnabled 
+                  ? 'bg-blue-950/80 border-blue-600 text-blue-300' 
+                  : 'bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-slate-200 border-slate-800'
+              }`}
+            >
+              <Headphones className={`w-4 h-4 ${narrationState.isPlaying && !narrationState.isPaused ? 'animate-pulse text-blue-400' : ''}`} />
+              <span className="hidden md:inline">ליווי קולי</span>
+            </button>
 
             {/* Audio Mute Switch */}
             <button

@@ -19,6 +19,13 @@ const defaultState = {
   },
   totalStars: 0,
   isMuted: false,
+  isNarrationEnabled: true,
+  labPhases: {
+    lab1: 'theory',
+    lab2: 'theory',
+    lab3: 'theory',
+    lab4: 'theory'
+  },
   activeLabId: 'lab1'
 };
 
@@ -95,6 +102,27 @@ class StorageEngineClass {
     this.saveState();
   }
 
+  setNarrationEnabled(enabled) {
+    this.state.isNarrationEnabled = !!enabled;
+    this.saveState();
+  }
+
+  toggleNarration() {
+    this.state.isNarrationEnabled = !this.state.isNarrationEnabled;
+    this.saveState();
+    return this.state.isNarrationEnabled;
+  }
+
+  setLabPhase(labId, phase) {
+    if (!this.state.labPhases) this.state.labPhases = {};
+    this.state.labPhases[labId] = phase === 'interactive' ? 'interactive' : 'theory';
+    this.saveState();
+  }
+
+  getLabPhase(labId) {
+    return this.state.labPhases?.[labId] || 'theory';
+  }
+
   setActiveLab(labId) {
     this.state.activeLabId = labId;
     this.saveState();
@@ -103,7 +131,8 @@ class StorageEngineClass {
   resetProgress() {
     this.state = {
       ...defaultState,
-      isMuted: this.state.isMuted
+      isMuted: this.state.isMuted,
+      isNarrationEnabled: this.state.isNarrationEnabled
     };
     this.saveState();
   }

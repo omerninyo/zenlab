@@ -9,8 +9,8 @@ import {
   Award, 
   BookOpen, 
   Info, 
-  Eye, 
   ArrowLeft,
+  ArrowRight,
   Flame,
   Snowflake
 } from 'lucide-react';
@@ -18,10 +18,14 @@ import { AudioEngine } from '../core/audio.js';
 import { StorageEngine } from '../core/storage.js';
 import { AIService } from '../services/ai.js';
 import { fireConfetti } from '../core/canvas-particles.js';
+import LabPhaseHeader from '../components/LabPhaseHeader.jsx';
+import TheoryView from '../components/TheoryView.jsx';
+import SvgLlmAnimation from '../components/animations/SvgLlmAnimation.jsx';
 
 export default function Lab4_LanguageModelPredictor({ curriculum }) {
   const labData = curriculum.labs.lab4;
-  const [activeTab, setActiveTab] = useState('lab');
+  // Phase state: 'theory' | 'interactive'
+  const [phase, setPhase] = useState(() => StorageEngine.getLabPhase('lab4'));
   const [selectedPromptId, setSelectedPromptId] = useState(labData.prompts[0].id);
   const [temperature, setTemperature] = useState(0.7);
   const [generatedTokens, setGeneratedTokens] = useState([]);
@@ -98,56 +102,55 @@ export default function Lab4_LanguageModelPredictor({ curriculum }) {
     AudioEngine.playStep();
   };
 
+  const earnedStars = (completedChallenges['lab4_challenge1'] ? 1 : 0) +
+                      (completedChallenges['lab4_challenge2'] ? 1 : 0) +
+                      (completedChallenges['lab4_challenge3'] ? 1 : 0);
+
   return (
     <div className="space-y-6">
-      {/* Header Card */}
-      <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="px-2.5 py-0.5 rounded text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700">
-                {labData.badge}
-              </span>
-              <span className="text-xs text-slate-400">מעבדה {labData.number} מתוך 4</span>
-            </div>
-            <h1 className="text-2xl font-bold text-white tracking-tight">{labData.title}</h1>
-            <p className="text-sm text-slate-400 mt-1">{labData.subtitle}</p>
+      {/* 2-Phase Header */}
+      <LabPhaseHeader
+        labData={labData}
+        currentPhase={phase}
+        onPhaseChange={setPhase}
+        earnedStars={earnedStars}
+        totalLabChallenges={labData.challenges.length}
+      />
+
+      {/* Phase 1: Theory View */}
+      {phase === 'theory' && (
+        <TheoryView
+          labData={labData}
+          animationComponent={SvgLlmAnimation}
+          onProceedToInteractive={() => {
+            setPhase('interactive');
+            StorageEngine.setLabPhase('lab4', 'interactive');
+            AudioEngine.playStep();
+          }}
+        />
+      )}
+
+      {/* Phase 2: Interactive Simulator */}
+      {phase === 'interactive' && (
+        <div className="space-y-6 animate-fadeIn">
+          {/* Top Return to Theory button */}
+          <div className="flex items-center justify-between text-xs">
+            <button
+              type="button"
+              onClick={() => {
+                setPhase('theory');
+                StorageEngine.setLabPhase('lab4', 'theory');
+                AudioEngine.playStep();
+              }}
+              className="flex items-center gap-1.5 text-slate-400 hover:text-slate-200 transition-colors"
+            >
+              <ArrowRight className="w-3.5 h-3.5" />
+              <span>חזרה להסבר התיאורטי והמדיה</span>
+            </button>
+            <span className="text-slate-500 font-mono">מצב התנסות פעיל (Interactive Simulator)</span>
           </div>
 
-          <div className="flex items-center bg-slate-950 p-1 rounded-lg border border-slate-800 self-start md:self-auto">
-            <button
-              onClick={() => setActiveTab('lab')}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-md text-xs font-medium transition-colors ${
-                activeTab === 'lab' ? 'bg-slate-800 text-white' : 'text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              <Eye className="w-3.5 h-3.5" />
-              <span>מרחב הניסוי</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('theory')}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-md text-xs font-medium transition-colors ${
-                activeTab === 'theory' ? 'bg-slate-800 text-white' : 'text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              <BookOpen className="w-3.5 h-3.5" />
-              <span>הסבר מדעי</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('glossary')}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-md text-xs font-medium transition-colors ${
-                activeTab === 'glossary' ? 'bg-slate-800 text-white' : 'text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              <Info className="w-3.5 h-3.5" />
-              <span>מילון מונחים</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {activeTab === 'lab' && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Sentence Builder & Stream Column */}
           <div className="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-6">
             {/* Prompt Selector */}
@@ -349,51 +352,8 @@ export default function Lab4_LanguageModelPredictor({ curriculum }) {
             </div>
           </div>
         </div>
-      )}
-
-      {activeTab === 'theory' && (
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-6">
-          <div>
-            <h3 className="text-base font-semibold text-white mb-2">תמצית הרעיון המדעי</h3>
-            <p className="text-sm text-slate-300 leading-relaxed">
-              {labData.conceptExplanation.summary}
-            </p>
-          </div>
-
-          <div>
-            <h4 className="text-sm font-semibold text-slate-200 mb-3">עקרונות מפתח:</h4>
-            <ul className="space-y-2">
-              {labData.conceptExplanation.keyPoints.map((pt, i) => (
-                <li key={i} className="flex items-start gap-2 text-xs text-slate-300">
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500 mt-1.5 shrink-0" />
-                  <span>{pt}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="p-4 bg-slate-950 rounded-lg border border-slate-800">
-            <h4 className="text-xs font-semibold text-slate-300 mb-1">אנלוגיה מהעולם הממשי:</h4>
-            <p className="text-xs text-slate-400 leading-relaxed">
-              {labData.conceptExplanation.realWorldAnalogy}
-            </p>
-          </div>
-        </div>
-      )}
-
-      {activeTab === 'glossary' && (
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
-          <h3 className="text-base font-semibold text-white mb-4">מילון מונחי מודלי שפה</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {labData.glossary.map((item, idx) => (
-              <div key={idx} className="p-4 bg-slate-950 rounded-lg border border-slate-800">
-                <div className="text-xs font-bold text-blue-400 mb-1">{item.term}</div>
-                <div className="text-xs text-slate-300 leading-relaxed">{item.definition}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
-  );
+      </div>
+    )}
+  </div>
+);
 }

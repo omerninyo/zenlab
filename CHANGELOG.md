@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-08
+
+### Added
+- **Hybrid Learning Modules Architecture**:
+  - Two-Phase Learning View across all micro-labs (`TheoryView` and `InteractiveView`) with sticky navigation switcher and persistent phase retention (`StorageEngine.setLabPhase`, `getLabPhase`).
+  - Integrated `LabPhaseHeader` component featuring lab metadata, star achievement counters, phase switcher, and voiceover audio toggles.
+  - Unified `TheoryView` coordinating concept cards, interactive SVG animations, media slot, scientific analogies, and key principles.
+- **Interactive SVG Principle Animations**:
+  - `SvgBinaryAnimation.jsx`: 8-bit bus, interactive bit toggling, electric switch states, pixel illumination, decimal sum, and hex encoding.
+  - `SvgRobotAnimation.jsx`: FIFO execution queue, step sequencer, robot avatar tracking, and dynamic precondition gate unlocking (`hasKey === TRUE`).
+  - `SvgClassifierAnimation.jsx`: 2D feature coordinates, draggable/clickable query point, expanding k-NN radius circle, Euclidean distance lines, and real-time majority voting tally.
+  - `SvgLlmAnimation.jsx`: Token prediction pipeline, live Softmax distribution curve, interactive Temperature slider ($0.0 \le T \le 1.5$), and token sampling trigger.
+- **Media Slot & Persistent Voiceover Engine**:
+  - `src/core/narration.js`: Zero-dependency voiceover narration engine supporting HTML5 Audio with graceful fallback to browser Web Speech API (`window.speechSynthesis` in `he-IL`), variable playback rates (`1.0x`, `1.25x`, `1.5x`), and reactive event bus.
+  - `src/components/LiteYouTubeEmbed.jsx`: Lightweight, on-demand sandboxed YouTube player (`youtube-nocookie.com`, `sandbox="allow-scripts allow-same-origin allow-presentation"`, zero telemetry prior to user interaction).
+  - `src/components/AudioNarrationPlayer.jsx`: Audio player with play/pause, seek scrubber, speed cycle, waveform visualizer, and collapsible Hebrew transcript.
+  - Global persistent voiceover listening toggle in top application header alongside sound effects mute switch.
+- **Curriculum Enrichment (`src/data/curriculum.json`)**:
+  - Added structured concept definitions (`badge`, `title`, `description`, `highlight`, `icon`), SVG animation configurations, and media metadata (voiceover transcripts and video descriptors) across all 4 labs.
+
+### Verified
+- Automated production build passed cleanly (`npm run build`, bundle size: 292 kB, gzip: 86 kB).
+- Live browser inspection via Playwright confirmed responsive rendering across desktop (1280x800) and mobile (390x844) viewports.
+- Verified phase transitions (`TheoryView` ↔ `InteractiveView`) across all 4 labs.
+- Verified Zero browser console errors and zero warnings logged.
+- Full native Hebrew RTL layout alignment and Web Audio sound feedback verified.
+- Strict Zero-PII hygiene enforced across repository files and git log.
+
 ## [0.1.0] - 2026-10-08
 
 ### Added
