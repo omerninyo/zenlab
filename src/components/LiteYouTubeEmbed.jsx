@@ -8,15 +8,42 @@ export default function LiteYouTubeEmbed({ videoId, title, channel, duration, lo
 
   if (localSrc) {
     return (
-      <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-slate-950 border border-slate-800 shadow-md">
-        <video 
-          controls 
-          playsInline 
-          src={localSrc} 
-          className="w-full h-full object-cover"
-        >
-          הדפדפן אינו תומך בניגון וידאו זה.
-        </video>
+      <div className="flex flex-col rounded-2xl overflow-hidden bg-slate-950 border-2 border-slate-800 shadow-xl">
+        {/* Top Video Header */}
+        <div className="px-4 py-3 bg-slate-900 border-b border-slate-800 flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <span className="w-7 h-7 rounded-lg bg-blue-600 flex items-center justify-center text-white shrink-0 shadow-sm">
+              <Video className="w-4 h-4" />
+            </span>
+            <div className="text-right">
+              <h4 className="text-xs sm:text-sm font-bold text-white leading-tight line-clamp-1">{title}</h4>
+              <p className="text-[10px] sm:text-xs text-blue-400 font-semibold">{channel || 'NotebookLM Video Explainer'}</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="px-2 py-0.5 rounded-lg bg-blue-950/80 border border-blue-800 text-[10px] text-blue-300 font-semibold hidden sm:inline">
+              סרטון מקומי בעברית
+            </span>
+            {duration && (
+              <span className="px-2.5 py-0.5 rounded-lg bg-slate-800 border border-slate-700 text-[11px] font-mono font-bold text-slate-300">
+                {duration}
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Video Player Frame */}
+        <div className="relative w-full aspect-video bg-black flex items-center justify-center">
+          <video 
+            controls 
+            playsInline 
+            src={localSrc} 
+            className="w-full h-full object-contain"
+          >
+            הדפדפן אינו תומך בניגון וידאו זה.
+          </video>
+        </div>
       </div>
     );
   }

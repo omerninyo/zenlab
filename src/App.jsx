@@ -145,7 +145,7 @@ export default function App() {
                   כיתה ה׳
                 </span>
                 <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700 hidden sm:inline">
-                  v0.6.0
+                  v0.6.1
                 </span>
               </div>
               <p className="text-xs text-slate-500 dark:text-slate-400 hidden sm:block font-medium">

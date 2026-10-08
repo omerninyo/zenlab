@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.1] - 2026-10-08
+
+### Added
+- **Interactive Laboratory Podcast Player (`src/components/PodcastPlayer.jsx`)**:
+  - Dedicated rich audio player for long-form pedagogical podcasts produced via Google NotebookLM.
+  - Interactive playback controls: Play/Pause, seek slider, duration and elapsed time display, restart, mute toggle.
+  - Multi-speed playback toggle cycling through `1.0x`, `1.25x`, and `1.5x`.
+  - Dynamic animated waveform audio visualizer matching playback status.
+  - Strictly adheres to Lucide icons and classroom visual discipline without emojis.
+- **Integrated Lab 1 Multimedia Suite (`src/data/curriculum.json`, `src/components/TheoryView.jsx`)**:
+  - Technical analysis and integration of user-generated NotebookLM media:
+    - Video Explainer: `01_סוד_המסך__מציירים_במספרים.mp4` (H.264, 720p HD, 24 fps, duration `05:59`, 30.1 MB).
+    - Audio Deep-Dive Podcast: `01_איך_המחשב_הופך_מספרים_לצבעים_במסך.m4a` (Stereo AAC, 256 kbps, duration `05:36`, 10.3 MB).
+  - Cross-platform ASCII symlinks (`public/videos/lab1.mp4`, `public/audio/explainers/lab1_podcast.m4a`) ensuring 100% reliable URL resolution across all web hosting environments.
+  - Multi-tab theory view with instant switching between Video Explainer, Audio Podcast, Hebrew Explainer Tour, and Quick Audio Narration.
+
 ## [0.6.0] - 2026-10-08
 
 ### Added

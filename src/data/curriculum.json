@@ -324,10 +324,18 @@
           "audioSrc": "/audio/narration/lab1.wav"
         },
         "video": {
+          "localSrc": "/videos/lab1.mp4",
           "videoId": "15aqFQQVBWU",
-          "title": "כיצד מחשבים רואים ומציגים תמונות?",
-          "channel": "Computer Science Field Guides",
-          "duration": "4:30 דקות"
+          "title": "סוד המסך: מציירים במספרים",
+          "channel": "NotebookLM Video Explainer",
+          "duration": "05:59 דקות"
+        },
+        "podcast": {
+          "audioSrc": "/audio/explainers/lab1_podcast.m4a",
+          "title": "פודקאסט לימודי: איך המחשב הופך מספרים לצבעים במסך",
+          "channel": "NotebookLM Audio Deep Dive",
+          "duration": "05:36 דקות",
+          "description": "שיחת עומק מרתקת ומקיפה על פיקסלים, ביטים, מודל RGB וייצוג תמונה דיגיטלית"
         }
       },
       "svgAnimation": {

@@ -24,11 +24,14 @@ import {
   HelpCircle,
   Tv,
   CheckCircle2,
-  Volume2
+  Volume2,
+  Radio,
+  Headphones
 } from 'lucide-react';
 import AudioNarrationPlayer from './AudioNarrationPlayer.jsx';
 import LiteYouTubeEmbed from './LiteYouTubeEmbed.jsx';
 import HebrewExplainerTour from './HebrewExplainerTour.jsx';
+import PodcastPlayer from './PodcastPlayer.jsx';
 import { AudioEngine } from '../core/audio.js';
 
 const ICON_MAP = {
@@ -60,9 +63,23 @@ export default function TheoryView({
   conceptData,
   mediaData
 }) {
-  // 'tour' (default primary) | 'audio' | 'video'
-  const [activeMediaTab, setActiveMediaTab] = useState('tour');
+  const data = labData || {};
+  const structuredConcepts = data.structuredConcepts || [];
+  const conceptExplanation = data.conceptExplanation || conceptData || {};
+  const media = data.media || mediaData || {};
+
+  // 'video' (default if local explainer available) | 'podcast' | 'tour' | 'audio'
+  const [activeMediaTab, setActiveMediaTab] = useState(() => (media.video?.localSrc ? 'video' : 'tour'));
   const [activeAnimIdx, setActiveAnimIdx] = useState(0);
+
+  // Sync activeMediaTab when switching labs if new lab has local video
+  React.useEffect(() => {
+    if (media.video?.localSrc) {
+      setActiveMediaTab('video');
+    } else {
+      setActiveMediaTab('tour');
+    }
+  }, [data.id]);
 
   // Normalize animations list
   const animationList = animations && animations.length > 0
@@ -74,14 +91,9 @@ export default function TheoryView({
   const currentAnim = animationList[activeAnimIdx] || animationList[0];
   const CurrentAnimComponent = currentAnim?.component;
 
-  const data = labData || {};
-  const structuredConcepts = data.structuredConcepts || [];
-  const conceptExplanation = data.conceptExplanation || conceptData || {};
-  const media = data.media || mediaData || {};
-
   return (
     <div className="space-y-8 animate-fadeIn" dir="rtl">
-      {/* 1. Primary Media Slot: Built-in Hebrew Explainer Tour */}
+      {/* 1. Primary Media Slot: Built-in Hebrew Explainer Tour & Multimedia */}
       <section className="space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2.5">
@@ -93,13 +105,43 @@ export default function TheoryView({
                 הסבר מודרך בעברית לילדים
               </h2>
               <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-                למדו את הרעיון המרכזי באמצעות סיור מונפש בעברית עם קריינות ידידותית
+                למדו את הרעיון המרכזי באמצעות סרטון עומק, פודקאסט מעבדה או סיור מונפש בעברית
               </p>
             </div>
           </div>
 
           {/* Media Mode Tabs */}
-          <div className="flex items-center bg-slate-100 dark:bg-slate-900 p-1 rounded-xl border border-slate-200 dark:border-slate-800 text-xs">
+          <div className="flex flex-wrap items-center bg-slate-100 dark:bg-slate-900 p-1 rounded-xl border border-slate-200 dark:border-slate-800 text-xs gap-1">
+            {media.video && (
+              <button
+                type="button"
+                onClick={() => { setActiveMediaTab('video'); AudioEngine.playStep(); }}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                  activeMediaTab === 'video'
+                    ? 'bg-blue-600 text-white shadow-sm'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+                }`}
+              >
+                <Video className="w-3.5 h-3.5" />
+                <span>{media.video.localSrc ? `סרטון הסבר (${media.video.duration || '05:59'})` : 'סרטון העשרה'}</span>
+              </button>
+            )}
+
+            {media.podcast && (
+              <button
+                type="button"
+                onClick={() => { setActiveMediaTab('podcast'); AudioEngine.playStep(); }}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
+                  activeMediaTab === 'podcast'
+                    ? 'bg-indigo-600 text-white shadow-sm'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+                }`}
+              >
+                <Radio className="w-3.5 h-3.5" />
+                <span>{`פודקאסט מעבדה (${media.podcast.duration || '05:36'})`}</span>
+              </button>
+            )}
+
             <button
               type="button"
               onClick={() => { setActiveMediaTab('tour'); AudioEngine.playStep(); }}
@@ -127,37 +169,12 @@ export default function TheoryView({
                 <span>קריינות קולית</span>
               </button>
             )}
-
-            {media.video && (
-              <button
-                type="button"
-                onClick={() => { setActiveMediaTab('video'); AudioEngine.playStep(); }}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
-                  activeMediaTab === 'video'
-                    ? 'bg-blue-600 text-white shadow-sm'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
-                }`}
-              >
-                <Video className="w-3.5 h-3.5" />
-                <span>סרטון העשרה</span>
-              </button>
-            )}
           </div>
         </div>
 
         {/* Tab Content Display */}
-        {activeMediaTab === 'tour' && (
-          <HebrewExplainerTour labData={data} />
-        )}
-
-        {activeMediaTab === 'audio' && media.narration && (
-          <div className="bg-white dark:bg-slate-900 border-2 border-slate-200/90 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
-            <AudioNarrationPlayer narrationData={media.narration} />
-          </div>
-        )}
-
         {activeMediaTab === 'video' && media.video && (
-          <div className="bg-white dark:bg-slate-900 border-2 border-slate-200/90 dark:border-slate-800 rounded-2xl p-6 shadow-sm space-y-3">
+          <div className="bg-white dark:bg-slate-900 border-2 border-slate-200/90 dark:border-slate-800 rounded-2xl p-4 sm:p-6 shadow-sm space-y-3">
             {!media.video.localSrc && (
               <div className="text-xs font-semibold text-amber-700 bg-amber-50 border border-amber-200 p-2.5 rounded-xl">
                 שים לב: סרטון זה הוא סרטון העשרה מדעי באנגלית. מומלץ להתחיל בסיור המונפש בעברית למעלה!
@@ -170,6 +187,22 @@ export default function TheoryView({
               channel={media.video.channel}
               duration={media.video.duration}
             />
+          </div>
+        )}
+
+        {activeMediaTab === 'podcast' && media.podcast && (
+          <div className="bg-white dark:bg-slate-900 border-2 border-slate-200/90 dark:border-slate-800 rounded-2xl p-4 sm:p-6 shadow-sm">
+            <PodcastPlayer podcastData={media.podcast} />
+          </div>
+        )}
+
+        {activeMediaTab === 'tour' && (
+          <HebrewExplainerTour labData={data} />
+        )}
+
+        {activeMediaTab === 'audio' && media.narration && (
+          <div className="bg-white dark:bg-slate-900 border-2 border-slate-200/90 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
+            <AudioNarrationPlayer narrationData={media.narration} />
           </div>
         )}
       </section>
