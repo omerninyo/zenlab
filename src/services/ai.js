@@ -161,5 +161,291 @@ export const AIService = {
     } catch {
       return fallbackText;
     }
+  },
+
+  /**
+   * Solves a grid maze using either Breadth-First Search (BFS) or A* Heuristic Search.
+   * 
+   * @param {{ grid: number[], width: number, height: number, start: {x: number, y: number}, goal: {x: number, y: number}, algorithm: 'bfs' | 'astar' }} params
+   * @returns {{ visitedOrder: Array<{x: number, y: number}>, path: Array<{x: number, y: number}>, totalExplored: number, found: boolean }}
+   */
+  solvePathfinder({ grid, width = 8, height = 8, start = { x: 0, y: 0 }, goal = { x: 7, y: 7 }, algorithm = 'astar' }) {
+    const isInside = (x, y) => x >= 0 && x < width && y >= 0 && y < height;
+    const isWalkable = (x, y) => isInside(x, y) && grid[y * width + x] === 0;
+    const keyOf = (p) => `${p.x},${p.y}`;
+    const manhattan = (a, b) => Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
+
+    const visitedOrder = [];
+    const cameFrom = new Map();
+
+    if (!isWalkable(start.x, start.y) || !isWalkable(goal.x, goal.y)) {
+      return { visitedOrder: [], path: [], totalExplored: 0, found: false };
+    }
+
+    if (start.x === goal.x && start.y === goal.y) {
+      return { visitedOrder: [start], path: [start], totalExplored: 1, found: true };
+    }
+
+    const directions = [
+      { x: 0, y: -1 }, // Up
+      { x: 1, y: 0 },  // Right
+      { x: 0, y: 1 },  // Down
+      { x: -1, y: 0 }  // Left
+    ];
+
+    if (algorithm === 'bfs') {
+      const queue = [{ x: start.x, y: start.y }];
+      const visited = new Set([keyOf(start)]);
+
+      while (queue.length > 0) {
+        const current = queue.shift();
+        visitedOrder.push(current);
+
+        if (current.x === goal.x && current.y === goal.y) {
+          // Reconstruct path
+          const path = [];
+          let currKey = keyOf(current);
+          while (currKey) {
+            const [cx, cy] = currKey.split(',').map(Number);
+            path.unshift({ x: cx, y: cy });
+            currKey = cameFrom.get(currKey);
+          }
+          return { visitedOrder, path, totalExplored: visitedOrder.length, found: true };
+        }
+
+        for (const dir of directions) {
+          const nx = current.x + dir.x;
+          const ny = current.y + dir.y;
+          const nKey = `${nx},${ny}`;
+
+          if (isWalkable(nx, ny) && !visited.has(nKey)) {
+            visited.add(nKey);
+            cameFrom.set(nKey, keyOf(current));
+            queue.push({ x: nx, y: ny });
+          }
+        }
+      }
+
+      return { visitedOrder, path: [], totalExplored: visitedOrder.length, found: false };
+    }
+
+    // A* Heuristic Search
+    const openSet = [{ x: start.x, y: start.y }];
+    const closedSet = new Set();
+    const gScore = new Map();
+    const fScore = new Map();
+
+    gScore.set(keyOf(start), 0);
+    fScore.set(keyOf(start), manhattan(start, goal));
+
+    while (openSet.length > 0) {
+      // Find node with lowest fScore
+      let bestIndex = 0;
+      let lowestF = Infinity;
+      for (let i = 0; i < openSet.length; i++) {
+        const f = fScore.get(keyOf(openSet[i])) ?? Infinity;
+        if (f < lowestF) {
+          lowestF = f;
+          bestIndex = i;
+        }
+      }
+
+      const current = openSet.splice(bestIndex, 1)[0];
+      const curKey = keyOf(current);
+
+      if (closedSet.has(curKey)) continue;
+      closedSet.add(curKey);
+      visitedOrder.push(current);
+
+      if (current.x === goal.x && current.y === goal.y) {
+        // Reconstruct path
+        const path = [];
+        let currKey = curKey;
+        while (currKey) {
+          const [cx, cy] = currKey.split(',').map(Number);
+          path.unshift({ x: cx, y: cy });
+          currKey = cameFrom.get(currKey);
+        }
+        return { visitedOrder, path, totalExplored: visitedOrder.length, found: true };
+      }
+
+      for (const dir of directions) {
+        const nx = current.x + dir.x;
+        const ny = current.y + dir.y;
+        const neighbor = { x: nx, y: ny };
+        const nKey = keyOf(neighbor);
+
+        if (!isWalkable(nx, ny) || closedSet.has(nKey)) continue;
+
+        const tentativeG = (gScore.get(curKey) ?? Infinity) + 1;
+
+        if (tentativeG < (gScore.get(nKey) ?? Infinity)) {
+          cameFrom.set(nKey, curKey);
+          gScore.set(nKey, tentativeG);
+          fScore.set(nKey, tentativeG + manhattan(neighbor, goal));
+
+          if (!openSet.some(p => p.x === nx && p.y === ny)) {
+            openSet.push(neighbor);
+          }
+        }
+      }
+    }
+
+    return { visitedOrder, path: [], totalExplored: visitedOrder.length, found: false };
+  },
+
+  /**
+   * Computes a 2D convolution over an 8x8 input grid using a 3x3 kernel.
+   * 
+   * @param {{ inputGrid: number[], width: number, height: number, kernel: number[][], bias?: number }} params
+   * @returns {{ outputGrid: number[], details: Array<{x: number, y: number, sum: number, clamped: number, products: number[]}> }}
+   */
+  computeConvolution({ inputGrid, width = 8, height = 8, kernel, bias = 0 }) {
+    const outputGrid = new Array(width * height).fill(0);
+    const details = [];
+
+    const getPixel = (x, y) => {
+      if (x < 0 || x >= width || y < 0 || y >= height) return 0; // Zero-padding
+      return inputGrid[y * width + x] || 0;
+    };
+
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        let sum = 0;
+        const products = [];
+
+        for (let ky = -1; ky <= 1; ky++) {
+          for (let kx = -1; kx <= 1; kx++) {
+            const px = getPixel(x + kx, y + ky);
+            const kw = kernel[ky + 1][kx + 1];
+            const prod = px * kw;
+            products.push(prod);
+            sum += prod;
+          }
+        }
+
+        sum += bias;
+        // Clamp output between 0 and 1 (or 0 and 255 if grayscale)
+        const clamped = Math.max(0, Math.min(1, Math.round(sum * 100) / 100));
+        outputGrid[y * width + x] = clamped;
+
+        details.push({ x, y, sum, clamped, products });
+      }
+    }
+
+    return { outputGrid, details };
+  },
+
+  /**
+   * Evaluates single-layer artificial neuron (Perceptron) on standard binary truth points.
+   * 
+   * @param {{ w1: number, w2: number, bias: number, activation?: 'step' | 'sigmoid' }} params
+   * @returns {{ results: Array<{ x1: number, x2: number, z: number, output: number, targetAnd: number, targetOr: number, targetXor: number }>, accuracyAnd: number, accuracyOr: number, accuracyXor: number }}
+   */
+  evaluatePerceptron({ w1, w2, bias, activation = 'step' }) {
+    const truthTable = [
+      { x1: 0, x2: 0, targetAnd: 0, targetOr: 0, targetXor: 0 },
+      { x1: 0, x2: 1, targetAnd: 0, targetOr: 1, targetXor: 1 },
+      { x1: 1, x2: 0, targetAnd: 0, targetOr: 1, targetXor: 1 },
+      { x1: 1, x2: 1, targetAnd: 1, targetOr: 1, targetXor: 0 }
+    ];
+
+    const results = truthTable.map(point => {
+      const z = w1 * point.x1 + w2 * point.x2 + bias;
+      let output = 0;
+
+      if (activation === 'sigmoid') {
+        const sig = 1 / (1 + Math.exp(-z));
+        output = Math.round(sig * 100) / 100;
+      } else {
+        // Step function threshold at 0
+        output = z >= 0 ? 1 : 0;
+      }
+
+      return {
+        ...point,
+        z: Math.round(z * 100) / 100,
+        output
+      };
+    });
+
+    const isMatch = (out, target) => (activation === 'step' ? out === target : (out >= 0.5 ? 1 : 0) === target);
+
+    const matchAnd = results.filter(r => isMatch(r.output, r.targetAnd)).length;
+    const matchOr = results.filter(r => isMatch(r.output, r.targetOr)).length;
+    const matchXor = results.filter(r => isMatch(r.output, r.targetXor)).length;
+
+    return {
+      results,
+      accuracyAnd: Math.round((matchAnd / 4) * 100),
+      accuracyOr: Math.round((matchOr / 4) * 100),
+      accuracyXor: Math.round((matchXor / 4) * 100)
+    };
+  },
+
+  /**
+   * Evaluates a 2-level decision tree against an animal classification dataset.
+   * 
+   * @param {Array<{ id: string, name: string, hasFur: boolean, canFly: boolean, legs: number, species: string }>} dataset 
+   * @param {{ rootAttr: string, leftAttr: string, rightAttr: string }} splitRules
+   * @returns {{ tree: any, accuracy: number, leafPurity: number }}
+   */
+  evaluateDecisionTree(dataset, { rootAttr = 'canFly', leftAttr = 'hasFur', rightAttr = 'legs' }) {
+    if (!dataset || dataset.length === 0) {
+      return { accuracy: 0, leafPurity: 0, nodes: {} };
+    }
+
+    const testItem = (item, attr) => {
+      if (attr === 'legs') return item.legs === 4;
+      return Boolean(item[attr]);
+    };
+
+    // Root Split
+    const rootTrue = dataset.filter(item => testItem(item, rootAttr));
+    const rootFalse = dataset.filter(item => !testItem(item, rootAttr));
+
+    // Left Subtree Split (rootTrue)
+    const leafLL = rootTrue.filter(item => testItem(item, leftAttr));
+    const leafLR = rootTrue.filter(item => !testItem(item, leftAttr));
+
+    // Right Subtree Split (rootFalse)
+    const leafRL = rootFalse.filter(item => testItem(item, rightAttr));
+    const leafRR = rootFalse.filter(item => !testItem(item, rightAttr));
+
+    const leaves = [leafLL, leafLR, leafRL, leafRR];
+
+    // Compute purity of leaves (highest majority species count / total count)
+    let totalItemsInLeaves = 0;
+    let pureItemsCount = 0;
+
+    leaves.forEach(leaf => {
+      if (leaf.length === 0) return;
+      totalItemsInLeaves += leaf.length;
+      const counts = {};
+      leaf.forEach(item => {
+        counts[item.species] = (counts[item.species] || 0) + 1;
+      });
+      const maxInLeaf = Math.max(...Object.values(counts));
+      pureItemsCount += maxInLeaf;
+    });
+
+    const leafPurity = totalItemsInLeaves > 0 ? Math.round((pureItemsCount / totalItemsInLeaves) * 100) : 0;
+
+    return {
+      rootAttr,
+      leftAttr,
+      rightAttr,
+      nodes: {
+        root: { count: dataset.length },
+        leftGroup: { count: rootTrue.length, items: rootTrue },
+        rightGroup: { count: rootFalse.length, items: rootFalse },
+        leafLL: { count: leafLL.length, items: leafLL },
+        leafLR: { count: leafLR.length, items: leafLR },
+        leafRL: { count: leafRL.length, items: leafRL },
+        leafRR: { count: leafRR.length, items: leafRR }
+      },
+      leafPurity,
+      accuracy: leafPurity
+    };
   }
 };

@@ -7,7 +7,45 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.2.0] - 2026-10-08
+## [0.3.0] - 2026-10-08
+
+### Added
+- **Eight-Lab Master Curriculum Suite for Grade 5 (Ages 10–11)**:
+  - Reorganized curriculum into two parallel cognitive tracks across 8 comprehensive labs (24 total achievement stars):
+    - **Track 1: Classical Computational Thinking & Algorithms**:
+      - `Lab1_BinaryPixels`: 8x8 toggle matrix, 64-bit binary stream, hex encoding, and pixel presets.
+      - `Lab2_AlgorithmicRobot`: 6x6 maze, FIFO command queue, preconditions, and step debugger.
+      - `Lab3_DecisionTree` (New): Interactive binary decision tree builder, feature splits (CanFly, HasFur, Legs), live leaf purity gauge, and single-animal path tracer.
+      - `Lab4_Pathfinder` (New): 8x8 grid maze, obstacle traversal, step-by-step playback comparing Breadth-First Search (BFS) vs. A* Heuristic search.
+    - **Track 2: Perception, Machine Learning & Modern Generative AI**:
+      - `Lab5_MachineLearningClassifier`: 2D feature space, k-NN distance, dynamic decision boundary separator.
+      - `Lab6_VisionKernels` (New): 2D convolutions with 3x3 kernel filters (Sobel vertical/horizontal, sharpen, blur), sliding window multiply-accumulate inspector, and feature map generator.
+      - `Lab7_Perceptron` (New): Artificial neuron mathematical model with $w_1, w_2, \text{bias}$ direct manipulators, 2D decision boundary on unit square, logic gates (AND, OR), and the historic XOR limitation.
+      - `Lab8_LanguageModelPredictor`: Next-token prediction, Softmax probability distribution bar chart, interactive Temperature slider, and autoregression.
+- **Interactive SVG Principle Animations for All New Labs**:
+  - `SvgDecisionTreeAnimation.jsx`: Interactive branching flow with dynamic animal selection, highlighted active paths, and leaf classification.
+  - `SvgPathfinderAnimation.jsx`: Frontier wave expansion vs. heuristic targeting, live step counter, and shortest path reconstruction.
+  - `SvgKernelAnimation.jsx`: 3x3 sliding frame over an 8x8 input matrix, real-time dot product summation, and feature map intensity shading.
+  - `SvgPerceptronAnimation.jsx`: Biological/artificial neuron diagram with live input toggles, synapse weight scaling, summation node $\Sigma$, and output signal trigger.
+- **Algorithmic Engine Expansions (`src/services/ai.js`)**:
+  - `solvePathfinder`: Deterministic implementation of Breadth-First Search and A* Heuristic search with Manhattan distance.
+  - `computeConvolution`: 2D image convolution with zero-padding and step breakdown.
+  - `evaluatePerceptron`: Linear model calculation, step/sigmoid activation, and logic gate accuracy scoring.
+  - `evaluateDecisionTree`: Tree traversal, group splitting, and leaf purity evaluation.
+- **Collective Memory & Pedagogical Research Documentation**:
+  - `docs/research/PEDAGOGICAL_FRAMEWORK_GRADE_5.md`: Exhaustive institutional memory detailing Israeli Ministry of Education (MOE) AI Competency Rubric, AI4K12 National Guidelines (Five Big Ideas for Grades 3–5), cognitive theories (Piaget and Bruner), and child-centered UI/UX requirements.
+  - `docs/proposals/RFC_002_EIGHT_LAB_MASTER_SUITE.md`: Architectural specification for the 8 micro-labs, data contracts, and deterministic execution engines.
+
+### Changed
+- Migrated previous `Lab3_MachineLearningClassifier` and `Lab4_LanguageModelPredictor` to `Lab5` and `Lab8` to establish a clean cognitive progression.
+- Updated `src/App.jsx` navigation bar with 8 interactive lab tabs, Lucide icons, and 24-star progress tracker.
+- Enriched `src/data/curriculum.json` with Hebrew pedagogical explanations, 3-star challenges, and glossaries for all 8 labs.
+
+### Verified
+- Automated build passed cleanly (`npm run build` in 4.06s).
+- Zero console errors and zero warnings.
+- Verified Zero-PII compliance across all added files and git history.
+
 
 ### Added
 - **Hybrid Learning Modules Architecture**:

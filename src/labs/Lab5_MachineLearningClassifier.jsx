@@ -20,11 +20,11 @@ import LabPhaseHeader from '../components/LabPhaseHeader.jsx';
 import TheoryView from '../components/TheoryView.jsx';
 import SvgClassifierAnimation from '../components/animations/SvgClassifierAnimation.jsx';
 
-export default function Lab3_MachineLearningClassifier({ curriculum }) {
-  const labData = curriculum.labs.lab3;
+export default function Lab5_MachineLearningClassifier({ curriculum }) {
+  const labData = curriculum.labs.lab5;
 
   // Phase state: 'theory' | 'interactive'
-  const [phase, setPhase] = useState(() => StorageEngine.getLabPhase('lab3'));
+  const [phase, setPhase] = useState(() => StorageEngine.getLabPhase('lab5'));
   const [points, setPoints] = useState(() => [...labData.initialData]);
   const [selectedClass, setSelectedClass] = useState('A'); // 'A' | 'B'
   const [kValue, setKValue] = useState(3);
@@ -49,8 +49,8 @@ export default function Lab3_MachineLearningClassifier({ curriculum }) {
   // Check challenges
   useEffect(() => {
     // Challenge 1: Total points >= 10
-    if (points.length >= 10 && !completedChallenges['lab3_challenge1']) {
-      const res = StorageEngine.completeChallenge('lab3', 'lab3_challenge1', 1);
+    if (points.length >= 10 && !completedChallenges['lab5_challenge1']) {
+      const res = StorageEngine.completeChallenge('lab5', 'lab5_challenge1', 1);
       if (res.isNew) {
         AudioEngine.playSuccess();
         fireConfetti();
@@ -58,8 +58,8 @@ export default function Lab3_MachineLearningClassifier({ curriculum }) {
     }
 
     // Challenge 2: Test point classified
-    if ((testPoint.x !== 50 || testPoint.y !== 50) && !completedChallenges['lab3_challenge2']) {
-      const res = StorageEngine.completeChallenge('lab3', 'lab3_challenge2', 1);
+    if ((testPoint.x !== 50 || testPoint.y !== 50) && !completedChallenges['lab5_challenge2']) {
+      const res = StorageEngine.completeChallenge('lab5', 'lab5_challenge2', 1);
       if (res.isNew) {
         AudioEngine.playSuccess();
         fireConfetti();
@@ -67,8 +67,8 @@ export default function Lab3_MachineLearningClassifier({ curriculum }) {
     }
 
     // Challenge 3: Tested with k=5
-    if (kValue === 5 && !completedChallenges['lab3_challenge3']) {
-      const res = StorageEngine.completeChallenge('lab3', 'lab3_challenge3', 1);
+    if (kValue === 5 && !completedChallenges['lab5_challenge3']) {
+      const res = StorageEngine.completeChallenge('lab5', 'lab5_challenge3', 1);
       if (res.isNew) {
         AudioEngine.playSuccess();
         fireConfetti();
@@ -133,9 +133,9 @@ export default function Lab3_MachineLearningClassifier({ curriculum }) {
   const classAInfo = labData.classes.A;
   const classBInfo = labData.classes.B;
   const predictedInfo = classification.predictedLabel === 'A' ? classAInfo : classBInfo;
-  const earnedStars = (completedChallenges['lab3_challenge1'] ? 1 : 0) +
-                      (completedChallenges['lab3_challenge2'] ? 1 : 0) +
-                      (completedChallenges['lab3_challenge3'] ? 1 : 0);
+  const earnedStars = (completedChallenges['lab5_challenge1'] ? 1 : 0) +
+                      (completedChallenges['lab5_challenge2'] ? 1 : 0) +
+                      (completedChallenges['lab5_challenge3'] ? 1 : 0);
 
   return (
     <div className="space-y-6" onPointerUp={handlePointerUp} onPointerMove={handlePointerMove}>
@@ -155,7 +155,7 @@ export default function Lab3_MachineLearningClassifier({ curriculum }) {
           animationComponent={SvgClassifierAnimation}
           onProceedToInteractive={() => {
             setPhase('interactive');
-            StorageEngine.setLabPhase('lab3', 'interactive');
+            StorageEngine.setLabPhase('lab5', 'interactive');
             AudioEngine.playStep();
           }}
         />
@@ -170,7 +170,7 @@ export default function Lab3_MachineLearningClassifier({ curriculum }) {
               type="button"
               onClick={() => {
                 setPhase('theory');
-                StorageEngine.setLabPhase('lab3', 'theory');
+                StorageEngine.setLabPhase('lab5', 'theory');
                 AudioEngine.playStep();
               }}
               className="flex items-center gap-1.5 text-slate-400 hover:text-slate-200 transition-colors"

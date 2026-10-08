@@ -10,23 +10,37 @@ The platform runs 100% in the browser with zero backend requirements, zero telem
 
 ---
 
-## Interactive Micro-Labs
+## Interactive Eight-Lab Master Suite
 
-### 1. Binary Pixels (`Lab1_BinaryPixels`)
-- **Core Concept**: Binary encoding of images, bits, bytes, and hexadecimal data representation.
-- **Features**: 8x8 toggle matrix, real-time 64-bit binary and hex streaming, graphic presets (Heart, Smiley, Sword), and custom initial symbol challenges.
+The curriculum is structured into two parallel cognitive tracks designed for Grade 5 (Ages 10–11):
 
-### 2. Algorithmic Robot (`Lab2_AlgorithmicRobot`)
-- **Core Concept**: Deterministic algorithmic execution, sequence order, preconditions, and logic debugging.
-- **Features**: 6x6 grid maze, visual command queue (Forward, Turn Left, Turn Right, Pick Key, Unlock Gate), step-by-step playback with visual execution pointer, and explicit collision/error traps.
+### Track 1: Classical Computational Thinking & Algorithms
+1. **Lab 1: Binary Pixels (`Lab1_BinaryPixels`)**:
+   - *Core Concept*: Binary encoding of images, bits, bytes, and hexadecimal data representation.
+   - *Features*: 8x8 toggle matrix, real-time 64-bit binary and hex streaming, graphic presets, and symbol challenges.
+2. **Lab 2: Algorithmic Robot (`Lab2_AlgorithmicRobot`)**:
+   - *Core Concept*: Deterministic sequence execution, preconditions, and logic debugging.
+   - *Features*: 6x6 grid maze, visual command queue (Forward, Turn Left, Turn Right, Pick Key, Unlock Gate), step debugger.
+3. **Lab 3: Decision Tree Detective (`Lab3_DecisionTree`)**:
+   - *Core Concept*: Hierarchical branching, conditionals (`if-then-else`), feature splitting, and information purity.
+   - *Features*: Interactive tree builder, feature splits (CanFly, HasFur, Legs), real-time purity bar, and animal test tracer.
+4. **Lab 4: State Space Pathfinder (`Lab4_Pathfinder`)**:
+   - *Core Concept*: Graph search, state space exploration, obstacles, and heuristic algorithms (BFS vs. A*).
+   - *Features*: 8x8 grid maze, obstacle wall builder, step-by-step frontier comparison showing explored nodes count and shortest path.
 
-### 3. Machine Learning Classifier (`Lab3_MachineLearningClassifier`)
-- **Core Concept**: Supervised classification in 2D feature space, k-Nearest Neighbors (k-NN), decision boundaries, and confidence metrics.
-- **Features**: Interactive training sample placement, draggable test item, Euclidean distance neighborhood visualization, and dynamic $k$-hyperparameter adjustment ($k \in \{1, 3, 5\}$).
-
-### 4. Language Model Predictor (`Lab4_LanguageModelPredictor`)
-- **Core Concept**: Next-token probability prediction in Large Language Models (LLMs), Softmax temperature scaling, and sampling dynamics.
-- **Features**: Selectable pedagogical context prompts, interactive Temperature slider ($0.0 \le T \le 1.5$), real-time probability distribution bar chart, and token-by-token sentence generator.
+### Track 2: Perception, Machine Learning & Modern Generative AI
+5. **Lab 5: Machine Learning Classifier (`Lab5_MachineLearningClassifier`)**:
+   - *Core Concept*: Supervised classification in 2D feature space, k-Nearest Neighbors (k-NN), and decision boundaries.
+   - *Features*: Interactive sample placement, draggable test item, Euclidean distance neighborhood visualization, and $k$ adjustments.
+6. **Lab 6: Vision Kernel Studio (`Lab6_VisionKernels`)**:
+   - *Core Concept*: 2D image convolutions, $3 \times 3$ kernel matrices, multiply-accumulate (MAC) math, and edge detection.
+   - *Features*: 8x8 pixel canvas with presets (vertical stripes, squares, cross), Sobel/sharpen/blur filters, and interactive pixel inspector.
+7. **Lab 7: The Perceptron Switch (`Lab7_Perceptron`)**:
+   - *Core Concept*: Single-layer artificial neuron, synapse weights, threshold bias, linear separability, and logic gates.
+   - *Features*: $w_1, w_2, b$ sliders, dynamic decision boundary on unit square, AND/OR gate training, and the historic XOR limitation.
+8. **Lab 8: Language Model Predictor (`Lab8_LanguageModelPredictor`)**:
+   - *Core Concept*: Next-token prediction in LLMs, Softmax temperature scaling, and sampling dynamics.
+   - *Features*: Context prompts, interactive Temperature slider ($0.0 \le T \le 1.5$), real-time probability bar chart, and autoregressive generation.
 
 ---
 

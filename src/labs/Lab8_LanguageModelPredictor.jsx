@@ -22,10 +22,10 @@ import LabPhaseHeader from '../components/LabPhaseHeader.jsx';
 import TheoryView from '../components/TheoryView.jsx';
 import SvgLlmAnimation from '../components/animations/SvgLlmAnimation.jsx';
 
-export default function Lab4_LanguageModelPredictor({ curriculum }) {
-  const labData = curriculum.labs.lab4;
+export default function Lab8_LanguageModelPredictor({ curriculum }) {
+  const labData = curriculum.labs.lab8;
   // Phase state: 'theory' | 'interactive'
-  const [phase, setPhase] = useState(() => StorageEngine.getLabPhase('lab4'));
+  const [phase, setPhase] = useState(() => StorageEngine.getLabPhase('lab8'));
   const [selectedPromptId, setSelectedPromptId] = useState(labData.prompts[0].id);
   const [temperature, setTemperature] = useState(0.7);
   const [generatedTokens, setGeneratedTokens] = useState([]);
@@ -51,8 +51,8 @@ export default function Lab4_LanguageModelPredictor({ curriculum }) {
   // Check challenges
   useEffect(() => {
     // Challenge 1: Deterministic temp <= 0.05 with at least 1 token
-    if (temperature <= 0.05 && generatedTokens.length >= 1 && !completedChallenges['lab4_challenge1']) {
-      const res = StorageEngine.completeChallenge('lab4', 'lab4_challenge1', 1);
+    if (temperature <= 0.05 && generatedTokens.length >= 1 && !completedChallenges['lab8_challenge1']) {
+      const res = StorageEngine.completeChallenge('lab8', 'lab8_challenge1', 1);
       if (res.isNew) {
         AudioEngine.playSuccess();
         fireConfetti();
@@ -60,8 +60,8 @@ export default function Lab4_LanguageModelPredictor({ curriculum }) {
     }
 
     // Challenge 2: Creative temp >= 0.9 with at least 1 token
-    if (temperature >= 0.9 && generatedTokens.length >= 1 && !completedChallenges['lab4_challenge2']) {
-      const res = StorageEngine.completeChallenge('lab4', 'lab4_challenge2', 1);
+    if (temperature >= 0.9 && generatedTokens.length >= 1 && !completedChallenges['lab8_challenge2']) {
+      const res = StorageEngine.completeChallenge('lab8', 'lab8_challenge2', 1);
       if (res.isNew) {
         AudioEngine.playSuccess();
         fireConfetti();
@@ -69,8 +69,8 @@ export default function Lab4_LanguageModelPredictor({ curriculum }) {
     }
 
     // Challenge 3: Min 4 generated tokens
-    if (generatedTokens.length >= 4 && !completedChallenges['lab4_challenge3']) {
-      const res = StorageEngine.completeChallenge('lab4', 'lab4_challenge3', 1);
+    if (generatedTokens.length >= 4 && !completedChallenges['lab8_challenge3']) {
+      const res = StorageEngine.completeChallenge('lab8', 'lab8_challenge3', 1);
       if (res.isNew) {
         AudioEngine.playSuccess();
         fireConfetti();
@@ -102,9 +102,9 @@ export default function Lab4_LanguageModelPredictor({ curriculum }) {
     AudioEngine.playStep();
   };
 
-  const earnedStars = (completedChallenges['lab4_challenge1'] ? 1 : 0) +
-                      (completedChallenges['lab4_challenge2'] ? 1 : 0) +
-                      (completedChallenges['lab4_challenge3'] ? 1 : 0);
+  const earnedStars = (completedChallenges['lab8_challenge1'] ? 1 : 0) +
+                      (completedChallenges['lab8_challenge2'] ? 1 : 0) +
+                      (completedChallenges['lab8_challenge3'] ? 1 : 0);
 
   return (
     <div className="space-y-6">
@@ -124,7 +124,7 @@ export default function Lab4_LanguageModelPredictor({ curriculum }) {
           animationComponent={SvgLlmAnimation}
           onProceedToInteractive={() => {
             setPhase('interactive');
-            StorageEngine.setLabPhase('lab4', 'interactive');
+            StorageEngine.setLabPhase('lab8', 'interactive');
             AudioEngine.playStep();
           }}
         />
@@ -139,7 +139,7 @@ export default function Lab4_LanguageModelPredictor({ curriculum }) {
               type="button"
               onClick={() => {
                 setPhase('theory');
-                StorageEngine.setLabPhase('lab4', 'theory');
+                StorageEngine.setLabPhase('lab8', 'theory');
                 AudioEngine.playStep();
               }}
               className="flex items-center gap-1.5 text-slate-400 hover:text-slate-200 transition-colors"

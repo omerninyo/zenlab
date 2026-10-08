@@ -2,14 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { 
   Binary, 
   Bot, 
+  GitBranch,
+  Compass,
   Network, 
+  Eye,
+  Zap,
   Sparkles, 
   Volume2, 
   VolumeX, 
   RotateCcw, 
   Star, 
   BookOpen, 
-  Compass,
   Cpu,
   Headphones
 } from 'lucide-react';
@@ -19,8 +22,12 @@ import { AudioEngine } from './core/audio.js';
 import { NarrationEngine } from './core/narration.js';
 import Lab1_BinaryPixels from './labs/Lab1_BinaryPixels.jsx';
 import Lab2_AlgorithmicRobot from './labs/Lab2_AlgorithmicRobot.jsx';
-import Lab3_MachineLearningClassifier from './labs/Lab3_MachineLearningClassifier.jsx';
-import Lab4_LanguageModelPredictor from './labs/Lab4_LanguageModelPredictor.jsx';
+import Lab3_DecisionTree from './labs/Lab3_DecisionTree.jsx';
+import Lab4_Pathfinder from './labs/Lab4_Pathfinder.jsx';
+import Lab5_MachineLearningClassifier from './labs/Lab5_MachineLearningClassifier.jsx';
+import Lab6_VisionKernels from './labs/Lab6_VisionKernels.jsx';
+import Lab7_Perceptron from './labs/Lab7_Perceptron.jsx';
+import Lab8_LanguageModelPredictor from './labs/Lab8_LanguageModelPredictor.jsx';
 
 export default function App() {
   const [activeLabId, setActiveLabId] = useState(() => StorageEngine.getState().activeLabId || 'lab1');
@@ -80,10 +87,14 @@ export default function App() {
   };
 
   const navItems = [
-    { id: 'lab1', label: '1. פיקסלים בינאריים', icon: Binary },
+    { id: 'lab1', label: '1. פיקסלים וביטים', icon: Binary },
     { id: 'lab2', label: '2. רובוט אלגוריתמי', icon: Bot },
-    { id: 'lab3', label: '3. מסווג למידת מכונה', icon: Network },
-    { id: 'lab4', label: '4. מודל שפה וחיזוי', icon: Sparkles }
+    { id: 'lab3', label: '3. עץ החלטות בלשי', icon: GitBranch },
+    { id: 'lab4', label: '4. מבוך חיפוש ו-A*', icon: Compass },
+    { id: 'lab5', label: '5. מסווג למידת מכונה', icon: Network },
+    { id: 'lab6', label: '6. ראייה ופילטרים', icon: Eye },
+    { id: 'lab7', label: '7. מתג נוירון ו-XOR', icon: Zap },
+    { id: 'lab8', label: '8. מודל שפה וחיזוי', icon: Sparkles }
   ];
 
   return (
@@ -100,7 +111,7 @@ export default function App() {
               <div className="flex items-center gap-2">
                 <span className="text-base font-bold tracking-tight text-white">ZenLab</span>
                 <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">
-                  v0.2.0
+                  v0.3.0
                 </span>
               </div>
               <p className="text-[11px] text-slate-400 hidden sm:block">
@@ -115,7 +126,7 @@ export default function App() {
             <div className="flex items-center gap-1.5 bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 text-xs font-semibold text-amber-300">
               <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
               <span className="font-mono">{totalStars}</span>
-              <span className="text-slate-500 font-normal hidden sm:inline">כוכבים</span>
+              <span className="text-slate-500 font-normal hidden sm:inline">/ 24 כוכבים</span>
             </div>
 
             {/* Voiceover Narration Switch */}
@@ -196,8 +207,12 @@ export default function App() {
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {activeLabId === 'lab1' && <Lab1_BinaryPixels curriculum={curriculumData} />}
         {activeLabId === 'lab2' && <Lab2_AlgorithmicRobot curriculum={curriculumData} />}
-        {activeLabId === 'lab3' && <Lab3_MachineLearningClassifier curriculum={curriculumData} />}
-        {activeLabId === 'lab4' && <Lab4_LanguageModelPredictor curriculum={curriculumData} />}
+        {activeLabId === 'lab3' && <Lab3_DecisionTree curriculum={curriculumData} />}
+        {activeLabId === 'lab4' && <Lab4_Pathfinder curriculum={curriculumData} />}
+        {activeLabId === 'lab5' && <Lab5_MachineLearningClassifier curriculum={curriculumData} />}
+        {activeLabId === 'lab6' && <Lab6_VisionKernels curriculum={curriculumData} />}
+        {activeLabId === 'lab7' && <Lab7_Perceptron curriculum={curriculumData} />}
+        {activeLabId === 'lab8' && <Lab8_LanguageModelPredictor curriculum={curriculumData} />}
       </main>
 
       {/* Footer Notice with Zero-PII Hygiene */}
