@@ -26,7 +26,8 @@ import {
   CheckCircle2,
   Volume2,
   Radio,
-  Headphones
+  Headphones,
+  Star
 } from 'lucide-react';
 import AudioNarrationPlayer from './AudioNarrationPlayer.jsx';
 import LiteYouTubeEmbed from './LiteYouTubeEmbed.jsx';
@@ -377,17 +378,56 @@ export default function TheoryView({
         </section>
       )}
 
-      {/* 6. Call to Action: Proceed to Interactive View */}
-      <div className="pt-4 flex justify-end">
-        <button
-          type="button"
-          onClick={onProceedToInteractive}
-          className="flex items-center gap-3 px-8 py-4 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white text-sm sm:text-base font-extrabold shadow-md hover:shadow-lg transition-all group"
-        >
-          <span>הבנתי את הרעיון &ndash; קדימה, למעבדה האינטראקטיבית!</span>
-          <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1.5 transition-transform" />
-        </button>
-      </div>
+      {/* 6. Engaging Interactive Mission Launch Card */}
+      <section className="bg-gradient-to-r from-blue-50 via-white to-indigo-50 dark:from-slate-900 dark:via-slate-900/90 dark:to-indigo-950/40 border-2 border-blue-200 dark:border-blue-900/60 rounded-2xl p-6 sm:p-8 shadow-sm">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div className="space-y-2.5 max-w-2xl">
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>משימת המעבדה</span>
+              </span>
+              {data.challenges && data.challenges.length > 0 && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-50 dark:bg-slate-950 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-slate-800">
+                  <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-500" />
+                  <span>{data.challenges.length} אתגרים לפתרון</span>
+                </span>
+              )}
+            </div>
+
+            <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+              מוכנים ליישם את מה שלמדתם בארגז החול?
+            </h3>
+            <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+              עברו לשלב ההתנסות המעשית: שחקו עם הפרמטרים, פתרו את האתגרים וצברו כוכבים לתעודת ההצטיינות הרשמית!
+            </p>
+
+            {data.challenges && data.challenges.length > 0 && (
+              <div className="flex flex-wrap gap-2 pt-1">
+                {data.challenges.map((c, i) => (
+                  <span key={c.id || i} className="text-xs px-2.5 py-1 rounded-lg bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-medium">
+                    אתגר {i + 1}: {c.title}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="shrink-0 flex items-center">
+            <button
+              type="button"
+              onClick={() => {
+                AudioEngine.playStep();
+                onProceedToInteractive();
+              }}
+              className="w-full sm:w-auto flex items-center justify-center gap-3 px-8 py-4 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white text-base font-extrabold shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 transition-all group"
+            >
+              <span>קדימה, לארגז החול!</span>
+              <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+            </button>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

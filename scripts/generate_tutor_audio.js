@@ -74,51 +74,71 @@ const isDryRun = args.includes('--dry-run');
 const apiKeyArg = args.find(a => a.startsWith('--api-key='));
 const apiKey = apiKeyArg ? apiKeyArg.split('=')[1] : process.env.GEMINI_API_KEY;
 
-// Flagship 2026 model: gemini-3.8-flash-tts
-const MODEL_NAME = 'gemini-3.8-flash-tts';
+// Flagship 2026 models with per-model quota pools
+const MODELS = [
+  'gemini-3.8-flash-lite-tts',
+  'gemini-3.1-flash-tts-preview',
+  'gemini-3.8-flash-tts',
+  'gemini-2.5-flash-preview-tts'
+];
 const VOICE_NAME = 'Puck'; // Warm, enthusiastic child-friendly robot voice
 
 async function synthesizeGemini(text, outFile) {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${apiKey}`;
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{
-        parts: [{ text }]
-      }],
-      generationConfig: {
-        responseModalities: ['AUDIO'],
-        speechConfig: {
-          voiceConfig: {
-            prebuiltVoiceConfig: {
-              voiceName: VOICE_NAME
+  for (const model of MODELS) {
+    try {
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{ text }]
+          }],
+          generationConfig: {
+            responseModalities: ['AUDIO'],
+            speechConfig: {
+              voiceConfig: {
+                prebuiltVoiceConfig: {
+                  voiceName: VOICE_NAME
+                }
+              }
             }
           }
+        })
+      });
+
+      if (!response.ok) {
+        const err = await response.text();
+        if (response.status === 429) {
+          // Quota limit on this model, continue to next model in cascade
+          continue;
         }
+        throw new Error(`${model} error (${response.status}): ${err}`);
       }
-    })
-  });
 
-  if (!response.ok) {
-    const err = await response.text();
-    throw new Error(`Gemini 3.8 Flash TTS error (${response.status}): ${err}`);
+      const json = await response.json();
+      const rawBase64 = json.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+      if (!rawBase64) {
+        continue;
+      }
+      const audioBuf = Buffer.from(rawBase64, 'base64');
+      fs.writeFileSync(outFile, audioBuf);
+      return model;
+    } catch (err) {
+      if (err.message && err.message.includes('429')) {
+        continue;
+      }
+      throw err;
+    }
   }
-
-  const json = await response.json();
-  const rawBase64 = json.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
-  if (!rawBase64) {
-    throw new Error('No audio data returned in response');
-  }
-  const audioBuf = Buffer.from(rawBase64, 'base64');
-  fs.writeFileSync(outFile, audioBuf);
+  throw new Error('All TTS models exhausted their daily quota (429)');
 }
 
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 async function run() {
   console.log(`🎙️ ZenLab Tutor Studio Voice Generator`);
-  console.log(`Model: ${MODEL_NAME} | Voice: ${VOICE_NAME}`);
+  console.log(`Models: ${MODELS.join(', ')} | Voice: ${VOICE_NAME}`);
   console.log(`Total Snippets: ${TUTOR_ITEMS.length}`);
   console.log(`Target Output: ${OUTPUT_DIR}\n`);
 
@@ -147,8 +167,8 @@ async function run() {
     while (!success && attempts < 4) {
       attempts++;
       try {
-        await synthesizeGemini(item.text, outFile);
-        console.log(`  -> Saved ${item.id}.wav (${(fs.statSync(outFile).size / 1024).toFixed(1)} KB)`);
+        const usedModel = await synthesizeGemini(item.text, outFile);
+        console.log(`  -> Saved ${item.id}.wav via ${usedModel} (${(fs.statSync(outFile).size / 1024).toFixed(1)} KB)`);
         success = true;
         if (i < TUTOR_ITEMS.length - 1) {
           await sleep(2500); // 2.5s polite delay for standard tier

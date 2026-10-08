@@ -145,7 +145,7 @@ export default function App() {
                   כיתה ה׳
                 </span>
                 <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700 hidden sm:inline">
-                  v0.6.1
+                  v0.6.2
                 </span>
                 <span className="text-[11px] font-bold tracking-wide font-mono px-2.5 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-950/70 text-indigo-700 dark:text-indigo-300 border border-indigo-200/80 dark:border-indigo-800/60 hidden md:inline">
                   From Zero to Neural
@@ -240,13 +240,13 @@ export default function App() {
       <nav className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800/80 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
           {/* Track Filter Pills */}
-          <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-950 p-1 rounded-xl border border-slate-200 dark:border-slate-800 shrink-0 self-start md:self-auto">
+          <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-950 p-1 rounded-xl border border-slate-200 dark:border-slate-800 shrink-0 self-start md:self-auto shadow-inner">
             <button
               type="button"
               onClick={() => { setSelectedTrack('all'); AudioEngine.playStep(); }}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                 selectedTrack === 'all'
-                  ? 'bg-blue-600 text-white shadow-sm'
+                  ? 'bg-slate-800 dark:bg-slate-700 text-white shadow-sm'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
               }`}
             >
@@ -255,24 +255,26 @@ export default function App() {
             <button
               type="button"
               onClick={() => { setSelectedTrack('algorithms'); AudioEngine.playStep(); }}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
                 selectedTrack === 'algorithms'
-                  ? 'bg-blue-600 text-white shadow-sm'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+                  ? 'bg-blue-600 text-white shadow-sm ring-1 ring-blue-400/40'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-300'
               }`}
             >
-              מסלול 1: אלגוריתמיקה
+              <span className="w-2 h-2 rounded-full bg-blue-400 inline-block" />
+              <span>מסלול 1: אלגוריתמיקה</span>
             </button>
             <button
               type="button"
               onClick={() => { setSelectedTrack('ai'); AudioEngine.playStep(); }}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
                 selectedTrack === 'ai'
-                  ? 'bg-blue-600 text-white shadow-sm'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+                  ? 'bg-indigo-600 text-white shadow-sm ring-1 ring-indigo-400/40'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-300'
               }`}
             >
-              מסלול 2: בינה מלאכותית
+              <span className="w-2 h-2 rounded-full bg-indigo-400 inline-block" />
+              <span>מסלול 2: בינה מלאכותית</span>
             </button>
           </div>
 
@@ -282,6 +284,7 @@ export default function App() {
               const Icon = item.icon;
               const isActive = activeLabId === item.id;
               const stars = labStars[item.id] || 0;
+              const isAiTrack = item.track === 'ai';
 
               return (
                 <button
@@ -290,17 +293,26 @@ export default function App() {
                   onClick={() => handleLabSelect(item.id)}
                   className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all ${
                     isActive
-                      ? 'bg-blue-600 text-white shadow-md'
-                      : 'bg-slate-100 hover:bg-slate-200/80 dark:bg-slate-950 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-slate-800'
+                      ? isAiTrack
+                        ? 'bg-indigo-600 text-white shadow-md ring-2 ring-indigo-400/30'
+                        : 'bg-blue-600 text-white shadow-md ring-2 ring-blue-400/30'
+                      : isAiTrack
+                        ? 'bg-slate-100 hover:bg-indigo-50/70 dark:bg-slate-950 dark:hover:bg-indigo-950/30 text-slate-700 dark:text-slate-300 hover:text-indigo-700 dark:hover:text-indigo-300 border border-slate-200 dark:border-slate-800 hover:border-indigo-300 dark:hover:border-indigo-800'
+                        : 'bg-slate-100 hover:bg-blue-50/70 dark:bg-slate-950 dark:hover:bg-blue-950/30 text-slate-700 dark:text-slate-300 hover:text-blue-700 dark:hover:text-blue-300 border border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-800'
                   }`}
                 >
-                  <Icon className="w-4 h-4 shrink-0" />
+                  <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-white' : isAiTrack ? 'text-indigo-600 dark:text-indigo-400' : 'text-blue-600 dark:text-blue-400'}`} />
                   <span>{item.label}</span>
                   {stars > 0 && (
-                    <span className={`px-2 py-0.2 rounded-full text-xs font-bold font-mono ${
-                      isActive ? 'bg-blue-700 text-amber-200' : 'bg-amber-100 dark:bg-slate-900 text-amber-800 dark:text-amber-400 border border-amber-300 dark:border-slate-800'
+                    <span className={`px-2 py-0.5 rounded-full text-xs font-bold font-mono flex items-center gap-1 ${
+                      isActive 
+                        ? 'bg-white/20 text-white' 
+                        : stars === 3
+                          ? 'bg-amber-100 text-amber-900 dark:bg-amber-950/70 dark:text-amber-300 border border-amber-300 dark:border-amber-700'
+                          : 'bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-300'
                     }`}>
-                      {stars}★
+                      <Star className="w-3 h-3 fill-amber-400 text-amber-500" />
+                      <span>{stars}</span>
                     </span>
                   )}
                 </button>

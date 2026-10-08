@@ -137,7 +137,7 @@ export default function LabPhaseHeader({
             onClick={() => handleSelectPhase('theory')}
             className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-xs sm:text-sm font-bold transition-all ${
               activePhase === 'theory'
-                ? 'bg-blue-600 text-white shadow-sm'
+                ? 'bg-blue-600 text-white shadow-sm ring-2 ring-blue-500/20'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-200/60 dark:hover:bg-slate-900/60'
             }`}
           >
@@ -150,12 +150,15 @@ export default function LabPhaseHeader({
             onClick={() => handleSelectPhase('interactive')}
             className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-xs sm:text-sm font-bold transition-all ${
               activePhase === 'interactive'
-                ? 'bg-blue-600 text-white shadow-sm'
+                ? 'bg-blue-600 text-white shadow-sm ring-2 ring-blue-500/20'
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-200/60 dark:hover:bg-slate-900/60'
             }`}
           >
             <Sliders className="w-4 h-4" />
             <span>שלב 2: התנסות אינטראקטיבית</span>
+            {starsEarned < starsTotal && (
+              <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" title="אתגרים ממתינים לפתרון!" />
+            )}
           </button>
         </div>
 

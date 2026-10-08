@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.2] - 2026-10-08
+
+### Added
+- **Full Multimedia Suite Across All 8 Labs (`src/data/curriculum.json`, `public/videos/`, `public/audio/explainers/`)**:
+  - Symlinked and integrated all 8 user-uploaded NotebookLM Hebrew video explainers (`lab1.mp4` through `lab8.mp4`, ~25-31 MB each).
+  - Symlinked and integrated all 8 user-uploaded NotebookLM Hebrew deep-dive audio podcasts (`lab1_podcast.m4a` through `lab8_podcast.m4a`, ~9-12 MB each).
+  - Cross-platform ASCII symlinks guaranteeing 100% reliable URL resolution across all operating systems and Cloudflare Pages.
+- **Brand Tagline "From Zero to Neural"**:
+  - Adopted official brand tagline across `index.html`, `App.jsx`, navigation badges, hero card, `curriculum.json`, and `CertificateModal.jsx`.
+- **Kid-Centric UX & Visual Delights (5th Grade Calibrated)**:
+  - Interactive **Mission Launch Card** in `TheoryView.jsx` ("מוכנים ליישם את מה שלמדתם בארגז החול?") with direct challenge preview and tactile CTA.
+  - Distinct track themes in `App.jsx`: Sky/Cyan/Blue for Track 1 (Algorithms & Computers) and Indigo/Purple/Violet for Track 2 (AI & Neural Networks).
+  - Tactile 2-phase switcher buttons in `LabPhaseHeader.jsx` with active ring styling and an animated amber indicator for uncompleted challenges.
+  - High-contrast star badges displaying exact completion count per lab.
+- **Google Flagship TTS Studio Voice Engine (`scripts/generate_tutor_audio.js`, `public/audio/tutor/`)**:
+  - Built an autonomous multi-model cascading generator utilizing Google's flagship 2026 TTS models (`gemini-3.8-flash-lite-tts`, `gemini-3.1-flash-tts-preview`, `gemini-3.8-flash-tts`).
+  - Synthesized 30 studio-quality 24kHz WAV audio files with warm robot persona `Puck` for Zen AI Tutor interactions.
+  - Graceful phonetic fallback to browser natural speech synthesis if any snippet is unavailable.
+- **Typography & Content Sanitization**:
+  - Cleaned all raw HTML entity strings (`&ndash;`) into native typographic dashes across `curriculum.json`.
+- **E2E QA/QC Verification via Headless Browser**:
+  - Verified 0 console errors and 0 warnings across all 8 labs, video players, podcast players, Zen AI Tutor, and Certificate modal.
+
 ## [0.6.1] - 2026-10-08
 
 ### Added
