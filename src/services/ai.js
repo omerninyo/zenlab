@@ -256,13 +256,20 @@ export const AIService = {
     fScore.set(keyOf(start), manhattan(start, goal));
 
     while (openSet.length > 0) {
-      // Find node with lowest fScore
+      // Find node with lowest fScore, breaking ties with lowest h (closer to goal)
       let bestIndex = 0;
       let lowestF = Infinity;
+      let lowestH = Infinity;
+
       for (let i = 0; i < openSet.length; i++) {
-        const f = fScore.get(keyOf(openSet[i])) ?? Infinity;
-        if (f < lowestF) {
+        const node = openSet[i];
+        const nodeKey = keyOf(node);
+        const f = fScore.get(nodeKey) ?? Infinity;
+        const h = manhattan(node, goal);
+
+        if (f < lowestF || (f === lowestF && h < lowestH)) {
           lowestF = f;
+          lowestH = h;
           bestIndex = i;
         }
       }
@@ -326,6 +333,10 @@ export const AIService = {
       return inputGrid[y * width + x] || 0;
     };
 
+    // Identify differential/edge kernels (weights sum to zero) for magnitude detection
+    const kernelSum = kernel.flat().reduce((a, b) => a + b, 0);
+    const isEdgeKernel = Math.abs(kernelSum) < 0.05;
+
     for (let y = 0; y < height; y++) {
       for (let x = 0; x < width; x++) {
         let sum = 0;
@@ -342,8 +353,9 @@ export const AIService = {
         }
 
         sum += bias;
-        // Clamp output between 0 and 1 (or 0 and 255 if grayscale)
-        const clamped = Math.max(0, Math.min(1, Math.round(sum * 100) / 100));
+        // For edge detectors, gradient magnitude reflects edge strength in both directions
+        const featureResponse = isEdgeKernel ? Math.abs(sum) : sum;
+        const clamped = Math.max(0, Math.min(1, Math.round(featureResponse * 100) / 100));
         outputGrid[y * width + x] = clamped;
 
         details.push({ x, y, sum, clamped, products });

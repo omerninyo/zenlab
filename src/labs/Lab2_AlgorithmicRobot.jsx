@@ -24,6 +24,7 @@ import { StorageEngine } from '../core/storage.js';
 import { fireConfetti } from '../core/canvas-particles.js';
 import LabPhaseHeader from '../components/LabPhaseHeader.jsx';
 import TheoryView from '../components/TheoryView.jsx';
+import LabMissionGuide from '../components/LabMissionGuide.jsx';
 import SvgRobotAnimation from '../components/animations/SvgRobotAnimation.jsx';
 import SvgCpuPipelineAnimation from '../components/animations/SvgCpuPipelineAnimation.jsx';
 
@@ -231,6 +232,123 @@ export default function Lab2_AlgorithmicRobot({ curriculum }) {
     }
   };
 
+  const runSingleStep = () => {
+    if (commands.length === 0 || isRunning) return;
+
+    let nextIndex = executingIndex + 1;
+    if (nextIndex >= commands.length) {
+      resetSimulation();
+      return;
+    }
+
+    setExecutingIndex(nextIndex);
+    const cmd = commands[nextIndex];
+    let currentPos = { ...robotPos };
+    let currentKey = hasKey;
+    let currentGateUnlocked = isGateUnlocked;
+
+    if (cmd === 'FORWARD') {
+      let nextX = currentPos.x;
+      let nextY = currentPos.y;
+
+      if (currentPos.dir === 'north') nextY -= 1;
+      else if (currentPos.dir === 'south') nextY += 1;
+      else if (currentPos.dir === 'east') nextX += 1;
+      else if (currentPos.dir === 'west') nextX -= 1;
+
+      if (nextX < 0 || nextX >= gridSize || nextY < 0 || nextY >= gridSize) {
+        setStatus('collision');
+        setStatusMessage(`זהירות! הרובוט ניסה לצאת מגבולות הלוח בפקודה #${nextIndex + 1}`);
+        AudioEngine.playError();
+        return;
+      }
+
+      if (isWall(nextX, nextY)) {
+        setStatus('collision');
+        setStatusMessage(`אופס! הרובוט נתקע בקיר בפקודה #${nextIndex + 1}`);
+        AudioEngine.playError();
+        return;
+      }
+
+      if (nextX === board.gate.x && nextY === board.gate.y && !currentGateUnlocked) {
+        setStatus('error');
+        setStatusMessage('השער נעול! צריך קודם לאסוף מפתח ולפתוח אותו');
+        AudioEngine.playError();
+        return;
+      }
+
+      currentPos = { ...currentPos, x: nextX, y: nextY };
+      setRobotPos(currentPos);
+      AudioEngine.playStep();
+      setStatus('idle');
+      setStatusMessage(`צעד #${nextIndex + 1}: התקדמות קדימה אל (${currentPos.x},${currentPos.y})`);
+
+    } else if (cmd === 'TURN_LEFT') {
+      const curDirIndex = DIRECTIONS.indexOf(currentPos.dir);
+      const nextDir = DIRECTIONS[(curDirIndex + 3) % 4];
+      currentPos = { ...currentPos, dir: nextDir };
+      setRobotPos(currentPos);
+      AudioEngine.playTone(360, 'sine', 0.05);
+      setStatus('idle');
+      setStatusMessage(`צעד #${nextIndex + 1}: פנייה שמאלה`);
+
+    } else if (cmd === 'TURN_RIGHT') {
+      const curDirIndex = DIRECTIONS.indexOf(currentPos.dir);
+      const nextDir = DIRECTIONS[(curDirIndex + 1) % 4];
+      currentPos = { ...currentPos, dir: nextDir };
+      setRobotPos(currentPos);
+      AudioEngine.playTone(420, 'sine', 0.05);
+      setStatus('idle');
+      setStatusMessage(`צעד #${nextIndex + 1}: פנייה ימינה`);
+
+    } else if (cmd === 'PICK_KEY') {
+      if (currentPos.x === board.key.x && currentPos.y === board.key.y) {
+        currentKey = true;
+        setHasKey(true);
+        AudioEngine.playCollect();
+        setStatusMessage('יש! אספתם את המפתח');
+        if (!completedChallenges['lab2_challenge1']) {
+          StorageEngine.completeChallenge('lab2', 'lab2_challenge1', 1);
+        }
+      } else {
+        setStatusMessage('אין כאן מפתח לאסוף.');
+        AudioEngine.playTone(200, 'sawtooth', 0.1);
+      }
+
+    } else if (cmd === 'UNLOCK_GATE') {
+      const isNearGate = Math.abs(currentPos.x - board.gate.x) + Math.abs(currentPos.y - board.gate.y) <= 1;
+      if (!currentKey) {
+        setStatus('error');
+        setStatusMessage('לא ניתן לפתוח את השער בלי שאספתם קודם מפתח!');
+        AudioEngine.playError();
+        return;
+      }
+
+      if (isNearGate) {
+        currentGateUnlocked = true;
+        setIsGateUnlocked(true);
+        AudioEngine.playUnlock();
+        setStatusMessage('כל הכבוד! השער נפתח בהצלחה');
+        if (!completedChallenges['lab2_challenge2']) {
+          StorageEngine.completeChallenge('lab2', 'lab2_challenge2', 1);
+        }
+      } else {
+        setStatusMessage('הרובוט צריך לעמוד ממש ליד השער כדי לפתוח אותו.');
+        AudioEngine.playTone(200, 'sawtooth', 0.1);
+      }
+    }
+
+    if (currentPos.x === board.goal.x && currentPos.y === board.goal.y) {
+      setStatus('success');
+      setStatusMessage('אלופים! הרובוט הגיע לדגל היעד בהצלחה!');
+      AudioEngine.playSuccess();
+      fireConfetti();
+      if (!completedChallenges['lab2_challenge3']) {
+        StorageEngine.completeChallenge('lab2', 'lab2_challenge3', 1);
+      }
+    }
+  };
+
   const getRobotRotation = (dir) => {
     switch (dir) {
       case 'north': return '-rotate-90';
@@ -274,6 +392,13 @@ export default function Lab2_AlgorithmicRobot({ curriculum }) {
       {/* Phase 2: Interactive Simulator */}
       {phase === 'interactive' && (
         <div className="space-y-6 animate-fadeIn">
+          {/* Active Mission Guidance Banner */}
+          <LabMissionGuide
+            challenges={labData.challenges}
+            completedChallenges={completedChallenges}
+            labNumber={2}
+          />
+
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Maze Grid Column */}
           <div className="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-xl p-6 flex flex-col items-center">
@@ -376,7 +501,7 @@ export default function Lab2_AlgorithmicRobot({ curriculum }) {
                 type="button"
                 onClick={runAlgorithm}
                 disabled={isRunning || commands.length === 0}
-                className="flex items-center gap-2 px-5 py-2 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-500 disabled:bg-slate-800 disabled:text-slate-600 text-white transition-colors shadow-sm"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-500 disabled:bg-slate-800 disabled:text-slate-600 text-white transition-colors shadow-sm"
               >
                 <Play className="w-4 h-4 fill-current" />
                 <span>הפעלת הרובוט ({commands.length})</span>
@@ -384,8 +509,19 @@ export default function Lab2_AlgorithmicRobot({ curriculum }) {
 
               <button
                 type="button"
+                onClick={runSingleStep}
+                disabled={isRunning || commands.length === 0}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 disabled:bg-slate-800 disabled:text-slate-600 text-white transition-colors shadow-sm"
+                title="הרצת פקודה אחת בכל לחיצה כדי לראות בדיוק מה הרובוט עושה"
+              >
+                <FastForward className="w-3.5 h-3.5" />
+                <span>צעד בודד</span>
+              </button>
+
+              <button
+                type="button"
                 onClick={resetSimulation}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors"
+                className="flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>חזרה להתחלה</span>

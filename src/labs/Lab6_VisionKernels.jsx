@@ -17,16 +17,17 @@ import { fireConfetti } from '../core/canvas-particles.js';
 import { AIService } from '../services/ai.js';
 import LabPhaseHeader from '../components/LabPhaseHeader.jsx';
 import TheoryView from '../components/TheoryView.jsx';
+import LabMissionGuide from '../components/LabMissionGuide.jsx';
 import SvgKernelAnimation from '../components/animations/SvgKernelAnimation.jsx';
 
 export default function Lab6_VisionKernels({ curriculum }) {
   const labData = curriculum.labs.lab6;
 
   const [phase, setPhase] = useState(() => StorageEngine.getLabPhase('lab6'));
-  const [selectedPreset, setSelectedPreset] = useState('verticalStripe');
-  const [inputGrid, setInputGrid] = useState(() => labData.presets.verticalStripe.grid);
-  const [activeKernelKey, setActiveKernelKey] = useState('verticalEdge');
-  const [inspectedCell, setInspectedCell] = useState({ x: 2, y: 3 });
+  const [selectedPreset, setSelectedPreset] = useState('cross');
+  const [inputGrid, setInputGrid] = useState(() => labData.presets.cross.grid);
+  const [activeKernelKey, setActiveKernelKey] = useState('blur');
+  const [inspectedCell, setInspectedCell] = useState(null);
 
   const [completedChallenges, setCompletedChallenges] = useState(() => {
     return StorageEngine.getState().completedChallenges;
@@ -60,22 +61,22 @@ export default function Lab6_VisionKernels({ curriculum }) {
   // Challenge checks
   useEffect(() => {
     // Challenge 1: Vertical edge on verticalStripe
-    if (selectedPreset === 'verticalStripe' && activeKernelKey === 'verticalEdge' && !completedChallenges['lab6-ch1']) {
-      StorageEngine.recordChallengeCompletion('lab6', 'lab6-ch1');
+    if (selectedPreset === 'verticalStripe' && activeKernelKey === 'verticalEdge' && !completedChallenges['lab6_challenge1']) {
+      StorageEngine.completeChallenge('lab6', 'lab6_challenge1', 1);
       AudioEngine.playChallengeSuccess();
       fireConfetti();
     }
 
     // Challenge 2: Horizontal edge on square
-    if (selectedPreset === 'square' && activeKernelKey === 'horizontalEdge' && !completedChallenges['lab6-ch2']) {
-      StorageEngine.recordChallengeCompletion('lab6', 'lab6-ch2');
+    if (selectedPreset === 'square' && activeKernelKey === 'horizontalEdge' && !completedChallenges['lab6_challenge2']) {
+      StorageEngine.completeChallenge('lab6', 'lab6_challenge2', 1);
       AudioEngine.playChallengeSuccess();
       fireConfetti();
     }
 
     // Challenge 3: Inspected pixel
-    if (inspectedCell && !completedChallenges['lab6-ch3']) {
-      StorageEngine.recordChallengeCompletion('lab6', 'lab6-ch3');
+    if (inspectedCell && !completedChallenges['lab6_challenge3']) {
+      StorageEngine.completeChallenge('lab6', 'lab6_challenge3', 1);
       AudioEngine.playChallengeSuccess();
       fireConfetti();
     }
@@ -101,12 +102,13 @@ export default function Lab6_VisionKernels({ curriculum }) {
     AudioEngine.playStep();
   };
 
-  const completedCount = ['lab6-ch1', 'lab6-ch2', 'lab6-ch3'].filter(
+  const completedCount = ['lab6_challenge1', 'lab6_challenge2', 'lab6_challenge3'].filter(
     id => completedChallenges[id]
   ).length;
 
   // Find inspected cell details
   const inspectedDetail = useMemo(() => {
+    if (!inspectedCell) return null;
     return convolutionResult.details.find(
       d => d.x === inspectedCell.x && d.y === inspectedCell.y
     );
@@ -131,7 +133,15 @@ export default function Lab6_VisionKernels({ curriculum }) {
       )}
 
       {phase === 'interactive' && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="space-y-6 animate-fadeIn">
+          {/* Active Mission Guidance Banner */}
+          <LabMissionGuide
+            challenges={labData.challenges}
+            completedChallenges={completedChallenges}
+            labNumber={6}
+          />
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left Column: Visual Convolution Workspace */}
           <div className="lg:col-span-8 space-y-4 sm:space-y-6">
             <div className="bg-slate-900 border border-slate-800 rounded-2xl p-3.5 sm:p-6 space-y-4 sm:space-y-6 shadow-xs">
@@ -349,6 +359,7 @@ export default function Lab6_VisionKernels({ curriculum }) {
               </div>
             </div>
           </div>
+        </div>
         </div>
       )}
     </div>

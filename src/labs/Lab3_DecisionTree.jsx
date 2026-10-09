@@ -17,6 +17,7 @@ import { fireConfetti } from '../core/canvas-particles.js';
 import { AIService, testTreeAttribute } from '../services/ai.js';
 import LabPhaseHeader from '../components/LabPhaseHeader.jsx';
 import TheoryView from '../components/TheoryView.jsx';
+import LabMissionGuide from '../components/LabMissionGuide.jsx';
 import SvgDecisionTreeAnimation from '../components/animations/SvgDecisionTreeAnimation.jsx';
 
 const ANIMAL_EMOJIS = {
@@ -80,22 +81,22 @@ export default function Lab3_DecisionTree({ curriculum }) {
   // Challenge evaluation
   useEffect(() => {
     // Challenge 1: Root is canFly
-    if (rootAttr === 'canFly' && !completedChallenges['lab3-ch1']) {
-      StorageEngine.recordChallengeCompletion('lab3', 'lab3-ch1');
+    if (rootAttr === 'canFly' && !completedChallenges['lab3_challenge1']) {
+      StorageEngine.recordChallengeCompletion('lab3', 'lab3_challenge1');
       AudioEngine.playChallengeSuccess();
       fireConfetti();
     }
 
     // Challenge 2: Accuracy / Purity >= 75%
-    if (evaluation.accuracy >= 75 && !completedChallenges['lab3-ch2']) {
-      StorageEngine.recordChallengeCompletion('lab3', 'lab3-ch2');
+    if (evaluation.accuracy >= 75 && !completedChallenges['lab3_challenge2']) {
+      StorageEngine.recordChallengeCompletion('lab3', 'lab3_challenge2');
       AudioEngine.playChallengeSuccess();
       fireConfetti();
     }
 
     // Challenge 3: Accuracy / Purity === 100%
-    if (evaluation.accuracy === 100 && !completedChallenges['lab3-ch3']) {
-      StorageEngine.recordChallengeCompletion('lab3', 'lab3-ch3');
+    if (evaluation.accuracy === 100 && !completedChallenges['lab3_challenge3']) {
+      StorageEngine.recordChallengeCompletion('lab3', 'lab3_challenge3');
       AudioEngine.playChallengeSuccess();
       fireConfetti();
     }
@@ -108,7 +109,7 @@ export default function Lab3_DecisionTree({ curriculum }) {
     AudioEngine.playStep();
   };
 
-  const completedCount = ['lab3-ch1', 'lab3-ch2', 'lab3-ch3'].filter(
+  const completedCount = ['lab3_challenge1', 'lab3_challenge2', 'lab3_challenge3'].filter(
     id => completedChallenges[id]
   ).length;
 
@@ -144,7 +145,15 @@ export default function Lab3_DecisionTree({ curriculum }) {
       )}
 
       {phase === 'interactive' && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="space-y-6 animate-fadeIn">
+          {/* Active Mission Guidance Banner */}
+          <LabMissionGuide
+            challenges={labData.challenges}
+            completedChallenges={completedChallenges}
+            labNumber={3}
+          />
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left Column: Interactive Tree Visualizer */}
           <div className="lg:col-span-8 space-y-6">
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-6 shadow-sm">
@@ -560,6 +569,7 @@ export default function Lab3_DecisionTree({ curriculum }) {
               </div>
             </div>
           </div>
+        </div>
         </div>
       )}
     </div>

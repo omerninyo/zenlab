@@ -17,6 +17,7 @@ import { StorageEngine } from '../core/storage.js';
 import { fireConfetti } from '../core/canvas-particles.js';
 import LabPhaseHeader from '../components/LabPhaseHeader.jsx';
 import TheoryView from '../components/TheoryView.jsx';
+import LabMissionGuide from '../components/LabMissionGuide.jsx';
 import SvgBinaryAnimation from '../components/animations/SvgBinaryAnimation.jsx';
 import SvgLogicGatesAnimation from '../components/animations/SvgLogicGatesAnimation.jsx';
 
@@ -157,6 +158,13 @@ export default function Lab1_BinaryPixels({ curriculum }) {
       {/* Phase 2: Interactive Simulator */}
       {phase === 'interactive' && (
         <div className="space-y-6 animate-fadeIn">
+          {/* Active Mission Guidance Banner */}
+          <LabMissionGuide
+            challenges={labData.challenges}
+            completedChallenges={completedChallenges}
+            labNumber={1}
+          />
+
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* 8x8 Grid Workspace */}
             <div className="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl p-3.5 sm:p-6 flex flex-col items-center shadow-xs">

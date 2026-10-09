@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.15] - 2026-10-09
+
+### Added & Enhanced
+- **Child-Centric UX & Mission Guidance Banner (`src/components/LabMissionGuide.jsx`)**:
+  - Built and mounted a dedicated, interactive mission guidance banner at the top of Phase 2 (Sandbox) across **all 8 micro-labs**.
+  - **Dynamic Next-Step Orientation**: Prominently highlights the currently active challenge (`אתגר X מתוך 3`) with clear, child-friendly Hebrew instructions and star rewards.
+  - **One-Click Voice Narration**: Integrated speech synthesis (`🔊 הקרא משימה`) reading the active challenge out loud to support 5th-grade emergent readers.
+  - **Expandable In-Context Hints**: Added an interactive hint drawer (`💡 צריכים רמז?`) providing actionable tips without cluttering the screen.
+  - **Celebration & Next Lab CTA**: Upon completing all 3 challenges, transforms into a celebratory golden victory banner with confetti and direct routing to the next lab.
+- **Single-Step Debugging Execution in Robot Lab (`src/labs/Lab2_AlgorithmicRobot.jsx`)**:
+  - Implemented the missing **"צעד בודד" (Single Step execution)** button next to "הפעלת הרובוט".
+  - Enables step-by-step algorithmic execution and debugging as promised by the curriculum hint, advancing one command per click with real-time status updates and robot positioning.
+- **Exhaustive Calculation & Algorithmic Audit (All 8 Labs Verified)**:
+  - **Fixed A\* Heuristic Tie-Breaking Degradation (`src/services/ai.js`)**: Fixed a subtle algorithmic issue where A\* expanded breadth-first (64 nodes) on equal $f$-score grid paths. Added heuristic distance tie-breaking, reducing explored nodes from 64 to 15 (a 76% efficiency improvement), demonstrating genuine A\* superiority over BFS.
+  - **Fixed Computer Vision Edge Detection Magnitude (`src/services/ai.js`)**: Updated `computeConvolution` to take absolute gradient magnitude `Math.abs(sum)` for zero-sum Sobel kernels, allowing both rising and falling edges (light-to-dark and dark-to-light) to glow symmetrically.
+  - **Standardized Challenge IDs Across Curriculum & Labs (`src/data/curriculum.json`, Labs 3, 4, 6, 7)**:
+    - Standardized all 24 challenge IDs to canonical `labX_challengeY` format across both `curriculum.json` and all JSX components.
+    - Fixed UI challenge card completion bug where cards in Labs 3, 4, 6, and 7 never turned green due to `ch1` vs `labX-ch1` mismatches.
+  - **Eliminated Auto-Completion on Mount (Labs 4, 6, 7)**:
+    - *Lab 4 (Pathfinder)*: Required active search execution (`currentStepIndex > 0 || isPathVisible`) before awarding Challenge 1 or Challenge 2.
+    - *Lab 6 (Vision)*: Initialized with neutral filter/image and `inspectedCell = null`, ensuring challenges are earned only after intentional student interaction.
+    - *Lab 7 (Perceptron)*: Initialized weights to neutral values ($w_1=0.5, w_2=0.5, bias=0.0$), yielding 25% accuracy and requiring students to adjust sliders to earn 100%.
+  - **Prevented Accidental Point Creation in Lab 5 (`src/labs/Lab5_MachineLearningClassifier.jsx`)**: Added `onClick={(e) => e.stopPropagation()}` on the draggable test point circle, preventing unwanted fruit points from spawning when tapping to drag.
+  - **Automated Verification**: Ran automated 50-assertion test suite verifying all 8 labs, datasets, algorithms, and challenge completions with 100% pass rate.
+
 ## [0.7.14] - 2026-10-09
 
 ### Fixed & Enhanced

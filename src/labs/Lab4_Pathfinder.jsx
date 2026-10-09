@@ -19,6 +19,7 @@ import { fireConfetti } from '../core/canvas-particles.js';
 import { AIService } from '../services/ai.js';
 import LabPhaseHeader from '../components/LabPhaseHeader.jsx';
 import TheoryView from '../components/TheoryView.jsx';
+import LabMissionGuide from '../components/LabMissionGuide.jsx';
 import SvgPathfinderAnimation from '../components/animations/SvgPathfinderAnimation.jsx';
 
 export default function Lab4_Pathfinder({ curriculum }) {
@@ -98,17 +99,17 @@ export default function Lab4_Pathfinder({ curriculum }) {
 
   // Challenge checks
   useEffect(() => {
-    // Challenge 1: Run A* directly
-    if (solution.found && algorithm === 'astar' && !completedChallenges['lab4-ch1']) {
-      StorageEngine.recordChallengeCompletion('lab4', 'lab4-ch1');
+    // Challenge 1: Run A* directly (requires user to actually run search)
+    if (solution.found && algorithm === 'astar' && (currentStepIndex > 0 || isPathVisible) && !completedChallenges['lab4_challenge1']) {
+      StorageEngine.completeChallenge('lab4', 'lab4_challenge1', 1);
       AudioEngine.playChallengeSuccess();
       fireConfetti();
     }
 
     // Challenge 2: Avoid obstacles (at least 4 walls in grid)
     const wallCount = grid.filter(cell => cell === 1).length;
-    if (solution.found && wallCount >= 4 && !completedChallenges['lab4-ch2']) {
-      StorageEngine.recordChallengeCompletion('lab4', 'lab4-ch2');
+    if (solution.found && wallCount >= 4 && (currentStepIndex > 0 || isPathVisible) && !completedChallenges['lab4_challenge2']) {
+      StorageEngine.completeChallenge('lab4', 'lab4_challenge2', 1);
       AudioEngine.playChallengeSuccess();
       fireConfetti();
     }
@@ -118,13 +119,13 @@ export default function Lab4_Pathfinder({ curriculum }) {
       lastAstarCount !== null &&
       lastBfsCount !== null &&
       lastAstarCount < lastBfsCount &&
-      !completedChallenges['lab4-ch3']
+      !completedChallenges['lab4_challenge3']
     ) {
-      StorageEngine.recordChallengeCompletion('lab4', 'lab4-ch3');
+      StorageEngine.completeChallenge('lab4', 'lab4_challenge3', 1);
       AudioEngine.playChallengeSuccess();
       fireConfetti();
     }
-  }, [solution, algorithm, grid, lastAstarCount, lastBfsCount, completedChallenges]);
+  }, [solution, algorithm, grid, currentStepIndex, isPathVisible, lastAstarCount, lastBfsCount, completedChallenges]);
 
   const toggleWall = (x, y) => {
     if ((x === start.x && y === start.y) || (x === goal.x && y === goal.y)) return;
@@ -185,7 +186,7 @@ export default function Lab4_Pathfinder({ curriculum }) {
     return new Set(solution.path.map(p => `${p.x},${p.y}`));
   }, [solution.path]);
 
-  const completedCount = ['lab4-ch1', 'lab4-ch2', 'lab4-ch3'].filter(
+  const completedCount = ['lab4_challenge1', 'lab4_challenge2', 'lab4_challenge3'].filter(
     id => completedChallenges[id]
   ).length;
 
@@ -208,7 +209,15 @@ export default function Lab4_Pathfinder({ curriculum }) {
       )}
 
       {phase === 'interactive' && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="space-y-6 animate-fadeIn">
+          {/* Active Mission Guidance Banner */}
+          <LabMissionGuide
+            challenges={labData.challenges}
+            completedChallenges={completedChallenges}
+            labNumber={4}
+          />
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left Column: 8x8 Interactive Grid */}
           <div className="lg:col-span-8 space-y-6">
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 space-y-6 shadow-sm">
@@ -418,6 +427,7 @@ export default function Lab4_Pathfinder({ curriculum }) {
               </div>
             </div>
           </div>
+        </div>
         </div>
       )}
     </div>

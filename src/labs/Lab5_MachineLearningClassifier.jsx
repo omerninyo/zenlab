@@ -18,6 +18,7 @@ import { AIService } from '../services/ai.js';
 import { fireConfetti } from '../core/canvas-particles.js';
 import LabPhaseHeader from '../components/LabPhaseHeader.jsx';
 import TheoryView from '../components/TheoryView.jsx';
+import LabMissionGuide from '../components/LabMissionGuide.jsx';
 import SvgClassifierAnimation from '../components/animations/SvgClassifierAnimation.jsx';
 
 export default function Lab5_MachineLearningClassifier({ curriculum }) {
@@ -164,6 +165,13 @@ export default function Lab5_MachineLearningClassifier({ curriculum }) {
       {/* Phase 2: Interactive Simulator */}
       {phase === 'interactive' && (
         <div className="space-y-6 animate-fadeIn">
+          {/* Active Mission Guidance Banner */}
+          <LabMissionGuide
+            challenges={labData.challenges}
+            completedChallenges={completedChallenges}
+            labNumber={5}
+          />
+
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Scatter Plot 2D Canvas */}
           <div className="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl p-3.5 sm:p-6 flex flex-col items-center shadow-xs">
@@ -228,6 +236,7 @@ export default function Lab5_MachineLearningClassifier({ curriculum }) {
                 {/* Test Query Object (Draggable) */}
                 <g 
                   onPointerDown={handlePointerDownTestPoint}
+                  onClick={(e) => e.stopPropagation()}
                   className="cursor-grab active:cursor-grabbing"
                 >
                   <circle

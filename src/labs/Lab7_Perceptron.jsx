@@ -17,6 +17,7 @@ import { fireConfetti } from '../core/canvas-particles.js';
 import { AIService } from '../services/ai.js';
 import LabPhaseHeader from '../components/LabPhaseHeader.jsx';
 import TheoryView from '../components/TheoryView.jsx';
+import LabMissionGuide from '../components/LabMissionGuide.jsx';
 import SvgPerceptronAnimation from '../components/animations/SvgPerceptronAnimation.jsx';
 import SvgLogicGatesAnimation from '../components/animations/SvgLogicGatesAnimation.jsx';
 
@@ -25,9 +26,9 @@ export default function Lab7_Perceptron({ curriculum }) {
 
   const [phase, setPhase] = useState(() => StorageEngine.getLabPhase('lab7'));
   const [selectedGate, setSelectedGate] = useState('AND'); // 'AND' | 'OR' | 'XOR'
-  const [w1, setW1] = useState(1.0);
-  const [w2, setW2] = useState(1.0);
-  const [bias, setBias] = useState(-1.5);
+  const [w1, setW1] = useState(0.5);
+  const [w2, setW2] = useState(0.5);
+  const [bias, setBias] = useState(0.0);
   const [activation, setActivation] = useState('step'); // 'step' | 'sigmoid'
 
   const [completedChallenges, setCompletedChallenges] = useState(() => {
@@ -67,31 +68,31 @@ export default function Lab7_Perceptron({ curriculum }) {
   // Challenge checks
   useEffect(() => {
     // Challenge 1: AND gate 100%
-    if (selectedGate === 'AND' && evaluation.accuracyAnd === 100 && !completedChallenges['lab7-ch1']) {
-      StorageEngine.recordChallengeCompletion('lab7', 'lab7-ch1');
+    if (selectedGate === 'AND' && evaluation.accuracyAnd === 100 && !completedChallenges['lab7_challenge1']) {
+      StorageEngine.completeChallenge('lab7', 'lab7_challenge1', 1);
       AudioEngine.playChallengeSuccess();
       fireConfetti();
     }
 
     // Challenge 2: OR gate 100%
-    if (selectedGate === 'OR' && evaluation.accuracyOr === 100 && !completedChallenges['lab7-ch2']) {
-      StorageEngine.recordChallengeCompletion('lab7', 'lab7-ch2');
+    if (selectedGate === 'OR' && evaluation.accuracyOr === 100 && !completedChallenges['lab7_challenge2']) {
+      StorageEngine.completeChallenge('lab7', 'lab7_challenge2', 1);
       AudioEngine.playChallengeSuccess();
       fireConfetti();
     }
 
     // Challenge 3: Try XOR gate (at least 75% accuracy tested)
-    if (selectedGate === 'XOR' && evaluation.accuracyXor >= 75 && !completedChallenges['lab7-ch3']) {
-      StorageEngine.recordChallengeCompletion('lab7', 'lab7-ch3');
+    if (selectedGate === 'XOR' && evaluation.accuracyXor >= 75 && !completedChallenges['lab7_challenge3']) {
+      StorageEngine.completeChallenge('lab7', 'lab7_challenge3', 1);
       AudioEngine.playChallengeSuccess();
       fireConfetti();
     }
   }, [selectedGate, evaluation, completedChallenges]);
 
   const handleReset = () => {
-    setW1(1.0);
-    setW2(1.0);
-    setBias(-1.5);
+    setW1(0.5);
+    setW2(0.5);
+    setBias(0.0);
     AudioEngine.playStep();
   };
 
@@ -100,7 +101,7 @@ export default function Lab7_Perceptron({ curriculum }) {
     AudioEngine.playStep();
   };
 
-  const completedCount = ['lab7-ch1', 'lab7-ch2', 'lab7-ch3'].filter(
+  const completedCount = ['lab7_challenge1', 'lab7_challenge2', 'lab7_challenge3'].filter(
     id => completedChallenges[id]
   ).length;
 
@@ -153,7 +154,15 @@ export default function Lab7_Perceptron({ curriculum }) {
       )}
 
       {phase === 'interactive' && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="space-y-6 animate-fadeIn">
+          {/* Active Mission Guidance Banner */}
+          <LabMissionGuide
+            challenges={labData.challenges}
+            completedChallenges={completedChallenges}
+            labNumber={7}
+          />
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left Column: Direct Manipulation Sliders & 2D Decision Plot */}
           <div className="lg:col-span-8 space-y-4 sm:space-y-6">
             <div className="bg-slate-900 border border-slate-800 rounded-2xl p-3.5 sm:p-6 space-y-4 sm:space-y-6 shadow-xs">
@@ -413,6 +422,7 @@ export default function Lab7_Perceptron({ curriculum }) {
               </div>
             </div>
           </div>
+        </div>
         </div>
       )}
     </div>

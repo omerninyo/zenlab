@@ -20,6 +20,7 @@ import { AIService } from '../services/ai.js';
 import { fireConfetti } from '../core/canvas-particles.js';
 import LabPhaseHeader from '../components/LabPhaseHeader.jsx';
 import TheoryView from '../components/TheoryView.jsx';
+import LabMissionGuide from '../components/LabMissionGuide.jsx';
 import SvgLlmAnimation from '../components/animations/SvgLlmAnimation.jsx';
 import SvgSelfAttentionAnimation from '../components/animations/SvgSelfAttentionAnimation.jsx';
 
@@ -137,6 +138,13 @@ export default function Lab8_LanguageModelPredictor({ curriculum }) {
       {/* Phase 2: Interactive Simulator */}
       {phase === 'interactive' && (
         <div className="space-y-6 animate-fadeIn">
+          {/* Active Mission Guidance Banner */}
+          <LabMissionGuide
+            challenges={labData.challenges}
+            completedChallenges={completedChallenges}
+            labNumber={8}
+          />
+
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Sentence Builder & Stream Column */}
           <div className="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl p-3.5 sm:p-6 space-y-4 sm:space-y-6 shadow-xs">
