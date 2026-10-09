@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.9] - 2026-10-09
+
+### Added
+- **Complete GitHub Community Infrastructure & Community Standards (`.github/`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`)**:
+  - **Interactive Issue Forms (`.github/ISSUE_TEMPLATE/`)**:
+    - `bug_report.yml`: Structured form with lab selector, device/browser details, and reproduction steps.
+    - `feature_request.yml`: Structured proposal form for new educational modules and algorithms.
+    - `pedagogical_feedback.yml`: Dedicated educator feedback template for 5th-grade reading level and Israeli Ministry of Education (MoE) curriculum alignment.
+    - `config.yml`: Global issue configuration linking to discussions and security policy.
+  - **Standardized Pull Request Template (`.github/PULL_REQUEST_TEMPLATE.md`)**: Comprehensive checklist enforcing clean builds (`npm run build`), Zero-PII verification, Hebrew RTL layout alignment, and 5th-grade pedagogical compliance.
+  - **GitHub Discussions Categories (`.github/DISCUSSION_TEMPLATE/`)**: Pre-configured templates for Q&A (שאלות ותשובות), Ideas (רעיונות למעבדות), and Show & Tell (שיתוף תוצרים מהכיתה).
+  - **Automated CI/CD Workflow (`.github/workflows/ci.yml`)**: Continuous integration testing Node 20.x, Vite production build, SPA redirects validation (`public/_redirects`), and strict Zero-PII git tree scanning.
+  - **Automated Dependabot Security Updates (`.github/dependabot.yml`)**: Weekly npm and monthly GitHub Actions security patch configuration.
+  - **Open Source Governance & Guidelines**:
+    - `CONTRIBUTING.md` & `CONTRIBUTING.he.md`: Exhaustive bilingual contributor guides explaining local setup, role boundaries with Design Lead (Zen 2.0), and extended commit conventions.
+    - `CODE_OF_CONDUCT.md`: Contributor Covenant v2.1 adapted specifically for elementary school educational safety.
+    - `SECURITY.md`: Transparent Zero-PII student privacy guarantee and vulnerability disclosure workflow.
+- **Exhaustive Master Pedagogical & Technical Wiki in English & Hebrew (`docs/wiki/`)**:
+  - `Home.md` / `Home.he.md`: Central wiki navigation portal and educational mission statement.
+  - `Pedagogical-Framework.md` / `Pedagogical-Framework.he.md`: Complete pedagogical foundation mapping Israeli MoE 5th-grade standards, AI4K12 5 Big Ideas, Seymour Papert's Constructionist Microworlds model, and gender-inclusive language standards.
+  - `Curriculum-Master-Index.md` / `Curriculum-Master-Index.he.md`: Deep-dive pedagogical specification across all 8 labs detailing 5th-grade analogies, interactive principle simulations, sandbox mechanics, step-by-step challenges, common misconceptions, and real-world tech connections.
+  - `Architecture-and-Tech-Stack.md` / `Architecture-and-Tech-Stack.he.md`: Complete technical stack specification covering client-side SPA architecture, Web Audio API sound synthesis, StorageEngine offline persistence, Zen 2.0 design framework, and Cloudflare Pages edge deployment.
+  - `Teachers-Classroom-Guide.md` / `Teachers-Classroom-Guide.he.md`: Practical 45-minute lesson plans, pair programming flows, peer debugging questions, differentiation strategies, and formative assessment rubrics.
+- **Bilingual Showcase Documentation (`README.md`, `README.he.md`)**: Modernized root READMEs with live status badges, lab suite matrix, architecture diagrams, Wiki links, and Cloudflare Pages deployment instructions.
+
 ## [0.7.8] - 2026-10-09
 
 ### Added
