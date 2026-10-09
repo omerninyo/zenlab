@@ -72,7 +72,7 @@ export default function LabPhaseHeader({
     <div className={
       isDapimActive
         ? "card-tactile !p-3 sm:!p-5 space-y-3 sm:space-y-4 text-white"
-        : "bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-3 sm:p-6 space-y-3 sm:space-y-4 shadow-xs text-slate-900 dark:text-white"
+        : "bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-xl p-3 sm:p-6 space-y-3 sm:space-y-4 shadow-xs text-slate-900 dark:text-white"
     } dir="rtl">
       
       {/* Top on Mobile / Bottom on Desktop: Apple-Style Segmented Control for Phases */}
@@ -80,7 +80,7 @@ export default function LabPhaseHeader({
         <div className={
           isDapimActive
             ? "segmented-glass-container"
-            : "flex items-center bg-slate-100 dark:bg-slate-800/80 p-1 rounded-xl border border-slate-200/80 dark:border-slate-700/80"
+            : "flex items-center bg-slate-100 dark:bg-slate-800/80 p-1 rounded-lg border border-slate-200/80 dark:border-slate-700/80"
         }>
           <button
             type="button"
@@ -90,7 +90,7 @@ export default function LabPhaseHeader({
                 ? `segmented-glass-item flex-1 sm:flex-initial !py-1.5 sm:!py-2 !px-3 sm:!px-4 !text-xs sm:!text-sm ${
                     activePhase === 'theory' ? 'segmented-glass-item-active' : ''
                   }`
-                : `flex-1 sm:flex-initial flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-bold transition-all ${
+                : `flex-1 sm:flex-initial flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-bold transition-all ${
                     activePhase === 'theory'
                       ? 'bg-blue-600 text-white shadow-xs'
                       : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
@@ -110,7 +110,7 @@ export default function LabPhaseHeader({
                 ? `segmented-glass-item flex-1 sm:flex-initial !py-1.5 sm:!py-2 !px-3 sm:!px-4 !text-xs sm:!text-sm ${
                     activePhase === 'interactive' ? 'segmented-glass-item-active' : ''
                   }`
-                : `flex-1 sm:flex-initial flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-bold transition-all ${
+                : `flex-1 sm:flex-initial flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-bold transition-all ${
                     activePhase === 'interactive'
                       ? 'bg-blue-600 text-white shadow-xs'
                       : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
@@ -142,7 +142,7 @@ export default function LabPhaseHeader({
             <span className={
               isDapimActive
                 ? "badge-glass badge-glass-accent"
-                : "px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 dark:bg-blue-950/70 text-blue-700 dark:text-blue-300 border border-blue-200/60 dark:border-blue-800/60"
+                : "px-2.5 py-0.5 rounded-md text-xs font-bold bg-blue-50 dark:bg-blue-950/70 text-blue-700 dark:text-blue-300 border border-blue-200/60 dark:border-blue-800/60"
             }>
               {data.badge}
             </span>
@@ -154,7 +154,7 @@ export default function LabPhaseHeader({
           <h1 className="text-base sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight leading-snug">
             {data.title}
           </h1>
-          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-normal font-normal line-clamp-1 sm:line-clamp-none">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-normal mt-0.5">
             {data.subtitle}
           </p>
         </div>
@@ -162,8 +162,8 @@ export default function LabPhaseHeader({
         {/* Stars Progress for this lab */}
         <div className={
           isDapimActive
-            ? "flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl bg-[var(--slate-3)] border border-[var(--slate-6)] text-amber-400 text-xs sm:text-sm font-bold shadow-xs shrink-0"
-            : "flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl bg-amber-50 dark:bg-slate-950 border border-amber-300/80 dark:border-slate-800 text-amber-900 dark:text-amber-300 text-xs sm:text-sm font-bold shadow-xs shrink-0"
+            ? "flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-md bg-[var(--slate-3)] border border-[var(--slate-6)] text-amber-400 text-xs sm:text-sm font-bold shadow-xs shrink-0"
+            : "flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-md bg-amber-50 dark:bg-slate-950 border border-amber-300/80 dark:border-slate-800 text-amber-900 dark:text-amber-300 text-xs sm:text-sm font-bold shadow-xs shrink-0"
         }>
           <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-amber-400 text-amber-500" />
           <span className="sm:hidden">{starsEarned}/{starsTotal} כוכבים</span>

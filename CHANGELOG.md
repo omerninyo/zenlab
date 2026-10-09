@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.3] - 2026-10-09
+
+### Changed
+- **Pill-to-Rectangle Architectural Discipline & Anti-Bubble Geometry (`src/styles/design-tokens.css`, `src/components/HomeDashboard.jsx`, `src/components/LabPhaseHeader.jsx`, `src/components/TheoryView.jsx`, `src/components/HebrewExplainerTour.jsx`, `src/components/LiteYouTubeEmbed.jsx`, `src/App.jsx`)**:
+  - Replaced bubbly capsule rounding (`border-radius: 9999px`, `rounded-full`, `rounded-3xl`, `rounded-2xl`) with crisp, restrained architectural rectangles (4px–8px radii: `rounded-md`, `rounded-lg`).
+  - Calibrated `.badge-glass` to 4px radius with proportional padding, preventing corner curvature from pinching Hebrew characters.
+  - Refined `.segmented-glass-container` (6px) and `.segmented-glass-item` (4px) for subtle tactile switches.
+  - Refined `.btn-glass` and `.btn-hollow` buttons to 6px radii and `.card-tactile` to 8px.
+  - Refined track container wrappers from bubbly `rounded-3xl` (24px) to sleek `rounded-xl` (12px).
+- **Eliminated Hebrew Copy Chopping & Premature Ellipsis Truncation (`src/components/HomeDashboard.jsx`, `src/components/LabPhaseHeader.jsx`, `src/components/LiteYouTubeEmbed.jsx`)**:
+  - Removed aggressive `line-clamp-1` and `line-clamp-2` constraints that cut off pedagogical sentences mid-word with `...`.
+  - Replaced with natural multi-line wrapping and `leading-relaxed` line-height across "התחנה המומלצת הבאה שלך", station roadmap cards, lab phase headers, and video explainer titles.
+  - Removed `truncate` on student developer rank badge to accommodate longer titles cleanly on smaller screens.
+- **Resolved Mobile Top Navigation Bar Overflow across iPhone Viewports (`src/App.jsx`, `src/styles/design-tokens.css`)**:
+  - Fixed horizontal overflow on both standard mode and Zen 2.0 mode on mobile screens (375px iPhone SE/mini and 390px iPhone 12–16).
+  - Eliminated duplicate horizontal padding in `.header-glass` (`max(0.25rem, env(safe-area-inset-top))` and safe-area insets).
+  - On mobile (<640px), stepper arrows are hidden and center button renders a compact, responsive chip (`[icon] מעבדה X [chevron]`), keeping total top bar width well within 300px.
+  - Verified 100% zero horizontal overflow (`totalOverflowing: 0`) and zero text clipping via headless Playwright inspections on 375x667 and 390x844 viewports.
+
 ## [0.7.2] - 2026-10-09
 
 ### Added

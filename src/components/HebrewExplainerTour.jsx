@@ -94,7 +94,7 @@ export default function HebrewExplainerTour({ labData = {} }) {
           <div>
             <h3 className="text-base sm:text-lg font-extrabold text-slate-900 flex items-center gap-2">
               <span>סיור מודרך מונפש בעברית</span>
-              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
+              <span className="text-xs font-semibold px-2.5 py-0.5 rounded-md bg-blue-50 text-blue-700 border border-blue-200">
                 100% עברית קלה
               </span>
             </h3>
@@ -105,7 +105,7 @@ export default function HebrewExplainerTour({ labData = {} }) {
         </div>
 
         {/* Step Progress Pills */}
-        <div className="flex items-center gap-1.5 bg-slate-100 p-1.5 rounded-xl border border-slate-200 text-xs">
+        <div className="flex items-center gap-1.5 bg-slate-100 p-1.5 rounded-lg border border-slate-200 text-xs">
           {tourSteps.map((s, idx) => (
             <button
               key={idx}
@@ -117,7 +117,7 @@ export default function HebrewExplainerTour({ labData = {} }) {
                   NarrationEngine.play(s.narrative);
                 }
               }}
-              className={`px-3 py-1 rounded-lg font-bold transition-all text-xs ${
+              className={`px-3 py-1 rounded-md font-bold transition-all text-xs ${
                 currentStepIndex === idx
                   ? 'bg-blue-600 text-white shadow-sm'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/70'
@@ -133,17 +133,17 @@ export default function HebrewExplainerTour({ labData = {} }) {
       </div>
 
       {/* Main Interactive Stage Box */}
-      <div className="relative min-h-[220px] sm:min-h-[260px] bg-gradient-to-br from-blue-50/60 via-white to-amber-50/40 rounded-2xl border-2 border-blue-100 p-6 sm:p-8 flex flex-col justify-between shadow-inner overflow-hidden">
+      <div className="relative min-h-[220px] sm:min-h-[260px] bg-gradient-to-br from-blue-50/60 via-white to-amber-50/40 rounded-xl border-2 border-blue-100 p-6 sm:p-8 flex flex-col justify-between shadow-inner overflow-hidden">
         {/* Step Badge & Topic */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100/90 text-blue-800 text-xs font-extrabold border border-blue-200">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-blue-100/90 text-blue-800 text-xs font-extrabold border border-blue-200">
               <Sparkles className="w-3.5 h-3.5 text-blue-600" />
               <span>תחנה {currentStepIndex + 1}: {currentStep.title}</span>
             </span>
 
             {currentStep.highlight && (
-              <span className="hidden sm:inline-flex items-center gap-1 text-xs font-bold text-amber-800 bg-amber-100/80 px-3 py-1 rounded-full border border-amber-200">
+              <span className="hidden sm:inline-flex items-center gap-1 text-xs font-bold text-amber-800 bg-amber-100/80 px-3 py-1 rounded-md border border-amber-200">
                 <Lightbulb className="w-3.5 h-3.5 text-amber-600" />
                 <span>{currentStep.highlight}</span>
               </span>
@@ -166,9 +166,9 @@ export default function HebrewExplainerTour({ labData = {} }) {
               </span>
               <span className="font-mono">{narrationState.progress}%</span>
             </div>
-            <div className="w-full h-2 bg-blue-100 rounded-full overflow-hidden">
+            <div className="w-full h-2 bg-blue-100 rounded overflow-hidden">
               <div
-                className="h-full bg-blue-600 rounded-full transition-all duration-200"
+                className="h-full bg-blue-600 rounded transition-all duration-200"
                 style={{ width: `${narrationState.progress}%` }}
               />
             </div>

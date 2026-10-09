@@ -7,6 +7,24 @@
 
 ---
 
+## [0.7.3] - 2026-10-09
+
+### שונה (Changed)
+- **עידון צורני: מעבר מקפסולות (Pill) למלבנים ארכיטקטוניים מדויקים (`src/styles/design-tokens.css`, `src/components/HomeDashboard.jsx`, `src/components/LabPhaseHeader.jsx`, `src/components/TheoryView.jsx`, `src/components/HebrewExplainerTour.jsx`, `src/components/LiteYouTubeEmbed.jsx`, `src/App.jsx`)**:
+  - החלפת כל צורות הבועה והקפסולה המעוגלות מדי (`border-radius: 9999px`, `rounded-full`, `rounded-3xl`, `rounded-2xl`) במלבנים מדויקים ומעודנים (רדיוסי 4px–8px, `rounded-md`, `rounded-lg`).
+  - כיול תגיות הזכוכית (`.badge-glass`) לרדיוס 4px וריווח פרופורציונלי, שמונע מעיקול הפינות לנגוס באותיות העבריות שבפנים.
+  - עידון בקרי השלבים (`.segmented-glass-container` ל-6px ופריטים ל-4px) וכפתורים חלולים ל-6px.
+  - ריסון מיכלי המסלולים במפת המסע מרדיוס 24px בועתי (`rounded-3xl`) לרדיוס 12px אלגנטי (`rounded-xl`).
+- **ביטול חיתוכי טקסט וגלישות שורה מאולצות (`src/components/HomeDashboard.jsx`, `src/components/LabPhaseHeader.jsx`, `src/components/LiteYouTubeEmbed.jsx`)**:
+  - הסרת מגבלות `line-clamp-1` ו-`line-clamp-2` שחתכו משפטי הסבר פדגוגיים באמצע המילה עם שלוש נקודות (`...`).
+  - מתן מרווח טבעי וגובה שורה נושם (`leading-relaxed`) בכרטיס "התחנה המומלצת הבאה שלך", כרטיסי מפת המסע, כותרות המעבדה, ותקצירי סרטוני ההדרכה.
+  - הסרת `truncate` מדרגת התלמיד בלוח הסטטיסטיקה כדי למנוע קיטום דרגות ארוכות במסכים קטנים.
+- **תיקון גלישת הסרגל העליון באייפון ובמסכי מובייל צרים (`src/App.jsx`, `src/styles/design-tokens.css`)**:
+  - פתרון מלא לגלישה האופקית בסרגל העליון הן במצב הרגיל והן במצב זֶן 2.0.
+  - הסרת ריפוד אופקי כפול ב-`.header-glass` (`padding` עודף שדחק רכיבים החוצה).
+  - במסכים צרים (<640px), חיצי הצעד הוסתרו והכפתור המרכזי מציג שבב קומפקטי (`[אייקון] מעבדה X [חץ]`), מה שמשאיר את רוחב הסרגל כולו מתחת ל-300px ומבטיח מרווח ביטחון נדיב גם ב-iPhone SE (375px) ו-iPhone 12–16 (390px).
+  - אימות מלא בבדיקות דפדפן Playwright של 0 אלמנטים גולשים (`totalOverflowing: 0`) ואפס חיתוכי טקסט.
+
 ## [0.7.2] - 2026-10-09
 
 ### נוסף (Added)

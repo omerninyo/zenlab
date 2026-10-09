@@ -8,7 +8,7 @@ export default function LiteYouTubeEmbed({ videoId, title, channel, duration, lo
 
   if (localSrc) {
     return (
-      <div className="flex flex-col rounded-2xl overflow-hidden bg-slate-950 border-2 border-slate-800 shadow-xl">
+      <div className="flex flex-col rounded-xl overflow-hidden bg-slate-950 border-2 border-slate-800 shadow-xl">
         {/* Top Video Header */}
         <div className="px-4 py-3 bg-slate-900 border-b border-slate-800 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
@@ -16,7 +16,7 @@ export default function LiteYouTubeEmbed({ videoId, title, channel, duration, lo
               <Video className="w-4 h-4" />
             </span>
             <div className="text-right">
-              <h4 className="text-xs sm:text-sm font-bold text-white leading-tight line-clamp-1">{title}</h4>
+              <h4 className="text-xs sm:text-sm font-bold text-white leading-tight">{title}</h4>
               <p className="text-[10px] sm:text-xs text-blue-400 font-semibold">{channel || 'NotebookLM Video Explainer'}</p>
             </div>
           </div>
@@ -66,7 +66,7 @@ export default function LiteYouTubeEmbed({ videoId, title, channel, duration, lo
                 <Video className="w-3.5 h-3.5" />
               </span>
               <div className="text-right">
-                <h4 className="text-xs font-semibold text-white leading-tight line-clamp-1">{title}</h4>
+                <h4 className="text-xs font-semibold text-white leading-tight">{title}</h4>
                 {channel && <p className="text-[10px] text-slate-400">{channel}</p>}
               </div>
             </div>

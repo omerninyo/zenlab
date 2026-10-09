@@ -265,7 +265,7 @@ export default function TheoryView({
               <span className="w-3 h-3 rounded-full bg-indigo-500" />
               <span>כרטיסי מושגי יסוד שכל ילד צריך להכיר</span>
             </h2>
-            <span className="text-xs sm:text-sm text-slate-500 font-bold bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full">
+            <span className="text-xs sm:text-sm text-slate-500 font-bold bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-md">
               {structuredConcepts.length} מושגי מפתח
             </span>
           </div>
@@ -289,7 +289,7 @@ export default function TheoryView({
                           {concept.title}
                         </h3>
                       </div>
-                      <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-950 text-slate-700 dark:text-slate-400 border border-slate-200 dark:border-slate-800">
+                      <span className="text-xs font-semibold px-2.5 py-0.5 rounded-md bg-slate-100 dark:bg-slate-950 text-slate-700 dark:text-slate-400 border border-slate-200 dark:border-slate-800">
                         {concept.badge}
                       </span>
                     </div>
@@ -386,12 +386,12 @@ export default function TheoryView({
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-2.5 max-w-2xl">
             <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-bold bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>משימת המעבדה</span>
               </span>
               {data.challenges && data.challenges.length > 0 && (
-                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-50 dark:bg-slate-950 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-slate-800">
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-bold bg-amber-50 dark:bg-slate-950 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-slate-800">
                   <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-500" />
                   <span>{data.challenges.length} אתגרים לפתרון</span>
                 </span>
