@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "apple-hig": {
+      "command": "/opt/homebrew/bin/apple-hig-mcp",
+      "args": [],
+      "description": "Apple Human Interface Guidelines (HIG) intelligence for component specs, design tokens, materials, and accessibility."
+    },
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp@latest"
+      ],
+      "description": "Browser automation for testing responsive viewports (375px/390px), horizontal overflow, contrast, and theme switching."
+    }
+  }
+}

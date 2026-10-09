@@ -7,7 +7,12 @@ description: Authoritative intelligence, architectural rules, and validation wor
 
 Provides continuous guidance and rules for implementing and maintaining the **Zen 2.0 Design System**.
 
-## 1. Tooling Integration & Apple HIG MCP
+## 1. Tooling Integration & Apple HIG MCP Bootstrapping
+If the `apple-hig` MCP server is not currently connected in your toolset:
+- **Auto-Setup**: Run `node design-system/scripts/setup-mcp.js` to probe system binaries and auto-generate `.mcp.json` / `.cursor/mcp.json`.
+- **Package Source**: Official npm package `apple-hig-mcp` (executed on-the-fly with `npx -y apple-hig-mcp`).
+- **Complete Guide**: See `design-system/MCP_SETUP.md` for Antigravity, Cursor, and Claude Code setup.
+
 Whenever designing or refining components:
 1. **Query `apple-hig` MCP Server**:
    - `get_component_spec`: Inspect platform specs for Button, Toggle, SegmentedControl, Modal/Sheet before styling.
