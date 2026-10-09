@@ -7,6 +7,15 @@
 
 ---
 
+## [0.7.11] - 2026-10-09
+
+### נוסף (Added)
+- **פרוקסי שרת-קצה ב-Cloudflare Pages עם מפל מודלים של Gemini 3 ומנגנון Circuit Breaker עמיד (`functions/api/tutor.js`, `src/core/tutorEngine.js`, `src/components/ZenAiTutor.jsx`)**:
+  - **שרת Edge מאובטח ב-Cloudflare Pages (`functions/api/tutor.js`)**: מימוש נקודת קצה מאובטחת `POST /api/tutor` השולפת את מפתח ה-API ישירות מסודות Cloudflare (`context.env.GEMINI_API_KEY`) מבלי לחשוף אותו לקוד הלקוח או למאגר ה-Git הציבורי.
+  - **מפל מודלים מתקדם של Gemini דור 3 (Model Waterfall)**: ארכיטקטורת עמידות וגיבוי המבוססת על `resilience.py` המבצעת מעבר אוטומטי בין מודלי Gemini דור 3 הקלים ביותר (`gemini-3.5-flash-lite` -> `gemini-flash-lite-latest` -> `gemini-3.1-flash-lite-preview` -> `gemini-3-flash-preview`) לחסכון מירבי במכסות ומהירות תגובה.
+  - **מנגנון מנתק זרם (Circuit Breaker) בצד הלקוח (`src/core/tutorEngine.js`)**: ניתוק שיחות רשת אוטומטי למשך 60 שניות בעת תקלות או חריגת מכסה (HTTP 429) ונפילה שקופה (Fallback) אל מנוע החיפוש המקומי ללא שגיאות למשתמש.
+  - **הרחבת בסיס הידע הכללי במדעי המחשב ו-AI**: הוספת 12 מודולי ידע עולם בסיסיים במדעי המחשב (חומרה מול תוכנה, מעבד, זיכרון RAM, רשת האינטרנט, מחשוב ענן, כתובות IP, אבטחת מידע ופישינג, מקור הבאג וגרייס הופר, צ'ארלס בבאג' ועדה לאבלייס, האם לבינה מלאכותית יש רגשות, למידה עמוקה, סוכני AI) והרחבת הלקסיקון ביותר מ-20 מושגים חדשים.
+
 ## [0.7.10] - 2026-10-09
 
 ### נוסף (Added)

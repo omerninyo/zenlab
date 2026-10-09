@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.11] - 2026-10-09
+
+### Added
+- **Cloudflare Pages Edge Proxy with Gemini 3 Cascade & Local Fallback Resilience (`functions/api/tutor.js`, `src/core/tutorEngine.js`, `src/components/ZenAiTutor.jsx`)**:
+  - **Serverless Edge Proxy (`functions/api/tutor.js`)**: Implemented a secure Cloudflare Pages Function endpoint `POST /api/tutor` leveraging `context.env.GEMINI_API_KEY` stored securely in Cloudflare secrets without exposing keys to client-side bundles or git repositories.
+  - **Cascading Gemini 3 Model Waterfall**: Adapted resilience architecture from `resilience.py`, cascading through Gemini generation 3 models (`gemini-3.5-flash-lite` -> `gemini-flash-lite-latest` -> `gemini-3.1-flash-lite-preview` -> `gemini-3-flash-preview`) to guarantee minimal token consumption and cost-effective pedagogy.
+  - **Circuit Breaker Pattern (`src/core/tutorEngine.js`)**: Implemented an automated client-side circuit breaker (`CircuitBreaker`) that trips after consecutive remote failures/quota limits (HTTP 429), pausing external calls for 60 seconds and seamlessly falling back to local search without user interruption.
+  - **General CS & AI Knowledge Base Expansion**: Expanded the local dictionary by 12 foundational computer science and AI knowledge modules (Hardware vs Software, CPU, RAM, The Internet, Cloud Computing, IP Addresses, Cybersecurity & Phishing, Grace Hopper & First Bug, Babbage & Lovelace, AI Feelings vs Calculations, Deep Learning, AI Agents) with over 20 new indexed vocabulary terms.
+
 ## [0.7.10] - 2026-10-09
 
 ### Added

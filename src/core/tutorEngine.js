@@ -151,6 +151,121 @@ export const CURATED_TUTOR_KNOWLEDGE = {
   }
 };
 
+// Client-side Circuit Breaker (inspired by resilience.py)
+export class CircuitBreaker {
+  constructor(failureThreshold = 2, cooldownSeconds = 60) {
+    this.failureThreshold = failureThreshold;
+    this.cooldownSeconds = cooldownSeconds;
+    this.failureCount = 0;
+    this.lastFailureTime = 0;
+    this.state = 'CLOSED'; // 'CLOSED', 'OPEN', 'HALF_OPEN'
+  }
+
+  isAvailable() {
+    const now = Date.now();
+    if (this.state === 'OPEN') {
+      const elapsed = (now - this.lastFailureTime) / 1000;
+      if (elapsed >= this.cooldownSeconds) {
+        this.state = 'HALF_OPEN';
+        return true;
+      }
+      return false;
+    }
+    return true;
+  }
+
+  recordSuccess() {
+    this.failureCount = 0;
+    this.state = 'CLOSED';
+  }
+
+  recordFailure() {
+    this.failureCount += 1;
+    this.lastFailureTime = Date.now();
+    if (this.failureCount >= this.failureThreshold) {
+      this.state = 'OPEN';
+    }
+  }
+}
+
+export const globalCircuitBreaker = new CircuitBreaker(2, 60);
+
+// Comprehensive General CS & AI Knowledge Base for curious elementary learners
+export const GENERAL_CS_KNOWLEDGE = [
+  {
+    title: 'מה ההבדל בין חומרה לתוכנה?',
+    text: 'חומרה זה כל מה שאפשר לגעת בו פיזית (המסך, המקלדת, השבבים והחוטים). תוכנה היא אוסף ההוראות והקוד שאומר לחומרה מה לעשות – ממש כמו שהגוף שלנו הוא חומרה, והמחשבות שלנו הן תוכנה!',
+    category: 'מחשבים וחומרה',
+    tokens: ['חומרה', 'תוכנה', 'מחשב', 'מסך', 'מקלדת', 'שבב']
+  },
+  {
+    title: 'מה זה מעבד (CPU)?',
+    text: 'המעבד הוא המוח הפועם של המחשב! הוא מבצע מיליארדי חישובים פשוטים בכל שנייה (חיבור, חיסור והשוואה), ומנהל את כל הפקודות של התוכנות והמשחקים.',
+    category: 'מחשבים וחומרה',
+    tokens: ['מעבד', 'cpu', 'מוח', 'שבב', 'חישוב', 'שעון']
+  },
+  {
+    title: 'מה זה זיכרון RAM?',
+    text: 'זהו שולחן העבודה הזמני של המחשב. כל תוכנה או משחק שפתוחים כרגע נמצאים ב-RAM. כשמכבים את המחשב, שולחן העבודה מתנקה (בשונה מזיכרון האחסון ששומר תמונות ומשחקים לתמיד).',
+    category: 'מחשבים וחומרה',
+    tokens: ['זיכרון', 'ram', 'ראם', 'אחסון', 'זיכרון זמני']
+  },
+  {
+    title: 'איך האינטרנט עובד?',
+    text: 'האינטרנט הוא רשת ענקית שמחברת מיליארדי מחשבים בכל העולם בכבלים תת-ימיים ובגלי רדיו! כשאתם גולשים באתר, המחשב שלכם שולח בקשה למחשב מרוחק שנקרא "שרת", והשרת מחזיר לכם את דף האינטרנט.',
+    category: 'רשתות ואינטרנט',
+    tokens: ['אינטרנט', 'רשת', 'שרת', 'כבלים', 'אתר', 'גלישה']
+  },
+  {
+    title: 'מה זה "הענן" (Cloud)?',
+    text: '"הענן" הוא לא ענן אמיתי בשמיים, אלא אלפי מחשבים חזקים במבנים ענקיים ברחבי העולם! במקום לשמור תמונות וקבצים רק על הטלפון שלכם, שומרים אותם בשרתים האלה כדי שתוכלו לגשת אליהם מכל מכשיר בעולם.',
+    category: 'רשתות ואינטרנט',
+    tokens: ['ענן', 'cloud', 'שרתים', 'אחסון', 'גיבוי']
+  },
+  {
+    title: 'מה זה כתובת IP?',
+    text: 'כתובת IP היא כמו מספר הבית והרחוב של המכשיר שלכם ברשת. בעזרת המספר הייחודי הזה, מחשבים ושרתים אחרים יודעים בדיוק לאן לשלוח את המידע שביקשתם.',
+    category: 'רשתות ואינטרנט',
+    tokens: ['ip', 'כתובת', 'רשת', 'מספר']
+  },
+  {
+    title: 'מה זה אבטחת מידע וסייבר?',
+    text: 'זהו מדע ההגנה על מחשבים, טלפונים ומשתמשים מפני פריצות וגניבת סיסמאות. כמו שנועלים את דלת הבית עם מפתח חזק, ככה שומרים על המחשב עם סיסמאות מורכבות, חומת אש ועדכוני אבטחה.',
+    category: 'סייבר ובטיחות',
+    tokens: ['סייבר', 'אבטחה', 'האקר', 'סיסמה', 'פריצה', 'וירוס', 'חומת אש']
+  },
+  {
+    title: 'למה קוראים לתקלת מחשב "באג" (Bug)?',
+    text: 'בשנת 1947, מדענית המחשב הדגולה גרייס הופר גילתה תקלה במחשב ענק. כשפתחו את לוחות המתגים, מצאו עש אמיתי (חרק - Bug) שנלכד בין החוטים! הם שלפו את החרק בפינצטה, ומאז קוראים לתיקון תקלות "דיבאגינג" (Debugging).',
+    category: 'היסטוריה וסקרנות',
+    tokens: ['באג', 'bug', 'תקלה', 'חרק', 'גרייס הופר', 'דיבאגינג']
+  },
+  {
+    title: 'מי המציא את המחשב הראשון?',
+    text: 'צ\'ארלס בבאג\' ועדה לאבלייס תכננו את המחשב המכני הראשון במאה ה-19 (עדה הייתה המתכנתת הראשונה בהיסטוריה!). מאוחר יותר, אלן טיורינג פיתח את עקרונות המחשב המודרני.',
+    category: 'היסטוריה וסקרנות',
+    tokens: ['מי המציא', 'מחשב ראשון', 'עדה לאבלייס', 'אלן טיורינג', 'צארלס בבאג']
+  },
+  {
+    title: 'האם רובוטים ובינה מלאכותית יכולים להרגיש?',
+    text: 'רובוטים ומודלי בינה מלאכותית אינם מרגישים שמחה, עצב או כאב. הם מתוכנתים לחשב מספרים, לזהות דפוסים ולחזות מילים. כשרובוט אומר "אני שמח לעזור", הוא רק מחשב מה המשפט הכי מנומס ונכון לומר!',
+    category: 'בינה מלאכותית ואתיקה',
+    tokens: ['להרגיש', 'רגשות', 'רגש', 'רובוט', 'בינה מלאכותית', 'ai', 'לב']
+  },
+  {
+    title: 'מה זה למידה עמוקה (Deep Learning)?',
+    text: 'זוהי שיטה מתקדמת בבינה מלאכותית שמחקה את רשתות הנוירונים במוח האנושי בעזרת שכבות עמוקות של חישובים. היא מאפשרת למחשב לזהות פנים, להבין דיבור ולפתח מכוניות אוטונומיות.',
+    category: 'בינה מלאכותית ואתיקה',
+    tokens: ['למידה עמוקה', 'deep learning', 'רשת נוירונים', 'שכבות']
+  },
+  {
+    title: 'מה זה סוכן בינה מלאכותית (AI Agent)?',
+    text: 'סוכן AI הוא תוכנה חכמה שיכולה לקבל מטרה, לתכנן בעצמה את השלבים, להשתמש בכלים (כמו חיפוש באינטרנט או כתיבת קוד) ולפתור בעיות מורכבות ללא צורך בהנחיה ידנית בכל צעד.',
+    category: 'בינה מלאכותית ואתיקה',
+    tokens: ['סוכן', 'agent', 'סוכן ai', 'כלים', 'אוטונומי']
+  }
+];
+
 // Global concepts and terms for comprehensive cross-lab discovery
 const GLOBAL_VOCABULARY = new Set([
   'פיקסל', 'פיקסלים', 'ביט', 'ביטים', 'בייט', 'בייטים', 'בינארי', 'בינארית',
@@ -162,6 +277,8 @@ const GLOBAL_VOCABULARY = new Set([
   'נוירון', 'נוירונים', 'משקולת', 'משקולות', 'שפעול', 'אקטיבציה', 'סף', 'רשת',
   'מודל', 'שפה', 'מילה', 'מילים', 'הסתברות', 'טוקן', 'טוקנים', 'חלון', 'הקשר',
   'הזיה', 'הזיות', 'פרומפט', 'הנחיה', 'הנחיות', 'chatgpt', 'gemini', 'גמיני', 'צ\'אט',
+  'חומרה', 'תוכנה', 'מעבד', 'cpu', 'זיכרון', 'ram', 'אינטרנט', 'שרת', 'ענן', 'cloud',
+  'ip', 'סייבר', 'האקר', 'סיסמה', 'עדה לאבלייס', 'טיורינג', 'רגש', 'סוכן', 'agent',
   'תעודה', 'כוכב', 'כוכבים', 'אתגר', 'אתגרים', 'רמז', 'רמזים', 'עזרה', 'שלום', 'היי'
 ]);
 
@@ -456,7 +573,20 @@ export function searchKnowledge(userQuery, currentLabId = 'lab1') {
     });
   }
 
-  // E. Score every candidate against query tokens
+  // E. General CS & AI Knowledge Base (Curious Questions & Concepts)
+  GENERAL_CS_KNOWLEDGE.forEach(item => {
+    candidates.push({
+      type: 'general_cs',
+      labId: 'general',
+      title: item.title,
+      text: item.text,
+      audioSrc: null,
+      category: item.category,
+      tokens: [...item.tokens, ...tokenizeQuery(item.title)]
+    });
+  });
+
+  // F. Score every candidate against query tokens
   let bestCandidate = null;
   let highestScore = 0;
 

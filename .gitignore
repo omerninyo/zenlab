@@ -11,6 +11,8 @@ build/
 .env
 .env.local
 .env.*.local
+.dev.vars
+.dev.vars.*
 
 # Cloudflare Wrangler
 .wrangler/

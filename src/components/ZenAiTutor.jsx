@@ -19,7 +19,8 @@ import { AudioEngine } from '../core/audio.js';
 import { 
   getLabCategories, 
   searchKnowledge, 
-  CURATED_TUTOR_KNOWLEDGE 
+  CURATED_TUTOR_KNOWLEDGE,
+  globalCircuitBreaker
 } from '../core/tutorEngine.js';
 
 export default function ZenAiTutor({ currentLabId = 'lab1' }) {
@@ -134,7 +135,72 @@ export default function ZenAiTutor({ currentLabId = 'lab1' }) {
       return;
     }
 
-    // 2. Optional: If user explicitly configured a personal Google Gemini API key
+    // 2. Direct exact Curated Q&A Match (instant audio response)
+    const curatedAnswer = labKnowledge?.answers?.[questionText];
+    if (curatedAnswer) {
+      const promptIndex = labKnowledge.prompts.indexOf(questionText);
+      setTimeout(() => {
+        setMessages(prev => [
+          ...prev,
+          {
+            id: 'tutor-' + Date.now(),
+            sender: 'tutor',
+            text: curatedAnswer,
+            audioSrc: promptIndex !== -1 ? `/audio/tutor/${currentLab}_q${promptIndex}.mp3?v=0.6.3` : null,
+            category: 'תשובת חונך מוקלטת',
+            suggestedNext: labKnowledge.prompts.filter(p => p !== questionText).slice(0, 2),
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          }
+        ]);
+        setIsLoading(false);
+        AudioEngine.playSuccess();
+      }, 300);
+      return;
+    }
+
+    // 3. Cloudflare Pages Function Proxy (/api/tutor) with Circuit Breaker
+    // Uses the user's GEMINI_API_KEY securely hosted on Cloudflare edge
+    if (globalCircuitBreaker.isAvailable()) {
+      try {
+        const res = await fetch('/api/tutor', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query: questionText, labId: currentLab })
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          if (data.success && data.text) {
+            globalCircuitBreaker.recordSuccess();
+            setMessages(prev => [
+              ...prev,
+              {
+                id: 'tutor-' + Date.now(),
+                sender: 'tutor',
+                text: data.text,
+                isGemini: true,
+                category: 'זֶן AI חכם',
+                suggestedNext: (CURATED_TUTOR_KNOWLEDGE[currentLab]?.prompts || []).slice(0, 2),
+                timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+              }
+            ]);
+            setIsLoading(false);
+            AudioEngine.playSuccess();
+            return;
+          }
+          if (data.fallback) {
+            globalCircuitBreaker.recordFailure();
+          }
+        } else {
+          globalCircuitBreaker.recordFailure();
+        }
+      } catch (err) {
+        // Network/proxy error (e.g. running locally without wrangler or offline)
+        globalCircuitBreaker.recordFailure();
+      }
+    }
+
+    // 4. Optional: Direct client call if user entered a custom key in UI drawer
     if (userApiKey && userApiKey.trim().length > 10) {
       try {
         const promptSystem = `אתם חונך בינה מלאכותית ידידותי, מעודד וסבלני לילדים וילדות בכיתה ה (גילאי 10-11) בישראל, בשם "זֶן הרובוט".
@@ -143,7 +209,7 @@ export default function ZenAiTutor({ currentLabId = 'lab1' }) {
 כלל דקדוקי חובה וקריטי: פנו תמיד בלשון רבים מכלילה (אתם, שלכם, נסו, שימו לב, בואו נגלה) או בלשון נקבה, ולעולם אל תפנו בלשון זכר יחיד!
 אל תתנו תשובות ארוכות ומסובכות: עד 2-3 משפטים קצרים ומעצימים. עודדו את התלמידים להמשיך לחקור במעבדה.`;
 
-        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${userApiKey.trim()}`, {
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=${userApiKey.trim()}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -164,7 +230,7 @@ export default function ZenAiTutor({ currentLabId = 'lab1' }) {
                 sender: 'tutor',
                 text: reply.trim(),
                 isGemini: true,
-                category: 'Google Gemini AI',
+                category: 'Google Gemini 3',
                 suggestedNext: (CURATED_TUTOR_KNOWLEDGE[currentLab]?.prompts || []).slice(0, 2),
                 timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
               }
@@ -175,11 +241,11 @@ export default function ZenAiTutor({ currentLabId = 'lab1' }) {
           }
         }
       } catch (e) {
-        console.warn('Gemini tutor call error, fallback to local engine:', e);
+        console.warn('Direct Gemini call error, falling back to local engine:', e);
       }
     }
 
-    // 3. Option B: Fast, intelligent, local semantic intent matcher (Zero Latency, 100% Offline)
+    // 5. Option B: Fast, intelligent, local semantic intent matcher (Zero Latency, 100% Offline fallback)
     setTimeout(() => {
       const matchResult = searchKnowledge(questionText, currentLab);
       if (matchResult) {
