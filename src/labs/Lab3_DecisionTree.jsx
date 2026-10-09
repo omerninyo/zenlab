@@ -119,11 +119,11 @@ export default function Lab3_DecisionTree({ curriculum }) {
               <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
                 <div className="flex items-center gap-2">
                   <GitBranch className="w-5 h-5 text-emerald-400" />
-                  <h2 className="text-base font-bold text-white">ארגז חול: בניית עץ ההחלטות</h2>
+                  <h2 className="text-base font-bold text-white">בניית עץ שאלות לזיהוי חיות</h2>
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-2 bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800">
-                    <span className="text-xs text-slate-400">טוהר מודל:</span>
+                    <span className="text-xs text-slate-400">דיוק הזיהוי:</span>
                     <span className="text-sm font-bold font-mono text-emerald-400">
                       {evaluation.leafPurity}%
                     </span>
@@ -132,7 +132,7 @@ export default function Lab3_DecisionTree({ curriculum }) {
                     type="button"
                     onClick={handleReset}
                     className="p-1.5 rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-800 transition-colors"
-                    title="איפוס עץ"
+                    title="חזרה להתחלה"
                   >
                     <RotateCcw className="w-4 h-4" />
                   </button>
@@ -144,7 +144,7 @@ export default function Lab3_DecisionTree({ curriculum }) {
                 {/* Level 0: Root Question */}
                 <div className="flex flex-col items-center">
                   <span className="text-[11px] font-semibold text-slate-400 mb-1.5 uppercase tracking-wider">
-                    שאלת שורש מרכזית
+                    שאלה ראשונה (לכל החיות)
                   </span>
                   <div className="relative inline-block">
                     <select
@@ -168,9 +168,9 @@ export default function Lab3_DecisionTree({ curriculum }) {
                   <div className="flex flex-col items-center p-4 bg-slate-950/60 rounded-xl border border-slate-800 space-y-3">
                     <div className="flex items-center gap-2 text-xs font-semibold text-emerald-400">
                       <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-                      <span>אם התשובה היא כן ({evaluation.nodes.leftGroup.count} פריטים)</span>
+                      <span>אם התשובה כן ({evaluation.nodes.leftGroup.count} חיות)</span>
                     </div>
-                    <span className="text-[11px] text-slate-400 font-medium">שאלת המשך:</span>
+                    <span className="text-[11px] text-slate-400 font-medium">שאלת המשך לחיות האלו:</span>
                     <select
                       value={leftAttr}
                       onChange={e => { setLeftAttr(e.target.value); AudioEngine.playStep(); }}
@@ -204,9 +204,9 @@ export default function Lab3_DecisionTree({ curriculum }) {
                   <div className="flex flex-col items-center p-4 bg-slate-950/60 rounded-xl border border-slate-800 space-y-3">
                     <div className="flex items-center gap-2 text-xs font-semibold text-amber-400">
                       <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
-                      <span>אם התשובה היא לא ({evaluation.nodes.rightGroup.count} פריטים)</span>
+                      <span>אם התשובה לא ({evaluation.nodes.rightGroup.count} חיות)</span>
                     </div>
-                    <span className="text-[11px] text-slate-400 font-medium">שאלת המשך:</span>
+                    <span className="text-[11px] text-slate-400 font-medium">שאלת המשך לחיות האלו:</span>
                     <select
                       value={rightAttr}
                       onChange={e => { setRightAttr(e.target.value); AudioEngine.playStep(); }}
@@ -243,7 +243,7 @@ export default function Lab3_DecisionTree({ curriculum }) {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Sparkles className="w-4 h-4 text-blue-400" />
-                    <span className="text-xs font-semibold text-white">בדיקת פריט יחיד בעץ:</span>
+                    <span className="text-xs font-semibold text-white">נחשו חיה בעץ (משחק 20 שאלות):</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     {labData.dataset.map(animal => (
@@ -264,10 +264,9 @@ export default function Lab3_DecisionTree({ curriculum }) {
                 </div>
 
                 <div className="text-xs text-slate-400 bg-slate-900/60 p-3 rounded-lg border border-slate-800/80">
-                  <span>מסלול עבור <strong>{testAnimal.name}</strong> ({testAnimal.species}):</span>{' '}
-                  <span className="text-blue-300 font-mono">
-                    שורש [{rootAttr}] $\to$ {testAnimal[rootAttr] ? 'כן' : 'לא'} $\to$ ענף [
-                    {testAnimal[rootAttr] ? leftAttr : rightAttr}] $\to$ סיווג סופי.
+                  <span>מסלול השאלות עבור <strong>{testAnimal.name}</strong> ({testAnimal.species}):</span>{' '}
+                  <span className="text-blue-300 font-medium">
+                    {labData.attributes.find(a => a.id === rootAttr)?.label} ← {testAnimal[rootAttr] ? 'כן' : 'לא'} ← {labData.attributes.find(a => a.id === (testAnimal[rootAttr] ? leftAttr : rightAttr))?.label} ← {testAnimal[testAnimal[rootAttr] ? leftAttr : rightAttr] ? 'כן' : 'לא'} ← זיהוי סופי!
                   </span>
                 </div>
               </div>
@@ -281,7 +280,7 @@ export default function Lab3_DecisionTree({ curriculum }) {
               <div className="flex items-center justify-between border-b border-slate-800 pb-3">
                 <div className="flex items-center gap-2">
                   <Award className="w-4 h-4 text-amber-400" />
-                  <h3 className="text-xs font-semibold text-white">אתגרי פיצול וסיווג</h3>
+                  <h3 className="text-xs font-semibold text-white">אתגרי זיהוי ומיון</h3>
                 </div>
                 <span className="text-xs font-mono text-slate-400">
                   {completedCount}/{labData.challenges.length}

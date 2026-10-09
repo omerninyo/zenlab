@@ -45,7 +45,7 @@ export default function Lab2_AlgorithmicRobot({ curriculum }) {
   const [hasKey, setHasKey] = useState(false);
   const [isGateUnlocked, setIsGateUnlocked] = useState(false);
   const [status, setStatus] = useState('idle'); // 'idle' | 'running' | 'success' | 'collision' | 'error'
-  const [statusMessage, setStatusMessage] = useState('בנה תור פקודות והפעל את האלגוריתם');
+  const [statusMessage, setStatusMessage] = useState('בחרו פקודות ולחצו על "הפעלת הרובוט"');
   const [completedChallenges, setCompletedChallenges] = useState(() => StorageEngine.getState().completedChallenges);
 
   const abortExecutionRef = useRef(false);
@@ -65,7 +65,7 @@ export default function Lab2_AlgorithmicRobot({ curriculum }) {
     setHasKey(false);
     setIsGateUnlocked(false);
     setStatus('idle');
-    setStatusMessage('הסימולציה אופסה. מוכן להרצה חוזרת.');
+    setStatusMessage('הרובוט חזר להתחלה. מוכן להרצה!');
   };
 
   const addCommand = (cmdType) => {
@@ -97,7 +97,7 @@ export default function Lab2_AlgorithmicRobot({ curriculum }) {
     abortExecutionRef.current = false;
     setIsRunning(true);
     setStatus('running');
-    setStatusMessage('מבצע אלגוריתם פקודה אחר פקודה...');
+    setStatusMessage('הרובוט מבצע את הפקודות צעד אחר צעד...');
 
     let currentPos = { ...board.start };
     let currentKey = false;
@@ -125,7 +125,7 @@ export default function Lab2_AlgorithmicRobot({ curriculum }) {
         // Check boundaries
         if (nextX < 0 || nextX >= gridSize || nextY < 0 || nextY >= gridSize) {
           setStatus('collision');
-          setStatusMessage(`שגיאת חריגה: הרובוט ניסה לצאת מגבולות המבוך בפקודה #${i + 1}`);
+          setStatusMessage(`זהירות! הרובוט ניסה לצאת מגבולות הלוח בפקודה #${i + 1}`);
           AudioEngine.playError();
           setIsRunning(false);
           return;
@@ -134,7 +134,7 @@ export default function Lab2_AlgorithmicRobot({ curriculum }) {
         // Check walls
         if (isWall(nextX, nextY)) {
           setStatus('collision');
-          setStatusMessage(`שגיאת התנגשות: נתקל בקיר במשבצת (${nextX}, ${nextY}) בפקודה #${i + 1}`);
+          setStatusMessage(`אופס! הרובוט נתקע בקיר בפקודה #${i + 1}`);
           AudioEngine.playError();
           setIsRunning(false);
           return;
@@ -143,7 +143,7 @@ export default function Lab2_AlgorithmicRobot({ curriculum }) {
         // Check locked gate
         if (nextX === board.gate.x && nextY === board.gate.y && !currentGateUnlocked) {
           setStatus('error');
-          setStatusMessage(`שגיאת גישה: השער במשבצת (${nextX}, ${nextY}) נעול! חובה לאסוף מפתח ולפתוח אותו.`);
+          setStatusMessage('השער נעול! צריך קודם לאסוף מפתח ולפתוח אותו');
           AudioEngine.playError();
           setIsRunning(false);
           return;
@@ -172,14 +172,14 @@ export default function Lab2_AlgorithmicRobot({ curriculum }) {
           currentKey = true;
           setHasKey(true);
           AudioEngine.playCollect();
-          setStatusMessage('המפתח נאסף לזיכרון הרובוט!');
+          setStatusMessage('יש! אספתם את המפתח');
 
           // Check Challenge 1
           if (!completedChallenges['lab2_challenge1']) {
             StorageEngine.completeChallenge('lab2', 'lab2_challenge1', 1);
           }
         } else {
-          setStatusMessage('אזהרה: אין מפתח במשבצת זו לאיסוף.');
+          setStatusMessage('אין כאן מפתח לאסוף.');
           AudioEngine.playTone(200, 'sawtooth', 0.1);
         }
 
@@ -188,7 +188,7 @@ export default function Lab2_AlgorithmicRobot({ curriculum }) {
         const isNearGate = Math.abs(currentPos.x - board.gate.x) + Math.abs(currentPos.y - board.gate.y) <= 1;
         if (!currentKey) {
           setStatus('error');
-          setStatusMessage('שגיאת תנאי קדם: לא ניתן לפתוח שער ללא מפתח!');
+          setStatusMessage('לא ניתן לפתוח את השער בלי שאספתם קודם מפתח!');
           AudioEngine.playError();
           setIsRunning(false);
           return;
@@ -198,14 +198,14 @@ export default function Lab2_AlgorithmicRobot({ curriculum }) {
           currentGateUnlocked = true;
           setIsGateUnlocked(true);
           AudioEngine.playUnlock();
-          setStatusMessage('השער נפתח בהצלחה!');
+          setStatusMessage('כל הכבוד! השער נפתח בהצלחה');
 
           // Check Challenge 2
           if (!completedChallenges['lab2_challenge2']) {
             StorageEngine.completeChallenge('lab2', 'lab2_challenge2', 1);
           }
         } else {
-          setStatusMessage('אזהרה: הרובוט רחוק מדי מהשער לפתיחתו.');
+          setStatusMessage('הרובוט צריך לעמוד ממש ליד השער כדי לפתוח אותו.');
           AudioEngine.playTone(200, 'sawtooth', 0.1);
         }
       }
@@ -217,7 +217,7 @@ export default function Lab2_AlgorithmicRobot({ curriculum }) {
     // Check if reached goal
     if (currentPos.x === board.goal.x && currentPos.y === board.goal.y) {
       setStatus('success');
-      setStatusMessage('הצלחה! הרובוט ביצע את האלגוריתם והגיע ליעד.');
+      setStatusMessage('אלופים! הרובוט הגיע לדגל היעד בהצלחה!');
       AudioEngine.playSuccess();
       fireConfetti();
 
@@ -227,7 +227,7 @@ export default function Lab2_AlgorithmicRobot({ curriculum }) {
       }
     } else if (status !== 'collision' && status !== 'error') {
       setStatus('idle');
-      setStatusMessage('הרצף הסתיים, אך הרובוט טרם הגיע למשבצת היעד.');
+      setStatusMessage('הפקודות הסתיימו, אך הרובוט עדיין לא הגיע לדגל היעד.');
     }
   };
 
@@ -280,7 +280,7 @@ export default function Lab2_AlgorithmicRobot({ curriculum }) {
             {/* Status bar */}
             <div className="w-full flex items-center justify-between mb-4">
               <div className="flex items-center gap-2 text-xs">
-                <span className="text-slate-400">סטטוס מנוע:</span>
+                <span className="text-slate-400">מה הרובוט עושה:</span>
                 <span className={`font-medium ${
                   status === 'success' ? 'text-emerald-400' :
                   status === 'collision' || status === 'error' ? 'text-red-400' :
@@ -294,7 +294,7 @@ export default function Lab2_AlgorithmicRobot({ curriculum }) {
                   hasKey ? 'bg-amber-950/60 border-amber-800/80 text-amber-300' : 'bg-slate-950 border-slate-800 text-slate-500'
                 }`}>
                   <Key className="w-3.5 h-3.5" />
-                  <span>{hasKey ? 'מפתח בזיכרון' : 'אין מפתח'}</span>
+                  <span>{hasKey ? 'יש מפתח' : 'אין מפתח'}</span>
                 </div>
                 <div className={`flex items-center gap-1 text-xs px-2 py-0.5 rounded border ${
                   isGateUnlocked ? 'bg-emerald-950/60 border-emerald-800/80 text-emerald-300' : 'bg-slate-950 border-slate-800 text-slate-500'
@@ -379,7 +379,7 @@ export default function Lab2_AlgorithmicRobot({ curriculum }) {
                 className="flex items-center gap-2 px-5 py-2 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-500 disabled:bg-slate-800 disabled:text-slate-600 text-white transition-colors shadow-sm"
               >
                 <Play className="w-4 h-4 fill-current" />
-                <span>הרץ אלגוריתם ({commands.length})</span>
+                <span>הפעלת הרובוט ({commands.length})</span>
               </button>
 
               <button
@@ -388,7 +388,7 @@ export default function Lab2_AlgorithmicRobot({ curriculum }) {
                 className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
-                <span>איפוס מיקום</span>
+                <span>חזרה להתחלה</span>
               </button>
             </div>
           </div>
@@ -398,7 +398,7 @@ export default function Lab2_AlgorithmicRobot({ curriculum }) {
             {/* Command Palette */}
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-sm font-semibold text-white">בניית רצף הפקודות</h3>
+                <h3 className="text-sm font-semibold text-white">רשימת הפקודות לרובוט</h3>
                 <button
                   type="button"
                   onClick={clearCommands}
@@ -406,7 +406,7 @@ export default function Lab2_AlgorithmicRobot({ curriculum }) {
                   className="flex items-center gap-1 text-xs text-slate-400 hover:text-red-400 transition-colors disabled:opacity-40"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
-                  <span>נקה הכל</span>
+                  <span>מחיקת הכל</span>
                 </button>
               </div>
 
@@ -463,7 +463,7 @@ export default function Lab2_AlgorithmicRobot({ curriculum }) {
               <div className="bg-slate-950 rounded-lg p-3 border border-slate-800 min-h-[140px] max-h-[190px] overflow-y-auto space-y-1.5">
                 {commands.length === 0 ? (
                   <div className="text-xs text-slate-500 text-center py-8">
-                    תור הפקודות ריק. הוסיפו פקודות למעלה לבניית האלגוריתם.
+                    רשימת הפקודות ריקה. לחצו על הכפתורים למעלה כדי לתת הוראות לרובוט.
                   </div>
                 ) : (
                   commands.map((cmd, i) => {
@@ -493,7 +493,7 @@ export default function Lab2_AlgorithmicRobot({ curriculum }) {
                             onClick={() => removeCommand(i)}
                             className="text-slate-500 hover:text-red-400 transition-colors text-[10px]"
                           >
-                            הסר
+                            מחיקה
                           </button>
                         )}
                       </div>

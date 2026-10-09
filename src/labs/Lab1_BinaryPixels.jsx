@@ -238,8 +238,8 @@ export default function Lab1_BinaryPixels({ curriculum }) {
 
               {/* Counter / Metrics Bar */}
               <div className="w-full flex items-center justify-between text-xs text-slate-400 mt-4 px-2">
-                <span>פיקסלים דולקים: <strong className="text-white font-mono">{activeCount}</strong> מתוך 64</span>
-                <span>גודל זיכרון תמונה: <strong className="text-blue-400 font-mono">8 Bytes</strong></span>
+                <span>משבצות דולקות: <strong className="text-white font-mono">{activeCount}</strong> מתוך 64</span>
+                <span>משקל בזיכרון: <strong className="text-blue-400 font-mono">8 בייטים</strong></span>
               </div>
             </div>
 
@@ -250,7 +250,7 @@ export default function Lab1_BinaryPixels({ curriculum }) {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Binary className="w-4 h-4 text-blue-400" />
-                    <h3 className="text-sm font-semibold text-white">מחרוזת בינארית מלאה (64-Bit)</h3>
+                    <h3 className="text-sm font-semibold text-white">קוד המתגים של הציור (0 ו-1)</h3>
                   </div>
 
                   <button
@@ -276,7 +276,7 @@ export default function Lab1_BinaryPixels({ curriculum }) {
 
                 {/* Hexadecimal Encoding View */}
                 <div>
-                  <div className="text-xs font-medium text-slate-400 mb-2">ייצוג הקסדצימלי (8 בייטים):</div>
+                  <div className="text-xs font-medium text-slate-400 mb-2">קוד המחשב המקוצר (8 בייטים):</div>
                   <div className="flex flex-wrap gap-2" dir="ltr">
                     {hexBytes.map((byte, i) => (
                       <span

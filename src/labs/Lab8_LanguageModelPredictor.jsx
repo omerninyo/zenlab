@@ -143,7 +143,7 @@ export default function Lab8_LanguageModelPredictor({ curriculum }) {
             {/* Prompt Selector */}
             <div>
               <label className="block text-xs font-semibold text-slate-300 mb-2">
-                בחר התחלה של משפט (פרומפט):
+                בחרו התחלה של משפט:
               </label>
               <div className="flex flex-wrap gap-2">
                 {labData.prompts.map(p => (
@@ -167,7 +167,7 @@ export default function Lab8_LanguageModelPredictor({ curriculum }) {
             <div className="bg-slate-950 p-5 rounded-xl border border-slate-800 space-y-3 min-h-[140px] flex flex-col justify-between shadow-inner">
               <div>
                 <div className="text-[11px] font-medium text-slate-400 mb-2">
-                  המשפט הנבנה (מילה אחר מילה):
+                  המשפט המלא:
                 </div>
                 <div className="text-base leading-relaxed text-slate-200">
                   <span className="text-slate-400 font-normal">{activePrompt.initialText}</span>
@@ -195,7 +195,7 @@ export default function Lab8_LanguageModelPredictor({ curriculum }) {
                   className="flex items-center gap-1 text-xs text-slate-400 hover:text-slate-200 disabled:opacity-40 transition-colors"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
-                  <span>התחל מחדש</span>
+                  <span>מחיקת הכל</span>
                 </button>
               </div>
             </div>
@@ -208,7 +208,7 @@ export default function Lab8_LanguageModelPredictor({ curriculum }) {
                 className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white transition-colors shadow-sm"
               >
                 <Sparkles className="w-4 h-4" />
-                <span>חזה את האסימון הבא</span>
+                <span>גלה את המילה הבאה</span>
               </button>
             </div>
 
@@ -217,7 +217,7 @@ export default function Lab8_LanguageModelPredictor({ curriculum }) {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Sliders className="w-4 h-4 text-blue-400" />
-                  <span className="text-xs font-semibold text-slate-200">מד יצירתיות ודמיון:</span>
+                  <span className="text-xs font-semibold text-slate-200">מד חום ליצירתיות:</span>
                 </div>
                 <div className="flex items-center gap-1.5 font-mono text-xs font-bold text-blue-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">
                   {temperature <= 0.05 ? (
@@ -245,9 +245,9 @@ export default function Lab8_LanguageModelPredictor({ curriculum }) {
               />
 
               <div className="flex justify-between text-[10px] text-slate-500">
-                <span>0.0 (דיוק מקסימלי, אותה בחירה תמיד)</span>
-                <span>0.7 (מאוזן)</span>
-                <span>1.5 (אקראיות ויצירתיות מוגברת)</span>
+                <span>0.0 (בטוח וצפוי, תמיד אותה מילה)</span>
+                <span>0.7 (טבעי ומאוזן)</span>
+                <span>1.5 (הרבה דמיון והפתעות)</span>
               </div>
             </div>
           </div>
@@ -257,8 +257,8 @@ export default function Lab8_LanguageModelPredictor({ curriculum }) {
             {/* Probability Distribution Chart */}
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-sm font-semibold text-white">התפלגות הסתברויות לאסימון הבא</h3>
-                <span className="text-[11px] text-slate-500">הקלק על מילה לבחירה ישירה</span>
+                <h3 className="text-sm font-semibold text-white">גלגל הסיכויים של המילים הבאות</h3>
+                <span className="text-[11px] text-slate-500">לחצו על מילה לבחירה ישירה</span>
               </div>
 
               <div className="space-y-2.5">

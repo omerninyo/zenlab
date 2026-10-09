@@ -162,7 +162,7 @@ export default function Lab6_VisionKernels({ curriculum }) {
                     type="button"
                     onClick={handleClear}
                     className="p-1 rounded-lg bg-slate-950 text-slate-400 hover:text-slate-200 border border-slate-800 ml-1 shrink-0"
-                    title="נקה משטח"
+                    title="ניקוי הלוח"
                   >
                     <RotateCcw className="w-3.5 h-3.5" />
                   </button>
@@ -172,7 +172,7 @@ export default function Lab6_VisionKernels({ curriculum }) {
               {/* Kernel Selector */}
               <div className="bg-slate-950 p-3 sm:p-4 rounded-2xl border border-slate-800 space-y-2.5">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold text-white">בחר פילטר בלשי (זכוכית מגדלת 3x3):</span>
+                  <span className="text-xs font-semibold text-white">בחרו זכוכית מגדלת בלשית (מה לחפש בציור?):</span>
                   <span className="text-xs text-slate-400 font-mono hidden sm:inline">{currentKernel.description}</span>
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -198,8 +198,8 @@ export default function Lab6_VisionKernels({ curriculum }) {
                 {/* Input Grid */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between text-xs text-slate-300">
-                    <span className="font-semibold">תמונת קלט מקורית (8x8)</span>
-                    <span className="text-[11px] text-slate-500">לחצו לציור חופשי</span>
+                    <span className="font-semibold">הציור המקורי שלכם</span>
+                    <span className="text-[11px] text-slate-500">לחצו כדי לצבוע משבצות</span>
                   </div>
                   <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 flex justify-center">
                     <div className="grid grid-cols-8 gap-1 aspect-square w-full max-w-[240px]">
@@ -232,8 +232,8 @@ export default function Lab6_VisionKernels({ curriculum }) {
                 {/* Output Feature Map */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between text-xs text-slate-300">
-                    <span className="font-semibold">מפת רמזים ומאפיינים שנמצאו</span>
-                    <span className="text-[11px] text-slate-500">לחצו לבדיקת פיקסל</span>
+                    <span className="font-semibold">מה שהמחשב מזהה (מפת הקווים)</span>
+                    <span className="text-[11px] text-slate-500">לחצו על משבצת לבדיקה</span>
                   </div>
                   <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 flex justify-center">
                     <div className="grid grid-cols-8 gap-1 aspect-square w-full max-w-[240px]">
@@ -274,14 +274,14 @@ export default function Lab6_VisionKernels({ curriculum }) {
                   <div className="flex items-center justify-between text-xs">
                     <div className="flex items-center gap-1.5 text-amber-400 font-bold">
                       <Sparkles className="w-4 h-4" />
-                      <span>פירוט חישוב פיקסל ({inspectedCell.x}, {inspectedCell.y}):</span>
+                      <span>הצצה לחשבון של המשבצת ({inspectedCell.x}, {inspectedCell.y}):</span>
                     </div>
                     <span className="font-mono text-emerald-400 font-bold">
-                      תוצאה סופית: {inspectedDetail.clamped}
+                      ציון התאמה: {inspectedDetail.clamped}
                     </span>
                   </div>
                   <p className="text-[11px] text-slate-400 leading-relaxed">
-                    המחשב הכפיל את 9 פיקסלי השכנים סביב ({inspectedCell.x}, {inspectedCell.y}) במשקולות פילטר {currentKernel.name}, וסכם את המכפלות לסכום כולל של <strong className="text-white font-mono">{inspectedDetail.sum}</strong>.
+                    זכוכית המגדלת בדקה את 9 המשבצות סביב ({inspectedCell.x}, {inspectedCell.y}). היא השוותה אותן לדפוס של "{currentKernel.name}", ונתנה ציון התאמה של <strong className="text-white font-mono">{inspectedDetail.sum}</strong>.
                   </p>
                 </div>
               )}

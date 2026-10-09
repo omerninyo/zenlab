@@ -25,7 +25,8 @@ import {
   ChevronLeft,
   ChevronDown,
   MoreVertical,
-  Home
+  Home,
+  Palette
 } from 'lucide-react';
 import curriculumData from './data/curriculum.json';
 import { StorageEngine } from './core/storage.js';
@@ -34,6 +35,7 @@ import { NarrationEngine } from './core/narration.js';
 import CertificateModal from './components/CertificateModal.jsx';
 import GlossaryModal from './components/GlossaryModal.jsx';
 import ClassroomSettingsModal from './components/ClassroomSettingsModal.jsx';
+import DesignSystemTestModal from './components/DesignSystemTestModal.jsx';
 import ZenAiTutor from './components/ZenAiTutor.jsx';
 import HomeDashboard from './components/HomeDashboard.jsx';
 import Lab1_BinaryPixels from './labs/Lab1_BinaryPixels.jsx';
@@ -54,6 +56,8 @@ export default function App() {
   const [isNarrationEnabled, setIsNarrationEnabled] = useState(() => StorageEngine.getState().isNarrationEnabled);
   const [narrationState, setNarrationState] = useState(() => NarrationEngine.getState());
   const [theme, setTheme] = useState(() => StorageEngine.getTheme());
+  const [isDapimActive, setIsDapimActive] = useState(() => StorageEngine.getDapimMode());
+  const [dapimPalette, setDapimPalette] = useState(() => StorageEngine.getDapimPalette());
 
   // Track filter state: 'all' | 'algorithms' | 'ai'
   const [selectedTrack, setSelectedTrack] = useState('all');
@@ -62,6 +66,7 @@ export default function App() {
   const [isCertificateOpen, setIsCertificateOpen] = useState(false);
   const [isGlossaryOpen, setIsGlossaryOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isDesignTestOpen, setIsDesignTestOpen] = useState(false);
   const [isLabMenuOpen, setIsLabMenuOpen] = useState(false);
   const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
 
@@ -74,6 +79,8 @@ export default function App() {
       if (state.theme) setTheme(state.theme);
       if (state.viewMode) setViewMode(state.viewMode);
       if (state.activeLabId) setActiveLabId(state.activeLabId);
+      if (typeof state.dapimMode === 'boolean') setIsDapimActive(state.dapimMode);
+      if (state.dapimPalette) setDapimPalette(state.dapimPalette);
     });
     const unsubNarration = NarrationEngine.subscribe(state => {
       setNarrationState(state);
@@ -153,13 +160,19 @@ export default function App() {
   const isDark = theme === 'dark';
 
   return (
-    <div className={`min-h-screen flex flex-col font-sans transition-colors duration-200 ${
-      isDark
-        ? 'bg-slate-950 text-slate-100 selection:bg-slate-800'
-        : 'bg-slate-50 text-slate-800 selection:bg-blue-100 selection:text-blue-900'
-    }`} dir="rtl">
-      {/* Top Application Bar - Apple Minimalist & Child-Friendly */}
-      <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 shadow-xs">
+    <div
+      className={`min-h-screen flex flex-col font-sans transition-colors duration-200 ${
+        isDapimActive
+          ? 'dapim-preview-container'
+          : isDark
+          ? 'bg-slate-950 text-slate-100 selection:bg-slate-800'
+          : 'bg-slate-50 text-slate-800 selection:bg-blue-100 selection:text-blue-900'
+      }`}
+      data-theme={dapimPalette}
+      dir="rtl"
+    >
+      {/* Top Application Bar - Apple Minimalist & Child-Friendly / Liquid Glass */}
+      <header className={isDapimActive ? 'header-glass' : 'sticky top-0 z-40 bg-white/95 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 shadow-xs'}>
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-2 sm:gap-4">
           
           {/* Right (RTL): Brand Identity & Dedicated Home Button */}
@@ -344,6 +357,21 @@ export default function App() {
               <span>תעודה</span>
             </button>
 
+            {/* Design System 4.0 Test Bench Trigger */}
+            <button
+              type="button"
+              onClick={() => { setIsDesignTestOpen(true); AudioEngine.playStep(); }}
+              title="בדיקת עיצוב דפים 4.0 - Liquid Glass & Hollow Restraint"
+              className={`hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+                isDapimActive
+                  ? 'btn-hollow-primary !h-8 !px-2.5 !text-xs'
+                  : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700'
+              }`}
+            >
+              <Palette className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[var(--accent-base)]" />
+              <span className="hidden md:inline">בדיקת עיצוב 4.0</span>
+            </button>
+
             {/* Audio Mute Switch (Desktop Only) */}
             <button
               type="button"
@@ -442,6 +470,16 @@ export default function App() {
                       <Settings className="w-4 h-4 text-slate-500" />
                       <span>הגדרות כיתה</span>
                     </button>
+
+                    {/* Design System 4.0 Test Bench (Mobile/Drawer) */}
+                    <button
+                      type="button"
+                      onClick={() => { setIsDesignTestOpen(true); setIsMoreMenuOpen(false); AudioEngine.playStep(); }}
+                      className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-xs sm:text-sm font-semibold text-[var(--accent-base)] transition-colors border-t border-slate-100 dark:border-slate-800/80 mt-1 pt-2"
+                    >
+                      <Palette className="w-4 h-4 text-[var(--accent-base)]" />
+                      <span>בדיקת עיצוב 4.0 (Liquid Glass)</span>
+                    </button>
                   </div>
                 </>
               )}
@@ -515,6 +553,12 @@ export default function App() {
       <ClassroomSettingsModal
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}
+      />
+
+      {/* Dapim 4.0 Liquid Glass & Hollow Restraint Interactive Design Test Modal */}
+      <DesignSystemTestModal
+        isOpen={isDesignTestOpen}
+        onClose={() => setIsDesignTestOpen(false)}
       />
 
       {/* Zen AI Tutor Floating Classroom Companion */}

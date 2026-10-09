@@ -169,10 +169,10 @@ export default function Lab5_MachineLearningClassifier({ curriculum }) {
           <div className="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl p-3.5 sm:p-6 flex flex-col items-center shadow-xs">
             <div className="w-full flex items-center justify-between mb-3">
               <div className="text-xs text-slate-300 font-semibold">
-                לוח תכונות: גודל מול משקל
+                לוח השוואת פירות (גודל מול משקל)
               </div>
               <div className="text-xs font-mono text-slate-400">
-                דוגמאות: <span className="text-white font-bold">{points.length}</span>
+                פירות על הלוח: <span className="text-white font-bold">{points.length}</span>
               </div>
             </div>
 
@@ -253,23 +253,23 @@ export default function Lab5_MachineLearningClassifier({ curriculum }) {
 
               {/* Axis labels */}
               <div className="absolute bottom-1 right-3 text-[10px] text-slate-500 font-mono">
-                גודל (X) &rarr;
+                גודל (קטן ← גדול)
               </div>
               <div className="absolute top-2 left-2 text-[10px] text-slate-500 font-mono">
-                &uarr; משקל (Y)
+                משקל (קל ↑ כבד)
               </div>
             </div>
 
             {/* Instruction tooltip */}
             <div className="flex items-center gap-1.5 text-xs text-slate-400 mt-4">
               <MousePointer className="w-3.5 h-3.5 text-blue-400" />
-              <span>הקליקו על המשטח להוספת דגימה, או גררו את העצם העגול לבדיקה.</span>
+              <span>לחצו על הלוח כדי להוסיף פרי, או גררו את העיגול כדי לבדוק מה המחשב מנחש.</span>
             </div>
 
             {/* Data controls */}
             <div className="w-full flex flex-wrap items-center justify-between gap-3 mt-4 pt-4 border-t border-slate-800">
               <div className="flex items-center gap-2">
-                <span className="text-xs text-slate-400">בחר סוג פריט להוספה:</span>
+                <span className="text-xs text-slate-400">איזה פרי להוסיף ללוח:</span>
                 <button
                   type="button"
                   onClick={() => setSelectedClass('A')}
@@ -302,7 +302,7 @@ export default function Lab5_MachineLearningClassifier({ curriculum }) {
                 className="flex items-center gap-1 text-xs text-slate-400 hover:text-slate-200 bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700 transition-colors"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
-                <span>איפוס נתונים</span>
+                <span>חזרה להתחלה</span>
               </button>
             </div>
           </div>
@@ -312,7 +312,7 @@ export default function Lab5_MachineLearningClassifier({ curriculum }) {
             {/* Real-Time Classification Result */}
             <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-sm font-semibold text-white">החלטת המחשב בזמן אמת</h3>
+                <h3 className="text-sm font-semibold text-white">מה המחשב מנחש?</h3>
                 <span className="text-[11px] font-mono text-slate-400">
                   ({testPoint.x}, {testPoint.y})
                 </span>
@@ -327,13 +327,13 @@ export default function Lab5_MachineLearningClassifier({ curriculum }) {
                     {classification.predictedLabel}
                   </div>
                   <div>
-                    <div className="text-xs text-slate-400">זיהוי המחשב:</div>
+                    <div className="text-xs text-slate-400">הניחוש:</div>
                     <div className="text-sm font-bold text-white">{predictedInfo.name}</div>
                   </div>
                 </div>
 
                 <div className="text-left">
-                  <div className="text-xs text-slate-400">מידת ביטחון:</div>
+                  <div className="text-xs text-slate-400">כמה המחשב בטוח:</div>
                   <div className="text-lg font-mono font-bold text-blue-400">
                     {classification.confidence}%
                   </div>
@@ -345,7 +345,7 @@ export default function Lab5_MachineLearningClassifier({ curriculum }) {
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-1.5 text-xs text-slate-300 font-medium">
                     <Sliders className="w-3.5 h-3.5 text-blue-400" />
-                    <span>מספר השכנים שמשפיעים (k):</span>
+                    <span>כמה שכנים קרובים שואלים? (k):</span>
                   </div>
                   <span className="text-xs font-mono font-semibold text-blue-400 bg-slate-800 px-2 py-0.5 rounded">
                     k = {kValue}
@@ -375,7 +375,7 @@ export default function Lab5_MachineLearningClassifier({ curriculum }) {
               {/* Nearest Neighbors Breakdown */}
               <div className="pt-2">
                 <div className="text-[11px] font-medium text-slate-400 mb-2">
-                  קולות השכנים הקרובים:
+                  הצבעת השכנים הקרובים:
                 </div>
                 <div className="space-y-1.5">
                   {classification.nearestNeighbors.map((nn, i) => (
@@ -390,7 +390,7 @@ export default function Lab5_MachineLearningClassifier({ curriculum }) {
                         </span>
                       </div>
                       <span className="font-mono text-slate-500 text-[10px]">
-                        מרחק: {nn.distance.toFixed(1)} יחידות
+                        מרחק: {nn.distance.toFixed(1)}
                       </span>
                     </div>
                   ))}

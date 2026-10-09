@@ -1,0 +1,272 @@
+/* ==========================================================================
+   DAPIM 4.0 LIQUID GLASS & HOLLOW RESTRICTIVE DESIGN SYSTEM
+   Standardized specification from docs/design.md
+   ========================================================================== */
+
+:root {
+  /* 1. Monochromatic Radix Slate Scale */
+  --slate-1: #0c0d10;
+  --slate-2: #15161c;
+  --slate-3: #1c1e27;
+  --slate-4: #252834;
+  --slate-5: #2f3342;
+  --slate-6: rgba(255, 255, 255, 0.10);
+  --slate-7: rgba(255, 255, 255, 0.16);
+  --slate-11: #9ca3af;
+  --slate-12: #ffffff;
+
+  /* 2. Default Active Accent Palette: Kavita Matte Amber */
+  --theme-name: "Dapim Matte Amber";
+  --accent-base: #d48344;
+  --accent-hover: #e09559;
+  --accent-rim: rgba(212, 131, 68, 0.45);
+  --accent-wash: rgba(212, 131, 68, 0.18);
+  --focus-ring: 0 0 0 2px rgba(212, 131, 68, 0.45);
+
+  /* 3. Velvet Ambient Lighting Formula */
+  --content-bg: #0c0d10;
+  --content-bg-gradient: 
+    radial-gradient(ellipse 95% 65% at 50% -8%, rgba(212, 131, 68, 0.12) 0%, rgba(212, 131, 68, 0.035) 45%, transparent 75%),
+    linear-gradient(180deg, #151720 0%, #0d0e12 40%, #07080a 100%);
+
+  /* 4. Optical Liquid Glass Material */
+  --glass-bg: rgba(16, 18, 24, 0.84);
+  --glass-blur: blur(32px) saturate(190%);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.09);
+  --glass-specular-top: inset 0 1px 0 0 rgba(255, 255, 255, 0.16);
+  --glass-shadow: 0 16px 40px -4px rgba(0, 0, 0, 0.65), 0 4px 12px rgba(0, 0, 0, 0.45);
+
+  /* 5. Typography */
+  --font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Heebo", "Assistant", sans-serif;
+  --text-primary: #ffffff;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+}
+
+/* Palette B: Nordic Ice & Midnight */
+[data-theme="nordic-ice"] {
+  --theme-name: "Nordic Ice";
+  --accent-base: #38bdf8;
+  --accent-hover: #7dd3fc;
+  --accent-rim: rgba(56, 189, 248, 0.40);
+  --accent-wash: rgba(56, 189, 248, 0.15);
+  --focus-ring: 0 0 0 2px rgba(56, 189, 248, 0.40);
+  
+  --content-bg-gradient: 
+    radial-gradient(ellipse 95% 65% at 50% -8%, rgba(56, 189, 248, 0.09) 0%, rgba(56, 189, 248, 0.02) 45%, transparent 75%),
+    linear-gradient(180deg, #101520 0%, #0a0d14 40%, #05070a 100%);
+}
+
+/* Palette C: Emerald Sanctuary */
+[data-theme="emerald-sanctuary"] {
+  --theme-name: "Emerald Sanctuary";
+  --accent-base: #10b981;
+  --accent-hover: #34d399;
+  --accent-rim: rgba(16, 185, 129, 0.40);
+  --accent-wash: rgba(16, 185, 129, 0.16);
+  --focus-ring: 0 0 0 2px rgba(16, 185, 129, 0.40);
+  
+  --content-bg-gradient: 
+    radial-gradient(ellipse 95% 65% at 50% -8%, rgba(16, 185, 129, 0.10) 0%, rgba(16, 185, 129, 0.025) 45%, transparent 75%),
+    linear-gradient(180deg, #101c18 0%, #0a110e 40%, #050807 100%);
+}
+
+/* Palette D: Champagne Gold */
+[data-theme="champagne-gold"] {
+  --theme-name: "Champagne Gold";
+  --accent-base: #eab308;
+  --accent-hover: #facc15;
+  --accent-rim: rgba(234, 179, 8, 0.42);
+  --accent-wash: rgba(234, 179, 8, 0.15);
+  --focus-ring: 0 0 0 2px rgba(234, 179, 8, 0.42);
+  
+  --content-bg-gradient: 
+    radial-gradient(ellipse 95% 65% at 50% -8%, rgba(234, 179, 8, 0.11) 0%, rgba(234, 179, 8, 0.03) 45%, transparent 75%),
+    linear-gradient(180deg, #181610 0%, #0e0d0a 40%, #070605 100%);
+}
+
+/* Palette A: Explicit Matte Amber Attribute */
+[data-theme="matte-amber"] {
+  --theme-name: "Dapim Matte Amber";
+  --accent-base: #d48344;
+  --accent-hover: #e09559;
+  --accent-rim: rgba(212, 131, 68, 0.45);
+  --accent-wash: rgba(212, 131, 68, 0.18);
+  --focus-ring: 0 0 0 2px rgba(212, 131, 68, 0.45);
+  
+  --content-bg-gradient: 
+    radial-gradient(ellipse 95% 65% at 50% -8%, rgba(212, 131, 68, 0.12) 0%, rgba(212, 131, 68, 0.035) 45%, transparent 75%),
+    linear-gradient(180deg, #151720 0%, #0d0e12 40%, #07080a 100%);
+}
+
+/* Global Velvet Ambient Canvas (Applied when .dapim-mode is active) */
+body.dapim-mode,
+.dapim-preview-container {
+  background-color: var(--content-bg) !important;
+  background-image: var(--content-bg-gradient) !important;
+  background-attachment: fixed !important;
+  color: var(--text-primary) !important;
+}
+
+/* 1. Functional Liquid Glass Surface */
+.liquid-glass-surface {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  box-shadow: 
+    var(--glass-specular-top),
+    0 16px 40px -4px rgba(0, 0, 0, 0.65),
+    0 4px 12px rgba(0, 0, 0, 0.45);
+}
+
+/* 2. Header Optical Glass */
+.header-glass {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-bottom: var(--glass-border);
+  box-shadow: var(--glass-specular-top), 0 8px 24px -4px rgba(0, 0, 0, 0.4);
+  padding: max(0.65rem, env(safe-area-inset-top)) 1.25rem 0.65rem 1.25rem;
+}
+
+/* 3. Tactile 100% Opaque Content Card */
+.card-tactile {
+  background: var(--slate-2);
+  border: 1px solid var(--slate-6);
+  border-radius: 12px;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08), 0 6px 20px -2px rgba(0, 0, 0, 0.4);
+  padding: 1.25rem;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-tactile:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent-rim);
+}
+
+/* 4. Base Hollow Glass Button */
+.btn-glass,
+.btn-hollow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.86rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-glass:hover,
+.btn-hollow:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.22);
+  transform: translateY(-1px);
+}
+
+.btn-glass:active,
+.btn-hollow:active {
+  transform: translateY(0);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* 5. Primary Action Hollow Glass Button */
+.btn-glass-primary,
+.btn-hollow-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.05) 100%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--accent-rim);
+  box-shadow: 
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.22),
+    0 2px 8px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-glass-primary:hover,
+.btn-hollow-primary:hover {
+  background: var(--accent-wash);
+  border-color: var(--accent-hover);
+  box-shadow: 
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.30),
+    0 4px 14px rgba(0, 0, 0, 0.45);
+  transform: translateY(-1px);
+}
+
+.btn-glass-primary:active,
+.btn-hollow-primary:active {
+  transform: translateY(0);
+}
+
+/* 6. Form Inputs & Controls */
+.input-glass {
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid var(--slate-6);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary);
+  padding: 0 12px;
+  font-family: inherit;
+  font-size: 0.88rem;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.input-glass:focus {
+  border-color: var(--accent-base);
+  box-shadow: var(--focus-ring);
+}
+
+@media (max-width: 768px) {
+  .input-glass {
+    font-size: 16px !important; /* Critical: Stops iOS Safari auto-zoom */
+  }
+}
+
+/* 7. Apple Mobile Sheet Pattern */
+.apple-modal-dialog {
+  width: min(640px, 92vw);
+  border-radius: 18px;
+}
+
+@media (max-width: 768px) {
+  .apple-mobile-sheet {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 90dvh;
+    border-radius: 20px 20px 0 0;
+    padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+  }
+}

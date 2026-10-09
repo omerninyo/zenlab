@@ -5,6 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0] - 2026-10-09
+
+### Added
+- **Dapim 4.0 Liquid Glass & Hollow Restraint Design Verification Bench (`src/components/DesignSystemTestModal.jsx`, `src/styles/design-tokens.css`, `src/core/storage.js`, `src/App.jsx`, `src/index.css`)**:
+  - **Drop-in Design Tokens Specification (`src/styles/design-tokens.css`)**: Fully implemented the design system specified in `docs/design.md`, including Radix Slate monochromatic scales (1–12), Master Velvet Mist ambient lighting formula (`ellipse 95% 65% at 50% -8%`), Optical Liquid Glass surfaces with specular top highlights (`inset 0 1px 0 0 rgba(255,255,255,0.16)`), 100% solid tactile content cards, and canonical hollow buttons.
+  - **4-Theme Palette Engine**: Integrated full live switching between all 4 palettes:
+    1. *Kavita Matte Amber* (warm archival library, `#d48344`)
+    2. *Nordic Ice & Midnight* (high-tech cyber/data consoles, `#38bdf8`)
+    3. *Emerald Sanctuary* (academic research & documents, `#10b981`)
+    4. *Champagne Gold* (luxury premium dark, `#eab308`)
+  - **7 Canonical UI Templates Interactive Test Harness**:
+    1. Velvet Ambient Canvas with fixed attachment
+    2. Optical Liquid Glass Sticky Header
+    3. 100% Opaque Tactile Content Cards (WCAG AAA)
+    4. Adaptive Apple Centered Modal (640px desktop) & iOS 90dvh Bottom Sheet
+    5. Canonical Hollow Glass Buttons (base & primary with specular sheen and accent wash)
+    6. iOS Safe Form Inputs (40px height, 16px font mobile safeguard against Safari auto-zoom)
+    7. Touch ergonomics (44px min targets and zero horizontal scroll)
+  - **Live ZenLab Sandbox Simulation**: Interactive 4x4 matrix card in 100% solid slate displaying pixel toggles and hollow button feedback with Web Audio synthesis.
+  - **Global Application Switcher**: Added single-click live toggling of the Dapim 4.0 design system across the entire ZenLab application (Home Roadmap, Active Labs, and Navigation).
+  - **The 10th Man Red Team Architectural Audit**: Embedded dedicated critical assessment contrasting adult minimal reader ergonomics against 5th-grade classroom Chromebook hardware and young student click affordance.
+- **Child-Friendly Pedagogical Register Overhaul across All 8 Interactive Labs & Curriculum (`src/labs/Lab1_BinaryPixels.jsx` through `Lab8_LanguageModelPredictor.jsx`, `src/data/curriculum.json`)**:
+  - **Eliminated University & Machine Learning Jargon**: Replaced advanced academic formulas and abstract terminology with concrete Israeli elementary school metaphors (aligned with Ministry of Education 5th-grade guidelines):
+    - *Lab 1 (Binary Pixels)*: "מחרוזת בינארית מלאה (64-Bit)" &rarr; "קוד המתגים של הציור (0 ו-1)"; "ייצוג הקסדצימלי" &rarr; "קוד המחשב המקוצר (8 בייטים)".
+    - *Lab 2 (Algorithmic Robot)*: "סטטוס מנוע" &rarr; "מה הרובוט עושה"; "מפתח בזיכרון" &rarr; "יש מפתח"; "תור פקודות ריק" &rarr; "רשימת הפקודות ריקה".
+    - *Lab 3 (Decision Tree)*: "טוהר מודל" &rarr; "דיוק הזיהוי"; "שאלת שורש מרכזית" &rarr; "שאלה ראשונה (לכל החיות)"; eliminated raw LaTeX math symbols (`\to`) in favor of clean Hebrew arrow flow.
+    - *Lab 4 (Pathfinder)*: "חיפוש עיוור" &rarr; "חיפוש לכל הכיוונים"; replaced cryptic English 'S' and 'G' grid letters with Navigation and Target Lucide icons; "אורך מסלול אופטימלי" &rarr; "המסלול הקצר ביותר (צעדים)".
+    - *Lab 5 (Fruit KNN Classifier)*: "לוח תכונות: גודל מול משקל" &rarr; "לוח השוואת פירות (גודל מול משקל)"; "קולות השכנים" &rarr; "הצבעת השכנים הקרובים"; "מידת ביטחון" &rarr; "כמה המחשב בטוח".
+    - *Lab 6 (Vision Kernels)*: "תמונת קלט מקורית" &rarr; "הציור המקורי שלכם"; replaced convolution summation arithmetic jargon with intuitive "זכוכית מגדלת בלשית שמשווה לדפוס ומחשבת ציון התאמה".
+    - *Lab 7 (Perceptron & Logic Gates)*: Removed intimidating algebraic line formula (`w1*x1 + w2*x2 + b = 0`); replaced with "קו ההפרדה של הנוירון: הקו שמבדיל בין תשובות 'כן' ל-'לא'". Replaced abstract XOR analysis with concrete two-color diagonal explanation.
+    - *Lab 8 (Language Model)*: "חזה את האסימון הבא" &rarr; "גלה את המילה הבאה"; "התפלגות הסתברויות לאסימון הבא" &rarr; "גלגל הסיכויים של המילים הבאות"; "מד יצירתיות ודמיון" simplified temperature levels (0.0 = בטוח וצפוי, 0.7 = טבעי ומאוזן, 1.5 = הרבה דמיון והפתעות).
+  - **100% Validated Clean Build & Zero-PII Compliance**: Passed `npm run build` with zero warnings/errors and strict MIT/Generic Identity governance.
+
 ## [0.6.9] - 2026-10-08
 
 ### Added

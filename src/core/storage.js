@@ -36,7 +36,9 @@ const defaultState = {
   },
   activeLabId: 'lab1',
   viewMode: 'home', // 'home' (roadmap overview) | 'lab' (active lab workspace)
-  theme: 'light' // 'light' (default bright classroom mode) | 'dark'
+  theme: 'light', // 'light' (default bright classroom mode) | 'dark'
+  dapimMode: false, // Dapim 4.0 Liquid Glass & Hollow Restraint theme preview
+  dapimPalette: 'matte-amber' // 'matte-amber' | 'nordic-ice' | 'emerald-sanctuary' | 'champagne-gold'
 };
 
 class StorageEngineClass {
@@ -45,7 +47,7 @@ class StorageEngineClass {
     this.listeners = new Set();
     AudioEngine.setMuted(this.state.isMuted);
 
-    // Apply theme class to document
+    // Apply theme and Dapim attributes to document
     if (typeof document !== 'undefined') {
       const activeTheme = this.state.theme || 'light';
       if (activeTheme === 'dark') {
@@ -54,6 +56,14 @@ class StorageEngineClass {
       } else {
         document.documentElement.classList.add('light');
         document.documentElement.classList.remove('dark');
+      }
+
+      if (this.state.dapimMode) {
+        document.body.classList.add('dapim-mode');
+        document.documentElement.classList.add('dark');
+      }
+      if (this.state.dapimPalette) {
+        document.documentElement.setAttribute('data-theme', this.state.dapimPalette);
       }
     }
   }
@@ -188,6 +198,47 @@ class StorageEngineClass {
     const next = (this.state.theme || 'light') === 'dark' ? 'light' : 'dark';
     this.setTheme(next);
     return next;
+  }
+
+  getDapimMode() {
+    return !!this.state.dapimMode;
+  }
+
+  setDapimMode(active) {
+    this.state.dapimMode = !!active;
+    if (typeof document !== 'undefined') {
+      if (this.state.dapimMode) {
+        document.body.classList.add('dapim-mode');
+        document.documentElement.classList.add('dark');
+      } else {
+        document.body.classList.remove('dapim-mode');
+        if (this.state.theme === 'light') {
+          document.documentElement.classList.remove('dark');
+          document.documentElement.classList.add('light');
+        }
+      }
+    }
+    this.saveState();
+  }
+
+  toggleDapimMode() {
+    const next = !this.state.dapimMode;
+    this.setDapimMode(next);
+    return next;
+  }
+
+  getDapimPalette() {
+    return this.state.dapimPalette || 'matte-amber';
+  }
+
+  setDapimPalette(palette) {
+    const validPalettes = ['matte-amber', 'nordic-ice', 'emerald-sanctuary', 'champagne-gold'];
+    const selected = validPalettes.includes(palette) ? palette : 'matte-amber';
+    this.state.dapimPalette = selected;
+    if (typeof document !== 'undefined') {
+      document.documentElement.setAttribute('data-theme', selected);
+    }
+    this.saveState();
   }
 
   resetProgress() {

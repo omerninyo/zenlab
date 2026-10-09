@@ -215,7 +215,7 @@ export default function Lab4_Pathfinder({ curriculum }) {
               <div className="flex items-center justify-between gap-2 border-b border-slate-800 pb-3">
                 <div className="flex items-center gap-2">
                   <Compass className="w-5 h-5 text-blue-400" />
-                  <h2 className="text-sm sm:text-base font-bold text-white">מבוך החיפוש (רשת 8x8)</h2>
+                  <h2 className="text-sm sm:text-base font-bold text-white">מבוך מציאת המסלול (8x8)</h2>
                 </div>
 
                 <div className="flex items-center gap-1.5">
@@ -224,13 +224,13 @@ export default function Lab4_Pathfinder({ curriculum }) {
                     onClick={handleLoadPresetWall}
                     className="px-2.5 py-1 rounded-lg bg-slate-950 hover:bg-slate-800 text-xs text-slate-300 border border-slate-800 transition-colors"
                   >
-                    טען קיר
+                    קיר לדוגמה
                   </button>
                   <button
                     type="button"
                     onClick={handleReset}
                     className="p-1 rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-800 transition-colors"
-                    title="נקה מבוך"
+                    title="ניקוי הלוח"
                   >
                     <RotateCcw className="w-3.5 h-3.5" />
                   </button>
@@ -250,7 +250,7 @@ export default function Lab4_Pathfinder({ curriculum }) {
                     }`}
                   >
                     <Sparkles className="w-3.5 h-3.5 shrink-0" />
-                    <span>מצפן חכם (*A)</span>
+                    <span>מצפן חכם</span>
                   </button>
                   <button
                     type="button"
@@ -262,7 +262,7 @@ export default function Lab4_Pathfinder({ curriculum }) {
                     }`}
                   >
                     <Navigation className="w-3.5 h-3.5 shrink-0" />
-                    <span>חיפוש עיוור</span>
+                    <span>חיפוש לכל הכיוונים</span>
                   </button>
                 </div>
 
@@ -274,7 +274,7 @@ export default function Lab4_Pathfinder({ curriculum }) {
                       className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs transition-colors"
                     >
                       <Pause className="w-3.5 h-3.5" />
-                      <span>השהה</span>
+                      <span>עצירה</span>
                     </button>
                   ) : (
                     <button
@@ -283,7 +283,7 @@ export default function Lab4_Pathfinder({ curriculum }) {
                       className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition-colors shadow-xs"
                     >
                       <Play className="w-3.5 h-3.5" />
-                      <span>הפעל חיפוש</span>
+                      <span>חיפוש מסלול</span>
                     </button>
                   )}
                   <button
@@ -291,7 +291,7 @@ export default function Lab4_Pathfinder({ curriculum }) {
                     onClick={() => { setCurrentStepIndex(solution.visitedOrder.length); AudioEngine.playStep(); }}
                     className="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs border border-slate-800"
                   >
-                    לסוף
+                    הצג הכל
                   </button>
                 </div>
               </div>
@@ -324,8 +324,8 @@ export default function Lab4_Pathfinder({ curriculum }) {
                             : 'bg-slate-900 hover:bg-slate-800 border border-slate-800/80 text-slate-500'
                         }`}
                       >
-                        {isStart && <span className="text-white text-xs font-black">S</span>}
-                        {isGoal && <span className="text-white text-xs font-black">G</span>}
+                        {isStart && <Navigation className="w-3.5 h-3.5 text-white" />}
+                        {isGoal && <Target className="w-3.5 h-3.5 text-white" />}
                         {isWall && <span className="text-slate-400 text-[10px]">✕</span>}
                       </button>
                     );
@@ -342,15 +342,15 @@ export default function Lab4_Pathfinder({ curriculum }) {
                   </span>
                 </div>
                 <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 text-center">
-                  <span className="text-[11px] text-slate-400 block mb-0.5">אורך מסלול אופטימלי</span>
+                  <span className="text-[11px] text-slate-400 block mb-0.5">המסלול הקצר ביותר (צעדים)</span>
                   <span className="text-base font-bold font-mono text-emerald-400">
                     {solution.found ? solution.path.length : 'אין מסלול'}
                   </span>
                 </div>
                 <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 text-center">
-                  <span className="text-[11px] text-slate-400 block mb-0.5">סטטוס הגעה</span>
+                  <span className="text-[11px] text-slate-400 block mb-0.5">מצב המסלול</span>
                   <span className={`text-xs font-bold ${solution.found ? 'text-emerald-400' : 'text-red-400'}`}>
-                    {solution.found ? 'מסלול פתוח' : 'חסום לחלוטין'}
+                    {solution.found ? 'נמצא מסלול!' : 'אין מעבר (חסום)'}
                   </span>
                 </div>
               </div>
@@ -363,7 +363,7 @@ export default function Lab4_Pathfinder({ curriculum }) {
               <div className="flex items-center justify-between border-b border-slate-800 pb-3">
                 <div className="flex items-center gap-2">
                   <Award className="w-4 h-4 text-amber-400" />
-                  <h3 className="text-xs font-semibold text-white">אתגרי ניווט ויעילות</h3>
+                  <h3 className="text-xs font-semibold text-white">אתגרי ניווט</h3>
                 </div>
                 <span className="text-xs font-mono text-slate-400">
                   {completedCount}/{labData.challenges.length}

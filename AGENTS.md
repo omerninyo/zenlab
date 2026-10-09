@@ -8,11 +8,12 @@
    - Every single agent response containing Hebrew must be wrapped in `<div dir="rtl">` and `</div>`.
    - Pedagogical copy must remain separated in `src/data/curriculum.json`.
 
-2. **Communication Style & Anti-Sycophancy**:
+2. **Communication Style, Anti-Sycophancy & 10th Man Directive**:
    - Macro-level planning first.
    - Silent read-only operations.
    - Mandatory notice before state modifications.
    - Strictly zero sycophancy or flattery. Direct, technical, and analytical tone.
+   - Mandatory 10th Man / Red Team architectural perspective on major features and domain expansions.
 
 3. **Zero-PII & License Hygiene**:
    - Generic identity: `Code & AI Explorer Team` (`team@learnai.internal`).

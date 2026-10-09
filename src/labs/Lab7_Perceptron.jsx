@@ -160,12 +160,12 @@ export default function Lab7_Perceptron({ curriculum }) {
               <div className="flex items-center justify-between gap-2 border-b border-slate-800 pb-3">
                 <div className="flex items-center gap-2">
                   <Zap className="w-5 h-5 text-purple-400" />
-                  <h2 className="text-sm sm:text-base font-bold text-white">ארגז חול: מתג הנוירון</h2>
+                  <h2 className="text-sm sm:text-base font-bold text-white">מתג הנוירון (אימון שער לוגי)</h2>
                 </div>
 
                 <div className="flex items-center gap-2">
                   <div className="flex items-center gap-1.5 bg-slate-950 px-2.5 py-1 rounded-lg border border-slate-800">
-                    <span className="text-xs text-slate-400">התאמה:</span>
+                    <span className="text-xs text-slate-400">דיוק ההפרדה:</span>
                     <span className={`text-xs sm:text-sm font-bold font-mono ${
                       currentAccuracy === 100 ? 'text-emerald-400' : 'text-amber-400'
                     }`}>
@@ -176,7 +176,7 @@ export default function Lab7_Perceptron({ curriculum }) {
                     type="button"
                     onClick={handleReset}
                     className="p-1.5 rounded-lg bg-slate-950 hover:bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-800 transition-colors"
-                    title="איפוס ערכים"
+                    title="חזרה להתחלה"
                   >
                     <RotateCcw className="w-3.5 h-3.5" />
                   </button>
@@ -213,7 +213,7 @@ export default function Lab7_Perceptron({ curriculum }) {
                   {/* Slider Weight 1 */}
                   <div className="space-y-1.5">
                     <div className="flex items-center justify-between text-xs">
-                      <span className="text-slate-300 font-semibold">מידת חשיבות רמז 1 (w₁)</span>
+                      <span className="text-slate-300 font-semibold">משקל רמז 1 (כמה הוא חשוב)</span>
                       <span className="font-mono text-purple-400 font-bold">{w1.toFixed(1)}</span>
                     </div>
                     <input
@@ -230,7 +230,7 @@ export default function Lab7_Perceptron({ curriculum }) {
                   {/* Slider Weight 2 */}
                   <div className="space-y-1.5">
                     <div className="flex items-center justify-between text-xs">
-                      <span className="text-slate-300 font-semibold">מידת חשיבות רמז 2 (w₂)</span>
+                      <span className="text-slate-300 font-semibold">משקל רמז 2 (כמה הוא חשוב)</span>
                       <span className="font-mono text-purple-400 font-bold">{w2.toFixed(1)}</span>
                     </div>
                     <input
@@ -247,7 +247,7 @@ export default function Lab7_Perceptron({ curriculum }) {
                   {/* Slider Bias */}
                   <div className="space-y-1.5">
                     <div className="flex items-center justify-between text-xs">
-                      <span className="text-slate-300 font-semibold">סף ההחלטה (סף b)</span>
+                      <span className="text-slate-300 font-semibold">סף ההחלטה (כמה קל לשכנע את הנוירון לומר "כן")</span>
                       <span className="font-mono text-amber-400 font-bold">{bias.toFixed(1)}</span>
                     </div>
                     <input
@@ -261,9 +261,10 @@ export default function Lab7_Perceptron({ curriculum }) {
                     />
                   </div>
 
-                  {/* Math Formula Callout */}
-                  <div className="pt-2 border-t border-slate-800 text-[11px] text-slate-400 font-mono">
-                    קו הפרדה: <span className="text-purple-300 font-bold">{w1.toFixed(1)}·x₁ + {w2.toFixed(1)}·x₂ + ({bias.toFixed(1)}) = 0</span>
+                  {/* Line Intuition Callout */}
+                  <div className="pt-2 border-t border-slate-800 text-[11px] text-slate-400">
+                    <span>קו ההפרדה של הנוירון: </span>
+                    <span className="text-purple-300 font-medium">הקו שמבדיל בין תשובות "כן" ל-"לא"</span>
                   </div>
                 </div>
 
@@ -341,9 +342,9 @@ export default function Lab7_Perceptron({ curriculum }) {
                 <div className="bg-amber-950/40 border border-amber-800/80 rounded-xl p-4 text-xs text-amber-200 flex items-start gap-3">
                   <ShieldAlert className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="font-bold text-amber-300 mb-1">מדוע שער "או-אבל-לא-שניהם" (XOR) בלתי פתיר ע״י קו בודד?</h4>
+                    <h4 className="font-bold text-amber-300 mb-1">חידת ה-XOR: למה קו ישר אחד לא מספיק כאן?</h4>
                     <p className="text-[11px] leading-relaxed text-amber-200/90">
-                      שים לב לסידור הנקודות בלוח: שתי נקודות בצבע ירוק נמצאות באלכסון אחד, ושתי נקודות כהות באלכסון השני. לא קיים שום קו ישר יחיד בעולם שיכול להפריד ביניהן! התגלית הזו הובילה את המדענים להבין שצריך לחבר מספר נוירונים ביחד כרשת (רשת עצבית עמוקה) כדי לפצח חידות מורכבות.
+                      שימו לב לנקודות בלוח: שתי נקודות ירוקות נמצאות באלכסון אחד, ושתי נקודות כהות באלכסון הנגדי. לא משנה איך תסובבו את הקו הישר, אי אפשר להפריד בין שני הצבעים בקו אחד! בגלל זה המציאו את "הרשת העצבית" — מחברים כמה נוירונים ביחד כדי לפתור בעיות מורכבות.
                     </p>
                   </div>
                 </div>
