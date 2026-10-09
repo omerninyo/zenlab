@@ -2,6 +2,8 @@
 
 <div align="center">
 
+<img src=".github/assets/social-preview.png" alt="ZenLab Social Preview" width="100%" style="border-radius: 12px; margin-bottom: 16px;" />
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
 [![Platform: Cloudflare Pages](https://img.shields.io/badge/platform-Cloudflare%20Pages-orange.svg)]()
@@ -12,7 +14,7 @@
 
 **A tactile, browser-native learning laboratory designed to demystify computer hardware, algorithms, and artificial intelligence for elementary school students.**
 
-[🌐 Live Deployment](https://zenlab.pages.dev) &bull; [🇮🇱 מדריך מלא בעברית](README.he.md) &bull; [📚 Master Wiki](docs/wiki/Home.md) ([עברית](docs/wiki/Home.he.md)) &bull; [💬 Discussions](https://github.com/omerninyo/zenlab/discussions) &bull; [🎨 Zen 2.0 Design Kit](design-system/README.md)
+[🌐 Live Deployment](https://zenlab.ninyo.co) &bull; [🇮🇱 מדריך מלא בעברית](README.he.md) &bull; [📚 Master Wiki](docs/wiki/Home.md) ([עברית](docs/wiki/Home.he.md)) &bull; [💬 Discussions](https://github.com/omerninyo/zenlab/discussions) &bull; [🎨 Zen 2.0 Design Kit](design-system/README.md)
 
 </div>
 

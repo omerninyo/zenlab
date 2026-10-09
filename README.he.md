@@ -2,6 +2,8 @@
 
 <div align="center">
 
+<img src=".github/assets/social-preview.png" alt="ZenLab Social Preview" width="100%" style="border-radius: 12px; margin-bottom: 16px;" />
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
 [![Platform: Cloudflare Pages](https://img.shields.io/badge/platform-Cloudflare%20Pages-orange.svg)]()
@@ -12,7 +14,7 @@
 
 **סביבת למידה אינטראקטיבית הפועלת כולה בדפדפן, המיועדת להקניית מושגי יסוד בחומרה, אלגוריתמיקה ובינה מלאכותית לתלמידי כיתה ה' (גילאי 10–11).**
 
-[🌐 פריסה חיה (Cloudflare Pages)](https://zenlab.pages.dev) &bull; [English Documentation](README.md) &bull; [📚 פורטל הוויקי המלא](docs/wiki/Home.he.md) ([English](docs/wiki/Home.md)) &bull; [💬 פורום דיונים בגיטהאב](https://github.com/omerninyo/zenlab/discussions) &bull; [🎨 ערכת העיצוב Zen 2.0](design-system/README.md)
+[🌐 פריסה חיה (Cloudflare Pages)](https://zenlab.ninyo.co) &bull; [English Documentation](README.md) &bull; [📚 פורטל הוויקי המלא](docs/wiki/Home.he.md) ([English](docs/wiki/Home.md)) &bull; [💬 פורום דיונים בגיטהאב](https://github.com/omerninyo/zenlab/discussions) &bull; [🎨 ערכת העיצוב Zen 2.0](design-system/README.md)
 
 </div>
 

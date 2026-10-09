@@ -1,0 +1,7 @@
+# ZenLab Robots Exclusion Directives
+User-agent: *
+Allow: /
+Disallow: /api/
+
+# Canonical Sitemap
+Sitemap: https://zenlab.ninyo.co/sitemap.xml

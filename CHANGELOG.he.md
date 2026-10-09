@@ -7,6 +7,18 @@
 
 ---
 
+## [0.7.13] - 2026-10-09
+
+### נוסף (Added)
+- **אופטימיזציית SEO מקיפה, גרף חברתי (Social Graph) ותשתיות שרת-קצה ב-Cloudflare (`index.html`, `public/`, `.github/`)**:
+  - **תגיות Open Graph וכרטיסיית שיתוף ויזואלית**: יצירת כרטיסיית שיתוף ברזולוציה גבוהה של 1200x630 פיקסלים (`public/og-image.png`) ובאנר GitHub ייעודי (`.github/assets/social-preview.png`) שרונדרו באמצעות Playwright/Chromium בהתאם לשפת העיצוב Zen 2.0, המציגים את 8 המעבדות ואת תאימות הפרויקט למשרד החינוך ול-AI4K12.
+  - **תאימות מלאה לכל פלטפורמות השיתוף**: התאמה מושלמת לתצוגה מקדימה ב-WhatsApp, Telegram, Facebook, Twitter/X (Summary Large Image), LinkedIn, Discord ו-Slack, כולל תגיות גודל, תמונת אבטחה ותיאור דו-לשוני עשיר.
+  - **כתובת קנונית ומפת אתר קנונית (Canonical SEO)**: הגדרת כתובת קנונית ראשית (`https://zenlab.ninyo.co/`), תגיות שפה `hreflang` (`he` ו-`x-default`), קובץ הנחיות סריקה (`public/robots.txt`) ומפת אתר XML מלאה (`public/sitemap.xml`) המאנדקסת את כל 8 מעבדות החקר.
+  - **סכמת נתונים מובנים של Schema.org (JSON-LD)**: הטמעת גרף ישויות מלא (`WebApplication`, `EducationalOrganization`, `LearningResource`, `BreadcrumbList`) לקבלת תוצאות עשירות (Rich Snippets) במנועי חיפוש ובמנועי תשובות בינה מלאכותית (Google, Bing, Perplexity, Gemini).
+  - **תמיכת PWA והתקנה במובייל**: הוספת מניפסט אפליקציה (`public/manifest.webmanifest`), צלמית Apple Touch ייעודית (`public/apple-touch-icon.png`), וצלמיות מערכת וקטוריות ורסטר (`public/icon-512.png`, `public/icon-192.png`, `public/favicon.svg`).
+  - **מדיניות זיכרון מטמון ואבטחה ב-Cloudflare Pages (`public/_headers`)**: הגדרת שמירה במטמון בלתי-משתנה (Immutable) לנכסים סטטיים ולקבצי אודיו לשיפור ציוני Core Web Vitals (LCP), תגיות אבטחה והנחיות סריקה (`X-Robots-Tag: all`).
+  - **שדרוג הגרף החברתי ב-GitHub**: עדכון תיאור המאגר, קישור דף הבית ל-`https://zenlab.ninyo.co`, הפעלת GitHub Discussions והזנת 14 תגיות נושא (Topics) מובילות (`artificial-intelligence`, `computer-science`, `k12-education`, `stem`, `hebrew`, `machine-learning`, ועוד).
+
 ## [0.7.12] - 2026-10-09
 
 ### נוסף (Added)

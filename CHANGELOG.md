@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.13] - 2026-10-09
+
+### Added
+- **Full-Spectrum SEO, Social Graph & Cloudflare Edge Optimization (`index.html`, `public/`, `.github/`)**:
+  - **Open Graph Protocol & Social Cards**: Created high-resolution 1200x630 social card (`public/og-image.png`) and GitHub preview banner (`.github/assets/social-preview.png`) rendered with Playwright/Chromium showcasing ZenLab's 8 micro-labs, Zen 2.0 aesthetics, and Israeli MoE / AI4K12 badges.
+  - **Multi-Platform Messenger Previews**: Full metadata parity across WhatsApp, Telegram, Facebook, Twitter Summary Large Image, LinkedIn, Discord, and Slack, including secure image URLs, dimensions, and bilingual descriptions.
+  - **Canonical SEO & Search Discovery**: Integrated canonical URL (`https://zenlab.ninyo.co/`), bilingual hreflang tags (`he` and `x-default`), search engine crawl directives (`public/robots.txt`), and exhaustive XML sitemap (`public/sitemap.xml`) indexing all 8 micro-labs.
+  - **JSON-LD Schema.org Knowledge Graph**: Injected multi-entity structured data (`WebApplication`, `EducationalOrganization`, `LearningResource`, `BreadcrumbList`) enabling rich snippets, course cards, and AI answer engine discovery (Perplexity, Copilot, Gemini).
+  - **PWA & Mobile Pinning**: Added Web App Manifest (`public/manifest.webmanifest`), Apple Touch Icon (`public/apple-touch-icon.png`), and high-res vector and raster icons (`public/icon-512.png`, `public/icon-192.png`, `public/favicon.svg`).
+  - **Cloudflare Edge Headers & CWV Caching (`public/_headers`)**: Configured immutable caching for hashed static bundles and audio files, security headers (`X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`), and crawler tags (`X-Robots-Tag: all`).
+  - **GitHub Repository Social Graph**: Updated GitHub repository description, homepage URL (`https://zenlab.ninyo.co`), enabled GitHub Discussions, and configured 14 comprehensive topics (`education`, `k12-education`, `artificial-intelligence`, `machine-learning`, `neural-networks`, `stem`, `hebrew`, etc.).
+
 ## [0.7.12] - 2026-10-09
 
 ### Added
