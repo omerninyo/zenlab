@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.6] - 2026-10-09
+
+### Changed
+- **Elementary 5th-Grade Pedagogy & Language Calibration for "הדמיה אינטראקטיבית של עקרון היסוד" (`src/data/curriculum.json`, `src/components/animations/*.jsx`, `src/labs/*.jsx`)**:
+  - Replaced university/engineering-level technical jargon across all 8 labs' primary principle simulations with intuitive, tangible 5th-grade analogies matching the Israeli Ministry of Education CS & AI curriculum:
+    - **Lab 1 (Binary & Pixels)**: Replaced abstract binary powers ($2^7 \dots 2^0$) with friendly bit weight counters (128, 64...), labeled the base-10 conversion as "המספר הרגיל שלנו", simplified logic gates ($A \land B$, $A \lor B$, $\neg A$, $A \oplus B$) to plain Hebrew conditions ("וגם", "או", "היפוך", "בדיוק אחד מהם"), replaced HIGH/LOW electrical states with "דולק (1)" / "כבוי (0)", and translated the half-adder circuit into unit/tens column addition.
+    - **Lab 2 (Algorithmic Robot & CPU)**: Removed FIFO/prerequisite terminology, converted the CPU instruction cycle stages into intuitive student terms ("1. קריאת ההוראה (Fetch)", "2. הבנת ההוראה (Decode)", "3. ביצוע החישוב (Execute)"), replaced hardware acronyms (PC, ALU, Control Unit, Register ACC) with friendly metaphors ("מספר השורה בתור", "מחשבון המעבד", "מוח הניהול", "לוח התוצאה"), and replaced emojis with clean inline SVG icons.
+    - **Lab 3 (Decision Tree)**: Simplified classification taxonomy into simple binary questions and friendly species cards.
+    - **Lab 4 (Pathfinding Algorithms)**: Replaced BFS/A* graph theory jargon with the "משחק חם-קר" (hot-and-cold game) compass analogy, contrasting "חיפוש עיוור שבודק הכל לכל הכיוונים" with "מצפן חכם שמנחש את המרחק לקו הסיום".
+    - **Lab 5 (k-NN Classifier)**: Replaced Euclidean distance metric and hyperparameter terminology with "כמה שכנים שואלים? (k)", fruit size/weight coordinates, and "החלטת הרוב".
+    - **Lab 6 (Computer Vision & Kernels)**: Demystified 3x3 convolution matrices and matrix dot products into a "זכוכית מגדלת שמזהה קווים וצורות", scanning image pixels for vertical and horizontal lines.
+    - **Lab 7 (Artificial Neuron)**: Replaced linear algebra weights, bias and step activation formulas ($w \cdot x + b$) with intuitive sliders: "כמה חשוב הנושא? (משקל 1/2)", "סף החלטה (Bias)", and "סכום החישוב - מתי הנוירון מחליט להידלק?".
+    - **Lab 8 (Language Models & Attention)**: Replaced Softmax probability distribution and logit sampling curves with an interactive temperature gauge: "מד החום (טמפרטורה) - כמה המחשב יצירתי?", showing the trade-off between safe, predictable completions and creative, surprising guesses. Converted self-attention ($Q \times K$) into an intuitive word-connection map ("איך המחשב מבין משפט בעזרת 'תשומת לב'").
+  - **Curriculum Architecture (`src/data/curriculum.json`)**: Added structured `svgAnimation` objects with student-tailored titles and subtitles for every lab, perfectly aligned with the Dapim 4.0 design language and hollow card specifications.
+  - **Zero-Emoji Compliance**: Verified complete elimination of emojis from all interactive simulation badges, headers, and buttons, maintaining strictly Lucide icon architecture.
+
 ## [0.7.5] - 2026-10-09
 
 ### Added

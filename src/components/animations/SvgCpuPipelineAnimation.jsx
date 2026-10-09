@@ -27,9 +27,9 @@ const SAMPLE_PROGRAMS = [
 
 const STAGES = ['FETCH', 'DECODE', 'EXECUTE'];
 const STAGE_LABELS = {
-  FETCH: { name: 'שליפה (Fetch)', desc: 'קריאת הפקודה מתא הזיכרון לפי ערך ה-PC והעברתה לאוגר הפקודות (IR)' },
-  DECODE: { name: 'פענוח (Decode)', desc: 'יחידת הבקרה (CU) מפענחת את סוג הפקודה והערך שצריך לעבד' },
-  EXECUTE: { name: 'ביצוע (Execute)', desc: 'היחידה האריתמטית-לוגית (ALU) מבצעת את החישוב ומעדכנת את הצובר (ACC)' }
+  FETCH: { name: '1. קריאת ההוראה (Fetch)', desc: 'המעבד מוציא מהזיכרון את ההוראה הבאה בתור' },
+  DECODE: { name: '2. הבנת ההוראה (Decode)', desc: 'המעבד מפענח ומבין מה בדיוק צריך לחשב' },
+  EXECUTE: { name: '3. ביצוע החישוב (Execute)', desc: 'מחשבון המעבד מחשב את התוצאה ומציג אותה' }
 };
 
 export default function SvgCpuPipelineAnimation() {
@@ -117,10 +117,10 @@ export default function SvgCpuPipelineAnimation() {
           <Cpu className="w-5 h-5 text-blue-400" />
           <div>
             <h3 className="text-xs font-bold text-white">
-              מחזור פעולת המעבד: שליפה &ndash; פענוח &ndash; ביצוע (Fetch-Decode-Execute)
+              איך המעבד עובד: קריאה &larr; הבנה &larr; ביצוע
             </h3>
             <p className="text-[11px] text-slate-400">
-              כיצד המעבד קורא פקודות מהזיכרון ומחשב תוצאות פעימה אחר פעימה
+              המעבד עובד כמו שף במטבח: קורא מתכון מהזיכרון, מבין מה לעשות ומבצע צעד אחר צעד
             </p>
           </div>
         </div>
@@ -138,7 +138,7 @@ export default function SvgCpuPipelineAnimation() {
             }`}
           >
             <Zap className="w-3.5 h-3.5" />
-            <span>פעימת שעון (Tick)</span>
+            <span>צעד אחד קדימה (פעימה)</span>
           </button>
 
           <button
@@ -168,7 +168,7 @@ export default function SvgCpuPipelineAnimation() {
 
       {/* Program Selector Tabs */}
       <div className="flex items-center gap-2 text-xs">
-        <span className="text-slate-400 text-[11px]">בחר תוכנית לדוגמה:</span>
+        <span className="text-slate-400 text-[11px]">בחרו תוכנית:</span>
         {SAMPLE_PROGRAMS.map((prog, idx) => (
           <button
             key={prog.id}
@@ -254,7 +254,7 @@ export default function SvgCpuPipelineAnimation() {
             />
             <rect width="200" height="34" rx="10" fill="#1e293b" />
             <text x="100" y="22" fill="#94a3b8" fontSize="12" fontWeight="bold" textAnchor="middle">
-              זיכרון ראשי (RAM)
+              זיכרון המחשב (RAM)
             </text>
 
             {/* Instruction Rows in RAM */}
@@ -281,10 +281,10 @@ export default function SvgCpuPipelineAnimation() {
                     {inst.opcode} {inst.operand}
                   </text>
                   <text x="10" y="40" fill="#64748b" fontSize="9">
-                    {inst.opcode === 'LOAD' && 'טען ערך ל-ACC'}
+                    {inst.opcode === 'LOAD' && 'טען ערך ללוח'}
                     {inst.opcode === 'ADD' && `הוסף +${inst.operand}`}
-                    {inst.opcode === 'STORE' && 'שמור תוצאה'}
-                    {inst.opcode === 'HALT' && 'עצור מעבד'}
+                    {inst.opcode === 'STORE' && 'שמור תוצאה בזיכרון'}
+                    {inst.opcode === 'HALT' && 'סיום התוכנית'}
                   </text>
 
                   {/* Active Arrow */}
@@ -309,7 +309,7 @@ export default function SvgCpuPipelineAnimation() {
             />
             <rect width="520" height="34" rx="12" fill="#334155" opacity="0.6" />
             <text x="260" y="22" fill="#e2e8f0" fontSize="13" fontWeight="bold" textAnchor="middle">
-              מעבד מרכזי (Central Processing Unit &ndash; CPU)
+              המעבד המרכזי של המחשב (CPU)
             </text>
 
             {/* 1. Program Counter (PC) Register */}
@@ -323,7 +323,7 @@ export default function SvgCpuPipelineAnimation() {
                 strokeWidth={currentStage === 'FETCH' ? '2' : '1'}
               />
               <text x="12" y="22" fill="#94a3b8" fontSize="10" fontWeight="bold">
-                מונה פקודות (PC)
+                מספר השורה בתור (PC)
               </text>
               <text x="70" y="50" fill="#38bdf8" fontSize="20" fontWeight="bold" fontFamily="monospace" textAnchor="middle">
                 0{pc}
@@ -341,7 +341,7 @@ export default function SvgCpuPipelineAnimation() {
                 strokeWidth={currentStage === 'DECODE' ? '2' : '1'}
               />
               <text x="12" y="22" fill="#94a3b8" fontSize="10" fontWeight="bold">
-                אוגר פקודה נוכחית (IR)
+                ההוראה הנוכחית (IR)
               </text>
               <text x="85" y="50" fill="#c7d2fe" fontSize="15" fontWeight="bold" fontFamily="monospace" textAnchor="middle">
                 {ir ? `${ir.opcode} ${ir.operand}` : '---'}
@@ -359,10 +359,10 @@ export default function SvgCpuPipelineAnimation() {
                 strokeWidth={currentStage === 'DECODE' ? '2' : '1'}
               />
               <text x="12" y="22" fill="#94a3b8" fontSize="10" fontWeight="bold">
-                יחידת בקרה (CU)
+                מוח הניהול (יחידת בקרה)
               </text>
               <text x="65" y="48" fill="#e9d5ff" fontSize="11" fontWeight="bold" textAnchor="middle">
-                {currentStage === 'DECODE' ? 'פענוח פקודה...' : 'ממתינה לפקודה'}
+                {currentStage === 'DECODE' ? 'מפענח הוראה...' : 'ממתין להוראה'}
               </text>
             </g>
 
@@ -376,7 +376,7 @@ export default function SvgCpuPipelineAnimation() {
                 strokeWidth={currentStage === 'EXECUTE' ? '2.5' : '1.5'}
               />
               <text x="90" y="32" fill="#6ee7b7" fontSize="13" fontWeight="bold" textAnchor="middle">
-                יחידה חישובית (ALU)
+                מחשבון המעבד (ALU)
               </text>
               <text x="90" y="48" fill="#94a3b8" fontSize="9" textAnchor="middle">
                 {currentStage === 'EXECUTE' ? `מחשב: ${currentInstruction.opcode}` : 'המתנה לחישוב'}
@@ -394,7 +394,7 @@ export default function SvgCpuPipelineAnimation() {
                 strokeWidth={currentStage === 'EXECUTE' ? '2' : '1'}
               />
               <text x="14" y="24" fill="#94a3b8" fontSize="10" fontWeight="bold">
-                אוגר צובר תוצאות (ACC)
+                לוח התוצאה (צובר ACC)
               </text>
               <text x="80" y="60" fill="#34d399" fontSize="26" fontWeight="bold" fontFamily="monospace" textAnchor="middle">
                 {acc}
@@ -408,28 +408,27 @@ export default function SvgCpuPipelineAnimation() {
       <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
         <div className="flex items-center gap-2 text-xs font-bold text-blue-400">
           <Layers className="w-3.5 h-3.5" />
-          <span>מה קורה במחשב ברגע זה? ({STAGE_LABELS[currentStage].name})</span>
+          <span>מה קורה במעבד עכשיו? ({STAGE_LABELS[currentStage].name})</span>
         </div>
         <p className="text-xs text-slate-300 leading-relaxed">
           {currentStage === 'FETCH' && (
             <>
-              המעבד קורא מזיכרון ה-RAM בכתובת <strong>0{pc}</strong> את הפקודה <strong>{currentInstruction.opcode} {currentInstruction.operand}</strong>. 
-              אוגר ה-PC מתכונן לפקודה הבאה, והפקודה זורמת באפיק הנתונים (Data Bus) לכיוון המעבד.
+              המעבד קורא מהזיכרון בשורה <strong>0{pc}</strong> את ההוראה: <strong>{currentInstruction.opcode} {currentInstruction.operand}</strong>. 
+              הוא מושך אותה פנימה ומתכונן לשורה הבאה.
             </>
           )}
           {currentStage === 'DECODE' && (
             <>
-              יחידת הבקרה (CU) מפענחת את הפקודה <strong>{currentInstruction.opcode}</strong>: 
-              היא מבינה שמדובר בפעולה של &quot;{currentInstruction.desc}&quot; ושולחת אותות חשמליים ליחידת החישוב (ALU).
+              מוח הניהול מפענח את ההוראה: הוא מבין שמדובר בפעולה של &quot;{currentInstruction.desc}&quot; ומעביר פקודה למחשבון לבצע את התרגיל!
             </>
           )}
           {currentStage === 'EXECUTE' && (
             <>
-              ה-ALU מבצעת את החישוב! 
-              {currentInstruction.opcode === 'LOAD' && ` ערך המספר ${currentInstruction.operand} נטען ישירות אל הצובר (ACC).`}
-              {currentInstruction.opcode === 'ADD' && ` המספר ${currentInstruction.operand} חושב ונוסף לערך הקודם, וכעת הצובר מציג ${acc}.`}
-              {currentInstruction.opcode === 'STORE' && ` תוצאת החישוב (${acc}) נשמרת בבטחה בתא הזיכרון.`}
-              {currentInstruction.opcode === 'HALT' && ' התוכנית הושלמה בהצלחה והמעבד מסיים את סבב הפקודות.'}
+              המחשבון מבצע את התרגיל! 
+              {currentInstruction.opcode === 'LOAD' && ` המספר ${currentInstruction.operand} נכנס ישירות אל לוח התוצאה.`}
+              {currentInstruction.opcode === 'ADD' && ` המספר ${currentInstruction.operand} חושב ונוסף לתוצאה, וכעת הלוח מציג ${acc}.`}
+              {currentInstruction.opcode === 'STORE' && ` התוצאה (${acc}) נשמרת בבטחה בזיכרון המחשב.`}
+              {currentInstruction.opcode === 'HALT' && ' כל ההוראות הושלמו בהצלחה והמעבד מסיים את הריצה!'}
             </>
           )}
         </p>

@@ -4,12 +4,12 @@ import { AudioEngine } from '../../core/audio.js';
 
 export default function SvgRobotAnimation() {
   const steps = [
-    { title: 'אתחול', command: 'START', pos: { x: 80, y: 150 }, hasKey: false, gateLocked: true, desc: 'הרובוט מוצב בנקודת ההתחלה. תור הפקודות מוכן.' },
-    { title: 'צעד 1: קדימה', command: 'STEP_FORWARD', pos: { x: 180, y: 150 }, hasKey: false, gateLocked: true, desc: 'הפקודה נשלפת מהתור. הרובוט מתקדם משבצת אחת מזרחה.' },
-    { title: 'צעד 2: איסוף מפתח', command: 'PICK_KEY', pos: { x: 280, y: 150 }, hasKey: true, gateLocked: true, desc: 'תנאי מתקיים: מפתח נמצא במשבצת. דגל hasKey מתעדכן ל-TRUE בזיכרון.' },
-    { title: 'צעד 3: קדימה לשער', command: 'STEP_FORWARD', pos: { x: 380, y: 150 }, hasKey: true, gateLocked: true, desc: 'הרובוט מתקדם אל משבצת השער הנעול.' },
-    { title: 'צעד 4: בדיקת תנאי קדם', command: 'UNLOCK_GATE', pos: { x: 480, y: 150 }, hasKey: true, gateLocked: false, desc: 'בדיקת תנאי קדם: hasKey == TRUE? תנאי עבר בהצלחה! השער נפתח.' },
-    { title: 'סיום: הגעה ליעד', command: 'REACH_GOAL', pos: { x: 580, y: 150 }, hasKey: true, gateLocked: false, desc: 'האלגוריתם השלים את משימתו במלואה. היעד הושג בהצלחה!' }
+    { title: 'אתחול', command: 'START', pos: { x: 80, y: 150 }, hasKey: false, gateLocked: true, desc: 'הרובוט מוצב בנקודת ההתחלה, מוכן לקבלת ההוראות.' },
+    { title: 'צעד 1: קדימה', command: 'STEP_FORWARD', pos: { x: 180, y: 150 }, hasKey: false, gateLocked: true, desc: 'הרובוט קורא את ההוראה הראשונה וצועד צעד אחד קדימה.' },
+    { title: 'צעד 2: איסוף מפתח', command: 'PICK_KEY', pos: { x: 280, y: 150 }, hasKey: true, gateLocked: true, desc: 'בדיקה: יש מפתח במשבצת! הרובוט אוסף אותו ושומר בזיכרון (יש מפתח = כן).' },
+    { title: 'צעד 3: קדימה לשער', command: 'STEP_FORWARD', pos: { x: 380, y: 150 }, hasKey: true, gateLocked: true, desc: 'הרובוט ממשיך קדימה ומגיע לשער הנעול.' },
+    { title: 'צעד 4: בדיקת מפתח', command: 'UNLOCK_GATE', pos: { x: 480, y: 150 }, hasKey: true, gateLocked: false, desc: 'בדיקת תנאי: האם יש מפתח ביד? כן! השער נפתח למעבר.' },
+    { title: 'סיום: הגעה ליעד', command: 'REACH_GOAL', pos: { x: 580, y: 150 }, hasKey: true, gateLocked: false, desc: 'הרובוט ביצע את כל ההוראות והגיע בהצלחה למטרה!' }
   ];
 
   const [currentStep, setCurrentStep] = useState(0);
@@ -59,7 +59,7 @@ export default function SvgRobotAnimation() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Bot className="w-4 h-4 text-blue-400" />
-          <h3 className="text-xs font-semibold text-white">הדמיית מנוע הרצה: תור פקודות (FIFO) ובדיקת תנאי קדם</h3>
+          <h3 className="text-xs font-semibold text-white">איך הרובוט מבצע פקודות לפי הסדר ובודק תנאים</h3>
         </div>
         <div className="flex items-center gap-2">
           <button
@@ -125,7 +125,8 @@ export default function SvgRobotAnimation() {
           {/* Key Location at Step 2 (x=280) */}
           <g transform="translate(280, 110)">
             <circle cx="0" cy="0" r="14" fill={state.hasKey ? '#065f46' : '#854d0e'} stroke={state.hasKey ? '#10b981' : '#f59e0b'} strokeWidth="1.5" />
-            <text x="0" y="4" textAnchor="middle" fill="#ffffff" fontSize="11">🔑</text>
+            <circle cx="-3" cy="-1" r="4" fill="none" stroke="#ffffff" strokeWidth="1.8" />
+            <path d="M 1 -1 L 6 -1 M 4 -1 L 4 2 M 6 -1 L 6 2" stroke="#ffffff" strokeWidth="1.8" strokeLinecap="round" />
           </g>
 
           {/* Gate Barrier Location at Step 4 (x=480) */}
@@ -140,15 +141,15 @@ export default function SvgRobotAnimation() {
               strokeLinecap="round"
               className="transition-all duration-300"
             />
-            <text x="0" y="-38" textAnchor="middle" fill={state.gateLocked ? '#ef4444' : '#10b981'} fontSize="10" fontWeight="bold">
-              {state.gateLocked ? 'נעול 🔒' : 'פתוח 🔓'}
+            <text x="0" y="-38" textAnchor="middle" fill={state.gateLocked ? '#ef4444' : '#10b981'} fontSize="11" fontWeight="bold">
+              {state.gateLocked ? 'שער נעול' : 'שער פתוח'}
             </text>
           </g>
 
           {/* Goal Star at Step 5 (x=580) */}
           <g transform="translate(580, 110)">
             <circle cx="0" cy="0" r="14" fill="#1e1b4b" stroke="#6366f1" strokeWidth="1.5" />
-            <text x="0" y="4" textAnchor="middle" fill="#ffffff" fontSize="11">🏆</text>
+            <polygon points="0,-7 2,-2 7,-2 3,2 5,7 0,4 -5,7 -3,2 -7,-2 -2,-2" fill="#fbbf24" />
           </g>
 
           {/* Animated Robot Avatar */}
@@ -160,9 +161,9 @@ export default function SvgRobotAnimation() {
             <circle cx="0" cy="-24" r="3" fill="#38bdf8" />
           </g>
 
-          {/* Top Instruction Conveyor FIFO Queue */}
+          {/* Top Instruction Conveyor Queue */}
           <g transform="translate(60, 20)">
-            <text x="0" y="16" fill="#94a3b8" fontSize="11" fontWeight="bold">תור ביצוע (Queue):</text>
+            <text x="0" y="16" fill="#94a3b8" fontSize="11" fontWeight="bold">רשימת ההוראות:</text>
             {steps.slice(1).map((st, i) => {
               const qx = 140 + i * 105;
               const isExecuting = i + 1 === currentStep;
@@ -201,19 +202,19 @@ export default function SvgRobotAnimation() {
       {/* Step Description & Status Card */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <div className="p-3 bg-slate-900 rounded-lg border border-slate-800">
-          <div className="text-[10px] text-slate-400">שלב נוכחי:</div>
+          <div className="text-[10px] text-slate-400">השלב עכשיו:</div>
           <div className="text-xs font-bold text-white mt-0.5">{state.title}</div>
         </div>
 
         <div className="p-3 bg-slate-900 rounded-lg border border-slate-800">
-          <div className="text-[10px] text-slate-400">מצב דגל הזיכרון (hasKey):</div>
+          <div className="text-[10px] text-slate-400">שמור בזיכרון (מפתח ביד?):</div>
           <div className={`font-mono text-xs font-bold mt-0.5 ${state.hasKey ? 'text-emerald-400' : 'text-amber-400'}`}>
-            {state.hasKey ? 'TRUE (מפתח ביד)' : 'FALSE (ללא מפתח)'}
+            {state.hasKey ? 'כן (TRUE)' : 'לא (FALSE)'}
           </div>
         </div>
 
         <div className="p-3 bg-slate-900 rounded-lg border border-slate-800">
-          <div className="text-[10px] text-slate-400">סטטוס מעבר השער:</div>
+          <div className="text-[10px] text-slate-400">מצב השער:</div>
           <div className={`font-mono text-xs font-bold mt-0.5 ${state.gateLocked ? 'text-red-400' : 'text-emerald-400'}`}>
             {state.gateLocked ? 'חסום לתנועה' : 'פתוח למעבר'}
           </div>

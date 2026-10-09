@@ -261,7 +261,7 @@ export default function Lab2_AlgorithmicRobot({ curriculum }) {
           labData={labData}
           animations={[
             { id: 'robot', label: 'רובוט אלגוריתמי ולולאות', component: SvgRobotAnimation },
-            { id: 'pipeline', label: 'מחזור פעולת המעבד (Pipeline)', component: SvgCpuPipelineAnimation }
+            { id: 'pipeline', label: 'איך המעבד עובד (קריאה וביצוע)', component: SvgCpuPipelineAnimation }
           ]}
           onProceedToInteractive={() => {
             setPhase('interactive');

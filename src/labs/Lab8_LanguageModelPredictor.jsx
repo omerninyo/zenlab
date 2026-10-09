@@ -123,8 +123,8 @@ export default function Lab8_LanguageModelPredictor({ curriculum }) {
         <TheoryView
           labData={labData}
           animations={[
-            { id: 'prediction', label: 'חיזוי אסימון והסתברות', component: SvgLlmAnimation },
-            { id: 'attention', label: 'תשומת לב (Self-Attention)', component: SvgSelfAttentionAnimation }
+            { id: 'prediction', label: 'ניחוש המילה הבאה ומד חום', component: SvgLlmAnimation },
+            { id: 'attention', label: 'קשרי מילים (תשומת לב)', component: SvgSelfAttentionAnimation }
           ]}
           onProceedToInteractive={() => {
             setPhase('interactive');

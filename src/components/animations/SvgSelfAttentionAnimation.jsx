@@ -33,10 +33,10 @@ export default function SvgSelfAttentionAnimation() {
           <Network className="w-5 h-5 text-blue-400" />
           <div>
             <h3 className="text-xs font-bold text-white">
-              מנגנון תשומת הלב (Self-Attention ב-Transformers)
+              קשרי מילים: איך המחשב מבין משפט בעזרת &quot;תשומת לב&quot;
             </h3>
             <p className="text-[11px] text-slate-400">
-              לחצו על כל מילה במשפט כדי לראות לאילו מילים אחרות המודל מקדיש "תשומת לב"
+              לחצו על כל מילה במשפט כדי לראות לאילו מילים אחרות המחשב מקדיש &quot;תשומת לב&quot;
             </p>
           </div>
         </div>
@@ -49,7 +49,7 @@ export default function SvgSelfAttentionAnimation() {
               viewMode === 'arcs' ? 'bg-blue-600 text-white font-bold' : 'text-slate-400 hover:text-slate-200'
             }`}
           >
-            קשתי תשומת לב
+            קשתות קשר
           </button>
           <button
             type="button"
@@ -58,7 +58,7 @@ export default function SvgSelfAttentionAnimation() {
               viewMode === 'matrix' ? 'bg-blue-600 text-white font-bold' : 'text-slate-400 hover:text-slate-200'
             }`}
           >
-            מטריצת חום ($Q \times K$)
+            טבלת קשרים בין כל המילים
           </button>
         </div>
       </div>
@@ -89,8 +89,8 @@ export default function SvgSelfAttentionAnimation() {
                     </span>
                   )}
                   {isSelected && (
-                    <span className="text-[10px] font-mono bg-blue-700 px-1.5 py-0.2 rounded text-blue-100">
-                      מילת שאילתה (Query)
+                    <span className="text-[10px] font-medium bg-blue-700 px-1.5 py-0.2 rounded text-blue-100">
+                      המילה הנבחרת
                     </span>
                   )}
                 </button>
@@ -198,7 +198,7 @@ export default function SvgSelfAttentionAnimation() {
             <table className="w-full text-center border-collapse">
               <thead>
                 <tr>
-                  <th className="p-2 text-[11px] text-slate-400 font-normal">שאילתה \ מפתח</th>
+                  <th className="p-2 text-[11px] text-slate-400 font-normal">מילה \ מילים אחרות</th>
                   {TOKENS.map((token, i) => (
                     <th key={i} className="p-2 text-xs font-semibold text-slate-200">
                       {token}
@@ -249,7 +249,7 @@ export default function SvgSelfAttentionAnimation() {
         <div>
           <strong className="text-white">איך מודל שפה מבין משמעות?</strong>
           <p className="text-[11px] text-slate-400 mt-0.5">
-            במשפט לעיל, המילה <strong>"{TOKENS[selectedTokenIdx]}"</strong> לא נבחנת בנפרד. באמצעות מנגנון ה-Attention, המודל מחשב מכפלה וקטורית בין שאילתה (Query) לבין מפתחות (Keys) של כל שאר המילים, וכך מבין את ההקשר התחבירי המדויק.
+            במשפט למעלה, המילה <strong>&quot;{TOKENS[selectedTokenIdx]}&quot;</strong> לא עומדת לבד. המחשב מחבר אותה מיד למילים שקשורות אליה במשפט (למשל מי ביצע את הפעולה או לאיזה חפץ הכוונה). בדיוק ככה המחשב מקדיש &quot;תשומת לב&quot; לקשרים החשובים כדי להבין את המשמעות המלאה!
           </p>
         </div>
       </div>

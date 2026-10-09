@@ -39,7 +39,7 @@ export default function SvgPerceptronAnimation() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Zap className="w-4 h-4 text-purple-400" />
-          <h3 className="text-xs font-semibold text-white">הדמיית מנגנון: הנוירון המלאכותי (קלטים, משקולות וסף הפעלה)</h3>
+          <h3 className="text-xs font-semibold text-white">איך נוירון חושב ומחליט: קלטים, חשיבות וסף החלטה</h3>
         </div>
         <div className="flex items-center gap-2">
           <button
@@ -56,7 +56,7 @@ export default function SvgPerceptronAnimation() {
       {/* Input Toggles & Quick Sliders */}
       <div className="flex flex-wrap items-center justify-between gap-3 text-xs">
         <div className="flex items-center gap-2">
-          <span className="text-slate-400">מתגי קלט:</span>
+          <span className="text-slate-400">נתוני קלט:</span>
           <button
             type="button"
             onClick={toggleX1}
@@ -66,7 +66,7 @@ export default function SvgPerceptronAnimation() {
                 : 'bg-slate-900 text-slate-400 border-slate-800'
             }`}
           >
-            x₁ = {x1}
+            קלט 1: {x1}
           </button>
           <button
             type="button"
@@ -77,13 +77,13 @@ export default function SvgPerceptronAnimation() {
                 : 'bg-slate-900 text-slate-400 border-slate-800'
             }`}
           >
-            x₂ = {x2}
+            קלט 2: {x2}
           </button>
         </div>
 
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-1.5">
-            <span className="text-slate-400 font-mono">w₁:</span>
+            <span className="text-slate-400">משקל 1:</span>
             <input
               type="range"
               min="-2"
@@ -96,7 +96,7 @@ export default function SvgPerceptronAnimation() {
             <span className="font-mono text-purple-300 w-6">{w1}</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="text-slate-400 font-mono">w₂:</span>
+            <span className="text-slate-400">משקל 2:</span>
             <input
               type="range"
               min="-2"
@@ -109,7 +109,7 @@ export default function SvgPerceptronAnimation() {
             <span className="font-mono text-purple-300 w-6">{w2}</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="text-slate-400 font-mono">Bias:</span>
+            <span className="text-slate-400">סף (Bias):</span>
             <input
               type="range"
               min="-3"
@@ -153,20 +153,20 @@ export default function SvgPerceptronAnimation() {
           {/* Input Nodes (x1, x2) */}
           <g transform="translate(120, 70)">
             <circle cx="0" cy="0" r="26" fill={x1 === 1 ? '#0284c7' : '#0f172a'} stroke="#38bdf8" strokeWidth="2" />
-            <text x="0" y="5" fill="#f8fafc" fontSize="13" fontWeight="bold" textAnchor="middle">x₁={x1}</text>
-            <text x="60" y="-8" fill="#c084fc" fontSize="11" fontWeight="bold">× w₁ ({w1})</text>
+            <text x="0" y="5" fill="#f8fafc" fontSize="13" fontWeight="bold" textAnchor="middle">קלט: {x1}</text>
+            <text x="60" y="-8" fill="#c084fc" fontSize="11" fontWeight="bold">משקל: {w1}</text>
           </g>
 
           <g transform="translate(120, 190)">
             <circle cx="0" cy="0" r="26" fill={x2 === 1 ? '#0284c7' : '#0f172a'} stroke="#38bdf8" strokeWidth="2" />
-            <text x="0" y="5" fill="#f8fafc" fontSize="13" fontWeight="bold" textAnchor="middle">x₂={x2}</text>
-            <text x="60" y="16" fill="#c084fc" fontSize="11" fontWeight="bold">× w₂ ({w2})</text>
+            <text x="0" y="5" fill="#f8fafc" fontSize="13" fontWeight="bold" textAnchor="middle">קלט: {x2}</text>
+            <text x="60" y="16" fill="#c084fc" fontSize="11" fontWeight="bold">משקל: {w2}</text>
           </g>
 
           {/* Bias Node */}
           <g transform="translate(260, 30)">
             <rect x="-35" y="-14" width="70" height="28" rx="6" fill="#78350f" stroke="#f59e0b" strokeWidth="1.5" />
-            <text x="0" y="4" fill="#fef3c7" fontSize="11" fontWeight="bold" textAnchor="middle">Bias: {bias}</text>
+            <text x="0" y="4" fill="#fef3c7" fontSize="11" fontWeight="bold" textAnchor="middle">סף: {bias}</text>
           </g>
 
           {/* Central Summation & Activation Node (The Neuron Cell Body) */}
@@ -177,10 +177,10 @@ export default function SvgPerceptronAnimation() {
               stroke={isFired ? '#10b981' : '#6366f1'}
               strokeWidth="3"
             />
-            <text x="0" y="-8" fill="#f8fafc" fontSize="16" fontWeight="bold" textAnchor="middle">∑</text>
-            <text x="0" y="12" fill="#cbd5e1" fontSize="11" textAnchor="middle">z = {z}</text>
+            <text x="0" y="-8" fill="#f8fafc" fontSize="11" fontWeight="bold" textAnchor="middle">סכום החישוב</text>
+            <text x="0" y="12" fill="#cbd5e1" fontSize="12" fontWeight="bold" textAnchor="middle">ניקוד: {z}</text>
             <text x="0" y="26" fill={z >= 0 ? '#4ade80' : '#f87171'} fontSize="10" fontWeight="bold" textAnchor="middle">
-              {z >= 0 ? 'מעל הסף (≥0)' : 'מתחת לסף (<0)'}
+              {z >= 0 ? 'עבר את הסף!' : 'לא עבר את הסף'}
             </text>
           </g>
 
@@ -193,11 +193,11 @@ export default function SvgPerceptronAnimation() {
               strokeWidth="3"
               className={isFired ? 'animate-pulse' : ''}
             />
-            <text x="0" y="5" fill="#ffffff" fontSize="15" fontWeight="bold" textAnchor="middle">
-              {isFired ? '1 (יורה)' : '0 (כבוי)'}
+            <text x="0" y="5" fill="#ffffff" fontSize="14" fontWeight="bold" textAnchor="middle">
+              {isFired ? '1 (נדלק!)' : '0 (כבוי)'}
             </text>
             <text x="0" y="44" fill="#94a3b8" fontSize="11" textAnchor="middle">
-              פלט סופי (y)
+              התוצאה הסופית
             </text>
           </g>
         </svg>
@@ -205,10 +205,10 @@ export default function SvgPerceptronAnimation() {
 
       <div className="flex items-center justify-between text-xs bg-slate-900/80 p-3 rounded-lg border border-slate-800">
         <span className="text-slate-400">
-          נוסחת הנוירון: <code className="font-mono text-purple-300">z = ({x1} × {w1}) + ({x2} × {w2}) + ({bias}) = {z}</code>
+          חישוב הנוירון: <code className="font-mono text-purple-300">({x1} × {w1}) + ({x2} × {w2}) + ({bias}) = {z}</code>
         </span>
         <span className="font-semibold text-white">
-          מצב הנוירון: {isFired ? 'פעיל (1) - הועבר אות חשמלי!' : 'כבוי (0) - הסף לא נחצה'}
+          {isFired ? 'הנוירון נדלק! (1) - מעביר אות הלאה' : 'הנוירון נשאר כבוי (0) - האות חלש מדי'}
         </span>
       </div>
     </div>

@@ -51,7 +51,7 @@ export default function SvgKernelAnimation() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Eye className="w-4 h-4 text-amber-400" />
-          <h3 className="text-xs font-semibold text-white">הדמיית מנגנון: זכוכית מגדלת סורקת (פילטר 3x3) ומפת רמזים</h3>
+          <h3 className="text-xs font-semibold text-white">ראייה ממוחשבת: איך המחשב מוצא קווים וצורות בעזרת זכוכית מגדלת</h3>
         </div>
         <div className="flex items-center gap-2">
           <button
@@ -68,7 +68,7 @@ export default function SvgKernelAnimation() {
       {/* Filter and Movement Controls */}
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
-          <span className="text-[11px] text-slate-400">פילטר:</span>
+          <span className="text-[11px] text-slate-400">סוג הקו שמחפשים:</span>
           <button
             type="button"
             onClick={() => { setSelectedFilter('vertical'); AudioEngine.playStep(); }}
@@ -78,7 +78,7 @@ export default function SvgKernelAnimation() {
                 : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
             }`}
           >
-            קצוות אנכיים
+            קווים עומדים (אנכיים)
           </button>
           <button
             type="button"
@@ -89,13 +89,13 @@ export default function SvgKernelAnimation() {
                 : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
             }`}
           >
-            קצוות אופקיים
+            קווים שוכבים (אופקיים)
           </button>
         </div>
 
         {/* Direction Pad to move the 3x3 window */}
         <div className="flex items-center gap-1">
-          <span className="text-[11px] text-slate-400 ml-1">הזזת החלון:</span>
+          <span className="text-[11px] text-slate-400 ml-1">הזזת זכוכית המגדלת:</span>
           <button
             type="button"
             onClick={() => moveWindow(-1, 0)}
@@ -133,7 +133,7 @@ export default function SvgKernelAnimation() {
           {/* Section 1: Input Matrix (8x8) */}
           <g transform="translate(30, 20)">
             <text x="96" y="-6" fill="#94a3b8" fontSize="11" fontWeight="bold" textAnchor="middle">
-              1. תמונת קלט (8x8)
+              1. התמונה המקורית (8×8)
             </text>
             {Array.from({ length: 64 }).map((_, idx) => {
               const r = Math.floor(idx / 8);
@@ -174,7 +174,7 @@ export default function SvgKernelAnimation() {
           {/* Section 2: Kernel Multiplier (Center Math) */}
           <g transform="translate(260, 20)">
             <text x="110" y="-6" fill="#94a3b8" fontSize="11" fontWeight="bold" textAnchor="middle">
-              2. פילטר 3x3 & חישוב
+              2. זכוכית מגדלת (פילטר 3×3)
             </text>
             <rect x="0" y="0" width="220" height="200" rx="8" fill="#020617" stroke="#1e293b" />
 
@@ -192,24 +192,24 @@ export default function SvgKernelAnimation() {
 
             {/* Live Sum Calculation */}
             <text x="110" y="160" fill="#94a3b8" fontSize="10" textAnchor="middle">
-              סכום מכפלות הפיקסלים:
+              התאמה לתבנית הקו:
             </text>
             <text
               x="110"
               y="185"
               fill={dotSum !== 0 ? '#10b981' : '#64748b'}
-              fontSize="16"
+              fontSize="14"
               fontWeight="bold"
               textAnchor="middle"
             >
-              תוצאה: {dotSum}
+              {dotSum !== 0 ? `זוהה קו! (${dotSum})` : 'אין קו באזור זה (0)'}
             </text>
           </g>
 
           {/* Section 3: Feature Map Matrix (8x8) */}
           <g transform="translate(520, 20)">
             <text x="96" y="-6" fill="#94a3b8" fontSize="11" fontWeight="bold" textAnchor="middle">
-              3. מפת מאפיינים
+              3. מפת הקווים שהתגלו
             </text>
             {Array.from({ length: 64 }).map((_, idx) => {
               const r = Math.floor(idx / 8);
@@ -245,10 +245,10 @@ export default function SvgKernelAnimation() {
 
       <div className="flex items-center justify-between text-xs bg-slate-900/80 p-3 rounded-lg border border-slate-800">
         <span className="text-slate-400">
-          חלון ה-3x3 מחליק על פני התמונה. כאשר הוא פוגש מעבר בין כהה לבהיר (קצה), המכפלה מניבה ערך גבוה ומסמנת קו!
+          זכוכית המגדלת סורקת את התמונה פיקסל אחר פיקסל. כשהיא מזהה מעבר בין צבעים, היא נדלקת ומסמנת לנו קו במפה!
         </span>
         <span className="font-mono text-amber-400 font-bold">
-          ערך הפיקסל המחושב: {dotSum}
+          ציון זיהוי קו: {dotSum}
         </span>
       </div>
     </div>

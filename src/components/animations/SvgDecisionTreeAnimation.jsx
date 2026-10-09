@@ -45,7 +45,7 @@ export default function SvgDecisionTreeAnimation() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <GitBranch className="w-4 h-4 text-emerald-400" />
-          <h3 className="text-xs font-semibold text-white">הדמיית מנגנון: זרימת החלטה בעץ שאלות כן/לא</h3>
+          <h3 className="text-xs font-semibold text-white">עץ החלטה: איך שאלות פשוטות מגלות את התשובה</h3>
         </div>
         <div className="flex items-center gap-2">
           <button
@@ -69,7 +69,7 @@ export default function SvgDecisionTreeAnimation() {
 
       {/* Animal Selector Controls */}
       <div className="flex items-center gap-2 overflow-x-auto pb-1">
-        <span className="text-[11px] text-slate-400 font-medium">בחר בעל חיים למבחן:</span>
+        <span className="text-[11px] text-slate-400 font-medium">בחרו בעל חיים לבדיקה:</span>
         {Object.entries(animals).map(([k, item]) => (
           <button
             key={k}
@@ -254,7 +254,7 @@ export default function SvgDecisionTreeAnimation() {
       {/* Live Decision Tracker Status */}
       <div className="flex items-center justify-between text-xs bg-slate-900/80 p-3 rounded-lg border border-slate-800">
         <div className="flex items-center gap-2">
-          <span className="text-slate-400">נבדק כעת:</span>
+          <span className="text-slate-400">החיה שנבדקת:</span>
           <span className="font-bold text-white">{curr.name}</span>
           <span className="text-slate-500">|</span>
           <span className="text-slate-400">תכונות:</span>
@@ -266,11 +266,11 @@ export default function SvgDecisionTreeAnimation() {
           {activeStep === 2 && (
             <>
               <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-              <span>סיווג סופי: מחלקת ה{curr.species}ים</span>
+              <span>תוצאה: שייך לקבוצת ה{curr.species}ים!</span>
             </>
           )}
           {activeStep < 2 && (
-            <span className="text-slate-400">שלב החלטה {activeStep + 1} מתוך 3</span>
+            <span className="text-slate-400">שאלה {activeStep + 1} מתוך 3</span>
           )}
         </div>
       </div>

@@ -36,7 +36,7 @@ export default function SvgPathfinderAnimation() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Compass className="w-4 h-4 text-blue-400" />
-          <h3 className="text-xs font-semibold text-white">הדמיית מנגנון: חיפוש עיוור לכל הכיוונים מול מצפן חכם (A*)</h3>
+          <h3 className="text-xs font-semibold text-white">איך מוצאים את הדרך: חיפוש עיוור לעומת מצפן חכם (*A)</h3>
         </div>
         <div className="flex items-center gap-2">
           <button
@@ -70,7 +70,7 @@ export default function SvgPathfinderAnimation() {
           }`}
         >
           <Sparkles className="w-3.5 h-3.5 text-blue-400" />
-          <span>חיפוש חכם (A* Heuristic)</span>
+          <span>מצפן חכם (*A)</span>
         </button>
         <button
           type="button"
@@ -82,7 +82,7 @@ export default function SvgPathfinderAnimation() {
           }`}
         >
           <Navigation className="w-3.5 h-3.5 text-slate-400" />
-          <span>סריקת רוחב שווה (BFS)</span>
+          <span>חיפוש עיוור לכל הכיוונים</span>
         </button>
       </div>
 
@@ -167,26 +167,26 @@ export default function SvgPathfinderAnimation() {
             <text x="32" y="54" fill="#cbd5e1" fontSize="10">נקודת התחלה (S)</text>
 
             <circle cx="20" cy="80" r="5" fill="#10b981" />
-            <text x="32" y="84" fill="#cbd5e1" fontSize="10">יעד מבוקש (G)</text>
+            <text x="32" y="84" fill="#cbd5e1" fontSize="10">המטרה (G)</text>
 
             <rect x="15" y="105" width="10" height="10" rx="2" fill="#475569" />
-            <text x="32" y="114" fill="#cbd5e1" fontSize="10">מחסום קיר</text>
+            <text x="32" y="114" fill="#cbd5e1" fontSize="10">קיר / מכשול</text>
 
             <rect x="15" y="135" width="10" height="10" rx="2" fill="#1e3a8a" />
             <text x="32" y="144" fill="#cbd5e1" fontSize="10">משבצת שנבדקה</text>
 
             <rect x="15" y="165" width="10" height="10" rx="2" fill="#059669" />
-            <text x="32" y="174" fill="#cbd5e1" fontSize="10">מסלול מנצח</text>
+            <text x="32" y="174" fill="#cbd5e1" fontSize="10">המסלול שנבחר</text>
           </g>
 
           {/* Metric Panel on Right */}
           <g transform="translate(450, 40)">
             <rect x="0" y="0" width="130" height="200" rx="8" fill="#020617" stroke="#1e293b" />
-            <text x="15" y="25" fill="#94a3b8" fontSize="11" fontWeight="bold">מדדי ביצוע:</text>
+            <text x="15" y="25" fill="#94a3b8" fontSize="11" fontWeight="bold">תוצאות:</text>
 
-            <text x="15" y="60" fill="#64748b" fontSize="10">אלגוריתם:</text>
+            <text x="15" y="60" fill="#64748b" fontSize="10">סוג חיפוש:</text>
             <text x="15" y="76" fill="#f8fafc" fontSize="11" fontWeight="bold">
-              {algo === 'astar' ? 'A* Heuristic' : 'BFS (רוחב)'}
+              {algo === 'astar' ? 'מצפן חכם (*A)' : 'חיפוש עיוור'}
             </text>
 
             <text x="15" y="110" fill="#64748b" fontSize="10">משבצות שנבדקו:</text>
@@ -194,9 +194,9 @@ export default function SvgPathfinderAnimation() {
               {Math.min(step * (algo === 'astar' ? 1 : 2), algo === 'astar' ? 12 : 28)}
             </text>
 
-            <text x="15" y="160" fill="#64748b" fontSize="10">יעילות חיפוש:</text>
+            <text x="15" y="160" fill="#64748b" fontSize="10">יעילות החיפוש:</text>
             <text x="15" y="176" fill={algo === 'astar' ? '#10b981' : '#ef4444'} fontSize="12" fontWeight="bold">
-              {algo === 'astar' ? 'גבוהה (חסכוני)' : 'נמוכה (בזבזני)'}
+              {algo === 'astar' ? 'מהיר וחסכוני' : 'איטי ובודק הכל'}
             </text>
           </g>
         </svg>
@@ -205,8 +205,8 @@ export default function SvgPathfinderAnimation() {
       <div className="flex items-center justify-between text-xs bg-slate-900/80 p-3 rounded-lg border border-slate-800">
         <span className="text-slate-400">
           {algo === 'astar' 
-            ? 'A* משתמש במצפן חכם (משחק חם-קר) שמנחש את הכיוון למטרה, וחוסך בדיקות מיותרות.'
-            : 'חיפוש עיוור בודק כל משבצת אפשרית במעגלים לכל הכיוונים, ולכן הוא איטי בהרבה.'}
+            ? '*A משתמש במצפן חכם (כמו משחק "חם-קר") שמנחש את הכיוון למטרה וחוסך בדיקות מיותרות!' 
+            : 'חיפוש עיוור בודק כל משבצת אפשרית מסביב ללא הבחנה, ולכן הוא איטי בהרבה ובודק הרבה יותר משבצות.'}
         </span>
         <span className="font-mono text-slate-300">
           צעד {step} מתוך {totalSteps}

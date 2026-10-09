@@ -3,11 +3,11 @@ import { Zap, Binary, Sliders, CheckCircle2, RefreshCw, Cpu, Layers } from 'luci
 import { AudioEngine } from '../../core/audio.js';
 
 const GATES = [
-  { id: 'AND', name: 'שער וגם (AND)', desc: 'הפלט הוא 1 רק אם שני הקלטים הם 1', formula: 'A ∧ B' },
-  { id: 'OR', name: 'שער או (OR)', desc: 'הפלט הוא 1 אם לפחות אחד הקלטים הוא 1', formula: 'A ∨ B' },
-  { id: 'NOT', name: 'שער שלילה (NOT)', desc: 'הופך את הקלט: 0 הופך ל-1, ו-1 הופך ל-0', formula: '¬A' },
-  { id: 'XOR', name: 'שער או-בלעדי (XOR)', desc: 'הפלט הוא 1 רק כאשר הקלטים שונים זה מזה', formula: 'A ⊕ B' },
-  { id: 'NAND', name: 'שער לא-וגם (NAND)', desc: 'הופכי ל-AND: פולט 0 רק כששני הקלטים הם 1', formula: '¬(A ∧ B)' }
+  { id: 'AND', name: 'שער וגם (AND)', desc: 'נדלק (1) רק אם שני המפסקים דולקים יחד', formula: 'וגם (A וגם B)' },
+  { id: 'OR', name: 'שער או (OR)', desc: 'נדלק (1) אם לפחות אחד המפסקים דולק', formula: 'או (A או B)' },
+  { id: 'NOT', name: 'שער היפוך (NOT)', desc: 'הופך את הסימן: 0 הופך ל-1, ו-1 הופך ל-0', formula: 'היפוך (לא A)' },
+  { id: 'XOR', name: 'שער או-מיוחד (XOR)', desc: 'נדלק (1) רק כאשר המפסקים שונים זה מזה', formula: 'בדיוק אחד מהם' },
+  { id: 'NAND', name: 'שער לא-וגם (NAND)', desc: 'ההפך משער וגם: כבה רק כששני המפסקים דולקים יחד', formula: 'ההפך מ-AND' }
 ];
 
 export default function SvgLogicGatesAnimation() {
@@ -79,10 +79,10 @@ export default function SvgLogicGatesAnimation() {
           <Zap className="w-5 h-5 text-blue-400" />
           <div>
             <h3 className="text-xs font-bold text-white">
-              שערים לוגיים ומעגלי חישוב בחומרה (Logic Gates &amp; Circuits)
+              שערים לוגיים: איך המחשב מקבל החלטות בחומרה
             </h3>
             <p className="text-[11px] text-slate-400">
-              אבני הבניין האלקטרוניות המרכיבות מעבדים, זיכרונות ורשתות נוירונים מלאכותיות
+              אבני הבניין הזעירות שמרכיבות כל מעבד וכל תוכנת מחשב
             </p>
           </div>
         </div>
@@ -105,7 +105,7 @@ export default function SvgLogicGatesAnimation() {
               activeMode === 'halfAdder' ? 'bg-blue-600 text-white font-bold' : 'text-slate-400 hover:text-slate-200'
             }`}
           >
-            מעגל חצי-מחבר (Half-Adder)
+            איך מחשב מחבר מספרים (חיבור בינארי)
           </button>
         </div>
       </div>
@@ -115,7 +115,7 @@ export default function SvgLogicGatesAnimation() {
         <div className="space-y-4">
           {/* Gate Selection Buttons */}
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-slate-400 text-xs font-medium">בחר שער לוגי:</span>
+            <span className="text-slate-400 text-xs font-medium">בחרו שער:</span>
             {GATES.map(g => (
               <button
                 key={g.id}
@@ -140,7 +140,7 @@ export default function SvgLogicGatesAnimation() {
                   <Cpu className="w-3.5 h-3.5 text-blue-400" />
                   <span>מעגל אלקטרוני חי</span>
                 </span>
-                <span className="text-slate-400 font-mono text-[11px]">נוסחה: {currentGateMeta.formula}</span>
+                <span className="text-slate-400 text-xs">כלל: {currentGateMeta.formula}</span>
               </div>
 
               {/* Schematic SVG */}
@@ -293,7 +293,7 @@ export default function SvgLogicGatesAnimation() {
                   }`}
                 >
                   <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
-                  <span>קלט A: {inputA === 1 ? '1 (דולק / HIGH)' : '0 (כבוי / LOW)'}</span>
+                  <span>קלט א': {inputA === 1 ? '1 (דולק)' : '0 (כבוי)'}</span>
                 </button>
 
                 {selectedGate !== 'NOT' && (
@@ -307,7 +307,7 @@ export default function SvgLogicGatesAnimation() {
                     }`}
                   >
                     <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
-                    <span>קלט B: {inputB === 1 ? '1 (דולק / HIGH)' : '0 (כבוי / LOW)'}</span>
+                    <span>קלט ב': {inputB === 1 ? '1 (דולק)' : '0 (כבוי)'}</span>
                   </button>
                 )}
               </div>
@@ -316,7 +316,7 @@ export default function SvgLogicGatesAnimation() {
             {/* Live Dynamic Truth Table */}
             <div className="lg:col-span-4 bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-white">טבלת אמת (Truth Table)</span>
+                <span className="text-xs font-bold text-white">טבלת אפשרויות (טבלת אמת)</span>
                 <span className="text-[10px] text-slate-400 font-mono">{selectedGate}</span>
               </div>
 
@@ -360,12 +360,12 @@ export default function SvgLogicGatesAnimation() {
           <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2">
             <h4 className="text-xs font-bold text-white flex items-center gap-1.5">
               <Binary className="w-4 h-4 text-emerald-400" />
-              <span>כיצד מחשב מחבר 1 ועוד 1 בבינארית? (1 + 1 = 10₂)</span>
+              <span>כיצד מחשב מחבר 1 ועוד 1 בבינארית? (1 + 1 = 10)</span>
             </h4>
             <p className="text-xs text-slate-300 leading-relaxed">
-              מעגל חצי-מחבר משלב שער <strong>XOR</strong> לחישוב ספרת הסכום (Sum), 
-              ושער <strong>AND</strong> לחישוב ספרת הנשא (Carry). 
-              שנו את מתגי הקלט למטה וצפו כיצד נוצרת התוצאה הבינארית!
+              כשהמחשב מחבר שני מספרים, שער אחד (XOR) מחשב את ספרת האחדות (הסכום), 
+              ושער שני (AND) בודק אם צריך להעביר &quot;נשא&quot; לספרה הבאה. 
+              שנו את מתגי הקלט למטה וראו כיצד נוצרת התוצאה הבינארית!
             </p>
           </div>
 
@@ -510,11 +510,11 @@ export default function SvgLogicGatesAnimation() {
               </div>
 
               <div className="space-y-1.5 text-[11px] text-slate-400 leading-relaxed">
-                <div>&bull; <strong>נשא (Carry = {carryBit})</strong>: מייצג את ערך ה-$2^1$ (משקל 2).</div>
-                <div>&bull; <strong>סכום (Sum = {sumBit})</strong>: מייצג את ערך ה-$2^0$ (משקל 1).</div>
+                <div>&bull; <strong>נשא (Carry = {carryBit})</strong>: מייצג את ספרת העשרות בבינארית (ערך 2).</div>
+                <div>&bull; <strong>סכום (Sum = {sumBit})</strong>: מייצג את ספרת האחדות בבינארית (ערך 1).</div>
                 {inputA === 1 && inputB === 1 && (
                   <div className="p-2 rounded bg-amber-950/40 border border-amber-800/60 text-amber-200 mt-2 font-medium">
-                    שימו לב! 1 + 1 יוצר תוצאה 0 בספרת האחדות ונשא 1 לספרת העשרות הבינארית: בדיוק 10₂!
+                    שימו לב! 1 + 1 יוצר תוצאה 0 בספרת האחדות ונשא 1 לספרה הבאה: בדיוק 10 בבינארית (שווה ל-2)!
                   </div>
                 )}
               </div>

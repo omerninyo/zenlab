@@ -69,12 +69,12 @@ export default function SvgClassifierAnimation() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Network className="w-4 h-4 text-blue-400" />
-          <h3 className="text-xs font-semibold text-white">הדמיית מנגנון: מרחב תכונות ומעגל השכנים (k-NN)</h3>
+          <h3 className="text-xs font-semibold text-white">למידת מכונה: מי הם השכנים הכי קרובים שלי? (אלגוריתם k-NN)</h3>
         </div>
 
         {/* Hyperparameter selector */}
         <div className="flex items-center gap-1.5 bg-slate-900 px-2 py-1 rounded-lg border border-slate-800">
-          <span className="text-[10px] text-slate-400 font-mono">k =</span>
+          <span className="text-[10px] text-slate-400 font-medium">כמה שכנים שואלים? (k) =</span>
           {[1, 3, 5].map((val) => (
             <button
               key={val}
@@ -103,12 +103,12 @@ export default function SvgClassifierAnimation() {
           {/* Axis and Grid */}
           <line x1="40" y1="20" x2="40" y2="250" stroke="#334155" strokeWidth="2" />
           <line x1="40" y1="250" x2="430" y2="250" stroke="#334155" strokeWidth="2" />
-          <text x="420" y="242" textAnchor="end" fill="#64748b" fontSize="10">גודל (X) &rarr;</text>
-          <text x="50" y="32" textAnchor="start" fill="#64748b" fontSize="10">&uarr; משקל (Y)</text>
+          <text x="420" y="242" textAnchor="end" fill="#64748b" fontSize="10">גודל הפרי &rarr;</text>
+          <text x="50" y="32" textAnchor="start" fill="#64748b" fontSize="10">&uarr; משקל הפרי</text>
 
           {/* Theoretical Decision Boundary Line */}
           <line x1="60" y1="250" x2="350" y2="30" stroke="#475569" strokeWidth="1.5" strokeDasharray="4,4" className="opacity-50" />
-          <text x="210" y="100" fill="#475569" fontSize="9" transform="rotate(-36 210,100)">גבול הפרדה תיאורטי</text>
+          <text x="210" y="100" fill="#475569" fontSize="9" transform="rotate(-36 210,100)">קו הפרדה בין הקבוצות</text>
 
           {/* k-NN Neighborhood Radius Circle */}
           <circle
@@ -176,26 +176,26 @@ export default function SvgClassifierAnimation() {
       {/* Real-time Classification Card */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <div className="p-3 bg-slate-900 rounded-lg border border-slate-800">
-          <div className="text-[10px] text-slate-400">סיווג הרוב (k={k}):</div>
+          <div className="text-[10px] text-slate-400">החלטת הרוב (מתוך {k} שכנים):</div>
           <div className={`text-xs font-bold mt-0.5 ${prediction === 'A' ? 'text-red-400' : 'text-emerald-400'}`}>
-            {prediction === 'A' ? 'תפוח אדום (A)' : 'אבטיח ירוק (B)'}
+            {prediction === 'A' ? 'תפוח אדום (קבוצה A)' : 'אבטיח ירוק (קבוצה B)'}
           </div>
         </div>
 
         <div className="p-3 bg-slate-900 rounded-lg border border-slate-800">
-          <div className="text-[10px] text-slate-400">התפלגות קולות השכנים:</div>
+          <div className="text-[10px] text-slate-400">קולות השכנים הקרובים:</div>
           <div className="text-xs font-mono text-white mt-0.5">
             <span className="text-red-400 font-bold">{votes.A}</span> אדום : <span className="text-emerald-400 font-bold">{votes.B}</span> ירוק
           </div>
         </div>
 
         <div className="p-3 bg-slate-900 rounded-lg border border-slate-800">
-          <div className="text-[10px] text-slate-400">רמת ביטחון:</div>
+          <div className="text-[10px] text-slate-400">מידת הביטחון בניחוש:</div>
           <div className="text-xs font-mono font-bold text-blue-400 mt-0.5">{confidence}%</div>
         </div>
       </div>
       <p className="text-[11px] text-slate-400 text-center">
-        הקליקו במקומות שונים על הגרף כדי להזיז את עצם הבדיקה (?) ולראות כיצד המעגל מקיף את השכנים הקרובים ומכריע לפי רוב.
+        לחצו בכל מקום על הגרף כדי להציב פרי חדש (?) ולראות איך המחשב שואל את השכנים הקרובים ומחליט מהו!
       </p>
     </div>
   );

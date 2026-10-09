@@ -145,8 +145,8 @@ export default function Lab7_Perceptron({ curriculum }) {
         <TheoryView
           labData={labData}
           animations={[
-            { id: 'perceptron', label: 'נוירון בודד והפרדה לינארית', component: SvgPerceptronAnimation },
-            { id: 'logicGates', label: 'שערי AND/OR/XOR בחומרה', component: SvgLogicGatesAnimation }
+            { id: 'perceptron', label: 'איך נוירון מקבל החלטה', component: SvgPerceptronAnimation },
+            { id: 'logicGates', label: 'שערים לוגיים בחומרה', component: SvgLogicGatesAnimation }
           ]}
           onProceedToInteractive={() => handlePhaseChange('interactive')}
         />

@@ -33,7 +33,7 @@ export default function SvgBinaryAnimation() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Zap className="w-4 h-4 text-blue-400" />
-          <h3 className="text-xs font-semibold text-white">הדמיית מנגנון: מביטים אלקטרוניים לפיקסלים וערך בייט</h3>
+          <h3 className="text-xs font-semibold text-white">איך ביטים הופכים לפיקסלים ולמספרים</h3>
         </div>
         <div className="flex items-center gap-2">
           <button
@@ -41,7 +41,7 @@ export default function SvgBinaryAnimation() {
             onClick={handleInvertAll}
             className="px-2.5 py-1 rounded bg-slate-900 hover:bg-slate-800 text-[11px] font-medium text-slate-300 border border-slate-800 transition-colors"
           >
-            היפוך ביטים
+            היפוך כל המתגים
           </button>
           <button
             type="button"
@@ -77,9 +77,9 @@ export default function SvgBinaryAnimation() {
                   className="transition-colors duration-200"
                 />
 
-                {/* Bit weight label (2^n) */}
-                <text x={x + 25} y="32" textAnchor="middle" fill="#64748b" fontSize="12" fontFamily="monospace">
-                  2^{7 - idx} ({bitWeights[idx]})
+                {/* Bit weight label */}
+                <text x={x + 25} y="32" textAnchor="middle" fill="#94a3b8" fontSize="12" fontWeight="bold" fontFamily="monospace">
+                  {bitWeights[idx]}
                 </text>
 
                 {/* Electric Switch / Bit Register Box */}
@@ -98,7 +98,7 @@ export default function SvgBinaryAnimation() {
                 {/* Bit Value Text */}
                 <text
                   x={x + 25}
-                  y="122"
+                  y={122}
                   textAnchor="middle"
                   fill={isHigh ? '#ffffff' : '#64748b'}
                   fontSize="24"
@@ -139,6 +139,7 @@ export default function SvgBinaryAnimation() {
                   textAnchor="middle"
                   fill={isHigh ? '#38bdf8' : '#64748b'}
                   fontSize="11"
+                  fontWeight="medium"
                 >
                   {isHigh ? 'דולק' : 'כבוי'}
                 </text>
@@ -154,22 +155,22 @@ export default function SvgBinaryAnimation() {
       {/* Real-time Math Translation Bar */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
         <div className="p-3 bg-slate-900 rounded-lg border border-slate-800 text-center">
-          <div className="text-[10px] text-slate-400">מחרוזת בינארית (8-Bit):</div>
+          <div className="text-[10px] text-slate-400">קוד בינארי (8 ביטים):</div>
           <div className="font-mono text-sm font-bold text-blue-400 mt-0.5 tracking-widest">{bits.join('')}</div>
         </div>
 
         <div className="p-3 bg-slate-900 rounded-lg border border-slate-800 text-center">
-          <div className="text-[10px] text-slate-400">ערך דצימלי (בסיס 10):</div>
+          <div className="text-[10px] text-slate-400">המספר הרגיל שלנו:</div>
           <div className="font-mono text-sm font-bold text-white mt-0.5">{decimalValue} / 255</div>
         </div>
 
         <div className="p-3 bg-slate-900 rounded-lg border border-slate-800 text-center">
-          <div className="text-[10px] text-slate-400">קידוד בייט הקסדצימלי (Hex):</div>
+          <div className="text-[10px] text-slate-400">קוד מקוצר למחשב (Hex):</div>
           <div className="font-mono text-sm font-bold text-emerald-400 mt-0.5">0x{hexValue}</div>
         </div>
       </div>
       <p className="text-[11px] text-slate-400 text-center">
-        הקליקו על גבי המתגים בשרטוט להדלקה וכיבוי של ביטים ולצפייה בשינוי התוצאה בזיכרון המחשב.
+        לחצו על המתגים למעלה כדי להדליק או לכבות ביטים, וראו איך הפיקסל והמספר משתנים!
       </p>
     </div>
   );

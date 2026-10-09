@@ -144,7 +144,7 @@ export default function Lab1_BinaryPixels({ curriculum }) {
           labData={labData}
           animations={[
             { id: 'binary', label: 'ביטים ופיקסלים', component: SvgBinaryAnimation },
-            { id: 'gates', label: 'שערים לוגיים ומחבר בינארי', component: SvgLogicGatesAnimation }
+            { id: 'gates', label: 'שערים לוגיים וחיבור מספרים', component: SvgLogicGatesAnimation }
           ]}
           onProceedToInteractive={() => {
             setPhase('interactive');
