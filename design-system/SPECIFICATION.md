@@ -187,3 +187,55 @@ module.exports = {
 - [ ] Hebrew text wraps naturally without `truncate` or `line-clamp`.
 - [ ] Mobile view on 375px has zero horizontal overflow.
 - [ ] Inputs have `font-size: 16px` on mobile.
+
+---
+
+## 6. MCP Server Integration: Apple HIG Intelligence
+
+To give AI agents (Antigravity, Cursor, Claude Code) direct access to official Apple HIG guidelines and Liquid Glass specifications, link the included `mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "apple-hig": {
+      "command": "npx",
+      "args": ["-y", "apple-hig-mcp"]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest"]
+    }
+  }
+}
+```
+
+### Mandatory Agent MCP Workflow
+Before authoring any new component:
+1. `call_mcp_tool(ServerName: "apple-hig", ToolName: "get_component_spec", Arguments: { component: "Button" })`
+2. `call_mcp_tool(ServerName: "apple-hig", ToolName: "get_design_tokens", Arguments: { category: "radii" })`
+3. `call_mcp_tool(ServerName: "apple-hig", ToolName: "get_accessibility_requirements", Arguments: { component: "Button" })`
+
+---
+
+## 7. Automated Invariant Verification & Tactile Audio
+
+### Automated Playwright Audit (`verify-design.js`)
+Run the automated verification script to validate all 7 invariants headlessly before committing:
+```bash
+node design-system/scripts/verify-design.js http://localhost:5173
+```
+Verifies:
+- Default Light Mode baseline
+- 375px & 390px zero horizontal overflow
+- Input font size >= 16px on mobile
+- Zero `rounded-full` / 9999px pills on functional controls
+
+### Tactile Micro-Audio (`tactileAudio.js`)
+Zero-dependency Web Audio haptic click synthesis:
+```javascript
+import { tactileAudio } from './design-system/templates/tactileAudio.js';
+
+// Inside button or tab click:
+tactileAudio.playClick();
+```
+

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json.schemastore.org/mcp-config.json",
+  "mcpServers": {
+    "apple-hig": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "apple-hig-mcp"
+      ],
+      "description": "Apple Human Interface Guidelines (HIG) intelligence for component specs, design tokens, materials, and accessibility."
+    },
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp@latest"
+      ],
+      "description": "Browser automation for testing responsive viewports (375px/390px), horizontal overflow, contrast, and theme switching."
+    }
+  }
+}

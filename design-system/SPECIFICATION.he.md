@@ -100,3 +100,54 @@ design-system/
    presets: [require('./design-system/tailwind.preset.js')]
    ```
 4. **שימוש ברכיבים**: משתמשים ישירות ברכיבים מתוך `templates/` או בקלאסים הסטנדרטיים.
+
+---
+
+## 5. חיבור שרתי MCP: בינת Apple HIG ו-Playwright
+
+כדי להעניק לסוכני בינה מלאכותית (כגון Antigravity, Cursor, Claude Code) גישה ישירה להנחיות הרשמיות של Apple עבור Liquid Glass ורכיבי ממשק, מצורף קובץ ההגדרות `design-system/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "apple-hig": {
+      "command": "npx",
+      "args": ["-y", "apple-hig-mcp"]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest"]
+    }
+  }
+}
+```
+
+### תהליך עבודה מחייב לסוכן AI לפני יצירת רכיב חדש:
+1. תשאול מפרט הרכיב הרשמי: `apple-hig -> get_component_spec(component: "Button")`
+2. תשאול טוקנים ורדיוסי פינות: `apple-hig -> get_design_tokens(category: "radii")`
+3. אימות דרישות נגישות ושטחי מגע: `apple-hig -> get_accessibility_requirements(component: "Button")` (מינימום 44pt).
+
+---
+
+## 6. אימות אינווריאנטים אוטומטי וצלילי משוב טקטיליים
+
+### סקריפט אימות אוטומטי (`verify-design.js`)
+לפני כל קומיט או העלאה ל-Production, מריצים בדיקה אוטומטית שמוודאת עמידה בכל 7 חוקי הברזל:
+```bash
+node design-system/scripts/verify-design.js http://localhost:5173
+```
+הסקריפט בודק:
+- טעינה במצב בהיר כברירת מחדל
+- 0 גלישה אופקית ב-375px (iPhone SE) וב-390px
+- גודל גופן שדות קלט של 16px ומעלה במובייל (חסימת זום ספארי)
+- אפס קפסולות/בועות `rounded-full` על רכיבי UI פונקציונליים
+
+### משוב קולי טקטילי (`tactileAudio.js`)
+מנוע סינתוז קליק פיזי עדין בסגנון Apple ללא צורך בקובצי שמע חיצוניים (מבוסס Web Audio API טהור):
+```javascript
+import { tactileAudio } from './design-system/templates/tactileAudio.js';
+
+// בעת לחיצה על כפתור, מתג נושא או מעבר שלב:
+tactileAudio.playClick();
+```
+

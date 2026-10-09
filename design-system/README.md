@@ -25,16 +25,23 @@ design-system/
 ├── tokens.css             # Standalone CSS variables (Light :root + Dark html.dark, Champagne Gold)
 ├── components.css         # Utility classes (.card-tactile, .btn-hollow, .segmented-glass, etc.)
 ├── tailwind.preset.js     # Tailwind CSS configuration preset
+├── mcp.json               # Direct MCP server configuration (Apple HIG + Playwright)
 ├── demo.html              # Standalone interactive showcase (double-click to test anywhere!)
 ├── SPECIFICATION.md       # Complete architectural rulebook in English
 ├── SPECIFICATION.he.md    # Complete architectural rulebook in Hebrew
-└── templates/             # Drop-in React components
+├── scripts/
+│   └── verify-design.js   # Automated Playwright invariant auditor (Light mode, 375px, 16px inputs)
+├── skills/
+│   └── zen-design-system/
+│       └── SKILL.md       # Agent skill for Antigravity, Cursor, and Claude Code
+└── templates/             # Drop-in React components & utilities
     ├── Header.jsx         # Sticky optical liquid glass header with responsive nav
     ├── TactileCard.jsx    # 100% opaque tactile card (default, highlight, hero)
     ├── HollowButton.jsx   # Canonical hollow glass button (base & primary)
     ├── SegmentedControl.jsx # Apple-style specular segmented switch
     ├── Badge.jsx          # 4px rectangular badge with anti-pinch padding
-    └── ThemeToggle.jsx    # One-tap Sun/Moon theme switcher
+    ├── ThemeToggle.jsx    # One-tap Sun/Moon theme switcher
+    └── tactileAudio.js    # Zero-dependency Web Audio tactile click engine
 ```
 
 ---
