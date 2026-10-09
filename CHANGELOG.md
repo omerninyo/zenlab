@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.2] - 2026-10-09
+
+### Added
+- **Full Application-Wide "עיצוב זֶן 2.0" (Zen 2.0 / Dapim Liquid Glass & Hollow Restraint) Overhaul (`src/components/HomeDashboard.jsx`, `src/App.jsx`, `src/components/LabPhaseHeader.jsx`, `src/styles/design-tokens.css`, `src/index.css`)**:
+  - **Essence-Inspired Educational Adaptation**: Synthesized the core essence of the Dapim design system (Apple visionOS/macOS Liquid Glass, Radix Slate scale, Master Velvet Mist ambient lighting, and canonical hollow buttons) calibrated specifically for 5th-grade learners (ages 10–11).
+  - **Tactile Mission Command Hero (`src/components/HomeDashboard.jsx`)**: Converted the roadmap orientation section to a 100% opaque cinema slate command center (`.card-command-hero`, `#15161c`) with specular highlight, ambient radial mist, Radix Slate stat tiles (`var(--slate-3)`), Heebo typography, and golden star indicators.
+  - **Spotlight "התחנה הבאה שלך" Station**: Transformed the recommended next station into an active tactile card with accent rim illumination, hollow Lucide icon squircle, and primary hollow glass action button (`.btn-hollow-primary`) with high click affordance (`Play` icon, `ChevronLeft` arrow).
+  - **Tactile 2-Track Roadmap & 8 Lab Stations**: Re-architected all 8 laboratory stations into 100% opaque tactile cards (`.card-tactile`, `#15161c`) with subtle slate borders, star indicators (`★ ★ ★`), and hollow glass CTA buttons (`.btn-hollow` / `.btn-hollow-primary`), completely eliminating legacy solid blue/indigo blocks.
+  - **Apple Liquid Glass Segmented Controls (`src/styles/design-tokens.css`, `src/components/LabPhaseHeader.jsx`, `src/App.jsx`)**: Built `.segmented-glass-container` and `.segmented-glass-item-active` with optical blur, specular highlight, and glowing active pills for both the central lab stepper and the 2-phase lab switcher (`[ שלב 1: הבנה ומדיה | שלב 2: מעבדה מעשית ]`).
+  - **Direct Topbar & Mobile Drawer Zen 2.0 Toggle**: Added one-tap instant toggle in the top bar (desktop) and mobile drawer with live pulse status and Web Audio tactile click feedback, plus persistent URL auto-activation (`?design=zen2`).
+  - **iOS Mobile Safeguards & Zero Horizontal Scroll (`src/index.css`, `src/App.jsx`)**: Fixed mobile viewport constraints (`overflow-x: hidden`, compact top bar spacing), ensuring zero horizontal scroll and 44px minimum touch targets on iPhone.
+
 ## [0.7.1] - 2026-10-09
 
 ### Added

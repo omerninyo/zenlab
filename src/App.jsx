@@ -198,13 +198,21 @@ export default function App() {
               className="flex items-center gap-2 group text-right cursor-pointer"
               title="חזרה למפת המסע של ZenLab"
             >
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-xs group-hover:bg-blue-500 transition-colors">
+              <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center transition-all ${
+                isDapimActive
+                  ? 'bg-[var(--slate-3)] border border-[var(--slate-6)] text-[var(--accent-base)] shadow-xs group-hover:border-[var(--accent-rim)]'
+                  : 'bg-blue-600 text-white shadow-xs group-hover:bg-blue-500'
+              }`}>
                 <Cpu className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               <div>
                 <div className="flex items-center gap-1.5">
                   <span className="text-sm sm:text-base font-black tracking-tight text-slate-900 dark:text-white">ZenLab</span>
-                  <span className="text-[10px] sm:text-[11px] font-bold px-1.5 py-0.2 rounded-full bg-blue-100 dark:bg-slate-800 text-blue-800 dark:text-slate-300 border border-blue-200/60 dark:border-slate-700 hidden sm:inline">
+                  <span className={`text-[10px] sm:text-[11px] font-bold px-1.5 py-0.2 rounded-full hidden sm:inline ${
+                    isDapimActive
+                      ? 'badge-glass badge-glass-accent !text-[10px] !px-1.5 !py-0'
+                      : 'bg-blue-100 dark:bg-slate-800 text-blue-800 dark:text-slate-300 border border-blue-200/60 dark:border-slate-700'
+                  }`}>
                     כיתה ה׳
                   </span>
                 </div>
@@ -214,13 +222,17 @@ export default function App() {
               </div>
             </button>
 
-            {/* Dedicated Home / Roadmap Button */}
+            {/* Dedicated Home / Roadmap Button (Desktop/Tablet) */}
             <button
               type="button"
               onClick={handleGoHome}
-              className={`flex items-center gap-1.5 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+              className={`hidden sm:flex items-center gap-1.5 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
                 viewMode === 'home'
-                  ? 'bg-blue-600 text-white shadow-xs'
+                  ? isDapimActive
+                    ? 'btn-hollow-primary !h-8 !px-2.5 !text-xs'
+                    : 'bg-blue-600 text-white shadow-xs'
+                  : isDapimActive
+                  ? 'btn-hollow !h-8 !px-2.5 !text-xs'
                   : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700'
               }`}
               title="מפת מסלול הלמידה"
@@ -232,13 +244,21 @@ export default function App() {
 
           {/* Center: Kid-Friendly Apple Stepper & Lab Popover Drawer */}
           <div className="relative flex items-center justify-center">
-            <div className="flex items-center bg-slate-100 dark:bg-slate-800/80 p-0.5 sm:p-1 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 shadow-inner">
+            <div className={
+              isDapimActive
+                ? "segmented-glass-container"
+                : "flex items-center bg-slate-100 dark:bg-slate-800/80 p-0.5 sm:p-1 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 shadow-inner"
+            }>
               {/* Prev Button (In RTL, ChevronRight moves to previous index) */}
               <button
                 type="button"
                 onClick={handlePrevLab}
                 disabled={currentIdx === 0}
-                className="p-1 sm:p-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 disabled:opacity-30 disabled:pointer-events-none transition-colors"
+                className={`p-1 sm:p-1.5 rounded-xl disabled:opacity-30 disabled:pointer-events-none transition-colors ${
+                  isDapimActive 
+                    ? 'text-slate-400 hover:text-white' 
+                    : 'text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700'
+                }`}
                 title="מעבדה קודמת"
               >
                 <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -248,11 +268,17 @@ export default function App() {
               <button
                 type="button"
                 onClick={() => { setIsLabMenuOpen(!isLabMenuOpen); AudioEngine.playStep(); }}
-                className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1 rounded-xl hover:bg-white dark:hover:bg-slate-700 text-slate-900 dark:text-white transition-colors"
+                className={`flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1 rounded-xl transition-colors ${
+                  isDapimActive
+                    ? 'segmented-glass-item segmented-glass-item-active !px-2.5 !py-1'
+                    : 'hover:bg-white dark:hover:bg-slate-700 text-slate-900 dark:text-white'
+                }`}
                 title="לחצו לבחירת מעבדה מתוך 8"
               >
-                <div className={`w-5 h-5 rounded-lg flex items-center justify-center text-white shrink-0 shadow-xs ${
-                  currentLab.track === 'ai' ? 'bg-indigo-600' : 'bg-blue-600'
+                <div className={`w-5 h-5 rounded-lg flex items-center justify-center shrink-0 shadow-xs ${
+                  isDapimActive
+                    ? 'bg-[var(--slate-4)] text-[var(--accent-base)]'
+                    : currentLab.track === 'ai' ? 'bg-indigo-600 text-white' : 'bg-blue-600 text-white'
                 }`}>
                   <CurrentIcon className="w-3 h-3" />
                 </div>
@@ -268,7 +294,11 @@ export default function App() {
                 type="button"
                 onClick={handleNextLab}
                 disabled={currentIdx === navItems.length - 1}
-                className="p-1 sm:p-1.5 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 disabled:opacity-30 disabled:pointer-events-none transition-colors"
+                className={`p-1 sm:p-1.5 rounded-xl disabled:opacity-30 disabled:pointer-events-none transition-colors ${
+                  isDapimActive 
+                    ? 'text-slate-400 hover:text-white' 
+                    : 'text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700'
+                }`}
                 title="מעבדה הבאה"
               >
                 <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -282,12 +312,18 @@ export default function App() {
                   className="fixed inset-0 z-40 bg-slate-950/40 backdrop-blur-xs" 
                   onClick={() => setIsLabMenuOpen(false)} 
                 />
-                <div className="fixed inset-x-3 top-16 sm:absolute sm:top-full sm:inset-x-auto sm:mt-2 z-50 sm:w-[460px] max-h-[80vh] overflow-y-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3 sm:p-4 shadow-2xl animate-in fade-in zoom-in-95 duration-150">
+                <div className={
+                  isDapimActive
+                    ? "fixed inset-x-3 top-16 sm:absolute sm:top-full sm:inset-x-auto sm:mt-2 z-50 sm:w-[460px] max-h-[80vh] overflow-y-auto card-tactile !p-3 sm:!p-4 shadow-2xl animate-in fade-in zoom-in-95 duration-150"
+                    : "fixed inset-x-3 top-16 sm:absolute sm:top-full sm:inset-x-auto sm:mt-2 z-50 sm:w-[460px] max-h-[80vh] overflow-y-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3 sm:p-4 shadow-2xl animate-in fade-in zoom-in-95 duration-150"
+                }>
                   <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-slate-100 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 font-bold">
                     <button
                       type="button"
                       onClick={() => { handleGoHome(); setIsLabMenuOpen(false); }}
-                      className="flex items-center gap-1.5 text-blue-600 dark:text-blue-400 hover:underline cursor-pointer"
+                      className={`flex items-center gap-1.5 hover:underline cursor-pointer ${
+                        isDapimActive ? 'text-[var(--accent-base)]' : 'text-blue-600 dark:text-blue-400'
+                      }`}
                     >
                       <Home className="w-3.5 h-3.5" />
                       <span>חזרה למפת המסע</span>
@@ -300,7 +336,6 @@ export default function App() {
                       const Icon = item.icon;
                       const isActive = activeLabId === item.id;
                       const stars = labStars[item.id] || 0;
-                      const isAi = item.track === 'ai';
 
                       return (
                         <button
@@ -310,17 +345,21 @@ export default function App() {
                             handleLabSelect(item.id);
                             setIsLabMenuOpen(false);
                           }}
-                          className={`flex items-center justify-between p-2.5 rounded-xl border text-right transition-all ${
-                            isActive
-                              ? isAi
-                                ? 'bg-indigo-50 dark:bg-indigo-950/60 border-indigo-400 dark:border-indigo-600 ring-2 ring-indigo-400/20'
-                                : 'bg-blue-50 dark:bg-blue-950/60 border-blue-400 dark:border-blue-600 ring-2 ring-blue-400/20'
+                          className={`flex items-center justify-between p-2.5 rounded-xl border text-right transition-all cursor-pointer ${
+                            isDapimActive
+                              ? isActive
+                                ? 'bg-[var(--accent-wash)] border-[var(--accent-rim)] text-white shadow-sm'
+                                : 'bg-[var(--slate-3)] hover:bg-[var(--slate-4)] border-[var(--slate-6)] text-slate-200'
+                              : isActive
+                              ? 'bg-blue-50 dark:bg-blue-950/60 border-blue-400 dark:border-blue-600 ring-2 ring-blue-400/20'
                               : 'bg-white hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-800/80 border-slate-200 dark:border-slate-800'
                           }`}
                         >
                           <div className="flex items-center gap-2.5">
-                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-white shrink-0 shadow-xs ${
-                              isAi ? 'bg-indigo-600' : 'bg-blue-600'
+                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 shadow-xs ${
+                              isDapimActive
+                                ? 'bg-[var(--slate-4)] text-[var(--accent-base)]'
+                                : item.track === 'ai' ? 'bg-indigo-600 text-white' : 'bg-blue-600 text-white'
                             }`}>
                               <Icon className="w-4 h-4" />
                             </div>
@@ -372,19 +411,36 @@ export default function App() {
               <span>תעודה</span>
             </button>
 
-            {/* Design System Zen 2.0 Test Bench Trigger */}
+            {/* Direct Zen 2.0 Design Toggle Button */}
             <button
               type="button"
-              onClick={() => { setIsDesignTestOpen(true); AudioEngine.playStep(); }}
-              title="בדיקת עיצוב זֶן 2.0 - Liquid Glass & Hollow Restraint"
-              className={`hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+              onClick={() => {
+                StorageEngine.toggleDapimMode();
+                AudioEngine.playStep();
+              }}
+              title={isDapimActive ? 'מעבר למצב רגיל' : 'מעבר לעיצוב זֶן 2.0 (Apple Liquid Glass)'}
+              className={`hidden sm:flex items-center gap-1.5 px-2.5 py-1 sm:py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
                 isDapimActive
-                  ? 'btn-hollow-primary !h-8 !px-2.5 !text-xs'
+                  ? 'btn-hollow-primary !h-8 !px-2.5 !text-xs ring-1 ring-[var(--accent-rim)]'
                   : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700'
               }`}
             >
-              <Palette className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[var(--accent-base)]" />
-              <span className="hidden md:inline">עיצוב זֶן 2.0</span>
+              <span className={`w-2 h-2 rounded-full shrink-0 ${isDapimActive ? 'bg-[var(--accent-base)] animate-pulse' : 'bg-slate-400'}`} />
+              <span>עיצוב זֶן 2.0</span>
+            </button>
+
+            {/* Test Bench Modal Trigger (Palette) */}
+            <button
+              type="button"
+              onClick={() => { setIsDesignTestOpen(true); AudioEngine.playStep(); }}
+              title="מעבדת בדיקת פלטות ורכיבים של זֶן 2.0"
+              className={`hidden sm:flex items-center justify-center p-2 rounded-xl transition-all cursor-pointer ${
+                isDapimActive
+                  ? 'btn-hollow !h-8 !w-8 !p-0'
+                  : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700'
+              }`}
+            >
+              <Palette className="w-4 h-4 text-[var(--accent-base)]" />
             </button>
 
             {/* Audio Mute Switch (Desktop Only) */}
@@ -486,14 +542,33 @@ export default function App() {
                       <span>הגדרות כיתה</span>
                     </button>
 
+                    {/* Design System Zen 2.0 Toggle (Mobile/Drawer) */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        StorageEngine.toggleDapimMode();
+                        setIsMoreMenuOpen(false);
+                        AudioEngine.playStep();
+                      }}
+                      className="w-full flex items-center justify-between px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-xs sm:text-sm font-semibold transition-colors border-t border-slate-100 dark:border-slate-800/80 mt-1 pt-2 cursor-pointer"
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className={`w-2 h-2 rounded-full ${isDapimActive ? 'bg-[var(--accent-base)] animate-pulse' : 'bg-slate-400'}`} />
+                        <span className={isDapimActive ? 'text-[var(--accent-base)] font-bold' : 'text-slate-700 dark:text-slate-200'}>עיצוב זֶן 2.0</span>
+                      </div>
+                      <span className="text-[11px] font-mono text-slate-400">
+                        {isDapimActive ? 'פעיל' : 'כבוי'}
+                      </span>
+                    </button>
+
                     {/* Design System Zen 2.0 Test Bench (Mobile/Drawer) */}
                     <button
                       type="button"
                       onClick={() => { setIsDesignTestOpen(true); setIsMoreMenuOpen(false); AudioEngine.playStep(); }}
-                      className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-xs sm:text-sm font-semibold text-[var(--accent-base)] transition-colors border-t border-slate-100 dark:border-slate-800/80 mt-1 pt-2"
+                      className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 transition-colors cursor-pointer"
                     >
                       <Palette className="w-4 h-4 text-[var(--accent-base)]" />
-                      <span>עיצוב זֶן 2.0 (Liquid Glass)</span>
+                      <span>מעבדת בדיקות ופלטות</span>
                     </button>
                   </div>
                 </>
@@ -515,6 +590,7 @@ export default function App() {
             onSelectLab={handleLabSelect}
             onOpenCertificate={() => setIsCertificateOpen(true)}
             onOpenGlossary={() => setIsGlossaryOpen(true)}
+            isDapimActive={isDapimActive}
           />
         ) : (
           <div>
@@ -523,7 +599,11 @@ export default function App() {
               <button
                 type="button"
                 onClick={handleGoHome}
-                className="inline-flex items-center gap-1.5 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors cursor-pointer"
+                className={`inline-flex items-center gap-1.5 transition-colors cursor-pointer ${
+                  isDapimActive
+                    ? 'btn-hollow !h-8 !px-3 !text-xs font-bold'
+                    : 'text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300'
+                }`}
               >
                 <ChevronRight className="w-4 h-4" />
                 <span>חזרה למפת המסלול</span>
@@ -580,7 +660,11 @@ export default function App() {
       <ZenAiTutor currentLabId={viewMode === 'home' ? 'home' : activeLabId} />
 
       {/* Footer Notice with Zero-PII Hygiene */}
-      <footer className="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-6 text-xs text-slate-500 dark:text-slate-400">
+      <footer className={
+        isDapimActive
+          ? "bg-[var(--slate-2)] border-t border-[var(--slate-6)] py-6 text-xs text-slate-400"
+          : "bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-6 text-xs text-slate-500 dark:text-slate-400"
+      }>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <span className="font-bold text-slate-700 dark:text-slate-300">ZenLab &copy; 2026</span>

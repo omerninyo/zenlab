@@ -270,3 +270,91 @@ body.dapim-mode,
     padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
   }
 }
+
+/* 8. Apple Liquid Glass Segmented Controls */
+.segmented-glass-container {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 3px;
+  gap: 2px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.segmented-glass-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 9px;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--slate-11);
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.segmented-glass-item:hover {
+  color: #ffffff;
+}
+
+.segmented-glass-item-active {
+  color: #ffffff;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.06) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.20),
+    0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+/* 9. Minimalist Badges & Tactical Cards */
+.badge-glass {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  color: var(--slate-11);
+}
+
+.badge-glass-accent {
+  background: var(--accent-wash);
+  border-color: var(--accent-rim);
+  color: var(--accent-base);
+}
+
+.badge-glass-emerald {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.35);
+  color: #34d399;
+}
+
+.card-command-hero {
+  background: 
+    radial-gradient(ellipse 90% 70% at 50% -10%, var(--accent-wash) 0%, transparent 65%),
+    var(--slate-2);
+  border: 1px solid var(--slate-6);
+  border-radius: 20px;
+  box-shadow: 
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.10),
+    0 8px 32px -4px rgba(0, 0, 0, 0.55);
+}
+
+.card-tactile-highlight {
+  border-color: var(--accent-rim);
+  box-shadow: 
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.12),
+    0 0 24px -4px var(--accent-wash);
+}
+
