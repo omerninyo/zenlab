@@ -178,7 +178,7 @@ export default function HomeDashboard({
         </div>
       </section>
 
-      {/* 2. "התחנה הבאה שלך" / Quick Launch Recommended Station */}
+      {/* 2. "התחנה הבאה שלכם" / Quick Launch Recommended Station */}
       <section className={
         isDapimActive
           ? "card-tactile relative overflow-hidden p-4 sm:p-6 card-tactile-highlight"
@@ -203,7 +203,7 @@ export default function HomeDashboard({
                     ? "badge-glass text-[11px]"
                     : "text-[11px] font-bold px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300"
                 }>
-                  {isAllCompleted ? 'המסלול הושלם!' : 'התחנה המומלצת הבאה שלך'}
+                  {isAllCompleted ? 'המסלול הושלם!' : 'התחנה המומלצת הבאה שלכם'}
                 </span>
                 {!isAllCompleted && (
                   <span className="text-xs font-mono font-bold text-amber-500 flex items-center gap-1">

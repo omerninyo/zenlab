@@ -451,7 +451,7 @@ export default function App() {
             <button
               type="button"
               onClick={handleToggleMute}
-              title={isMuted ? 'הפעל צלילים' : 'השתק צלילים'}
+              title={isMuted ? 'הפעלת צלילים' : 'השתקת צלילים'}
               className="hidden sm:flex p-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700 transition-colors cursor-pointer"
             >
               {isMuted ? <VolumeX className="w-4 h-4 text-slate-400" /> : <Volume2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />}
@@ -519,7 +519,7 @@ export default function App() {
                       className="w-full sm:hidden flex items-center gap-2.5 px-3 py-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 transition-colors"
                     >
                       {isMuted ? <VolumeX className="w-4 h-4 text-slate-400" /> : <Volume2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />}
-                      <span>{isMuted ? 'הפעל צלילים' : 'השתק צלילים'}</span>
+                      <span>{isMuted ? 'הפעלת צלילים' : 'השתקת צלילים'}</span>
                     </button>
 
                     {/* Glossary */}
@@ -539,7 +539,7 @@ export default function App() {
                       className="w-full flex items-center gap-2.5 px-3 py-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 transition-colors"
                     >
                       <Headphones className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                      <span>{isNarrationEnabled ? 'השבת ליווי קולי' : 'הפעל ליווי קולי'}</span>
+                      <span>{isNarrationEnabled ? 'השבתת ליווי קולי' : 'הפעלת ליווי קולי'}</span>
                     </button>
 
                     {/* Theme Toggle */}

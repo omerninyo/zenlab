@@ -76,7 +76,7 @@ export default function SvgRobotAnimation() {
             className="flex items-center gap-1 px-2.5 py-1 rounded bg-blue-600 hover:bg-blue-500 text-white text-[11px] font-semibold transition-colors"
           >
             {isPlaying ? <Pause className="w-3 h-3 fill-white" /> : <Play className="w-3 h-3 fill-white" />}
-            <span>{isPlaying ? 'השהה' : 'הפעל'}</span>
+            <span>{isPlaying ? 'השהיה' : 'הפעלה'}</span>
           </button>
           <button
             type="button"

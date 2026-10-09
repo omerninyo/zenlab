@@ -7,9 +7,9 @@ const SAMPLE_PROGRAMS = [
     id: 'add',
     title: 'חיבור מספרים (Addition)',
     instructions: [
-      { addr: 0, opcode: 'LOAD', operand: 5, desc: 'טען את המספר 5 לאוגר הצובר (ACC)' },
-      { addr: 1, opcode: 'ADD', operand: 7, desc: 'הוסף 7 לערך שבצובר (5 + 7 = 12)' },
-      { addr: 2, opcode: 'STORE', operand: 12, desc: 'שמור את התוצאה 12 בתא זיכרון' },
+      { addr: 0, opcode: 'LOAD', operand: 5, desc: 'טעינת המספר 5 לאוגר הצובר (ACC)' },
+      { addr: 1, opcode: 'ADD', operand: 7, desc: 'חיבור 7 לערך שבצובר (5 + 7 = 12)' },
+      { addr: 2, opcode: 'STORE', operand: 12, desc: 'שמירת התוצאה 12 בתא זיכרון' },
       { addr: 3, opcode: 'HALT', operand: 0, desc: 'סיום ריצת התוכנית' }
     ]
   },
@@ -17,9 +17,9 @@ const SAMPLE_PROGRAMS = [
     id: 'mult',
     title: 'ספירה והכפלה (Multiply by 2)',
     instructions: [
-      { addr: 0, opcode: 'LOAD', operand: 4, desc: 'טען את הערך 4 לאוגר הצובר (ACC)' },
-      { addr: 1, opcode: 'ADD', operand: 4, desc: 'הוסף 4 שוב (כפל ב-2: 4 + 4 = 8)' },
-      { addr: 2, opcode: 'STORE', operand: 8, desc: 'שמור 8 בזיכרון הראשי' },
+      { addr: 0, opcode: 'LOAD', operand: 4, desc: 'טעינת הערך 4 לאוגר הצובר (ACC)' },
+      { addr: 1, opcode: 'ADD', operand: 4, desc: 'חיבור 4 שוב (כפל ב-2: 4 + 4 = 8)' },
+      { addr: 2, opcode: 'STORE', operand: 8, desc: 'שמירת 8 בזיכרון הראשי' },
       { addr: 3, opcode: 'HALT', operand: 0, desc: 'סיום ריצת התוכנית' }
     ]
   }
@@ -281,9 +281,9 @@ export default function SvgCpuPipelineAnimation() {
                     {inst.opcode} {inst.operand}
                   </text>
                   <text x="10" y="40" fill="#64748b" fontSize="9">
-                    {inst.opcode === 'LOAD' && 'טען ערך ללוח'}
-                    {inst.opcode === 'ADD' && `הוסף +${inst.operand}`}
-                    {inst.opcode === 'STORE' && 'שמור תוצאה בזיכרון'}
+                    {inst.opcode === 'LOAD' && 'טעינת ערך ללוח'}
+                    {inst.opcode === 'ADD' && `חיבור +${inst.operand}`}
+                    {inst.opcode === 'STORE' && 'שמירת תוצאה בזיכרון'}
                     {inst.opcode === 'HALT' && 'סיום התוכנית'}
                   </text>
 

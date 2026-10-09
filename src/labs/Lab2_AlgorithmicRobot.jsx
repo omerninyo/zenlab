@@ -428,7 +428,7 @@ export default function Lab2_AlgorithmicRobot({ curriculum }) {
                   className="flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-colors"
                 >
                   <CornerUpLeft className="w-3.5 h-3.5" />
-                  <span>פנה שמאלה</span>
+                  <span>פנייה שמאלה</span>
                 </button>
                 <button
                   type="button"
@@ -437,7 +437,7 @@ export default function Lab2_AlgorithmicRobot({ curriculum }) {
                   className="flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-colors"
                 >
                   <CornerUpRight className="w-3.5 h-3.5" />
-                  <span>פנה ימינה</span>
+                  <span>פנייה ימינה</span>
                 </button>
                 <button
                   type="button"
@@ -446,7 +446,7 @@ export default function Lab2_AlgorithmicRobot({ curriculum }) {
                   className="flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-colors"
                 >
                   <Key className="w-3.5 h-3.5 text-amber-400" />
-                  <span>אסוף מפתח</span>
+                  <span>איסוף מפתח</span>
                 </button>
                 <button
                   type="button"
@@ -455,7 +455,7 @@ export default function Lab2_AlgorithmicRobot({ curriculum }) {
                   className="col-span-2 flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-colors"
                 >
                   <Unlock className="w-3.5 h-3.5 text-emerald-400" />
-                  <span>פתח שער נעול</span>
+                  <span>פתיחת שער נעול</span>
                 </button>
               </div>
 
@@ -469,10 +469,10 @@ export default function Lab2_AlgorithmicRobot({ curriculum }) {
                   commands.map((cmd, i) => {
                     const isExecuting = executingIndex === i;
                     let label = 'צעד קדימה';
-                    if (cmd === 'TURN_LEFT') label = 'פנה שמאלה';
-                    if (cmd === 'TURN_RIGHT') label = 'פנה ימינה';
-                    if (cmd === 'PICK_KEY') label = 'אסוף מפתח';
-                    if (cmd === 'UNLOCK_GATE') label = 'פתח שער';
+                    if (cmd === 'TURN_LEFT') label = 'פנייה שמאלה';
+                    if (cmd === 'TURN_RIGHT') label = 'פנייה ימינה';
+                    if (cmd === 'PICK_KEY') label = 'איסוף מפתח';
+                    if (cmd === 'UNLOCK_GATE') label = 'פתיחת שער';
 
                     return (
                       <div

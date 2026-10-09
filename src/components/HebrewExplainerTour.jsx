@@ -192,12 +192,12 @@ export default function HebrewExplainerTour({ labData = {} }) {
             {isPlayingAuto ? (
               <>
                 <Pause className="w-4 h-4" />
-                <span>השהה סיור והקראה</span>
+                <span>השהיית סיור והקראה</span>
               </>
             ) : (
               <>
                 <Play className="w-4 h-4" />
-                <span>הפעל סיור עם קריינות קולית</span>
+                <span>הפעלת סיור עם קריינות קולית</span>
               </>
             )}
           </button>
@@ -206,7 +206,7 @@ export default function HebrewExplainerTour({ labData = {} }) {
             type="button"
             onClick={handleReset}
             className="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-slate-900 border border-slate-200 transition-colors"
-            title="התחל סיור מההתחלה"
+            title="התחלת הסיור מההתחלה"
           >
             <RotateCcw className="w-4 h-4" />
           </button>

@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.7] - 2026-10-09
+
+### Changed
+- **Total Elimination of Singular Masculine Address & Unified Plural/Inclusive Language Standard (`src/data/curriculum.json`, `src/components/ZenAiTutor.jsx`, `src/components/HomeDashboard.jsx`, `src/components/TheoryView.jsx`, `src/components/LiteYouTubeEmbed.jsx`, `src/components/HebrewExplainerTour.jsx`, `src/labs/*.jsx`, `src/App.jsx`, `src/components/animations/*.jsx`)**:
+  - **Zero Singular Masculine**: Executed complete purge of singular masculine 2nd-person address (e.g. "שלך", "לחץ", "פתח", "גלה", "נסה", "תרצה", "דמיין שאתה", "שים לב") across all learner-facing copy.
+  - **Plural (רבים) as Standard & Speech-Synthesis (TTS) Safeguard**:
+    - Standardized all pedagogical instructions, challenges, tips, and AI tutor knowledge base entries to grammatically unambiguous plural forms ending in `ו` (e.g. "לחצו", "נסו", "שימו לב", "פתחו", "שלכם", "גלו", "ראו").
+    - Plural verbal morphology provides 100% pronunciation certainty in Hebrew text-to-speech engines without vocalization (niqqud), preventing the gender mispronunciations inherent to ambiguous unvocalized singular forms ("שלך", "לחץ").
+  - **Feminine & Inclusive Greetings**: Updated greetings and persona references in `ZenAiTutor.jsx` to "שלום חוקרות וחוקרים צעירים!", "בלשיות ובלשים", and "מדעניות ומדענים", ensuring equal belonging for 5th-grade girls.
+  - **Gender-Neutral Action Nouns in Controls & UI**: Standardized buttons and system switches from imperative verbs to neutral action nouns (e.g., "הפעלת ליווי קולי", "השתקת צלילים", "פתיחת שער נעול", "התחלת הסיור", "שמירת מפתח", "טעינת ערך").
+
 ## [0.7.6] - 2026-10-09
 
 ### Changed

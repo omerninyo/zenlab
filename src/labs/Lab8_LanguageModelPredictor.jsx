@@ -208,7 +208,7 @@ export default function Lab8_LanguageModelPredictor({ curriculum }) {
                 className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white transition-colors shadow-sm"
               >
                 <Sparkles className="w-4 h-4" />
-                <span>גלה את המילה הבאה</span>
+                <span>גלו את המילה הבאה</span>
               </button>
             </div>
 

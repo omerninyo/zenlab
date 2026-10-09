@@ -361,7 +361,7 @@ export default function DesignSystemTestModal({ isOpen, onClose }) {
                             ? 'bg-white text-slate-900 shadow-xs' 
                             : 'bg-white/5 text-slate-500 hover:bg-white/10'
                         }`}
-                        title="לחץ להדלקה/כיבוי"
+                        title="לחצו להדלקה/כיבוי"
                       >
                         {val}
                       </button>
@@ -725,14 +725,14 @@ export default function DesignSystemTestModal({ isOpen, onClose }) {
               onClick={handleToggleGlobalDapim}
               className="btn-hollow text-xs"
             >
-              {isDapimGlobal ? 'כבה מצב גלובלי' : 'הפעל מצב גלובלי'}
+              {isDapimGlobal ? 'כיבוי מצב גלובלי' : 'הפעלת מצב גלובלי'}
             </button>
             <button
               type="button"
               onClick={onClose}
               className="btn-hollow-primary text-xs"
             >
-              <span>סגור והמשך בחקר</span>
+              <span>סגירה והמשך בחקר</span>
             </button>
           </div>
         </footer>

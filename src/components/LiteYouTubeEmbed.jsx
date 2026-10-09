@@ -87,7 +87,7 @@ export default function LiteYouTubeEmbed({ videoId, title, channel, duration, lo
 
           {/* Bottom Security / Privacy Notice */}
           <div className="flex items-center justify-between text-[10px] text-slate-500 z-10 border-t border-slate-800/60 pt-2">
-            <span>לחץ לצפייה בסרטון המדעי המוטמע</span>
+            <span>לחצו לצפייה בסרטון המדעי המוטמע</span>
             <span className="font-mono text-slate-600">Sandboxed YouTube</span>
           </div>
         </div>
