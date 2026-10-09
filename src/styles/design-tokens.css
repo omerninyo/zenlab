@@ -1,10 +1,105 @@
 /* ==========================================================================
    ZEN 2.0 LIQUID GLASS & HOLLOW RESTRICTIVE DESIGN SYSTEM
-   Standardized specification from docs/design.md
+   Standardized specification with Dual Light Mode (Default) & Dark Mode
    ========================================================================== */
 
+/* ==========================================================================
+   1. LIGHT MODE (DEFAULT CLASSROOM REGISTER)
+   ========================================================================== */
 :root {
-  /* 1. Monochromatic Radix Slate Scale */
+  /* Monochromatic Radix Slate Scale (Light Mode) */
+  --slate-1: #f8fafc;
+  --slate-2: #ffffff;
+  --slate-3: #f1f5f9;
+  --slate-4: #e2e8f0;
+  --slate-5: #cbd5e1;
+  --slate-6: #e2e8f0;
+  --slate-7: #cbd5e1;
+  --slate-11: #475569;
+  --slate-12: #0f172a;
+
+  /* Default Active Accent Palette: Matte Amber (Light Mode) */
+  --theme-name: "Dapim Matte Amber";
+  --accent-base: #c26928;
+  --accent-hover: #b45309;
+  --accent-rim: rgba(194, 105, 40, 0.38);
+  --accent-wash: rgba(194, 105, 40, 0.12);
+  --focus-ring: 0 0 0 2px rgba(194, 105, 40, 0.35);
+
+  /* Velvet Ambient Lighting Formula (Light Mode - Crisp Alabaster/Warmth) */
+  --content-bg: #f8fafc;
+  --content-bg-gradient: 
+    radial-gradient(ellipse 95% 65% at 50% -8%, rgba(194, 105, 40, 0.08) 0%, rgba(194, 105, 40, 0.015) 45%, transparent 75%),
+    linear-gradient(180deg, #f8fafc 0%, #f1f5f9 40%, #e2e8f0 100%);
+
+  /* Optical Liquid Glass Material (Light Mode) */
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-blur: blur(28px) saturate(180%);
+  --glass-border: 1px solid rgba(0, 0, 0, 0.08);
+  --glass-specular-top: inset 0 1px 0 0 rgba(255, 255, 255, 0.95);
+  --glass-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.03);
+
+  /* Typography */
+  --font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Heebo", "Assistant", sans-serif;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+}
+
+/* Light Mode Palettes */
+[data-theme="nordic-ice"] {
+  --theme-name: "Nordic Ice";
+  --accent-base: #0284c7;
+  --accent-hover: #0369a1;
+  --accent-rim: rgba(2, 132, 199, 0.35);
+  --accent-wash: rgba(2, 132, 199, 0.10);
+  --focus-ring: 0 0 0 2px rgba(2, 132, 199, 0.35);
+  --content-bg-gradient: 
+    radial-gradient(ellipse 95% 65% at 50% -8%, rgba(2, 132, 199, 0.08) 0%, rgba(2, 132, 199, 0.015) 45%, transparent 75%),
+    linear-gradient(180deg, #f8fafc 0%, #f1f5f9 40%, #e2e8f0 100%);
+}
+
+[data-theme="emerald-sanctuary"] {
+  --theme-name: "Emerald Sanctuary";
+  --accent-base: #059669;
+  --accent-hover: #047857;
+  --accent-rim: rgba(5, 150, 105, 0.35);
+  --accent-wash: rgba(5, 150, 105, 0.10);
+  --focus-ring: 0 0 0 2px rgba(5, 150, 105, 0.35);
+  --content-bg-gradient: 
+    radial-gradient(ellipse 95% 65% at 50% -8%, rgba(5, 150, 105, 0.08) 0%, rgba(5, 150, 105, 0.015) 45%, transparent 75%),
+    linear-gradient(180deg, #f8fafc 0%, #f1f5f9 40%, #e2e8f0 100%);
+}
+
+[data-theme="champagne-gold"] {
+  --theme-name: "Champagne Gold";
+  --accent-base: #ca8a04;
+  --accent-hover: #a16207;
+  --accent-rim: rgba(202, 138, 4, 0.35);
+  --accent-wash: rgba(202, 138, 4, 0.10);
+  --focus-ring: 0 0 0 2px rgba(202, 138, 4, 0.35);
+  --content-bg-gradient: 
+    radial-gradient(ellipse 95% 65% at 50% -8%, rgba(202, 138, 4, 0.08) 0%, rgba(202, 138, 4, 0.015) 45%, transparent 75%),
+    linear-gradient(180deg, #f8fafc 0%, #f1f5f9 40%, #e2e8f0 100%);
+}
+
+[data-theme="matte-amber"] {
+  --theme-name: "Dapim Matte Amber";
+  --accent-base: #c26928;
+  --accent-hover: #b45309;
+  --accent-rim: rgba(194, 105, 40, 0.38);
+  --accent-wash: rgba(194, 105, 40, 0.12);
+  --focus-ring: 0 0 0 2px rgba(194, 105, 40, 0.35);
+  --content-bg-gradient: 
+    radial-gradient(ellipse 95% 65% at 50% -8%, rgba(194, 105, 40, 0.08) 0%, rgba(194, 105, 40, 0.015) 45%, transparent 75%),
+    linear-gradient(180deg, #f8fafc 0%, #f1f5f9 40%, #e2e8f0 100%);
+}
+
+/* ==========================================================================
+   2. DARK MODE OVERRIDES (Applied when html.dark is active)
+   ========================================================================== */
+html.dark {
+  /* Monochromatic Radix Slate Scale (Dark Mode) */
   --slate-1: #0c0d10;
   --slate-2: #15161c;
   --slate-3: #1c1e27;
@@ -15,7 +110,7 @@
   --slate-11: #9ca3af;
   --slate-12: #ffffff;
 
-  /* 2. Default Active Accent Palette: Kavita Matte Amber */
+  /* Default Active Accent Palette: Kavita Matte Amber (Dark) */
   --theme-name: "Dapim Matte Amber";
   --accent-base: #d48344;
   --accent-hover: #e09559;
@@ -23,83 +118,77 @@
   --accent-wash: rgba(212, 131, 68, 0.18);
   --focus-ring: 0 0 0 2px rgba(212, 131, 68, 0.45);
 
-  /* 3. Velvet Ambient Lighting Formula */
+  /* Velvet Ambient Lighting Formula (Dark Mode) */
   --content-bg: #0c0d10;
   --content-bg-gradient: 
     radial-gradient(ellipse 95% 65% at 50% -8%, rgba(212, 131, 68, 0.12) 0%, rgba(212, 131, 68, 0.035) 45%, transparent 75%),
     linear-gradient(180deg, #151720 0%, #0d0e12 40%, #07080a 100%);
 
-  /* 4. Optical Liquid Glass Material */
+  /* Optical Liquid Glass Material (Dark Mode) */
   --glass-bg: rgba(16, 18, 24, 0.84);
   --glass-blur: blur(32px) saturate(190%);
   --glass-border: 1px solid rgba(255, 255, 255, 0.09);
   --glass-specular-top: inset 0 1px 0 0 rgba(255, 255, 255, 0.16);
   --glass-shadow: 0 16px 40px -4px rgba(0, 0, 0, 0.65), 0 4px 12px rgba(0, 0, 0, 0.45);
 
-  /* 5. Typography */
-  --font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Heebo", "Assistant", sans-serif;
+  /* Typography */
   --text-primary: #ffffff;
   --text-secondary: #9ca3af;
   --text-muted: #6b7280;
 }
 
-/* Palette B: Nordic Ice & Midnight */
-[data-theme="nordic-ice"] {
+/* Dark Mode Palettes */
+html.dark [data-theme="nordic-ice"] {
   --theme-name: "Nordic Ice";
   --accent-base: #38bdf8;
   --accent-hover: #7dd3fc;
   --accent-rim: rgba(56, 189, 248, 0.40);
   --accent-wash: rgba(56, 189, 248, 0.15);
   --focus-ring: 0 0 0 2px rgba(56, 189, 248, 0.40);
-  
   --content-bg-gradient: 
     radial-gradient(ellipse 95% 65% at 50% -8%, rgba(56, 189, 248, 0.09) 0%, rgba(56, 189, 248, 0.02) 45%, transparent 75%),
     linear-gradient(180deg, #101520 0%, #0a0d14 40%, #05070a 100%);
 }
 
-/* Palette C: Emerald Sanctuary */
-[data-theme="emerald-sanctuary"] {
+html.dark [data-theme="emerald-sanctuary"] {
   --theme-name: "Emerald Sanctuary";
   --accent-base: #10b981;
   --accent-hover: #34d399;
   --accent-rim: rgba(16, 185, 129, 0.40);
   --accent-wash: rgba(16, 185, 129, 0.16);
   --focus-ring: 0 0 0 2px rgba(16, 185, 129, 0.40);
-  
   --content-bg-gradient: 
     radial-gradient(ellipse 95% 65% at 50% -8%, rgba(16, 185, 129, 0.10) 0%, rgba(16, 185, 129, 0.025) 45%, transparent 75%),
     linear-gradient(180deg, #101c18 0%, #0a110e 40%, #050807 100%);
 }
 
-/* Palette D: Champagne Gold */
-[data-theme="champagne-gold"] {
+html.dark [data-theme="champagne-gold"] {
   --theme-name: "Champagne Gold";
   --accent-base: #eab308;
   --accent-hover: #facc15;
   --accent-rim: rgba(234, 179, 8, 0.42);
   --accent-wash: rgba(234, 179, 8, 0.15);
   --focus-ring: 0 0 0 2px rgba(234, 179, 8, 0.42);
-  
   --content-bg-gradient: 
     radial-gradient(ellipse 95% 65% at 50% -8%, rgba(234, 179, 8, 0.11) 0%, rgba(234, 179, 8, 0.03) 45%, transparent 75%),
     linear-gradient(180deg, #181610 0%, #0e0d0a 40%, #070605 100%);
 }
 
-/* Palette A: Explicit Matte Amber Attribute */
-[data-theme="matte-amber"] {
+html.dark [data-theme="matte-amber"] {
   --theme-name: "Dapim Matte Amber";
   --accent-base: #d48344;
   --accent-hover: #e09559;
   --accent-rim: rgba(212, 131, 68, 0.45);
   --accent-wash: rgba(212, 131, 68, 0.18);
   --focus-ring: 0 0 0 2px rgba(212, 131, 68, 0.45);
-  
   --content-bg-gradient: 
     radial-gradient(ellipse 95% 65% at 50% -8%, rgba(212, 131, 68, 0.12) 0%, rgba(212, 131, 68, 0.035) 45%, transparent 75%),
     linear-gradient(180deg, #151720 0%, #0d0e12 40%, #07080a 100%);
 }
 
-/* Global Velvet Ambient Canvas (Applied when .dapim-mode is active) */
+/* ==========================================================================
+   3. GLOBAL VELVET AMBIENT CANVAS
+   ========================================================================== */
 body.dapim-mode,
 .dapim-preview-container {
   background-color: var(--content-bg) !important;
@@ -107,6 +196,10 @@ body.dapim-mode,
   background-attachment: fixed !important;
   color: var(--text-primary) !important;
 }
+
+/* ==========================================================================
+   4. MATERIAL & SURFACE DEFINITIONS
+   ========================================================================== */
 
 /* 1. Functional Liquid Glass Surface */
 .liquid-glass-surface {
@@ -116,8 +209,7 @@ body.dapim-mode,
   border: var(--glass-border);
   box-shadow: 
     var(--glass-specular-top),
-    0 16px 40px -4px rgba(0, 0, 0, 0.65),
-    0 4px 12px rgba(0, 0, 0, 0.45);
+    var(--glass-shadow);
 }
 
 /* 2. Header Optical Glass */
@@ -129,7 +221,7 @@ body.dapim-mode,
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   border-bottom: var(--glass-border);
-  box-shadow: var(--glass-specular-top), 0 8px 24px -4px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--glass-specular-top), var(--glass-shadow);
   padding-top: max(0.25rem, env(safe-area-inset-top));
   padding-bottom: 0.25rem;
   padding-left: env(safe-area-inset-left);
@@ -141,9 +233,14 @@ body.dapim-mode,
   background: var(--slate-2);
   border: 1px solid var(--slate-6);
   border-radius: 8px;
-  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08), 0 6px 20px -2px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
   padding: 1.25rem;
   transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  color: var(--text-primary);
+}
+
+html.dark .card-tactile {
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08), 0 6px 20px -2px rgba(0, 0, 0, 0.4);
 }
 
 .card-tactile:hover {
@@ -163,33 +260,45 @@ body.dapim-mode,
   border-radius: 6px;
   font-family: inherit;
   font-size: 0.86rem;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.04);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--slate-6);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
   cursor: pointer;
   text-decoration: none;
   white-space: nowrap;
   transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+html.dark .btn-glass,
+html.dark .btn-hollow {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+}
+
 .btn-glass:hover,
 .btn-hollow:hover {
+  background: rgba(0, 0, 0, 0.08);
+  border-color: var(--slate-7);
+  transform: translateY(-1px);
+}
+
+html.dark .btn-glass:hover,
+html.dark .btn-hollow:hover {
   background: rgba(255, 255, 255, 0.09);
   border-color: rgba(255, 255, 255, 0.22);
-  transform: translateY(-1px);
 }
 
 .btn-glass:active,
 .btn-hollow:active {
   transform: translateY(0);
-  background: rgba(255, 255, 255, 0.04);
 }
 
-/* 5. Primary Action Hollow Glass Button */
+/* 5. Primary Action Button */
 .btn-glass-primary,
 .btn-hollow-primary {
   display: inline-flex;
@@ -203,13 +312,11 @@ body.dapim-mode,
   font-size: 0.86rem;
   font-weight: 600;
   color: #ffffff;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.05) 100%);
+  background: #0f172a;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--accent-rim);
-  box-shadow: 
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.22),
-    0 2px 8px rgba(0, 0, 0, 0.35);
+  border: 1px solid #0f172a;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.18);
   cursor: pointer;
   text-decoration: none;
   white-space: nowrap;
@@ -218,17 +325,29 @@ body.dapim-mode,
 
 .btn-glass-primary:hover,
 .btn-hollow-primary:hover {
+  background: #1e293b;
+  border-color: #1e293b;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.24);
+  transform: translateY(-1px);
+}
+
+html.dark .btn-glass-primary,
+html.dark .btn-hollow-primary {
+  color: #ffffff;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.05) 100%);
+  border: 1px solid var(--accent-rim);
+  box-shadow: 
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.22),
+    0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+html.dark .btn-glass-primary:hover,
+html.dark .btn-hollow-primary:hover {
   background: var(--accent-wash);
   border-color: var(--accent-hover);
   box-shadow: 
     inset 0 1px 0 0 rgba(255, 255, 255, 0.30),
     0 4px 14px rgba(0, 0, 0, 0.45);
-  transform: translateY(-1px);
-}
-
-.btn-glass-primary:active,
-.btn-hollow-primary:active {
-  transform: translateY(0);
 }
 
 /* 6. Form Inputs & Controls */
@@ -236,13 +355,17 @@ body.dapim-mode,
   height: 40px;
   border-radius: 8px;
   border: 1px solid var(--slate-6);
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--slate-2);
   color: var(--text-primary);
   padding: 0 12px;
   font-family: inherit;
   font-size: 0.88rem;
   outline: none;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+html.dark .input-glass {
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .input-glass:focus {
@@ -252,7 +375,7 @@ body.dapim-mode,
 
 @media (max-width: 768px) {
   .input-glass {
-    font-size: 16px !important; /* Critical: Stops iOS Safari auto-zoom */
+    font-size: 16px !important;
   }
 }
 
@@ -260,6 +383,8 @@ body.dapim-mode,
 .apple-modal-dialog {
   width: min(640px, 92vw);
   border-radius: 18px;
+  background: var(--slate-2);
+  color: var(--text-primary);
 }
 
 @media (max-width: 768px) {
@@ -278,11 +403,17 @@ body.dapim-mode,
 .segmented-glass-container {
   display: inline-flex;
   align-items: center;
-  background: rgba(0, 0, 0, 0.28);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
   border-radius: 6px;
   padding: 2.5px;
   gap: 2px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+html.dark .segmented-glass-container {
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
 }
 
@@ -296,7 +427,7 @@ body.dapim-mode,
   font-family: inherit;
   font-size: 0.82rem;
   font-weight: 600;
-  color: var(--slate-11);
+  color: #64748b;
   background: transparent;
   border: 1px solid transparent;
   cursor: pointer;
@@ -305,10 +436,25 @@ body.dapim-mode,
 }
 
 .segmented-glass-item:hover {
+  color: #0f172a;
+}
+
+html.dark .segmented-glass-item {
+  color: var(--slate-11);
+}
+
+html.dark .segmented-glass-item:hover {
   color: #ffffff;
 }
 
 .segmented-glass-item-active {
+  color: #0f172a;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+html.dark .segmented-glass-item-active {
   color: #ffffff;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.06) 100%);
   border: 1px solid rgba(255, 255, 255, 0.16);
@@ -326,6 +472,12 @@ body.dapim-mode,
   border-radius: 4px;
   font-size: 0.72rem;
   font-weight: 700;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  color: #475569;
+}
+
+html.dark .badge-glass {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.10);
   color: var(--slate-11);
@@ -338,6 +490,12 @@ body.dapim-mode,
 }
 
 .badge-glass-emerald {
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.30);
+  color: #047857;
+}
+
+html.dark .badge-glass-emerald {
   background: rgba(16, 185, 129, 0.15);
   border-color: rgba(16, 185, 129, 0.35);
   color: #34d399;
@@ -349,6 +507,11 @@ body.dapim-mode,
     var(--slate-2);
   border: 1px solid var(--slate-6);
   border-radius: 10px;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.06);
+  color: var(--text-primary);
+}
+
+html.dark .card-command-hero {
   box-shadow: 
     inset 0 1px 0 0 rgba(255, 255, 255, 0.10),
     0 8px 32px -4px rgba(0, 0, 0, 0.55);
@@ -356,8 +519,11 @@ body.dapim-mode,
 
 .card-tactile-highlight {
   border-color: var(--accent-rim);
+  box-shadow: 0 0 20px -2px var(--accent-wash);
+}
+
+html.dark .card-tactile-highlight {
   box-shadow: 
     inset 0 1px 0 0 rgba(255, 255, 255, 0.12),
     0 0 24px -4px var(--accent-wash);
 }
-

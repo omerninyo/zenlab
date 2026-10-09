@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.4] - 2026-10-09
+
+### Added
+- **Default Light Mode with Seamless Dark Mode Toggle (`src/styles/design-tokens.css`, `src/core/storage.js`, `src/App.jsx`, `src/components/LabPhaseHeader.jsx`, `src/components/HomeDashboard.jsx`)**:
+  - Set crisp, high-contrast **Light Mode** as the default baseline theme across the entire application and design system (including "עיצוב זֶן 2.0" / Dapim Liquid Glass).
+  - Cleanly decoupled theme selection from Zen 2.0 mode in `StorageEngine`: activating `dapimMode` no longer forces `html.dark`.
+  - Added dual CSS token architecture in `src/styles/design-tokens.css`:
+    - `:root` default Light Mode tokens: `--content-bg: #f8fafc`, crisp tactile cards (`#ffffff`), high-contrast primary typography (`#0f172a`), light liquid glass header, light segmented controls with elevated active pill, and calibrated light palettes (`matte-amber`, `nordic-ice`, `emerald-sanctuary`, `champagne-gold`).
+    - `html.dark` tokens: Deep cinema slate `--content-bg: #0c0d10`, tactile card `#15161c`, white typography, dark liquid glass header, and glowing specular highlights.
+  - Added a dedicated, one-tap Theme Toggle button (`Sun`/`Moon` Lucide icon) directly in the top navigation bar (desktop and mobile) right alongside the More tools menu.
+  - Added URL query parameter support: `?theme=dark` or `?theme=light` for immediate remote and device-specific testing.
+  - Fixed tactile card text colors in `LabPhaseHeader` (`text-slate-900 dark:text-white`) and unearned star colors in `HomeDashboard` (`text-slate-300 dark:text-slate-700`) for balanced contrast in both Light and Dark modes.
+
 ## [0.7.3] - 2026-10-09
 
 ### Changed

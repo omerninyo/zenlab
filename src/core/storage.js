@@ -60,7 +60,6 @@ class StorageEngineClass {
 
       if (this.state.dapimMode) {
         document.body.classList.add('dapim-mode');
-        document.documentElement.classList.add('dark');
       }
       if (this.state.dapimPalette) {
         document.documentElement.setAttribute('data-theme', this.state.dapimPalette);
@@ -209,13 +208,16 @@ class StorageEngineClass {
     if (typeof document !== 'undefined') {
       if (this.state.dapimMode) {
         document.body.classList.add('dapim-mode');
-        document.documentElement.classList.add('dark');
       } else {
         document.body.classList.remove('dapim-mode');
-        if (this.state.theme === 'light') {
-          document.documentElement.classList.remove('dark');
-          document.documentElement.classList.add('light');
-        }
+      }
+      const activeTheme = this.state.theme || 'light';
+      if (activeTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+      } else {
+        document.documentElement.classList.add('light');
+        document.documentElement.classList.remove('dark');
       }
     }
     this.saveState();

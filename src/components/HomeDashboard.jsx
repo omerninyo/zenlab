@@ -404,7 +404,7 @@ export default function HomeDashboard({
                                   starIdx <= stars
                                     ? 'fill-amber-400 text-amber-500'
                                     : isDapimActive
-                                    ? 'text-slate-700'
+                                    ? 'text-slate-300 dark:text-slate-700'
                                     : 'text-slate-300 dark:text-slate-600'
                                 }`}
                               />

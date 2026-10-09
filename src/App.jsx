@@ -71,7 +71,7 @@ export default function App() {
   const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
 
   useEffect(() => {
-    // Check URL parameters for instant testing on mobile/remote (?design=zen2, ?zen2=true)
+    // Check URL parameters for instant testing on mobile/remote (?design=zen2, ?zen2=true, ?theme=dark|light)
     if (typeof window !== 'undefined') {
       try {
         const params = new URLSearchParams(window.location.search);
@@ -82,6 +82,10 @@ export default function App() {
         const paletteParam = params.get('palette');
         if (paletteParam) {
           StorageEngine.setDapimPalette(paletteParam);
+        }
+        const themeParam = params.get('theme');
+        if (themeParam === 'dark' || themeParam === 'light') {
+          StorageEngine.setTheme(themeParam);
         }
       } catch {}
     }
@@ -451,6 +455,22 @@ export default function App() {
               className="hidden sm:flex p-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700 transition-colors cursor-pointer"
             >
               {isMuted ? <VolumeX className="w-4 h-4 text-slate-400" /> : <Volume2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />}
+            </button>
+
+            {/* Direct Theme Switcher (Desktop & Mobile) */}
+            <button
+              type="button"
+              onClick={handleToggleTheme}
+              title={isDark ? 'מעבר למצב מואר (Light Mode)' : 'מעבר למצב כהה (Dark Mode)'}
+              className={`p-1.5 sm:p-2 rounded-lg border transition-colors cursor-pointer ${
+                isDapimActive
+                  ? isDark
+                    ? 'bg-[var(--slate-3)] hover:bg-[var(--slate-4)] border-[var(--slate-6)] text-amber-400'
+                    : 'bg-white hover:bg-slate-100 border-slate-200 text-slate-700 shadow-xs'
+                  : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700'
+              }`}
+            >
+              {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-700 dark:text-slate-300" />}
             </button>
 
             {/* More Tools Dropdown Menu */}

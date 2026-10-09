@@ -71,7 +71,7 @@ export default function LabPhaseHeader({
   return (
     <div className={
       isDapimActive
-        ? "card-tactile !p-3 sm:!p-5 space-y-3 sm:space-y-4 text-white"
+        ? "card-tactile !p-3 sm:!p-5 space-y-3 sm:space-y-4 text-slate-900 dark:text-white"
         : "bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-xl p-3 sm:p-6 space-y-3 sm:space-y-4 shadow-xs text-slate-900 dark:text-white"
     } dir="rtl">
       
