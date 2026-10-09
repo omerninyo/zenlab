@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.10] - 2026-10-09
+
+### Added
+- **Intelligent Hybrid AI Tutor Engine & Semantic Matcher (`src/core/tutorEngine.js`, `src/components/ZenAiTutor.jsx`)**:
+  - **Option A - Guided Intent Categories**: Replaced empty conversational state with 4 structured, interactive category drawers: Challenge Hints (💡 רמזים מעשיים לאתגרים), FAQs (❓ שאלות נפוצות), Glossary (📖 מילון מושגים מהיר), and Real-world Analogies (🔍 איך זה עובד בעולם האמיתי).
+  - **Option B - Zero-Latency Local Semantic Matcher**: Implemented client-side Hebrew tokenization, vocabulary-aware prefix stripping (`ב/ל/כ/ש/ה/ו`), and multi-source scoring indexing all 8 labs, challenges, glossary definitions, and core principles.
+  - **Zero-Evasion Transparency**: Out-of-domain queries receive an honest, encouraging response explaining Zen's lab specialization, accompanied by 3 contextual suggested prompt buttons to resume purposeful learning.
+  - **Contextual Continuation Chips**: Every tutor response includes 2-3 interactive follow-up chips (`suggestedNext`) enabling continuous discovery without typing friction.
+  - **Mobile Touch Ergonomics**: Verified 100% zero horizontal overflow and responsive drawer layout on 390px mobile viewports.
+
 ## [0.7.9] - 2026-10-09
 
 ### Added
