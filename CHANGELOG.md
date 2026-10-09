@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.14] - 2026-10-09
+
+### Fixed & Enhanced
+- **Decision Tree Lab Architectural & Pedagogical Overhaul (`src/labs/Lab3_DecisionTree.jsx`, `src/services/ai.js`, `src/data/curriculum.json`, `src/core/tutorEngine.js`)**:
+  - **Authentic Cultural Adaptation**: Replaced the unnatural literal translation "20 שאלות" / "20 מי יודע" across the entire platform and curriculum with the authentic Israeli youth game **"מי אני? (משחק 21 שאלות)"**.
+  - **Resolved 100% Accuracy Discrepancy (Dual-Mode Architecture)**:
+    - *Mode A: "מי אני?" (4 Core Animals - 1:1 Exact Identification)*: Calibrated the primary dataset with 4 distinct animals (`חתול`, `עטלף`, `נשר`, `צב`). With a 2-level binary tree ($2^2 = 4$ leaves), every single animal lands in its own exclusive leaf, delivering true 100% accuracy in guessing the specific animal with zero confusion.
+    - *Mode B: AI Biological Classifier (8 Animals - Class Purity)*: Provided an interactive dataset toggle allowing students to test on 8 animals (`יונקים`, `עופות`, `זוחלים`), explicitly displaying the predicted biological class and class purity percentage on each leaf node.
+  - **Eliminated JavaScript Truthy Bug on Attributes**: Fixed runtime bug where numeric `legs: 2` evaluated to truthy in JavaScript (`Boolean(2) === true`), which falsely indicated in the simulator that eagles and bats had 4 legs. Implemented centralized `testTreeAttribute` across all evaluation and step-through paths.
+  - **Challenge Progression Integrity**: Fixed initial state auto-completion so that Challenge 1 (`rootAttr === 'canFly'`) is not marked as completed upon initial mount, requiring intentional student interaction to unlock stars.
+  - **Rich Tactile Leaf Cards**: Redesigned leaf nodes with path indicators, prediction labels, pure/mixed status pills, and child-friendly animal emojis.
+
 ## [0.7.13] - 2026-10-09
 
 ### Added

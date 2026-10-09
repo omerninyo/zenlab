@@ -8,7 +8,24 @@
 // Reads optional API key without throwing if undefined
 const GEMINI_API_KEY = typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env.VITE_GEMINI_API_KEY : '';
 
+/**
+ * Tests an item against an attribute with proper numeric and boolean handling.
+ * Avoids JavaScript truthy bugs on numeric legs.
+ */
+export function testTreeAttribute(item, attr) {
+  if (!item || !attr) return false;
+  if (attr === 'legs') return item.legs === 4;
+  if (attr === 'hasShell') return Boolean(item.hasShell);
+  return Boolean(item[attr]);
+}
+
 export const AIService = {
+  // Expose helper on AIService
+  testTreeAttribute,
+
+  /**
+   * Computes normalized Softmax probabilities given logits and temperature.
+
   /**
    * Computes normalized Softmax probabilities given logits and temperature.
    * If temperature is near zero, collapses to deterministic greedy distribution.
@@ -392,60 +409,103 @@ export const AIService = {
    */
   evaluateDecisionTree(dataset, { rootAttr = 'canFly', leftAttr = 'hasFur', rightAttr = 'legs' }) {
     if (!dataset || dataset.length === 0) {
-      return { accuracy: 0, leafPurity: 0, nodes: {} };
+      return { accuracy: 0, leafPurity: 0, nodes: {}, isSingleItemMode: false };
     }
 
-    const testItem = (item, attr) => {
-      if (attr === 'legs') return item.legs === 4;
-      return Boolean(item[attr]);
-    };
-
     // Root Split
-    const rootTrue = dataset.filter(item => testItem(item, rootAttr));
-    const rootFalse = dataset.filter(item => !testItem(item, rootAttr));
+    const rootTrue = dataset.filter(item => testTreeAttribute(item, rootAttr));
+    const rootFalse = dataset.filter(item => !testTreeAttribute(item, rootAttr));
 
     // Left Subtree Split (rootTrue)
-    const leafLL = rootTrue.filter(item => testItem(item, leftAttr));
-    const leafLR = rootTrue.filter(item => !testItem(item, leftAttr));
+    const leafLL = rootTrue.filter(item => testTreeAttribute(item, leftAttr));
+    const leafLR = rootTrue.filter(item => !testTreeAttribute(item, leftAttr));
 
     // Right Subtree Split (rootFalse)
-    const leafRL = rootFalse.filter(item => testItem(item, rightAttr));
-    const leafRR = rootFalse.filter(item => !testItem(item, rightAttr));
+    const leafRL = rootFalse.filter(item => testTreeAttribute(item, rightAttr));
+    const leafRR = rootFalse.filter(item => !testTreeAttribute(item, rightAttr));
 
-    const leaves = [leafLL, leafLR, leafRL, leafRR];
+    const leaves = [
+      { key: 'leafLL', path: 'כן / כן', items: leafLL },
+      { key: 'leafLR', path: 'כן / לא', items: leafLR },
+      { key: 'leafRL', path: 'לא / כן', items: leafRL },
+      { key: 'leafRR', path: 'לא / לא', items: leafRR }
+    ];
 
-    // Compute purity of leaves (highest majority species count / total count)
-    let totalItemsInLeaves = 0;
+    const isSingleItemMode = dataset.length <= 4;
+    const totalItems = dataset.length;
     let pureItemsCount = 0;
+    let isolatedAnimalsCount = 0;
+    const leafDetails = {};
 
-    leaves.forEach(leaf => {
-      if (leaf.length === 0) return;
-      totalItemsInLeaves += leaf.length;
+    leaves.forEach(({ key, path, items }) => {
       const counts = {};
-      leaf.forEach(item => {
+      items.forEach(item => {
         counts[item.species] = (counts[item.species] || 0) + 1;
       });
-      const maxInLeaf = Math.max(...Object.values(counts));
-      pureItemsCount += maxInLeaf;
+
+      let dominantSpecies = null;
+      let maxCount = 0;
+      for (const [species, count] of Object.entries(counts)) {
+        if (count > maxCount) {
+          maxCount = count;
+          dominantSpecies = species;
+        }
+      }
+
+      const isPure = items.length > 0 && maxCount === items.length;
+      if (items.length > 0) {
+        pureItemsCount += maxCount;
+      }
+      if (items.length === 1) {
+        isolatedAnimalsCount += 1;
+      }
+
+      let predictedLabel = 'ריק';
+      if (items.length === 0) {
+        predictedLabel = 'ריק (אין חיות בענף)';
+      } else if (items.length === 1) {
+        predictedLabel = items[0].name;
+      } else if (isPure) {
+        predictedLabel = `מחלקת ${dominantSpecies} (${items.length})`;
+      } else {
+        predictedLabel = 'מעורב (בלבול בין מחלקות)';
+      }
+
+      leafDetails[key] = {
+        count: items.length,
+        items,
+        path,
+        isPure,
+        isSingle: items.length === 1,
+        dominantSpecies,
+        predictedLabel,
+        purityRatio: items.length > 0 ? Math.round((maxCount / items.length) * 100) : 0
+      };
     });
 
-    const leafPurity = totalItemsInLeaves > 0 ? Math.round((pureItemsCount / totalItemsInLeaves) * 100) : 0;
+    const leafPurity = totalItems > 0 ? Math.round((pureItemsCount / totalItems) * 100) : 0;
+    const accuracy = isSingleItemMode
+      ? Math.round((isolatedAnimalsCount / totalItems) * 100)
+      : leafPurity;
 
     return {
       rootAttr,
       leftAttr,
       rightAttr,
+      isSingleItemMode,
+      leafDetails,
       nodes: {
         root: { count: dataset.length },
         leftGroup: { count: rootTrue.length, items: rootTrue },
         rightGroup: { count: rootFalse.length, items: rootFalse },
-        leafLL: { count: leafLL.length, items: leafLL },
-        leafLR: { count: leafLR.length, items: leafLR },
-        leafRL: { count: leafRL.length, items: leafRL },
-        leafRR: { count: leafRR.length, items: leafRR }
+        leafLL: leafDetails.leafLL,
+        leafLR: leafDetails.leafLR,
+        leafRL: leafDetails.leafRL,
+        leafRR: leafDetails.leafRR
       },
       leafPurity,
-      accuracy: leafPurity
+      accuracy
     };
   }
 };
+
