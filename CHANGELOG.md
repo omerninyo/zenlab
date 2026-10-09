@@ -5,11 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.7.0] - 2026-10-09
+## [0.7.1] - 2026-10-09
 
 ### Added
-- **Dapim 4.0 Liquid Glass & Hollow Restraint Design Verification Bench (`src/components/DesignSystemTestModal.jsx`, `src/styles/design-tokens.css`, `src/core/storage.js`, `src/App.jsx`, `src/index.css`)**:
+- **Zen 2.0 (זֶן 2.0) Liquid Glass & Hollow Restraint Design Verification Bench (`src/components/DesignSystemTestModal.jsx`, `src/styles/design-tokens.css`, `src/core/storage.js`, `src/App.jsx`, `src/index.css`)**:
   - **Drop-in Design Tokens Specification (`src/styles/design-tokens.css`)**: Fully implemented the design system specified in `docs/design.md`, including Radix Slate monochromatic scales (1–12), Master Velvet Mist ambient lighting formula (`ellipse 95% 65% at 50% -8%`), Optical Liquid Glass surfaces with specular top highlights (`inset 0 1px 0 0 rgba(255,255,255,0.16)`), 100% solid tactile content cards, and canonical hollow buttons.
+  - **Live URL Query Parameter Auto-Activation**: Added instant remote testing support via `?design=zen2` (or `?zen2=true`) and optional palette selector `?palette=nordic-ice` for immediate one-tap inspection on iPhone and mobile devices.
   - **4-Theme Palette Engine**: Integrated full live switching between all 4 palettes:
     1. *Kavita Matte Amber* (warm archival library, `#d48344`)
     2. *Nordic Ice & Midnight* (high-tech cyber/data consoles, `#38bdf8`)
@@ -24,7 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     6. iOS Safe Form Inputs (40px height, 16px font mobile safeguard against Safari auto-zoom)
     7. Touch ergonomics (44px min targets and zero horizontal scroll)
   - **Live ZenLab Sandbox Simulation**: Interactive 4x4 matrix card in 100% solid slate displaying pixel toggles and hollow button feedback with Web Audio synthesis.
-  - **Global Application Switcher**: Added single-click live toggling of the Dapim 4.0 design system across the entire ZenLab application (Home Roadmap, Active Labs, and Navigation).
+  - **Global Application Switcher**: Added single-click live toggling of the Zen 2.0 design system across the entire ZenLab application (Home Roadmap, Active Labs, and Navigation).
   - **The 10th Man Red Team Architectural Audit**: Embedded dedicated critical assessment contrasting adult minimal reader ergonomics against 5th-grade classroom Chromebook hardware and young student click affordance.
 - **Child-Friendly Pedagogical Register Overhaul across All 8 Interactive Labs & Curriculum (`src/labs/Lab1_BinaryPixels.jsx` through `Lab8_LanguageModelPredictor.jsx`, `src/data/curriculum.json`)**:
   - **Eliminated University & Machine Learning Jargon**: Replaced advanced academic formulas and abstract terminology with concrete Israeli elementary school metaphors (aligned with Ministry of Education 5th-grade guidelines):

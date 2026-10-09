@@ -71,6 +71,21 @@ export default function App() {
   const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
 
   useEffect(() => {
+    // Check URL parameters for instant testing on mobile/remote (?design=zen2, ?zen2=true)
+    if (typeof window !== 'undefined') {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const designParam = params.get('design') || params.get('zen2');
+        if (designParam === 'zen2' || designParam === 'true' || designParam === '2') {
+          StorageEngine.setDapimMode(true);
+        }
+        const paletteParam = params.get('palette');
+        if (paletteParam) {
+          StorageEngine.setDapimPalette(paletteParam);
+        }
+      } catch {}
+    }
+
     const unsubStorage = StorageEngine.subscribe(state => {
       setTotalStars(state.totalStars);
       setLabStars(state.labStars);
@@ -357,11 +372,11 @@ export default function App() {
               <span>תעודה</span>
             </button>
 
-            {/* Design System 4.0 Test Bench Trigger */}
+            {/* Design System Zen 2.0 Test Bench Trigger */}
             <button
               type="button"
               onClick={() => { setIsDesignTestOpen(true); AudioEngine.playStep(); }}
-              title="בדיקת עיצוב דפים 4.0 - Liquid Glass & Hollow Restraint"
+              title="בדיקת עיצוב זֶן 2.0 - Liquid Glass & Hollow Restraint"
               className={`hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
                 isDapimActive
                   ? 'btn-hollow-primary !h-8 !px-2.5 !text-xs'
@@ -369,7 +384,7 @@ export default function App() {
               }`}
             >
               <Palette className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[var(--accent-base)]" />
-              <span className="hidden md:inline">בדיקת עיצוב 4.0</span>
+              <span className="hidden md:inline">עיצוב זֶן 2.0</span>
             </button>
 
             {/* Audio Mute Switch (Desktop Only) */}
@@ -471,14 +486,14 @@ export default function App() {
                       <span>הגדרות כיתה</span>
                     </button>
 
-                    {/* Design System 4.0 Test Bench (Mobile/Drawer) */}
+                    {/* Design System Zen 2.0 Test Bench (Mobile/Drawer) */}
                     <button
                       type="button"
                       onClick={() => { setIsDesignTestOpen(true); setIsMoreMenuOpen(false); AudioEngine.playStep(); }}
                       className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-xs sm:text-sm font-semibold text-[var(--accent-base)] transition-colors border-t border-slate-100 dark:border-slate-800/80 mt-1 pt-2"
                     >
                       <Palette className="w-4 h-4 text-[var(--accent-base)]" />
-                      <span>בדיקת עיצוב 4.0 (Liquid Glass)</span>
+                      <span>עיצוב זֶן 2.0 (Liquid Glass)</span>
                     </button>
                   </div>
                 </>

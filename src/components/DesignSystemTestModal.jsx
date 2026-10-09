@@ -27,7 +27,7 @@ const PALETTES = [
   {
     id: 'matte-amber',
     name: 'Kavita Matte Amber',
-    hebrewName: 'ענבר מט ארכיוני (Dapim Default)',
+    hebrewName: 'ענבר מט ארכיוני (Zen Default)',
     desc: 'ספרייה ארכיונית חמימה, קריאה רגועה וממשק קלאסי',
     accentColor: '#d48344',
     glowColor: 'rgba(212, 131, 68, 0.45)'
@@ -134,10 +134,10 @@ export default function DesignSystemTestModal({ isOpen, onClose }) {
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="text-sm sm:text-base font-bold text-white tracking-tight">
-                  מעבדת בדיקת שפת העיצוב: דפים 4.0
+                  מעבדת בדיקת שפת העיצוב: זֶן 2.0
                 </h2>
                 <span className="text-[10px] font-mono px-2 py-0.5 rounded border border-[var(--accent-rim)] text-[var(--accent-base)] bg-[var(--accent-wash)]">
-                  Apple Liquid Glass
+                  Zen 2.0 Liquid Glass
                 </span>
               </div>
               <p className="text-[11px] text-slate-400">
@@ -221,7 +221,7 @@ export default function DesignSystemTestModal({ isOpen, onClose }) {
               }`}
             >
               <span className={`w-2 h-2 rounded-full ${isDapimGlobal ? 'bg-[var(--accent-base)]' : 'bg-slate-500'}`} />
-              <span>{isDapimGlobal ? 'דפים 4.0 פעיל בכל ZenLab' : 'החל על כל ZenLab'}</span>
+              <span>{isDapimGlobal ? 'זֶן 2.0 פעיל בכל האתר' : 'החל עיצוב זֶן 2.0 על כל האתר'}</span>
             </button>
           </div>
         </div>
@@ -344,7 +344,7 @@ export default function DesignSystemTestModal({ isOpen, onClose }) {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Binary className="w-4 h-4 text-[var(--accent-base)]" />
-                    <span className="text-xs font-bold text-white">סימולציית כרטיס תוכן של ZenLab במפרט דפים 4.0</span>
+                    <span className="text-xs font-bold text-white">סימולציית כרטיס תוכן במפרט זֶן 2.0</span>
                   </div>
                   <span className="text-[10px] font-mono text-slate-400">Content Layer: 100% Solid</span>
                 </div>
@@ -554,11 +554,11 @@ export default function DesignSystemTestModal({ isOpen, onClose }) {
               {/* Side-by-side A/B comparison */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 
-                {/* DAPIM 4.0 HOLLOW SPEC */}
+                {/* ZEN 2.0 HOLLOW SPEC */}
                 <div className="card-tactile space-y-3 border-[var(--accent-rim)]">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-[var(--accent-base)]">תקן דפים 4.0: Hollow Glass</span>
-                    <span className="text-[10px] font-mono text-emerald-400">תקין לפי design.md</span>
+                    <span className="text-xs font-bold text-[var(--accent-base)]">תקן זֶן 2.0: Hollow Glass</span>
+                    <span className="text-[10px] font-mono text-emerald-400">תקין לפי מפרט זֶן 2.0</span>
                   </div>
 
                   <div className="p-4 rounded-xl bg-[#0c0d10] border border-white/5 space-y-3">
@@ -640,10 +640,10 @@ export default function DesignSystemTestModal({ isOpen, onClose }) {
                   </div>
                   <div className="space-y-1.5">
                     <h3 className="text-sm font-bold text-white">
-                      דוח הצוות האדום (The 10th Man Directive: Stress-Testing Dapim 4.0 for Grade 5)
+                      דוח הצוות האדום (The 10th Man Directive: Stress-Testing Zen 2.0 for Grade 5)
                     </h3>
                     <p className="text-xs text-slate-300 leading-relaxed">
-                      הנחיית ה-10th Man דורשת מאיתנו לא להתלהב עיוורת מעיצוב חדש, אלא לבצע ניתוח הנדסי ופדגוגי ביקורתי ומחמיר של התאמת שפת דפים 4.0 למשתמשי היעד של ZenLab (תלמידי כיתה ה׳, גילאי 10–11).
+                      הנחיית ה-10th Man דורשת מאיתנו לא להתלהב עיוורת מעיצוב חדש, אלא לבצע ניתוח הנדסי ופדגוגי ביקורתי ומחמיר של התאמת שפת זֶן 2.0 למשתמשי היעד של ZenLab (תלמידי כיתה ה׳, גילאי 10–11).
                     </p>
                   </div>
                 </div>
@@ -667,7 +667,7 @@ export default function DesignSystemTestModal({ isOpen, onClose }) {
                       <strong>הסיכון:</strong> כיתות לימוד מוארות באור שמש חזק, ומחשבי כרומבוק זולים סובלים מזוויות צפייה צרות ופאנלי TN עם ניגודיות ירודה. רקע שחור עמוק (<code className="text-slate-200">#0c0d10</code>) עם כפתורים חצי-שקופים עלול להיות בלתי קריא באור יום.
                     </p>
                     <p className="text-emerald-400 font-medium">
-                      <strong>פתרון דפים 4.0:</strong> הקפדה אדוקה על חוק השכבות: כל כרטיסי המעבדה, הפיקסלים, ועצי ההחלטה נשארים 100% אטומים עם טקסט לבן בוהק. בנוסף, ערכות Nordic Ice ו-Emerald Sanctuary מספקות ניגודיות הדגשה גבוהה יותר מ-Matte Amber.
+                      <strong>פתרון זֶן 2.0:</strong> הקפדה אדוקה על חוק השכבות: כל כרטיסי המעבדה, הפיקסלים, ועצי ההחלטה נשארים 100% אטומים עם טקסט לבן בוהק. בנוסף, ערכות Nordic Ice ו-Emerald Sanctuary מספקות ניגודיות הדגשה גבוהה יותר מ-Matte Amber.
                     </p>
                   </div>
 
@@ -681,7 +681,7 @@ export default function DesignSystemTestModal({ isOpen, onClose }) {
                       <strong>הסיכון:</strong> תלמידי יסודי רגילים לכפתורים בולטים ומלאים. כפתור חלול שקוף לחלוטין עלול שלא להיתפס כאלמנט לחיץ, ולהוביל לתסכול במהלך משימות.
                     </p>
                     <p className="text-emerald-400 font-medium">
-                      <strong>פתרון דפים 4.0:</strong> כפתור ראשי חלול (<code className="text-slate-200">.btn-hollow-primary</code>) מצויד בשפת אור מודגשת (<code className="text-slate-200">inset 0 1px 0 0 rgba(255,255,255,0.22)</code>), מסגרת הדגשה זוהרת קלות של הצבע הנבחר, ואפקט תנועה (<code className="text-slate-200">translateY(-1px)</code>) בליווי משוב קולי מיידי ב-Web Audio.
+                      <strong>פתרון זֶן 2.0:</strong> כפתור ראשי חלול (<code className="text-slate-200">.btn-hollow-primary</code>) מצויד בשפת אור מודגשת (<code className="text-slate-200">inset 0 1px 0 0 rgba(255,255,255,0.22)</code>), מסגרת הדגשה זוהרת קלות של הצבע הנבחר, ואפקט תנועה (<code className="text-slate-200">translateY(-1px)</code>) בליווי משוב קולי מיידי ב-Web Audio.
                     </p>
                   </div>
 
@@ -695,7 +695,7 @@ export default function DesignSystemTestModal({ isOpen, onClose }) {
                       <strong>הסיכון:</strong> ריבוי אלמנטים עם <code className="text-slate-200">backdrop-filter: blur(32px)</code> עלול להכביד על המעבד הגרפי (GPU) של טאבלטים ומחשבים חלשים.
                     </p>
                     <p className="text-emerald-400 font-medium">
-                      <strong>פתרון דפים 4.0:</strong> הטשטוש האופטי שמור <em>אך ורק לשכבת השליטה הצפה</em> (סרגל עליון ומודאל יחיד). גריד התוכן, מפות המבוך ונוירוני הלמידה מרונדרים ללא פילטרים גרפיים כבדים.
+                      <strong>פתרון זֶן 2.0:</strong> הטשטוש האופטי שמור <em>אך ורק לשכבת השליטה הצפה</em> (סרגל עליון ומודאל יחיד). גריד התוכן, מפות המבוך ונוירוני הלמידה מרונדרים ללא פילטרים גרפיים כבדים.
                     </p>
                   </div>
 
