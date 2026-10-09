@@ -1,18 +1,47 @@
 version: 2
 updates:
+  # npm dependencies: weekly checks, minor & patch grouped, major version locks
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
-    open-pull-requests-limit: 5
+    open-pull-requests-limit: 3
     labels:
       - "dependencies"
-      - "security"
+    # Prevent breaking major bumps; migrations are handled via dedicated spikes
+    ignore:
+      - dependency-name: "react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-dom"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@types/react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@types/react-dom"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "tailwindcss"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "vite"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@vitejs/plugin-react"
+        update-types: ["version-update:semver-major"]
+    # Group minor and patch updates into a single PR instead of spamming
+    groups:
+      npm-updates:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
 
+  # GitHub Actions workflows: monthly checks, grouped
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "monthly"
-    open-pull-requests-limit: 3
+    open-pull-requests-limit: 2
     labels:
       - "ci"
+    groups:
+      actions-updates:
+        patterns:
+          - "*"
