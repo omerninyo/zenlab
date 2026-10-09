@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 GitHub Discussions / שיחות וקהילה
+    url: https://github.com/omerninyo/zenlab/discussions
+    about: Ask questions, share lesson plans, or connect with educators / שאילת שאלות, שיתוף מערכי שיעור והתייעצות עם מורים
+  - name: 🔒 Security & Privacy / אבטחה ופרטיות תלמידים
+    url: https://github.com/omerninyo/zenlab/security/policy
+    about: Review our strict Zero-PII privacy guarantee / מידע על אבטחת מידע ואי-איסוף מידע אישי

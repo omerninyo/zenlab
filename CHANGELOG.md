@@ -5,6 +5,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.8] - 2026-10-09
+
+### Added
+- **Child-Friendly Pedagogical Alignment & Unified Station Metaphors (`src/core/labMeta.js`, `src/components/HomeDashboard.jsx`, `src/components/LabPhaseHeader.jsx`, `src/App.jsx`)**:
+  - Replaced abstract and developer-centric icons with consistent, child-friendly pedagogical metaphors repeating across all touchpoints (Home Roadmap, Header Stepper, and Lab Phase Headers):
+    - **מעבדה 1**: פלטת פיקסלים (`Palette`)
+    - **מעבדה 2**: רובוט פקודות (`Bot`)
+    - **מעבדה 3**: בלש החלטות (`Search`)
+    - **מעבדה 4**: ווייז ניווט (`Navigation`)
+    - **מעבדה 5**: סיווג ותיוג (`Tags`)
+    - **מעבדה 6**: ראייה וסריקה (`Scan`)
+    - **מעבדה 7**: מוח ונוירון (`Brain`)
+    - **מעבדה 8**: שיחה חכמה (`MessageSquareText`)
+- **Interactive SVG Micro-Visual Previews (`src/components/LabCardPreview.jsx`)**:
+  - Embedded compact 54x42px SVG visual previews for all 8 lab stations directly within each station card, giving 5th-grade learners an immediate visual sense of the core mechanism before entering.
+- **Contextual AI Co-Pilot (ZenAiTutor) Guidance Bubble (`src/components/HomeDashboard.jsx`, `src/components/ZenAiTutor.jsx`)**:
+  - Integrated an interactive tutor greeting bubble directly into the Command Hero card, dynamically adapting its message to the learner's current progress and station, with a direct trigger to open the AI tutor modal.
+- **5-Tier Granular Researcher Rank Progression (`src/components/HomeDashboard.jsx`, `src/components/CertificateModal.jsx`)**:
+  - Granularized researcher ranks to reward learners every 2 completed labs:
+    - 0–5 כוכבים: **חוקר/ת מתחיל/ה**
+    - 6–11 כוכבים: **בלש/ית קוד**
+    - 12–17 כוכבים: **נווט/ת אלגוריתמים**
+    - 18–23 כוכבים: **מהנדס/ת רשתות**
+    - 24 כוכבים: **מאסטר בינה מלאכותית (דרגת על)**
+- **Zero-Dependency Champagne Gold Milestone Confetti Generator (`src/core/confetti.js`, `src/App.jsx`)**:
+  - Added celebratory 3-star milestone particle effects rendered on an ephemeral HTML5 Canvas in the Zen 2.0 champagne gold palette without any external dependencies.
+
+### Fixed
+- **Mobile Responsive Layout & Viewport Verification**:
+  - Verified 100% zero horizontal overflow (`scrollWidth === clientWidth`) on iPhone 375px/390px viewports with natural text wrapping and no clipping.
+  - Added `playClick` alias support to `AudioEngineClass` in `src/core/audio.js`.
+
 ## [0.7.7] - 2026-10-09
 
 ### Changed

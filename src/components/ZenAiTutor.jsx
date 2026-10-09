@@ -193,6 +193,19 @@ export default function ZenAiTutor({ currentLabId = 'lab1' }) {
   }, []);
 
   useEffect(() => {
+    const handleOpenEvent = (e) => {
+      setIsOpen(true);
+      if (e?.detail?.labId) {
+        setCurrentLab(e.detail.labId);
+      }
+    };
+    if (typeof window !== 'undefined') {
+      window.addEventListener('open-zen-tutor', handleOpenEvent);
+      return () => window.removeEventListener('open-zen-tutor', handleOpenEvent);
+    }
+  }, []);
+
+  useEffect(() => {
     if (isOpen) {
       messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }

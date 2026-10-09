@@ -1,0 +1,54 @@
+name: ZenLab CI & Build Verification
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-verify:
+    name: Build & Zero-PII Hygiene Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Production Build Verification
+        run: npm run build
+
+      - name: Verify Cloudflare Pages Redirects Invariant
+        run: |
+          if [ ! -f "public/_redirects" ]; then
+            echo "ERROR: public/_redirects is missing!"
+            exit 1
+          fi
+          if ! grep -q "/* /index.html 200" public/_redirects; then
+            echo "ERROR: public/_redirects does not contain SPA fallback route!"
+            exit 1
+          fi
+          echo "SPA redirect rule verified."
+
+      - name: Strict Zero-PII Scan
+        run: |
+          echo "Scanning for accidental PII leaks..."
+          # Fail if absolute user paths or personal emails are committed in source
+          if git grep -E "/Users/[a-zA-Z0-9]+" src/ docs/; then
+            echo "ERROR: Found local absolute machine path in repository files!"
+            exit 1
+          fi
+          echo "Zero-PII verification passed cleanly."

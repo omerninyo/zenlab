@@ -92,6 +92,10 @@ class AudioEngineClass {
     this.playTone(380, 'sine', 0.04, 0.05);
   }
 
+  playClick() {
+    this.playStep();
+  }
+
   playCollect() {
     if (this.muted) return;
     this.init();

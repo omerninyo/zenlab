@@ -20,10 +20,12 @@ export default function CertificateModal({ isOpen, onClose, totalStars = 0 }) {
 
   const rank = totalStars === 24 
     ? 'מאסטר בינה מלאכותית (דרגת על)'
-    : totalStars >= 16 
-    ? 'חוקר/ת בינה מלאכותית מתקדם/ת'
-    : totalStars >= 8
-    ? 'מפתח/ת אלגוריתמים צעיר/ה'
+    : totalStars >= 18 
+    ? 'מהנדס/ת רשתות'
+    : totalStars >= 12
+    ? 'נווט/ת אלגוריתמים'
+    : totalStars >= 6
+    ? 'בלש/ית קוד'
     : 'חוקר/ת מתחיל/ה';
 
   return (

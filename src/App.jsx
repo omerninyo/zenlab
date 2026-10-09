@@ -32,6 +32,8 @@ import curriculumData from './data/curriculum.json';
 import { StorageEngine } from './core/storage.js';
 import { AudioEngine } from './core/audio.js';
 import { NarrationEngine } from './core/narration.js';
+import { LAB_METADATA } from './core/labMeta.js';
+import { fireChampagneConfetti } from './core/confetti.js';
 import CertificateModal from './components/CertificateModal.jsx';
 import GlossaryModal from './components/GlossaryModal.jsx';
 import ClassroomSettingsModal from './components/ClassroomSettingsModal.jsx';
@@ -92,7 +94,17 @@ export default function App() {
 
     const unsubStorage = StorageEngine.subscribe(state => {
       setTotalStars(state.totalStars);
-      setLabStars(state.labStars);
+      setLabStars(prevStars => {
+        if (state.labStars) {
+          Object.entries(state.labStars).forEach(([labId, count]) => {
+            if (count === 3 && (prevStars?.[labId] || 0) < 3) {
+              AudioEngine.playSuccess?.();
+              fireChampagneConfetti();
+            }
+          });
+        }
+        return state.labStars;
+      });
       setIsMuted(state.isMuted);
       setIsNarrationEnabled(state.isNarrationEnabled);
       if (state.theme) setTheme(state.theme);
@@ -150,14 +162,14 @@ export default function App() {
   };
 
   const navItems = [
-    { id: 'lab1', number: 1, label: '1. ציור בפיקסלים', shortLabel: 'ציור בפיקסלים', track: 'algorithms', trackName: 'אלגוריתמיקה', icon: Binary },
-    { id: 'lab2', number: 2, label: '2. לתכנת רובוט', shortLabel: 'לתכנת רובוט', track: 'algorithms', trackName: 'אלגוריתמיקה', icon: Bot },
-    { id: 'lab3', number: 3, label: '3. עץ החלטות בלשי', shortLabel: 'עץ החלטות בלשי', track: 'algorithms', trackName: 'אלגוריתמיקה', icon: GitBranch },
-    { id: 'lab4', number: 4, label: '4. הווייז של הרובוט', shortLabel: 'הווייז של הרובוט', track: 'algorithms', trackName: 'אלגוריתמיקה', icon: Compass },
-    { id: 'lab5', number: 5, label: '5. איך מחשב לומד?', shortLabel: 'איך מחשב לומד?', track: 'ai', trackName: 'בינה מלאכותית', icon: Network },
-    { id: 'lab6', number: 6, label: '6. העיניים של המחשב', shortLabel: 'העיניים של המחשב', track: 'ai', trackName: 'בינה מלאכותית', icon: Eye },
-    { id: 'lab7', number: 7, label: '7. נוירון חכם', shortLabel: 'נוירון חכם', track: 'ai', trackName: 'בינה מלאכותית', icon: Zap },
-    { id: 'lab8', number: 8, label: '8. מודל שפה חכם', shortLabel: 'מודל שפה חכם', track: 'ai', trackName: 'בינה מלאכותית', icon: Sparkles }
+    LAB_METADATA.lab1,
+    LAB_METADATA.lab2,
+    LAB_METADATA.lab3,
+    LAB_METADATA.lab4,
+    LAB_METADATA.lab5,
+    LAB_METADATA.lab6,
+    LAB_METADATA.lab7,
+    LAB_METADATA.lab8
   ];
 
   const currentIdx = navItems.findIndex(item => item.id === activeLabId);

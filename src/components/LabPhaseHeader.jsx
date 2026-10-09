@@ -9,6 +9,7 @@ import {
 import { StorageEngine } from '../core/storage.js';
 import { NarrationEngine } from '../core/narration.js';
 import { AudioEngine } from '../core/audio.js';
+import { getLabMeta } from '../core/labMeta.js';
 
 export default function LabPhaseHeader({ 
   labData, 
@@ -137,26 +138,31 @@ export default function LabPhaseHeader({
 
       {/* Lab Title, Badge & Star Progress */}
       <div className="flex items-center justify-between gap-3">
-        <div className="space-y-0.5 sm:space-y-1">
-          <div className="hidden sm:flex items-center gap-2">
-            <span className={
-              isDapimActive
-                ? "badge-glass badge-glass-accent"
-                : "px-2.5 py-0.5 rounded-md text-xs font-bold bg-blue-50 dark:bg-blue-950/70 text-blue-700 dark:text-blue-300 border border-blue-200/60 dark:border-blue-800/60"
-            }>
-              {data.badge}
-            </span>
-            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
-              מעבדה {data.number} מתוך 8
-            </span>
+        <div className="flex items-start sm:items-center gap-3">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-[var(--slate-3)] border border-[var(--slate-6)] flex items-center justify-center shrink-0 text-[var(--accent-base)] shadow-xs">
+            {React.createElement(getLabMeta(data.id).icon, { className: "w-5 h-5 sm:w-6 sm:h-6" })}
           </div>
+          <div className="space-y-0.5 sm:space-y-1">
+            <div className="hidden sm:flex items-center gap-2">
+              <span className={
+                isDapimActive
+                  ? "badge-glass badge-glass-accent"
+                  : "px-2.5 py-0.5 rounded-md text-xs font-bold bg-blue-50 dark:bg-blue-950/70 text-blue-700 dark:text-blue-300 border border-blue-200/60 dark:border-blue-800/60"
+              }>
+                {data.badge}
+              </span>
+              <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+                מעבדה {data.number} מתוך 8 • {getLabMeta(data.id).metaphor}
+              </span>
+            </div>
 
-          <h1 className="text-base sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight leading-snug">
-            {data.title}
-          </h1>
-          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-normal mt-0.5">
-            {data.subtitle}
-          </p>
+            <h1 className="text-base sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight leading-snug">
+              {data.title}
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-normal mt-0.5">
+              {data.subtitle}
+            </p>
+          </div>
         </div>
 
         {/* Stars Progress for this lab */}

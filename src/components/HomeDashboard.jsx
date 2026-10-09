@@ -1,33 +1,18 @@
 import React from 'react';
 import { 
-  Binary, 
-  Bot, 
-  GitBranch, 
-  Compass, 
-  Network, 
-  Eye, 
-  Zap, 
-  Sparkles, 
   Star, 
   Award, 
   BookOpen, 
   CheckCircle2, 
   Play, 
-  Cpu,
-  ChevronLeft
+  ChevronLeft,
+  Bot,
+  Sparkles,
+  Zap
 } from 'lucide-react';
 import { AudioEngine } from '../core/audio.js';
-
-const LAB_ICONS = {
-  lab1: Binary,
-  lab2: Bot,
-  lab3: GitBranch,
-  lab4: Compass,
-  lab5: Network,
-  lab6: Eye,
-  lab7: Zap,
-  lab8: Sparkles
-};
+import { LAB_ICONS, getLabMeta } from '../core/labMeta.js';
+import LabCardPreview from './LabCardPreview.jsx';
 
 export default function HomeDashboard({
   curriculum,
@@ -51,16 +36,19 @@ export default function HomeDashboard({
   const nextLabId = allLabIds.find(id => (labStars[id] || 0) < 3) || 'lab8';
   const isAllCompleted = totalStars === 24;
   const nextLabData = curriculum?.labs?.[nextLabId] || {};
+  const nextLabMeta = getLabMeta(nextLabId);
   const NextLabIcon = LAB_ICONS[nextLabId] || Sparkles;
   const nextLabStars = labStars[nextLabId] || 0;
 
-  // Student Rank calculation
+  // Student Rank calculation (5 granular tiers)
   const rank = totalStars === 24 
     ? 'מאסטר בינה מלאכותית'
-    : totalStars >= 16 
-    ? 'חוקר/ת בינה מלאכותית מתקדם/ת'
-    : totalStars >= 8
-    ? 'מפתח/ת אלגוריתמים צעיר/ה'
+    : totalStars >= 18 
+    ? 'מהנדס/ת רשתות'
+    : totalStars >= 12
+    ? 'נווט/ת אלגוריתמים'
+    : totalStars >= 6
+    ? 'בלש/ית קוד'
     : 'חוקר/ת מתחיל/ה';
 
   const progressPercentage = Math.round((totalStars / 24) * 100);
@@ -175,6 +163,58 @@ export default function HomeDashboard({
               />
             </div>
           </div>
+
+          {/* Contextual AI Tutor (Zen Co-Pilot) Guidance Bubble */}
+          <div className={`mt-5 p-3.5 sm:p-4 rounded-lg flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 ${
+            isDapimActive
+              ? 'bg-[var(--slate-2)] border border-[var(--slate-6)] shadow-xs'
+              : 'bg-blue-50/70 dark:bg-slate-800/80 border border-blue-100 dark:border-slate-700 shadow-xs'
+          }`}>
+            <div className="flex items-start gap-3 min-w-0">
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
+                isDapimActive 
+                  ? 'bg-[var(--accent-surface)] text-[var(--accent-base)] border border-[var(--accent-rim)]' 
+                  : 'bg-blue-600 text-white'
+              }`}>
+                <Bot className="w-4 h-4" />
+              </div>
+              <div className="space-y-0.5 min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-black text-slate-900 dark:text-white">זֶן • מלווה אישי</span>
+                  <span className={
+                    isDapimActive
+                      ? "badge-glass badge-glass-accent text-[10px] !py-0 !px-1.5"
+                      : "text-[10px] font-bold px-1.5 py-0.5 rounded bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
+                  }>
+                    עוזר AI
+                  </span>
+                </div>
+                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
+                  {totalStars === 0
+                    ? 'שלום חוקר/ת צעיר/ה! אני זֶן, המלווה שלכם במעבדה. נתחיל בציור פיקסלים כדי לראות איך מסכים עובדים? לחצו עלי בכל שלב לשאלות ורמזים!'
+                    : isAllCompleted
+                    ? 'וואו, הישג יוצא מן הכלל! השלמתם את כל 8 המעבדות וצברתם את מלוא 24 הכוכבים. תעודת ההצטיינות הרשמית מוכנה עבורכם!'
+                    : `התקדמות מצוינת! התחנה המומלצת הבאה היא "${nextLabData.title}" (${nextLabMeta.metaphor}). לחצו עלי לקבלת הסברים וטיפים חכמים.`}
+                </p>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => {
+                AudioEngine.playClick();
+                window.dispatchEvent(new CustomEvent('open-zen-tutor', { detail: { labId: nextLabId } }));
+              }}
+              className={
+                isDapimActive
+                  ? 'btn-hollow-primary !h-8 !px-3 !text-xs !font-bold flex items-center gap-1.5 shrink-0 self-end sm:self-center'
+                  : 'flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shrink-0 self-end sm:self-center transition-colors shadow-xs'
+              }
+            >
+              <Bot className="w-3.5 h-3.5" />
+              <span>התייעצו עם זֶן</span>
+            </button>
+          </div>
         </div>
       </section>
 
@@ -206,10 +246,19 @@ export default function HomeDashboard({
                   {isAllCompleted ? 'המסלול הושלם!' : 'התחנה המומלצת הבאה שלכם'}
                 </span>
                 {!isAllCompleted && (
-                  <span className="text-xs font-mono font-bold text-amber-500 flex items-center gap-1">
-                    <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-500" />
-                    <span>{nextLabStars}/3 כוכבים</span>
-                  </span>
+                  <>
+                    <span className={
+                      isDapimActive
+                        ? "badge-glass badge-glass-accent text-[11px]"
+                        : "text-[11px] font-bold px-2 py-0.5 rounded-md bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
+                    }>
+                      {nextLabMeta.metaphor}
+                    </span>
+                    <span className="text-xs font-mono font-bold text-amber-500 flex items-center gap-1">
+                      <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-500" />
+                      <span>{nextLabStars}/3 כוכבים</span>
+                    </span>
+                  </>
                 )}
               </div>
 
@@ -346,7 +395,8 @@ export default function HomeDashboard({
                 {track.labIds.map((labId) => {
                   const lab = curriculum?.labs?.[labId];
                   if (!lab) return null;
-                  const Icon = LAB_ICONS[labId] || Cpu;
+                  const meta = getLabMeta(labId);
+                  const Icon = LAB_ICONS[labId] || meta.icon || Sparkles;
                   const stars = labStars[labId] || 0;
                   const isCompleted = stars === 3;
                   const isInProgress = stars > 0 && stars < 3;
@@ -371,9 +421,9 @@ export default function HomeDashboard({
                       }
                     >
                       <div>
-                        {/* Card Header: Icon, Number & Stars */}
-                        <div className="flex items-start justify-between gap-3 mb-2.5">
-                          <div className="flex items-center gap-3">
+                        {/* Card Header: Icon, Metaphor, Number & Stars */}
+                        <div className="flex items-start justify-between gap-2.5 mb-2.5">
+                          <div className="flex items-center gap-3 min-w-0">
                             <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 shadow-xs ${
                               isDapimActive
                                 ? 'bg-[var(--slate-3)] border border-[var(--slate-6)] text-[var(--accent-base)]'
@@ -381,10 +431,19 @@ export default function HomeDashboard({
                             }`}>
                               <Icon className="w-5 h-5" />
                             </div>
-                            <div>
-                              <span className="text-[11px] font-bold text-slate-400 dark:text-slate-500 block leading-tight">
-                                מעבדה {lab.number}
-                              </span>
+                            <div className="min-w-0">
+                              <div className="flex items-center gap-1.5 flex-wrap mb-0.5">
+                                <span className="text-[11px] font-bold text-slate-400 dark:text-slate-500 block leading-tight">
+                                  מעבדה {lab.number}
+                                </span>
+                                <span className={
+                                  isDapimActive
+                                    ? "badge-glass text-[10px] !py-0 !px-1.5 text-[var(--accent-base)] font-semibold"
+                                    : "text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300"
+                                }>
+                                  {meta.metaphor}
+                                </span>
+                              </div>
                               <h4 className="text-sm sm:text-base font-black text-slate-900 dark:text-white leading-tight">
                                 {lab.title}
                               </h4>
@@ -412,10 +471,13 @@ export default function HomeDashboard({
                           </div>
                         </div>
 
-                        {/* Child-Friendly Subtitle / Plain Explanation - Natural wrap without clipping */}
-                        <p className="text-xs text-slate-600 dark:text-slate-300 font-medium leading-relaxed mt-1">
-                          {lab.subtitle}
-                        </p>
+                        {/* Card Body: Interactive Visual Preview + Child-Friendly Subtitle */}
+                        <div className="flex items-start gap-3 my-2">
+                          <LabCardPreview labId={labId} isDapimActive={isDapimActive} />
+                          <p className="text-xs text-slate-600 dark:text-slate-300 font-medium leading-relaxed flex-1">
+                            {lab.subtitle}
+                          </p>
+                        </div>
                       </div>
 
                       {/* Card Footer: Status Badge & CTA Button */}

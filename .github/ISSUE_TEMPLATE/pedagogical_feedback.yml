@@ -1,0 +1,41 @@
+name: 🎓 Pedagogical Feedback / משוב פדגוגי והתאמת שפה
+description: Feedback on curriculum, explanations, age-appropriateness, or MoE alignment / משוב ממורים, מדריכים והורים על התאמה לכיתה ה' ותוכנית משרד החינוך
+title: "[PEDAGOGY]: "
+labels: ["pedagogy", "curriculum", "grade-5-alignment"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        משוב פדגוגי הוא לב ליבה של פלטפורמת ZenLab!
+        אנו מחויבים לרמת קריאות והבנה אופטימלית לילדים בכיתה ה' (גילאי 10–11) ולתוכנית הלימודים הישראלית.
+  - type: dropdown
+    id: lab
+    attributes:
+      label: 🧪 Related Lab / מעבדה רלוונטית
+      options:
+        - "מעבדה 1: ביטים, פיקסלים ושערים לוגיים"
+        - "מעבדה 2: רובוט אלגוריתמי ומחזור המעבד"
+        - "מעבדה 3: עצי החלטה ומיון"
+        - "מעבדה 4: אלגוריתמי ניווט במבוך (A* ו-BFS)"
+        - "מעבדה 5: מסווג למידת מכונה (k-NN)"
+        - "מעבדה 6: ראייה ממוחשבת ופילטרים"
+        - "מעבדה 7: הנוירון המלאכותי (פרספטרון)"
+        - "מעבדה 8: מודלי שפה ותשומת לב (LLMs)"
+        - "כללי / תוכנית הלימודים הכוללת"
+    validations:
+      required: true
+  - type: textarea
+    id: feedback
+    attributes:
+      label: 💡 Pedagogical Observation / הערה פדגוגית או הצעה לניסוח
+      description: What term, explanation, or challenge was difficult or unclear for students? / איזה מושג, הסבר או אתגר היה מורכב או לא ברור לילדים?
+      placeholder: "הניסוח הנוכחי במעבדה... עדיף להסביר זאת באמצעות אנלוגיה של..."
+    validations:
+      required: true
+  - type: textarea
+    id: proposed_text
+    attributes:
+      label: ✏️ Proposed Alternate Phrasing / הצעת ניסוח חלופית
+      description: Your recommended kid-friendly explanation in Hebrew / ההסבר המונגש המוצע לילדים בעברית
+    validations:
+      required: false

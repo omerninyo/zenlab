@@ -1,123 +1,124 @@
 # ZenLab: Interactive Computer Science & AI Educational Workspace
 
+<div align="center">
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
-[![Platform](https://img.shields.io/badge/platform-Cloudflare%20Pages-orange.svg)]()
+[![Platform: Cloudflare Pages](https://img.shields.io/badge/platform-Cloudflare%20Pages-orange.svg)]()
+[![Privacy: Zero--PII](https://img.shields.io/badge/privacy-Strict%20Zero--PII-emerald.svg)](SECURITY.md)
+[![Design System: Zen 2.0](https://img.shields.io/badge/design%20system-Zen%202.0-yellow.svg)](design-system/README.md)
+[![Target: Grade 5 (Ages 10-11)](https://img.shields.io/badge/curriculum-Grade%205%20MoE%20&%20AI4K12-indigo.svg)](docs/wiki/Pedagogical-Framework.md)
+[![Language: Hebrew RTL](https://img.shields.io/badge/language-Hebrew%20(RTL)%20Native-blueviolet.svg)](README.he.md)
 
-ZenLab is an open-source, client-side educational platform designed to teach foundational computer science, algorithmic reasoning, and artificial intelligence principles interactively.
+**A tactile, browser-native learning laboratory designed to demystify computer hardware, algorithms, and artificial intelligence for elementary school students.**
 
-The platform runs 100% in the browser with zero backend requirements, zero telemetry, and full native Right-to-Left (RTL) Hebrew language support.
+[🌐 Live Deployment](https://zenlab.pages.dev) &bull; [🇮🇱 מדריך מלא בעברית](README.he.md) &bull; [📚 Master Wiki](docs/wiki/Home.md) ([עברית](docs/wiki/Home.he.md)) &bull; [💬 Discussions](https://github.com/omerninyo/zenlab/discussions) &bull; [🎨 Zen 2.0 Design Kit](design-system/README.md)
 
-> 🇮🇱 **Full Hebrew Documentation**: A complete Hebrew guide is available at [`README.he.md`](README.he.md).
-> 📋 **Pedagogical Resources**: [Teacher's Lesson Guide](docs/TEACHERS_GUIDE_HE.md) &bull; [Student Discovery Worksheet](docs/STUDENT_WORKSHEET.md) ([עברית](docs/STUDENT_WORKSHEET_HE.md)) &bull; [Global Competitive Benchmark](docs/research/COMPETITIVE_BENCHMARK_AND_INNOVATION.md).
+</div>
 
 ---
 
-## Interactive Eight-Lab Master Suite
+## 💡 About ZenLab
 
-The curriculum is structured into two parallel cognitive tracks designed for Grade 5 (Ages 10–11):
+**ZenLab** is an open-source, client-side educational platform engineered specifically for Grade 5 students (ages 10–11). It bridges the gap between passive syntax block-coding (like Scratch) and black-box AI tools by providing **transparent, manipulable microworlds** where children directly interact with the mathematical and algorithmic foundations of computing.
+
+### Key Highlights
+- **100% Client-Side SPA**: Zero backend servers, zero databases, zero cloud dependencies. Runs entirely inside the modern browser.
+- **Strict Zero-PII & Child Privacy**: No accounts, no logins, no tracking cookies. All learning progress stays locally inside the student's browser `localStorage`.
+- **Procedural Sound Synthesis**: Native Web Audio API generates harmonious audio feedback without downloading heavy audio files.
+- **Zen 2.0 Design Framework**: Apple Liquid Glass aesthetics, Radix Slate scale, and crisp tactile cards calibrated for children without chromatic clutter.
+- **Full Native RTL & Hebrew Copy**: Culturally calibrated Hebrew pedagogy aligned with the Israeli Ministry of Education (אגף מדעים / מדעי המחשב) and global AI4K12 standards.
+- **Inclusive Language Standard**: Unambiguous plural address (`לחצו`, `גררו`, `שלכם`) protecting female student engagement and preventing speech synthesis (TTS) mispronunciations.
+
+---
+
+## 🧪 The Eight-Lab Master Suite
+
+The curriculum is structured into two parallel cognitive tracks designed for 5th graders:
 
 ### Track 1: Classical Computational Thinking & Algorithms
-1. **Lab 1: Binary Pixels (`Lab1_BinaryPixels`)**:
-   - *Core Concept*: Binary encoding of images, bits, bytes, and hexadecimal data representation.
-   - *Features*: 8x8 toggle matrix, real-time 64-bit binary and hex streaming, graphic presets, and symbol challenges.
-2. **Lab 2: Algorithmic Robot (`Lab2_AlgorithmicRobot`)**:
-   - *Core Concept*: Deterministic sequence execution, preconditions, and logic debugging.
-   - *Features*: 6x6 grid maze, visual command queue (Forward, Turn Left, Turn Right, Pick Key, Unlock Gate), step debugger.
-3. **Lab 3: Decision Tree Detective (`Lab3_DecisionTree`)**:
-   - *Core Concept*: Hierarchical branching, conditionals (`if-then-else`), feature splitting, and information purity.
-   - *Features*: Interactive tree builder, feature splits (CanFly, HasFur, Legs), real-time purity bar, and animal test tracer.
-4. **Lab 4: State Space Pathfinder (`Lab4_Pathfinder`)**:
-   - *Core Concept*: Graph search, state space exploration, obstacles, and heuristic algorithms (BFS vs. A*).
-   - *Features*: 8x8 grid maze, obstacle wall builder, step-by-step frontier comparison showing explored nodes count and shortest path.
+| Module | Concept | Interactive Principle Simulation | Hands-on Sandbox |
+| :--- | :--- | :--- | :--- |
+| **Lab 1: Binary Pixels** | Bits, Bytes, RGB, Hex, Logic Gates | **Binary Scale & Half-Adder**: Toggle 8 bits to compute base-10/hex values; test AND, OR, NOT, and XOR circuits. | **8x8 Matrix Canvas**: Draw shapes, inspect real-time bit streams, and solve row-addressing challenges. |
+| **Lab 2: Algorithmic Robot** | Sequencing, Preconditions, CPU Cycle | **CPU Instruction Pipeline**: Visual Conveyor belt showing Fetch $\to$ Decode $\to$ Execute stages with PC, ALU, and ACC. | **6x6 Maze Arena**: Build command sequences (Forward, Turn, Pick Key, Unlock Gate) to reach the goal star. |
+| **Lab 3: Decision Tree Detective** | Binary Branching, Entropy, Purity | **Interactive Tree Splitter**: Trace animals through yes/no questions down to classification leaves. | **Animal Classifier**: Pick features to balance splits, watch the real-time Purity Meter, and achieve 100% accuracy. |
+| **Lab 4: State Space Pathfinder** | Graphs, Heuristics, Shortest Paths | **Blind vs. Smart Search ($A^*$)**: Compare radial breadth-first search against a smart compass vector (Waze analogy). | **8x8 Obstacle Maze**: Draw wall barriers with your mouse or finger, test algorithms, and count explored nodes. |
 
 ### Track 2: Perception, Machine Learning & Modern Generative AI
-5. **Lab 5: Machine Learning Classifier (`Lab5_MachineLearningClassifier`)**:
-   - *Core Concept*: Supervised classification in 2D feature space, k-Nearest Neighbors (k-NN), and decision boundaries.
-   - *Features*: Interactive sample placement, draggable test item, Euclidean distance neighborhood visualization, and $k$ adjustments.
-6. **Lab 6: Vision Kernel Studio (`Lab6_VisionKernels`)**:
-   - *Core Concept*: 2D image convolutions, $3 \times 3$ kernel matrices, multiply-accumulate (MAC) math, and edge detection.
-   - *Features*: 8x8 pixel canvas with presets (vertical stripes, squares, cross), Sobel/sharpen/blur filters, and interactive pixel inspector.
-7. **Lab 7: The Perceptron Switch (`Lab7_Perceptron`)**:
-   - *Core Concept*: Single-layer artificial neuron, synapse weights, threshold bias, linear separability, and logic gates.
-   - *Features*: $w_1, w_2, b$ sliders, dynamic decision boundary on unit square, AND/OR gate training, and the historic XOR limitation.
-8. **Lab 8: Language Model Predictor (`Lab8_LanguageModelPredictor`)**:
-   - *Core Concept*: Next-token prediction in LLMs, Softmax temperature scaling, and sampling dynamics.
-   - *Features*: Context prompts, interactive Temperature slider ($0.0 \le T \le 1.5$), real-time probability bar chart, and autoregressive generation.
+| Module | Concept | Interactive Principle Simulation | Hands-on Sandbox |
+| :--- | :--- | :--- | :--- |
+| **Lab 5: Machine Learning Classifier** | 2D Feature Space, k-NN, Bias | **k-Nearest Neighbors Circle**: Drag a test fruit to expand a neighborhood radius and watch majority voting. | **2D Feature Plane**: Place training points (weight vs. size), tune hyperparameter $k$, and investigate dataset bias. |
+| **Lab 6: Vision Kernel Studio** | 2D Image Convolutions, Edge Filters | **3x3 Moving Filter**: Slide a convolution kernel across pixels to see multiply-accumulate edge detection live. | **8x8 Filter Canvas**: Apply Sobel vertical/horizontal, sharpen, and blur kernels to detect custom shape contours. |
+| **Lab 7: The Perceptron Switch** | Artificial Neurons, Weights, XOR | **Neuron Activation Gauge**: Adjust inputs, synapse weights, and bias threshold to see when the neuron fires. | **2D Decision Boundary**: Tilt the separation line on a coordinate plane; discover why a single neuron fails XOR. |
+| **Lab 8: Language Model Predictor** | Next-Token Prediction, Temperature, Attention | **Softmax Temperature Gauge**: Flatten or sharpen probability bars; explore word-connection attention maps. | **Sentence Autocomplete**: Predict text word-by-word, test temperatures from 0.0 to 1.5, and learn to fact-check AI. |
 
 ---
 
-## Core System Architecture
+## 📚 Complete Wiki & Educational Documentation
 
-```text
-+-----------------------------------------------------------------------+
-|                           Vite + React SPA                            |
-+-----------------------------------------------------------------------+
-|  Routing / Navigation  |  Hebrew Typography & RTL  |   Lucide Icons   |
-+-----------------------------------------------------------------------+
-|                            Core Engines                               |
-|  - Web Audio API Synthesizer (Zero asset dependencies)                |
-|  - Reactive LocalStorage State & Star Manager                         |
-|  - Canvas Particle Celebration Engine                                 |
-|  - Pluggable AI Service (Deterministic Mock + Gemini Bridge)          |
-+-----------------------------------------------------------------------+
-|                       Curriculum Data Layer                           |
-|  - src/data/curriculum.json (Pedagogical copy, criteria, glossary)     |
-+-----------------------------------------------------------------------+
-```
+Comprehensive pedagogical guides, lesson plans, and research are available in our [`docs/wiki/`](docs/wiki/Home.md):
+- [**Pedagogical Framework**](docs/wiki/Pedagogical-Framework.md) ([עברית](docs/wiki/Pedagogical-Framework.he.md)): Israeli MoE standards, AI4K12 5 Big Ideas, Piagetian Constructionism.
+- [**Curriculum Master Index**](docs/wiki/Curriculum-Master-Index.md) ([עברית](docs/wiki/Curriculum-Master-Index.he.md)): Exhaustive breakdown of all 8 labs, analogies, and solutions.
+- [**Teacher's Classroom Guide**](docs/wiki/Teachers-Classroom-Guide.md) ([עברית](docs/wiki/Teachers-Classroom-Guide.he.md)): 45-minute lesson workflows, pair programming, rubrics.
+- [**Architecture & Tech Stack**](docs/wiki/Architecture-and-Tech-Stack.md) ([עברית](docs/wiki/Architecture-and-Tech-Stack.he.md)): Technical architecture, storage engine, sound synthesis.
+- [**Student Discovery Worksheet**](docs/STUDENT_WORKSHEET.md) ([עברית](docs/STUDENT_WORKSHEET_HE.md)): Printable classroom discovery sheet.
 
 ---
 
-## Getting Started
+## 🚀 Quickstart & Local Development
 
 ### Prerequisites
 - Node.js >= 18.0.0
 - npm >= 9.0.0
 
-### Installation & Local Development
 ```bash
-# Clone repository
+# 1. Clone repository
 git clone https://github.com/omerninyo/zenlab.git
 cd zenlab
 
-# Install dependencies
+# 2. Install dependencies
 npm install
 
-# Start development server
+# 3. Start local development server (with instant HMR)
 npm run dev
 
-# Run production build
-npm run build
+# 4. Open in browser at http://localhost:5173
+```
 
-# Preview production build locally
+### Production Build & Preview
+```bash
+npm run build
 npm run preview
 ```
 
-> **Detailed Guide**: For detailed step-by-step instructions, testing checklists, and troubleshooting in Hebrew, refer to [**`docs/RUN_LOCALLY.md`**](docs/RUN_LOCALLY.md).
+---
+
+## ☁️ Cloudflare Pages Deployment
+
+ZenLab is ready for zero-configuration deployment to Cloudflare Pages:
+
+1. **SPA Routing**: Pre-configured in [`public/_redirects`](public/_redirects) (`/* /index.html 200`).
+2. **Automated CI/CD**: Workflow configured in [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml).
+3. **Manual CLI Deploy**:
+   ```bash
+   npx wrangler pages deploy dist --project-name=zenlab
+   ```
 
 ---
 
-## Cloudflare Pages Deployment
+## 🤝 Community & Contributing
 
-This project is optimized for direct hosting on Cloudflare Pages as a Single Page Application (SPA).
-
-1. **SPA Route Fallback**: Included in [`public/_redirects`](public/_redirects) (`/* /index.html 200`).
-2. **Build Configuration**:
-   - Framework preset: `Vite`
-   - Build command: `npm run build`
-   - Build output directory: `dist`
-3. **Automated CI/CD**: See [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml).
-
-### Manual CLI Deployment via Wrangler
-```bash
-npx wrangler pages deploy dist --project-name=zenlab
-```
+We welcome contributions from educators, developers, and researchers!
+- **Contributing Guidelines**: See [`CONTRIBUTING.md`](CONTRIBUTING.md) ([עברית](CONTRIBUTING.he.md)).
+- **Code of Conduct**: Review our kid-safe educational community standards in [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md).
+- **Issue Templates**: Report bugs or propose features using our [GitHub Issue Forms](https://github.com/omerninyo/zenlab/issues).
+- **Discussions**: Ask questions or share lesson plans in [GitHub Discussions](https://github.com/omerninyo/zenlab/discussions).
+- **Security & Privacy**: Read our Zero-PII policy in [`SECURITY.md`](SECURITY.md).
 
 ---
 
-## Governance & Zero-PII Policy
+## 📄 License & Attribution
 
-- **Strict Zero-PII**: No personal names, personal email addresses, private API keys, or absolute local machine paths are committed.
-- **License**: Released under the [MIT License](LICENSE).
-- **Author Identity**: Code & AI Explorer Team.
-- **Governance Directives**: See [`.agent/rules.md`](.agent/rules.md) and [`AGENTS.md`](AGENTS.md).
+- **License**: Released under the permissive [MIT License](LICENSE).
+- **Author Identity**: Code & AI Explorer Team (`team@learnai.internal`).
+- **Icons**: [Lucide Icons](https://lucide.dev) (ISC License).

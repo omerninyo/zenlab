@@ -1,0 +1,65 @@
+name: 🐛 Bug Report / דיווח על תקלה
+description: Report an issue, layout bug, or unexpected behavior / דיווח על בעיה טכנית או תקלת ממשק
+title: "[BUG]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        תודה שאתם עוזרים לשפר את ZenLab! / Thank you for helping improve ZenLab!
+        אנא מלאו את הפרטים מטה כדי שנוכל לשחזר ולפתור את התקלה במהירות.
+  - type: dropdown
+    id: lab
+    attributes:
+      label: 🧪 Related Lab or Section / מעבדה או אזור קשור
+      description: Select which lab or view the issue occurred in / בחרו את המעבדה או האזור שבו קרתה התקלה
+      options:
+        - "Home Dashboard / מסך הבית ומפת המסע"
+        - "Lab 1: Binary Pixels / מעבדה 1: פיקסלים וביטים"
+        - "Lab 2: Algorithmic Robot / מעבדה 2: רובוט אלגוריתמי"
+        - "Lab 3: Decision Tree / מעבדה 3: עץ החלטות בלשי"
+        - "Lab 4: Pathfinder / מעבדה 4: מבוך החיפוש והמסלול הקצר"
+        - "Lab 5: Machine Learning Classifier / מעבדה 5: מסווג למידת מכונה"
+        - "Lab 6: Vision Kernels / מעבדה 6: ראייה ממוחשבת ופילטרים"
+        - "Lab 7: Perceptron / מעבדה 7: נוירון מלאכותי"
+        - "Lab 8: Language Model / מעבדה 8: מודל שפה וחיזוי מילים"
+        - "Zen AI Tutor / חונך ה-AI הרובוטי"
+        - "Audio Engine & Sound / מנוע הצלילים והקריינות"
+        - "Certificate Modal / תעודת הצטיינות"
+        - "Other / אחר"
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: 📝 Description / תיאור התקלה
+      description: A clear and concise description of what happened / תיאור ברור של מה שקרה
+      placeholder: "כאשר לוחצים על כפתור X במעבדה Y..."
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: 🔄 Steps to Reproduce / שלבים לשחזור התקלה
+      description: How can we reproduce this bug? / כיצד ניתן לשחזר את התקלה?
+      placeholder: |
+        1. עוברים למעבדה...
+        2. לוחצים על...
+        3. רואים ש...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 🎯 Expected Behavior / התנהגות מצופה
+      description: What did you expect to happen? / למה ציפיתם שיקרה?
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: 💻 Device & Browser / מכשיר ודפדפן
+      description: e.g., Chrome on macOS, Safari on iPad, Android phone / לדוגמה: ספארי באייפד, כרום בווינדוס
+      placeholder: "Chrome 125, macOS Sonoma / iPad Safari iOS 17"
+    validations:
+      required: true

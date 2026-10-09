@@ -1,0 +1,32 @@
+name: 💡 Feature Request / הצעת פיצ'ר או מעבדה חדשה
+description: Propose an idea, new algorithm, or platform enhancement / הצעת רעיון למעבדה חדשה או שיפור לפלטפורמה
+title: "[FEATURE]: "
+labels: ["enhancement", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        יש לכם רעיון מעולה להרחבת ZenLab? / Do you have a great idea to enhance ZenLab?
+        נשמח לשמוע על רעיונות למעבדות חדשות, אלגוריתמים נוספים, או כלים למורים ולתלמידים.
+  - type: textarea
+    id: problem
+    attributes:
+      label: 🎯 Problem or Opportunity / הצורך או ההזדמנות
+      description: Is your feature request related to a specific challenge or educational goal? / האם ההצעה קשורה לאתגר מסוים או למטרה לימודית?
+      placeholder: "הייתי רוצה לראות הדמיה של..."
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: 🚀 Proposed Solution / הפתרון המוצע
+      description: Describe the feature, how it should work, and how students will interact with it / תארו את הפיצ'ר, איך הוא יפעל ואיך התלמידים יתנסו בו
+    validations:
+      required: true
+  - type: textarea
+    id: educational_value
+    attributes:
+      label: 📚 Educational & Pedagogical Value / ערך פדגוגי ולימודי
+      description: How does this help 5th grade students understand computer science or AI? / כיצד זה מסייע לתלמידי כיתה ה' להבין מדעי המחשב ו-AI?
+    validations:
+      required: false
