@@ -1,0 +1,209 @@
+/* ==========================================================================
+   ZEN 2.0 LIQUID GLASS & HOLLOW RESTRAINT DESIGN SYSTEM
+   Standardized Standalone Design Tokens (Plug-and-Play)
+   Palette: Champagne Gold (Default) + Matte Amber, Nordic Ice, Emerald Sanctuary
+   Modes: Dual Light Mode (Default in :root) & Dark Mode (under html.dark)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. LIGHT MODE (DEFAULT CANONICAL REGISTER)
+   -------------------------------------------------------------------------- */
+:root {
+  /* Monochromatic Radix Slate Scale (Light Mode) */
+  --slate-1: #f8fafc;
+  --slate-2: #ffffff;
+  --slate-3: #f1f5f9;
+  --slate-4: #e2e8f0;
+  --slate-5: #cbd5e1;
+  --slate-6: #e2e8f0;
+  --slate-7: #cbd5e1;
+  --slate-8: #94a3b8;
+  --slate-9: #64748b;
+  --slate-10: #475569;
+  --slate-11: #334155;
+  --slate-12: #0f172a;
+
+  /* Default Active Accent: Champagne Gold (Light Mode) */
+  --theme-name: "Champagne Gold";
+  --accent-base: #ca8a04;
+  --accent-hover: #a16207;
+  --accent-rim: rgba(202, 138, 4, 0.35);
+  --accent-wash: rgba(202, 138, 4, 0.10);
+  --focus-ring: 0 0 0 2px rgba(202, 138, 4, 0.35);
+
+  /* Velvet Ambient Canvas (Light Mode - Crisp Warm Alabaster) */
+  --content-bg: #f8fafc;
+  --content-bg-gradient: 
+    radial-gradient(ellipse 95% 65% at 50% -8%, rgba(202, 138, 4, 0.08) 0%, rgba(202, 138, 4, 0.015) 45%, transparent 75%),
+    linear-gradient(180deg, #f8fafc 0%, #f1f5f9 40%, #e2e8f0 100%);
+
+  /* Optical Liquid Glass Material (Light Mode) */
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-blur: blur(28px) saturate(180%);
+  --glass-border: 1px solid rgba(0, 0, 0, 0.08);
+  --glass-specular-top: inset 0 1px 0 0 rgba(255, 255, 255, 0.95);
+  --glass-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.03);
+
+  /* Typography */
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Heebo", "Assistant", sans-serif;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+
+  /* Anti-Bubble Geometric Border Radii Scale (Strict Specification) */
+  --radius-badge: 4px;
+  --radius-item: 4px;
+  --radius-btn: 6px;
+  --radius-input: 8px;
+  --radius-card: 8px;
+  --radius-container: 10px;
+  --radius-hero: 12px;
+}
+
+/* Light Mode Secondary Palettes */
+[data-theme="matte-amber"] {
+  --theme-name: "Matte Amber";
+  --accent-base: #c26928;
+  --accent-hover: #b45309;
+  --accent-rim: rgba(194, 105, 40, 0.38);
+  --accent-wash: rgba(194, 105, 40, 0.12);
+  --focus-ring: 0 0 0 2px rgba(194, 105, 40, 0.35);
+  --content-bg-gradient: 
+    radial-gradient(ellipse 95% 65% at 50% -8%, rgba(194, 105, 40, 0.08) 0%, rgba(194, 105, 40, 0.015) 45%, transparent 75%),
+    linear-gradient(180deg, #f8fafc 0%, #f1f5f9 40%, #e2e8f0 100%);
+}
+
+[data-theme="nordic-ice"] {
+  --theme-name: "Nordic Ice";
+  --accent-base: #0284c7;
+  --accent-hover: #0369a1;
+  --accent-rim: rgba(2, 132, 199, 0.35);
+  --accent-wash: rgba(2, 132, 199, 0.10);
+  --focus-ring: 0 0 0 2px rgba(2, 132, 199, 0.35);
+  --content-bg-gradient: 
+    radial-gradient(ellipse 95% 65% at 50% -8%, rgba(2, 132, 199, 0.08) 0%, rgba(2, 132, 199, 0.015) 45%, transparent 75%),
+    linear-gradient(180deg, #f8fafc 0%, #f1f5f9 40%, #e2e8f0 100%);
+}
+
+[data-theme="emerald-sanctuary"] {
+  --theme-name: "Emerald Sanctuary";
+  --accent-base: #059669;
+  --accent-hover: #047857;
+  --accent-rim: rgba(5, 150, 105, 0.35);
+  --accent-wash: rgba(5, 150, 105, 0.10);
+  --focus-ring: 0 0 0 2px rgba(5, 150, 105, 0.35);
+  --content-bg-gradient: 
+    radial-gradient(ellipse 95% 65% at 50% -8%, rgba(5, 150, 105, 0.08) 0%, rgba(5, 150, 105, 0.015) 45%, transparent 75%),
+    linear-gradient(180deg, #f8fafc 0%, #f1f5f9 40%, #e2e8f0 100%);
+}
+
+[data-theme="champagne-gold"] {
+  --theme-name: "Champagne Gold";
+  --accent-base: #ca8a04;
+  --accent-hover: #a16207;
+  --accent-rim: rgba(202, 138, 4, 0.35);
+  --accent-wash: rgba(202, 138, 4, 0.10);
+  --focus-ring: 0 0 0 2px rgba(202, 138, 4, 0.35);
+  --content-bg-gradient: 
+    radial-gradient(ellipse 95% 65% at 50% -8%, rgba(202, 138, 4, 0.08) 0%, rgba(202, 138, 4, 0.015) 45%, transparent 75%),
+    linear-gradient(180deg, #f8fafc 0%, #f1f5f9 40%, #e2e8f0 100%);
+}
+
+/* --------------------------------------------------------------------------
+   2. DARK MODE (APPLIED WHEN html.dark OR .dark IS PRESENT)
+   -------------------------------------------------------------------------- */
+html.dark,
+.dark {
+  /* Monochromatic Radix Slate Scale (Dark Mode) */
+  --slate-1: #0c0d10;
+  --slate-2: #15161c;
+  --slate-3: #1c1e27;
+  --slate-4: #252834;
+  --slate-5: #2f3342;
+  --slate-6: rgba(255, 255, 255, 0.10);
+  --slate-7: rgba(255, 255, 255, 0.16);
+  --slate-8: rgba(255, 255, 255, 0.24);
+  --slate-9: #9ca3af;
+  --slate-10: #cbd5e1;
+  --slate-11: #9ca3af;
+  --slate-12: #ffffff;
+
+  /* Default Active Accent: Champagne Gold (Dark Mode) */
+  --theme-name: "Champagne Gold";
+  --accent-base: #eab308;
+  --accent-hover: #facc15;
+  --accent-rim: rgba(234, 179, 8, 0.42);
+  --accent-wash: rgba(234, 179, 8, 0.15);
+  --focus-ring: 0 0 0 2px rgba(234, 179, 8, 0.42);
+
+  /* Velvet Ambient Canvas (Dark Mode - Cinema Slate) */
+  --content-bg: #0c0d10;
+  --content-bg-gradient: 
+    radial-gradient(ellipse 95% 65% at 50% -8%, rgba(234, 179, 8, 0.11) 0%, rgba(234, 179, 8, 0.03) 45%, transparent 75%),
+    linear-gradient(180deg, #181610 0%, #0e0d0a 40%, #070605 100%);
+
+  /* Optical Liquid Glass Material (Dark Mode) */
+  --glass-bg: rgba(16, 18, 24, 0.84);
+  --glass-blur: blur(32px) saturate(190%);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.09);
+  --glass-specular-top: inset 0 1px 0 0 rgba(255, 255, 255, 0.16);
+  --glass-shadow: 0 16px 40px -4px rgba(0, 0, 0, 0.65), 0 4px 12px rgba(0, 0, 0, 0.45);
+
+  /* Typography */
+  --text-primary: #ffffff;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+}
+
+/* Dark Mode Secondary Palettes */
+html.dark [data-theme="matte-amber"],
+.dark [data-theme="matte-amber"] {
+  --theme-name: "Matte Amber";
+  --accent-base: #d48344;
+  --accent-hover: #e09559;
+  --accent-rim: rgba(212, 131, 68, 0.45);
+  --accent-wash: rgba(212, 131, 68, 0.18);
+  --focus-ring: 0 0 0 2px rgba(212, 131, 68, 0.45);
+  --content-bg-gradient: 
+    radial-gradient(ellipse 95% 65% at 50% -8%, rgba(212, 131, 68, 0.12) 0%, rgba(212, 131, 68, 0.035) 45%, transparent 75%),
+    linear-gradient(180deg, #151720 0%, #0d0e12 40%, #07080a 100%);
+}
+
+html.dark [data-theme="nordic-ice"],
+.dark [data-theme="nordic-ice"] {
+  --theme-name: "Nordic Ice";
+  --accent-base: #38bdf8;
+  --accent-hover: #7dd3fc;
+  --accent-rim: rgba(56, 189, 248, 0.40);
+  --accent-wash: rgba(56, 189, 248, 0.15);
+  --focus-ring: 0 0 0 2px rgba(56, 189, 248, 0.40);
+  --content-bg-gradient: 
+    radial-gradient(ellipse 95% 65% at 50% -8%, rgba(56, 189, 248, 0.09) 0%, rgba(56, 189, 248, 0.02) 45%, transparent 75%),
+    linear-gradient(180deg, #101520 0%, #0a0d14 40%, #05070a 100%);
+}
+
+html.dark [data-theme="emerald-sanctuary"],
+.dark [data-theme="emerald-sanctuary"] {
+  --theme-name: "Emerald Sanctuary";
+  --accent-base: #10b981;
+  --accent-hover: #34d399;
+  --accent-rim: rgba(16, 185, 129, 0.40);
+  --accent-wash: rgba(16, 185, 129, 0.16);
+  --focus-ring: 0 0 0 2px rgba(16, 185, 129, 0.40);
+  --content-bg-gradient: 
+    radial-gradient(ellipse 95% 65% at 50% -8%, rgba(16, 185, 129, 0.10) 0%, rgba(16, 185, 129, 0.025) 45%, transparent 75%),
+    linear-gradient(180deg, #101c18 0%, #0a110e 40%, #050807 100%);
+}
+
+html.dark [data-theme="champagne-gold"],
+.dark [data-theme="champagne-gold"] {
+  --theme-name: "Champagne Gold";
+  --accent-base: #eab308;
+  --accent-hover: #facc15;
+  --accent-rim: rgba(234, 179, 8, 0.42);
+  --accent-wash: rgba(234, 179, 8, 0.15);
+  --focus-ring: 0 0 0 2px rgba(234, 179, 8, 0.42);
+  --content-bg-gradient: 
+    radial-gradient(ellipse 95% 65% at 50% -8%, rgba(234, 179, 8, 0.11) 0%, rgba(234, 179, 8, 0.03) 45%, transparent 75%),
+    linear-gradient(180deg, #181610 0%, #0e0d0a 40%, #070605 100%);
+}

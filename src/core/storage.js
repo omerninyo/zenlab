@@ -38,7 +38,7 @@ const defaultState = {
   viewMode: 'home', // 'home' (roadmap overview) | 'lab' (active lab workspace)
   theme: 'light', // 'light' (default bright classroom mode) | 'dark'
   dapimMode: false, // Dapim 4.0 Liquid Glass & Hollow Restraint theme preview
-  dapimPalette: 'matte-amber' // 'matte-amber' | 'nordic-ice' | 'emerald-sanctuary' | 'champagne-gold'
+  dapimPalette: 'champagne-gold' // 'champagne-gold' (default) | 'matte-amber' | 'nordic-ice' | 'emerald-sanctuary'
 };
 
 class StorageEngineClass {
@@ -230,12 +230,12 @@ class StorageEngineClass {
   }
 
   getDapimPalette() {
-    return this.state.dapimPalette || 'matte-amber';
+    return this.state.dapimPalette || 'champagne-gold';
   }
 
   setDapimPalette(palette) {
-    const validPalettes = ['matte-amber', 'nordic-ice', 'emerald-sanctuary', 'champagne-gold'];
-    const selected = validPalettes.includes(palette) ? palette : 'matte-amber';
+    const validPalettes = ['champagne-gold', 'matte-amber', 'nordic-ice', 'emerald-sanctuary'];
+    const selected = validPalettes.includes(palette) ? palette : 'champagne-gold';
     this.state.dapimPalette = selected;
     if (typeof document !== 'undefined') {
       document.documentElement.setAttribute('data-theme', selected);

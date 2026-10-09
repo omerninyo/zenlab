@@ -7,6 +7,20 @@
 
 ---
 
+## [0.7.5] - 2026-10-09
+
+### נוסף (Added)
+- **קיבוע פלטת Champagne Gold כברירת מחדל רשמית וייצוא ערכת העיצוב המלאה לשימוש רב-פעמי (`design-system/`, `src/core/storage.js`, `src/styles/design-tokens.css`)**:
+  - קיבוע קבוע של פלטת **Champagne Gold** (`#ca8a04` במצב בהיר / `#eab308` במצב כהה) כברירת המחדל הראשית של האפליקציה ב-`StorageEngine` ובטוקנים של `:root` ו-`html.dark`.
+  - ייצוא חבילת תבנית עיצוב עצמאית ומלאה בתיקייה ייעודית `/design-system/`:
+    - `tokens.css`: משתני CSS עצמאיים למצב בהיר (ברירת מחדל) וכהה, כולל סקאלת Radix Slate מלאה וקנבס קטיפתי (Ambient Velvet).
+    - `components.css`: כל מחלקות הרכיבים התקניות (`.canvas-ambient`, `.header-glass`, `.card-tactile`, `.card-command-hero`, `.card-tactile-highlight`, `.btn-hollow`, `.btn-hollow-primary`, `.segmented-glass-container`, `.segmented-glass-item`, `.badge-glass`, `.input-glass`).
+    - `tailwind.preset.js`: תבנית הגדרות להטמעה מיידית ב-Tailwind CSS עם צבעים, רדיוסים מלבניים וצללים.
+    - `templates/`: רכיבי React מוכנים להעתקה (`Header.jsx`, `TactileCard.jsx`, `HollowButton.jsx`, `SegmentedControl.jsx`, `Badge.jsx`, `ThemeToggle.jsx`).
+    - `demo.html`: דף הדגמה חי אינטראקטיבי עצמאי לבדיקה ישירה בכל דפדפן (כולל מתג ערכות נושא ומצב כהה/בהיר).
+    - `SPECIFICATION.md` ו-`SPECIFICATION.he.md`: ספרי חוקים מקיפים בעברית ובאנגלית המעגנים את 7 חוקי הברזל (גיאומטריה מלבנית מרוסנת, מצב בהיר כברירת מחדל, פלטת שמפניה, ביטול קיטומי טקסט בעברית, כרטיסים אטומים בלבד, כפתורים חלולים, ושדות קלט 16px למובייל).
+    - `README.md`: מדריך התחלה מהירה (Quickstart) של 5 דקות לחיבור בכל פרויקט עתידי.
+
 ## [0.7.4] - 2026-10-09
 
 ### נוסף (Added)

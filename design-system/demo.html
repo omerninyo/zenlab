@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Zen 2.0 Design System | Interactive Reference</title>
+  <link rel="stylesheet" href="./tokens.css" />
+  <link rel="stylesheet" href="./components.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Heebo', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    .container {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem 4rem 1rem;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 0.75rem;
+    }
+    .flex-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .space-y {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .section-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.75rem;
+    }
+    .code-pill {
+      font-family: monospace;
+      font-size: 0.78rem;
+      background: var(--slate-3);
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid var(--slate-6);
+    }
+  </style>
+</head>
+<body class="canvas-ambient">
+
+  <!-- Sticky Optical Liquid Glass Header -->
+  <header class="header-glass">
+    <div style="max-width: 1040px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 56px; padding: 0 1rem;">
+      <div class="flex-row">
+        <div style="width: 34px; height: 34px; border-radius: 6px; background: var(--slate-3); border: 1px solid var(--slate-6); display: flex; align-items: center; justify-content: center; color: var(--accent-base); font-weight: 900;">
+          ✦
+        </div>
+        <div>
+          <span style="font-weight: 900; font-size: 1rem; color: var(--text-primary);">Zen Design System</span>
+          <span class="badge-glass badge-glass-accent" style="margin-right: 6px;">Champagne Gold</span>
+        </div>
+      </div>
+
+      <!-- Segmented Tab in Header -->
+      <div class="segmented-glass-container" id="viewSwitcher">
+        <button type="button" class="segmented-glass-item segmented-glass-item-active" onclick="switchTab(this, 'overview')">סקירה כללית</button>
+        <button type="button" class="segmented-glass-item" onclick="switchTab(this, 'components')">רכיבים</button>
+      </div>
+
+      <!-- Controls: Palette & Theme Toggle -->
+      <div class="flex-row">
+        <select id="paletteSelect" onchange="setPalette(this.value)" class="input-glass" style="height: 34px; padding: 0 8px; font-size: 0.8rem; cursor: pointer;">
+          <option value="champagne-gold" selected>🥂 Champagne Gold</option>
+          <option value="matte-amber">🍁 Matte Amber</option>
+          <option value="nordic-ice">❄️ Nordic Ice</option>
+          <option value="emerald-sanctuary">🌲 Emerald Sanctuary</option>
+        </select>
+        <button type="button" id="themeBtn" onclick="toggleTheme()" class="btn-hollow" style="width: 36px; height: 34px; padding: 0;" title="החלף מצב תצוגה">
+          🌙
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Showcase Container -->
+  <main class="container space-y">
+
+    <!-- 1. Hero / Master Command Card -->
+    <div class="card-command-hero" style="padding: 1.5rem;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+        <div>
+          <div class="flex-row" style="margin-bottom: 0.5rem;">
+            <span class="badge-glass">גרסה 2.0</span>
+            <span class="badge-glass badge-glass-emerald">✓ אומת למובייל ו-RTL</span>
+          </div>
+          <h1 style="font-size: 1.6rem; font-weight: 900; line-height: 1.2; color: var(--text-primary);">
+            תבנית העיצוב הרשמית: זֶן 2.0 (Liquid Glass & Hollow Restraint)
+          </h1>
+          <p style="color: var(--text-secondary); font-size: 0.95rem; margin-top: 0.35rem; max-width: 680px; line-height: 1.6;">
+            שילוב מדויק בין יוקרת זכוכית נוזלית (Apple Glass), כרטיסים טקטיליים אטומים (100% Opaque Slate), כפתורים חלולים, וגיאומטריה מלבנית מרוסנת (4px–8px) המותאמת לעברית ולסביבות למידה איכותיות.
+          </p>
+        </div>
+        <button type="button" class="btn-hollow-primary" onclick="alert('ייצוא מוצלח!')">
+          שימוש בתבנית &larr;
+        </button>
+      </div>
+
+      <!-- Hero Stat Tiles -->
+      <div class="grid-4" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--slate-6);">
+        <div style="background: var(--slate-3); padding: 0.75rem; border-radius: 6px; border: 1px solid var(--slate-6);">
+          <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">ברירת מחדל</div>
+          <div style="font-size: 1.1rem; font-weight: 900; color: var(--text-primary); margin-top: 2px;">מצב בהיר</div>
+        </div>
+        <div style="background: var(--slate-3); padding: 0.75rem; border-radius: 6px; border: 1px solid var(--slate-6);">
+          <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">פלטת בסיס</div>
+          <div style="font-size: 1.1rem; font-weight: 900; color: var(--accent-base); margin-top: 2px;">Champagne</div>
+        </div>
+        <div style="background: var(--slate-3); padding: 0.75rem; border-radius: 6px; border: 1px solid var(--slate-6);">
+          <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">גיאומטריה</div>
+          <div style="font-size: 1.1rem; font-weight: 900; color: var(--text-primary); margin-top: 2px;">4px–8px Anti-Bubble</div>
+        </div>
+        <div style="background: var(--slate-3); padding: 0.75rem; border-radius: 6px; border: 1px solid var(--slate-6);">
+          <div style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">תאימות מובייל</div>
+          <div style="font-size: 1.1rem; font-weight: 900; color: #10b981; margin-top: 2px;">375px אפס גלישה</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Spotlight Card -->
+    <div class="card-tactile card-tactile-highlight" style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+      <div class="flex-row">
+        <div style="width: 44px; height: 44px; border-radius: 8px; background: var(--slate-3); border: 1px solid var(--slate-6); display: flex; align-items: center; justify-content: center; color: var(--accent-base); font-size: 1.3rem;">
+          ⚡
+        </div>
+        <div>
+          <span class="badge-glass badge-glass-accent" style="margin-bottom: 4px;">כרטיס מודגש (Spotlight)</span>
+          <h3 style="font-size: 1.1rem; font-weight: 900; color: var(--text-primary);">חוק הברזל: כרטיסים אטומים בלבד (100% Opaque)</h3>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 2px;">
+            זכוכית נוזלית מיועדת רק לסרגל העליון, חלונות קופצים ותפריטים צפים. תוכן מרכזי תמיד יישב על כרטיס אטום לחלוטין.
+          </p>
+        </div>
+      </div>
+      <button type="button" class="btn-hollow-primary">חקור עכשיו &larr;</button>
+    </div>
+
+    <!-- 3. Component Showcase Grid -->
+    <div>
+      <h2 class="section-title">ארסנל הרכיבים</h2>
+      <div class="grid-2">
+
+        <!-- Card: Buttons -->
+        <div class="card-tactile space-y" style="gap: 1rem;">
+          <div>
+            <h3 style="font-size: 1rem; font-weight: 900; color: var(--text-primary); margin-bottom: 0.25rem;">כפתורים חלולים (Hollow Buttons)</h3>
+            <p style="font-size: 0.82rem; color: var(--text-secondary);">רדיוס 6px מדויק, צל ספקולרי עדין, אפס ניאון בוהק.</p>
+          </div>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button type="button" class="btn-hollow">כפתור בסיס</button>
+            <button type="button" class="btn-hollow-primary">כפתור ראשי</button>
+            <button type="button" class="btn-hollow" disabled>מושבת</button>
+          </div>
+          <div style="font-size: 0.78rem; color: var(--text-muted);">
+            קלאסים: <span class="code-pill">.btn-hollow</span> <span class="code-pill">.btn-hollow-primary</span>
+          </div>
+        </div>
+
+        <!-- Card: Segmented Controls -->
+        <div class="card-tactile space-y" style="gap: 1rem;">
+          <div>
+            <h3 style="font-size: 1rem; font-weight: 900; color: var(--text-primary); margin-bottom: 0.25rem;">בקרי מקטעים (Apple Segmented)</h3>
+            <p style="font-size: 0.82rem; color: var(--text-secondary);">מעבר טקטילי עם קו אור עליון וללא צורת קפסולה מנופחת.</p>
+          </div>
+          <div>
+            <div class="segmented-glass-container">
+              <button type="button" class="segmented-glass-item segmented-glass-item-active" onclick="switchDemoSegment(this)">שלב 1: הבנה</button>
+              <button type="button" class="segmented-glass-item" onclick="switchDemoSegment(this)">שלב 2: התנסות</button>
+              <button type="button" class="segmented-glass-item" onclick="switchDemoSegment(this)">שלב 3: אתגר</button>
+            </div>
+          </div>
+          <div style="font-size: 0.78rem; color: var(--text-muted);">
+            קלאסים: <span class="code-pill">.segmented-glass-container</span> <span class="code-pill">.segmented-glass-item</span>
+          </div>
+        </div>
+
+        <!-- Card: Badges -->
+        <div class="card-tactile space-y" style="gap: 1rem;">
+          <div>
+            <h3 style="font-size: 1rem; font-weight: 900; color: var(--text-primary); margin-bottom: 0.25rem;">תגיות מלבניות (Anti-Pinch Badges)</h3>
+            <p style="font-size: 0.82rem; color: var(--text-secondary);">רדיוס 4px וריפוד נדיב המונעים קיטום אותיות עבריות (ך, ף, ץ, ן, ם).</p>
+          </div>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
+            <span class="badge-glass">תגית רגילה</span>
+            <span class="badge-glass badge-glass-accent">תגית מודגשת</span>
+            <span class="badge-glass badge-glass-emerald">הושלם בהצלחה</span>
+          </div>
+          <div style="font-size: 0.78rem; color: var(--text-muted);">
+            קלאסים: <span class="code-pill">.badge-glass</span> <span class="code-pill">.badge-glass-accent</span>
+          </div>
+        </div>
+
+        <!-- Card: Form Input -->
+        <div class="card-tactile space-y" style="gap: 1rem;">
+          <div>
+            <h3 style="font-size: 1rem; font-weight: 900; color: var(--text-primary); margin-bottom: 0.25rem;">שדות קלט (Mobile-Safe Inputs)</h3>
+            <p style="font-size: 0.82rem; color: var(--text-secondary);">גודל גופן קבוע של 16px במובייל למניעת זום אוטומטי ב-iOS Safari.</p>
+          </div>
+          <div>
+            <input type="text" class="input-glass" style="width: 100%;" placeholder="הקלד כאן לבדיקה..." />
+          </div>
+          <div style="font-size: 0.78rem; color: var(--text-muted);">
+            קלאס: <span class="code-pill">.input-glass</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const btn = document.getElementById('themeBtn');
+      const isDark = html.classList.contains('dark');
+      if (isDark) {
+        html.classList.remove('dark');
+        html.classList.add('light');
+        btn.textContent = '🌙';
+      } else {
+        html.classList.remove('light');
+        html.classList.add('dark');
+        btn.textContent = '☀️';
+      }
+    }
+
+    function setPalette(palette) {
+      document.documentElement.setAttribute('data-theme', palette);
+    }
+
+    function switchTab(btn, tabId) {
+      const container = btn.parentElement;
+      container.querySelectorAll('.segmented-glass-item').forEach(el => el.classList.remove('segmented-glass-item-active'));
+      btn.classList.add('segmented-glass-item-active');
+    }
+
+    function switchDemoSegment(btn) {
+      const container = btn.parentElement;
+      container.querySelectorAll('.segmented-glass-item').forEach(el => el.classList.remove('segmented-glass-item-active'));
+      btn.classList.add('segmented-glass-item-active');
+    }
+  </script>
+</body>
+</html>

@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.5] - 2026-10-09
+
+### Added
+- **Permanent Champagne Gold Baseline & Complete Reusable Design System Export Package (`design-system/`, `src/core/storage.js`, `src/styles/design-tokens.css`)**:
+  - Permanently set **Champagne Gold** (`#ca8a04` Light / `#eab308` Dark) as the canonical default active palette in `StorageEngine` and `:root` / `html.dark` design tokens.
+  - Exported the complete, standalone **Zen 2.0 Design System Starter Kit** to `/design-system/`:
+    - `tokens.css`: Zero-dependency, dual Light/Dark mode CSS variables with calibrated Radix Slate scales and ambient velvet canvas.
+    - `components.css`: Production-ready classes (`.canvas-ambient`, `.header-glass`, `.card-tactile`, `.card-command-hero`, `.card-tactile-highlight`, `.btn-hollow`, `.btn-hollow-primary`, `.segmented-glass-container`, `.segmented-glass-item`, `.badge-glass`, `.input-glass`).
+    - `tailwind.preset.js`: Drop-in Tailwind CSS preset with custom colors, radii, shadows, and fonts.
+    - `templates/`: Modular React components (`Header.jsx`, `TactileCard.jsx`, `HollowButton.jsx`, `SegmentedControl.jsx`, `Badge.jsx`, `ThemeToggle.jsx`).
+    - `demo.html`: Standalone, interactive HTML showcase demonstrating live tokens, palette switcher, and Light/Dark toggling without build tooling.
+    - `SPECIFICATION.md` & `SPECIFICATION.he.md`: Exhaustive architectural rulebooks codifying the 7 Inviolable Invariants (Anti-Bubble Geometry, Light Mode Default, Champagne Gold Baseline, Anti-Text-Chopping in Hebrew, 100% Opaque Tactile Cards, Functional Hollow Buttons, and iOS Safari 16px input safeguards).
+    - `README.md`: 5-minute quickstart guide for new projects across HTML, React, Vite, and Next.js.
+
 ## [0.7.4] - 2026-10-09
 
 ### Added
