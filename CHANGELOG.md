@@ -18,8 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - **Lab 6 (Computer Vision & Kernels)**: Demystified 3x3 convolution matrices and matrix dot products into a "זכוכית מגדלת שמזהה קווים וצורות", scanning image pixels for vertical and horizontal lines.
     - **Lab 7 (Artificial Neuron)**: Replaced linear algebra weights, bias and step activation formulas ($w \cdot x + b$) with intuitive sliders: "כמה חשוב הנושא? (משקל 1/2)", "סף החלטה (Bias)", and "סכום החישוב - מתי הנוירון מחליט להידלק?".
     - **Lab 8 (Language Models & Attention)**: Replaced Softmax probability distribution and logit sampling curves with an interactive temperature gauge: "מד החום (טמפרטורה) - כמה המחשב יצירתי?", showing the trade-off between safe, predictable completions and creative, surprising guesses. Converted self-attention ($Q \times K$) into an intuitive word-connection map ("איך המחשב מבין משפט בעזרת 'תשומת לב'").
-  - **Curriculum Architecture (`src/data/curriculum.json`)**: Added structured `svgAnimation` objects with student-tailored titles and subtitles for every lab, perfectly aligned with the Dapim 4.0 design language and hollow card specifications.
-  - **Zero-Emoji Compliance**: Verified complete elimination of emojis from all interactive simulation badges, headers, and buttons, maintaining strictly Lucide icon architecture.
+  - **Curriculum Architecture (`src/data/curriculum.json`)**: Added structured `svgAnimation` objects with student-tailored titles and subtitles for every lab, aligned with the Zen 2.0 design framework and tactile card specifications.
+  - **Child-Friendly Visual Affordance**: Preserved engaging, age-appropriate emojis (🔑, 🏆, 🔒/🔓) in interactive simulation boards to maximize clarity and excitement for 5th-grade learners, while retaining Lucide icons in standard UI controls.
 
 ## [0.7.5] - 2026-10-09
 

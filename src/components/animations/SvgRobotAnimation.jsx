@@ -125,8 +125,7 @@ export default function SvgRobotAnimation() {
           {/* Key Location at Step 2 (x=280) */}
           <g transform="translate(280, 110)">
             <circle cx="0" cy="0" r="14" fill={state.hasKey ? '#065f46' : '#854d0e'} stroke={state.hasKey ? '#10b981' : '#f59e0b'} strokeWidth="1.5" />
-            <circle cx="-3" cy="-1" r="4" fill="none" stroke="#ffffff" strokeWidth="1.8" />
-            <path d="M 1 -1 L 6 -1 M 4 -1 L 4 2 M 6 -1 L 6 2" stroke="#ffffff" strokeWidth="1.8" strokeLinecap="round" />
+            <text x="0" y="4" textAnchor="middle" fill="#ffffff" fontSize="11">🔑</text>
           </g>
 
           {/* Gate Barrier Location at Step 4 (x=480) */}
@@ -142,14 +141,14 @@ export default function SvgRobotAnimation() {
               className="transition-all duration-300"
             />
             <text x="0" y="-38" textAnchor="middle" fill={state.gateLocked ? '#ef4444' : '#10b981'} fontSize="11" fontWeight="bold">
-              {state.gateLocked ? 'שער נעול' : 'שער פתוח'}
+              {state.gateLocked ? 'נעול 🔒' : 'פתוח 🔓'}
             </text>
           </g>
 
           {/* Goal Star at Step 5 (x=580) */}
           <g transform="translate(580, 110)">
             <circle cx="0" cy="0" r="14" fill="#1e1b4b" stroke="#6366f1" strokeWidth="1.5" />
-            <polygon points="0,-7 2,-2 7,-2 3,2 5,7 0,4 -5,7 -3,2 -7,-2 -2,-2" fill="#fbbf24" />
+            <text x="0" y="4" textAnchor="middle" fill="#ffffff" fontSize="11">🏆</text>
           </g>
 
           {/* Animated Robot Avatar */}

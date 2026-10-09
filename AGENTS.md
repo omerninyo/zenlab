@@ -20,9 +20,11 @@
    - No personal names, emails, or absolute machine paths (`/Users/...`).
    - Standard MIT License with permissive dependencies only.
 
-4. **Visual Discipline & UI Constraints**:
+4. **Visual Discipline, Zen 2.0 & Role Separation**:
+   - The design system is officially named **Zen 2.0**, owned by the separate **Design Lead** conversation. This agent focuses on engineering, pedagogy, algorithms, and curriculum. Suggestions may be proposed, but design tokens or styling must not be unilaterally overwritten.
    - Monochromatic slate/neutral palette, zero chromatic clutter or glowing neon.
-   - Lucide icons (`lucide-react`) exclusively. Strictly NO emojis in UI buttons, tabs, modal headers, or navigation items.
+   - Lucide icons (`lucide-react`) exclusively in system UI (buttons, tabs, modal headers, navigation).
+   - In pedagogical game boards and child-facing simulations, friendly emojis (🔑, 🏆, 🔒/🔓, ⭐) are welcomed for engagement and clarity.
    - Modern 8px–12px border radii.
    - Native Hebrew RTL typography with Heebo/Rubik font styling.
 

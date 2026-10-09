@@ -32,10 +32,17 @@ This document defines the non-negotiable operational invariants, architectural s
 
 ---
 
-## 4. Master Visual Discipline & UI Constraints
-- **Monochromatic Restraint**: Clean slate/neutral dark-and-light theme palette with subtle, restrained brand accents.
+## 4. Visual Discipline, Zen 2.0 Design System & Role Separation
+- **Role Separation & Design Lead Ownership**:
+  - The visual design system is officially named **Zen 2.0**.
+  - A separate dedicated conversation acts as the **Design Lead / Design Director**, owning visual aesthetics, design tokens, styling, and UI layout.
+  - The engineering/pedagogy agent is strictly responsible for code logic, curriculum, 5th-grade pedagogical calibration, interactive algorithms, and architecture.
+  - The engineering agent may propose design suggestions, but must NOT unilaterally alter or overwrite design tokens, styling, or visual decisions made by the Design Lead.
+- **Monochromatic Restraint & Zen 2.0 Tokens**: Clean slate/neutral dual dark-and-light theme palette with subtle, restrained brand accents (Champagne Gold baseline).
 - **Anti-Glow / No Chromatic Clutter**: Avoid neon glows, loud drop shadows, saturated primary fills, or arbitrary rainbow badges. The educational content is the visual hero.
-- **Iconography Over Emojis**: Strictly NO emojis inside UI buttons, tabs, modal headers, or navigation items. Use Lucide Icons (`lucide-react`) exclusively.
+- **Iconography vs. Child-Friendly Emojis**:
+  - **System UI**: Strictly NO emojis inside system UI buttons, tabs, modal headers, or navigation items. Use Lucide Icons (`lucide-react`) exclusively.
+  - **Child-Friendly Pedagogical Content**: In interactive game boards, simulation boards, and student reward feedback (e.g., 🔑, 🏆, 🔒/🔓, ⭐), age-appropriate emojis are welcomed and preserved to maintain high engagement, warmth, and intuitive comprehension for 5th-grade learners (ages 10–11).
 - **Disciplined Border Radii**: Modern 8px–12px border radii (`rounded-lg` / `rounded-xl`). Avoid excessive pill/bubble styling.
 - **Typography**: Clean, legible Hebrew font pairing (Heebo/Rubik) with full native RTL alignment.
 
