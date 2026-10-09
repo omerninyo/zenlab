@@ -204,7 +204,7 @@ export default function App() {
     >
       {/* Top Application Bar - Apple Minimalist & Child-Friendly / Liquid Glass */}
       <header className={isDapimActive ? 'header-glass' : 'sticky top-0 z-40 bg-white/95 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 shadow-xs'}>
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-2 sm:gap-4">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-2 sm:gap-4">
           
           {/* Right (RTL): Brand Identity & Dedicated Home Button */}
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
@@ -242,13 +242,13 @@ export default function App() {
             <button
               type="button"
               onClick={handleGoHome}
-              className={`hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+              className={`hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer ${
                 viewMode === 'home'
                   ? isDapimActive
-                    ? 'btn-hollow-primary !h-8 !px-2.5 !text-xs'
+                    ? 'btn-hollow-primary !h-8 !px-3 !text-xs ring-1 ring-[var(--accent-rim)]'
                     : 'bg-blue-600 text-white shadow-xs'
                   : isDapimActive
-                  ? 'btn-hollow !h-8 !px-2.5 !text-xs'
+                  ? 'btn-hollow !h-8 !px-3 !text-xs'
                   : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700'
               }`}
               title="מפת מסלול הלמידה"
@@ -258,68 +258,89 @@ export default function App() {
             </button>
           </div>
 
-          {/* Center: Compact on Mobile, Full Stepper on Desktop */}
+          {/* Center: Stations Quick-Picker or Active Lab Stepper */}
           <div className="relative flex items-center justify-center">
-            <div className={
-              isDapimActive
-                ? "segmented-glass-container"
-                : "flex items-center bg-slate-100 dark:bg-slate-800/80 p-0.5 sm:p-1 rounded-lg border border-slate-200/80 dark:border-slate-700/80 shadow-inner"
-            }>
-              {/* Prev Button (In RTL, ChevronRight moves to previous index) - Desktop Only */}
-              <button
-                type="button"
-                onClick={handlePrevLab}
-                disabled={currentIdx === 0}
-                className={`hidden sm:flex p-1 sm:p-1.5 rounded-md disabled:opacity-30 disabled:pointer-events-none transition-colors ${
-                  isDapimActive 
-                    ? 'text-slate-400 hover:text-white' 
-                    : 'text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700'
-                }`}
-                title="מעבדה קודמת"
-              >
-                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
-              </button>
-
-              {/* Lab Selector Center Button with Icon and Title */}
+            {viewMode === 'home' ? (
               <button
                 type="button"
                 onClick={() => { setIsLabMenuOpen(!isLabMenuOpen); AudioEngine.playStep(); }}
-                className={`flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1 rounded-md transition-colors cursor-pointer ${
+                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition-colors cursor-pointer ${
                   isDapimActive
-                    ? 'segmented-glass-item segmented-glass-item-active !px-2 sm:!px-2.5 !py-1'
-                    : 'hover:bg-white dark:hover:bg-slate-700 text-slate-900 dark:text-white'
+                    ? 'btn-hollow !h-8 !px-3 !text-xs !font-bold'
+                    : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700 text-xs font-bold'
                 }`}
-                title="לחצו לבחירת מעבדה מתוך 8"
+                title="לחצו לבחירת תחנה מתוך 8"
               >
-                <div className={`w-4 h-4 sm:w-5 sm:h-5 rounded-md flex items-center justify-center shrink-0 shadow-xs ${
-                  isDapimActive
-                    ? 'bg-[var(--slate-4)] text-[var(--accent-base)]'
-                    : currentLab.track === 'ai' ? 'bg-indigo-600 text-white' : 'bg-blue-600 text-white'
+                <div className={`w-4 h-4 rounded-md flex items-center justify-center shrink-0 ${
+                  isDapimActive ? 'text-[var(--accent-base)]' : 'text-blue-600 dark:text-blue-400'
                 }`}>
-                  <CurrentIcon className="w-3 h-3" />
+                  <BookOpen className="w-3.5 h-3.5" />
                 </div>
-                <span className="text-xs sm:text-sm font-bold truncate max-w-[80px] xs:max-w-[120px] sm:max-w-[200px]">
-                  <span className="sm:hidden">מעבדה {currentLab.number}</span>
-                  <span className="hidden sm:inline">{currentLab.label}</span>
-                </span>
+                <span className="text-xs font-bold">מעבדות מחקר (8)</span>
                 <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 shrink-0 ${isLabMenuOpen ? 'rotate-180' : ''}`} />
               </button>
+            ) : (
+              <div className={
+                isDapimActive
+                  ? "segmented-glass-container"
+                  : "flex items-center bg-slate-100 dark:bg-slate-800/80 p-0.5 sm:p-1 rounded-lg border border-slate-200/80 dark:border-slate-700/80 shadow-inner"
+              }>
+                {/* Prev Button (In RTL, ChevronRight moves to previous index) */}
+                <button
+                  type="button"
+                  onClick={handlePrevLab}
+                  disabled={currentIdx === 0}
+                  className={`p-1 sm:p-1.5 rounded-md disabled:opacity-30 disabled:pointer-events-none transition-colors ${
+                    isDapimActive 
+                      ? 'text-slate-400 hover:text-white' 
+                      : 'text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700'
+                  }`}
+                  title="מעבדה קודמת"
+                >
+                  <ChevronRight className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
+                </button>
 
-              {/* Next Button (In RTL, ChevronLeft moves to next index) - Desktop Only */}
-              <button
-                type="button"
-                onClick={handleNextLab}
-                disabled={currentIdx === navItems.length - 1}
-                className={`hidden sm:flex p-1 sm:p-1.5 rounded-md disabled:opacity-30 disabled:pointer-events-none transition-colors ${
-                  isDapimActive 
-                    ? 'text-slate-400 hover:text-white' 
-                    : 'text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700'
-                }`}
-                title="מעבדה הבאה"
-              >
-                <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
-              </button>
-            </div>
+                {/* Lab Selector Center Button with Icon and Title */}
+                <button
+                  type="button"
+                  onClick={() => { setIsLabMenuOpen(!isLabMenuOpen); AudioEngine.playStep(); }}
+                  className={`flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1 rounded-md transition-colors cursor-pointer ${
+                    isDapimActive
+                      ? 'segmented-glass-item segmented-glass-item-active !px-2.5 !py-1'
+                      : 'hover:bg-white dark:hover:bg-slate-700 text-slate-900 dark:text-white'
+                  }`}
+                  title="לחצו לבחירת מעבדה מתוך 8"
+                >
+                  <div className={`w-4 h-4 sm:w-5 sm:h-5 rounded-md flex items-center justify-center shrink-0 shadow-xs ${
+                    isDapimActive
+                      ? 'bg-[var(--slate-4)] text-[var(--accent-base)]'
+                      : currentLab.track === 'ai' ? 'bg-indigo-600 text-white' : 'bg-blue-600 text-white'
+                  }`}>
+                    <CurrentIcon className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                  </div>
+                  <span className="text-xs sm:text-sm font-bold truncate max-w-[120px] xs:max-w-[180px] sm:max-w-[240px]">
+                    <span className="sm:hidden">מעבדה {currentLab.number}</span>
+                    <span className="hidden sm:inline">מעבדה {currentLab.number}: {currentLab.label || currentLab.shortLabel || currentLab.title}</span>
+                  </span>
+                  <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 shrink-0 ${isLabMenuOpen ? 'rotate-180' : ''}`} />
+                </button>
+
+                {/* Next Button (In RTL, ChevronLeft moves to next index) */}
+                <button
+                  type="button"
+                  onClick={handleNextLab}
+                  disabled={currentIdx === navItems.length - 1}
+                  className={`p-1 sm:p-1.5 rounded-md disabled:opacity-30 disabled:pointer-events-none transition-colors ${
+                    isDapimActive 
+                      ? 'text-slate-400 hover:text-white' 
+                      : 'text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700'
+                  }`}
+                  title="מעבדה הבאה"
+                >
+                  <ChevronLeft className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
+                </button>
+              </div>
+            )}
 
             {/* Popover Grid: All 8 Labs */}
             {isLabMenuOpen && (
@@ -403,13 +424,17 @@ export default function App() {
           </div>
 
           {/* Left: Star Counter, Certificate, Audio & More Tools Menu */}
-          <div className="flex items-center gap-1.5 shrink-0">
-            {/* Stars Achievement Badge - Tapping on mobile opens Certificate */}
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            {/* Stars Achievement Badge - Tapping opens Certificate */}
             <button
               type="button"
               onClick={() => { setIsCertificateOpen(true); AudioEngine.playStep(); }}
               title="כוכבים שהושגו - לחצו לצפייה בתעודה"
-              className="flex items-center gap-1 sm:gap-1.5 bg-amber-50 dark:bg-slate-950 px-2 sm:px-2.5 py-1.5 rounded-lg border border-amber-300/80 dark:border-slate-800 text-xs sm:text-sm font-bold text-amber-900 dark:text-amber-300 shadow-xs hover:bg-amber-100 transition-colors cursor-pointer"
+              className={
+                isDapimActive
+                  ? "flex items-center gap-1 sm:gap-1.5 bg-[var(--slate-3)] hover:bg-[var(--slate-4)] px-2 sm:px-2.5 py-1.5 rounded-lg border border-[var(--slate-6)] text-xs sm:text-sm font-bold text-amber-500 shadow-xs transition-colors cursor-pointer"
+                  : "flex items-center gap-1 sm:gap-1.5 bg-amber-50 dark:bg-slate-950 px-2 sm:px-2.5 py-1.5 rounded-lg border border-amber-300/80 dark:border-slate-800 text-xs sm:text-sm font-bold text-amber-900 dark:text-amber-300 shadow-xs hover:bg-amber-100 transition-colors cursor-pointer"
+              }
             >
               <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-500 fill-amber-400" />
               <span className="font-mono">{totalStars}</span>
@@ -421,42 +446,14 @@ export default function App() {
               type="button"
               onClick={() => { setIsCertificateOpen(true); AudioEngine.playStep(); }}
               title="צפייה והדפסת תעודת הצטיינות"
-              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-100 hover:bg-amber-200 dark:bg-amber-950/60 dark:hover:bg-amber-900/60 border border-amber-300 dark:border-amber-700/60 text-xs sm:text-sm font-bold text-amber-900 dark:text-amber-300 transition-colors shadow-xs cursor-pointer"
+              className={
+                isDapimActive
+                  ? "btn-hollow !h-8 !px-3 !text-xs !font-bold hidden sm:flex items-center gap-1.5 text-amber-500"
+                  : "hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-100 hover:bg-amber-200 dark:bg-amber-950/60 dark:hover:bg-amber-900/60 border border-amber-300 dark:border-amber-700/60 text-xs sm:text-sm font-bold text-amber-900 dark:text-amber-300 transition-colors shadow-xs cursor-pointer"
+              }
             >
-              <Award className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+              <Award className="w-4 h-4 text-amber-500" />
               <span>תעודה</span>
-            </button>
-
-            {/* Direct Zen 2.0 Design Toggle Button (Desktop Only) */}
-            <button
-              type="button"
-              onClick={() => {
-                StorageEngine.toggleDapimMode();
-                AudioEngine.playStep();
-              }}
-              title={isDapimActive ? 'מעבר למצב רגיל' : 'מעבר לעיצוב זֶן 2.0 (Apple Liquid Glass)'}
-              className={`hidden sm:flex items-center gap-1.5 px-2.5 py-1 sm:py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer ${
-                isDapimActive
-                  ? 'btn-hollow-primary !h-8 !px-2.5 !text-xs ring-1 ring-[var(--accent-rim)]'
-                  : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700'
-              }`}
-            >
-              <span className={`w-2 h-2 rounded-full shrink-0 ${isDapimActive ? 'bg-[var(--accent-base)] animate-pulse' : 'bg-slate-400'}`} />
-              <span>עיצוב זֶן 2.0</span>
-            </button>
-
-            {/* Test Bench Modal Trigger (Palette) (Desktop Only) */}
-            <button
-              type="button"
-              onClick={() => { setIsDesignTestOpen(true); AudioEngine.playStep(); }}
-              title="מעבדת בדיקת פלטות ורכיבים של זֶן 2.0"
-              className={`hidden sm:flex items-center justify-center p-2 rounded-lg transition-all cursor-pointer ${
-                isDapimActive
-                  ? 'btn-hollow !h-8 !w-8 !p-0'
-                  : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700'
-              }`}
-            >
-              <Palette className="w-4 h-4 text-[var(--accent-base)]" />
             </button>
 
             {/* Audio Mute Switch (Desktop Only) */}
@@ -464,9 +461,13 @@ export default function App() {
               type="button"
               onClick={handleToggleMute}
               title={isMuted ? 'הפעלת צלילים' : 'השתקת צלילים'}
-              className="hidden sm:flex p-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700 transition-colors cursor-pointer"
+              className={
+                isDapimActive
+                  ? "btn-hollow !h-8 !w-8 !p-0 hidden sm:flex items-center justify-center"
+                  : "hidden sm:flex p-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700 transition-colors cursor-pointer"
+              }
             >
-              {isMuted ? <VolumeX className="w-4 h-4 text-slate-400" /> : <Volume2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />}
+              {isMuted ? <VolumeX className="w-4 h-4 text-slate-400" /> : <Volume2 className={`w-4 h-4 ${isDapimActive ? 'text-[var(--accent-base)]' : 'text-blue-600 dark:text-blue-400'}`} />}
             </button>
 
             {/* Direct Theme Switcher (Desktop & Mobile) */}
@@ -474,13 +475,11 @@ export default function App() {
               type="button"
               onClick={handleToggleTheme}
               title={isDark ? 'מעבר למצב מואר (Light Mode)' : 'מעבר למצב כהה (Dark Mode)'}
-              className={`p-1.5 sm:p-2 rounded-lg border transition-colors cursor-pointer ${
+              className={
                 isDapimActive
-                  ? isDark
-                    ? 'bg-[var(--slate-3)] hover:bg-[var(--slate-4)] border-[var(--slate-6)] text-amber-400'
-                    : 'bg-white hover:bg-slate-100 border-slate-200 text-slate-700 shadow-xs'
-                  : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700'
-              }`}
+                  ? "btn-hollow !h-8 !w-8 !p-0 flex items-center justify-center text-amber-400"
+                  : "p-1.5 sm:p-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700 transition-colors cursor-pointer"
+              }
             >
               {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-700 dark:text-slate-300" />}
             </button>
@@ -491,7 +490,11 @@ export default function App() {
                 type="button"
                 onClick={() => setIsMoreMenuOpen(!isMoreMenuOpen)}
                 title="אפשרויות נוספות"
-                className="p-1.5 sm:p-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700 transition-colors cursor-pointer"
+                className={
+                  isDapimActive
+                    ? "btn-hollow !h-8 !w-8 !p-0 flex items-center justify-center"
+                    : "p-1.5 sm:p-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700 transition-colors cursor-pointer"
+                }
               >
                 <MoreVertical className="w-4 h-4" />
               </button>
@@ -613,7 +616,7 @@ export default function App() {
       </header>
 
       {/* Main Educational Workspace */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-6">
+      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-6">
         {viewMode === 'home' ? (
           <HomeDashboard
             curriculum={curriculumData}
@@ -689,7 +692,10 @@ export default function App() {
       />
 
       {/* Zen AI Tutor Floating Classroom Companion */}
-      <ZenAiTutor currentLabId={viewMode === 'home' ? 'home' : activeLabId} />
+      <ZenAiTutor 
+        currentLabId={viewMode === 'home' ? 'home' : activeLabId} 
+        isDapimActive={isDapimActive}
+      />
 
       {/* Footer Notice with Zero-PII Hygiene */}
       <footer className={
@@ -697,7 +703,7 @@ export default function App() {
           ? "bg-[var(--slate-2)] border-t border-[var(--slate-6)] py-6 text-xs text-slate-400"
           : "bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-6 text-xs text-slate-500 dark:text-slate-400"
       }>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <span className="font-bold text-slate-700 dark:text-slate-300">ZenLab &copy; 2026</span>
             <span>&bull;</span>

@@ -23,7 +23,7 @@ import {
   globalCircuitBreaker
 } from '../core/tutorEngine.js';
 
-export default function ZenAiTutor({ currentLabId = 'lab1' }) {
+export default function ZenAiTutor({ currentLabId = 'lab1', isDapimActive = false }) {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
@@ -278,41 +278,77 @@ export default function ZenAiTutor({ currentLabId = 'lab1' }) {
 
   return (
     <>
-      {/* Floating Trigger Button in Bottom Corner - Compact on mobile, pill on desktop */}
+      {/* Floating Trigger Button in Bottom Corner - Container-Anchored on Wide Screens */}
       {!isOpen && (
         <button
           type="button"
           onClick={() => { setIsOpen(true); AudioEngine.playStep(); }}
-          className="fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-50 flex items-center justify-center sm:justify-start gap-2.5 w-12 h-12 sm:w-auto sm:h-auto rounded-full sm:rounded-2xl p-0 sm:px-4 sm:py-3 bg-blue-600 hover:bg-blue-700 text-white shadow-xl hover:shadow-2xl transition-all group scale-100 hover:scale-105 border-2 border-white/90 dark:border-slate-800"
+          style={{
+            left: 'max(1rem, calc((100vw - 72rem) / 2 + 1.5rem))'
+          }}
+          className={`fixed bottom-4 sm:bottom-6 z-50 flex items-center justify-center sm:justify-start gap-2.5 w-12 h-12 sm:w-auto sm:h-auto rounded-xl p-0 sm:px-3.5 sm:py-2.5 shadow-xl hover:shadow-2xl transition-all group scale-100 hover:scale-105 cursor-pointer ${
+            isDapimActive
+              ? 'bg-slate-900/95 dark:bg-slate-800/95 hover:bg-slate-900 text-white border border-[var(--slate-6)] hover:border-[var(--accent-rim)]'
+              : 'bg-blue-600 hover:bg-blue-700 text-white border-2 border-white/90 dark:border-slate-800'
+          }`}
           title="שאלו את זֶן הרובוט - חונך הבינה המלאכותית שלכם"
         >
-          <div className="relative flex items-center justify-center">
-            <Bot className="w-6 h-6 sm:w-6 sm:h-6 text-white" />
-            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-emerald-400 rounded-full ring-2 ring-blue-600" />
+          <div className={`relative flex items-center justify-center w-8 h-8 rounded-lg shrink-0 shadow-xs ${
+            isDapimActive
+              ? 'bg-[var(--slate-4)] border border-[var(--slate-6)] text-[var(--accent-base)]'
+              : 'bg-white/20 text-white'
+          }`}>
+            <Bot className="w-5 h-5" />
+            <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-400 rounded-full ring-2 ring-slate-900" />
           </div>
           <div className="text-right hidden sm:block">
             <span className="block text-xs font-bold leading-tight">שאלו את זֶן הרובוט</span>
-            <span className="block text-[10px] text-blue-200 leading-tight">חונך חכם ומילון מושגים</span>
+            <span className={`block text-[10px] leading-tight ${isDapimActive ? 'text-slate-300' : 'text-blue-200'}`}>
+              חונך חכם ומילון מושגים
+            </span>
           </div>
         </button>
       )}
 
-      {/* Floating Chat Modal / Drawer */}
+      {/* Floating Chat Modal / Drawer - Container-Anchored on Wide Screens */}
       {isOpen && (
-        <div className="fixed bottom-3 sm:bottom-6 left-3 sm:left-6 right-3 sm:right-auto z-50 w-auto sm:w-[440px] max-h-[85vh] h-[560px] sm:h-[620px] bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-200">
+        <div 
+          style={{
+            left: 'max(0.75rem, calc((100vw - 72rem) / 2 + 1.5rem))'
+          }}
+          className={`fixed bottom-3 sm:bottom-6 z-50 w-[calc(100vw-1.5rem)] sm:w-[440px] max-h-[85vh] h-[560px] sm:h-[620px] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-200 ${
+            isDapimActive
+              ? 'bg-[var(--slate-2)] border border-[var(--slate-6)]'
+              : 'bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800'
+          }`}
+        >
           
           {/* Header */}
-          <div className="px-4 sm:px-5 py-3 sm:py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white flex items-center justify-between shadow-md shrink-0">
+          <div className={
+            isDapimActive
+              ? "px-4 sm:px-5 py-3 sm:py-3.5 bg-[var(--slate-3)] border-b border-[var(--slate-6)] text-white flex items-center justify-between shadow-xs shrink-0"
+              : "px-4 sm:px-5 py-3 sm:py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white flex items-center justify-between shadow-md shrink-0"
+          }>
             <div className="flex items-center gap-2.5 sm:gap-3">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center font-bold shadow-inner shrink-0">
-                <Bot className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+              <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center font-bold shadow-xs shrink-0 ${
+                isDapimActive
+                  ? 'bg-[var(--slate-4)] border border-[var(--slate-6)] text-[var(--accent-base)]'
+                  : 'bg-white/20 backdrop-blur-md text-white shadow-inner'
+              }`}>
+                <Bot className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
               <div className="text-right">
                 <h3 className="text-xs sm:text-sm font-extrabold flex items-center gap-1.5">
-                  <span>זֶן הרובוט</span>
-                  <span className="text-[10px] px-2 py-0.5 bg-white/20 rounded-full font-medium">חונך המעבדה</span>
+                  <span className={isDapimActive ? 'text-slate-100' : 'text-white'}>זֶן הרובוט</span>
+                  <span className={
+                    isDapimActive
+                      ? "badge-glass badge-glass-accent text-[10px] !py-0 !px-1.5"
+                      : "text-[10px] px-2 py-0.5 bg-white/20 rounded-full font-medium text-white"
+                  }>
+                    חונך המעבדה
+                  </span>
                 </h3>
-                <p className="text-[10px] sm:text-[11px] text-blue-100 font-medium">
+                <p className={`text-[10px] sm:text-[11px] font-medium ${isDapimActive ? 'text-slate-400' : 'text-blue-100'}`}>
                   {currentLab === 'home' ? 'מפת המסע ומדריך כללי' : `עוזר אישי ומילון מושגים למעבדה`}
                 </p>
               </div>
@@ -323,14 +359,20 @@ export default function ZenAiTutor({ currentLabId = 'lab1' }) {
                 type="button"
                 onClick={() => setShowKeyInput(!showKeyInput)}
                 title="הגדרות מפתח Gemini לחיבור חי נוסף"
-                className={`p-1.5 rounded-xl transition-colors ${showKeyInput ? 'bg-white/30 text-white' : 'text-blue-200 hover:bg-white/10 hover:text-white'}`}
+                className={`p-1.5 rounded-lg transition-colors ${
+                  showKeyInput 
+                    ? isDapimActive ? 'bg-[var(--slate-5)] text-[var(--accent-base)]' : 'bg-white/30 text-white' 
+                    : isDapimActive ? 'text-slate-400 hover:text-white hover:bg-[var(--slate-4)]' : 'text-blue-200 hover:bg-white/10 hover:text-white'
+                }`}
               >
                 <Key className="w-4 h-4" />
               </button>
               <button
                 type="button"
                 onClick={() => { setIsOpen(false); AudioEngine.playStep(); }}
-                className="p-1.5 rounded-xl text-blue-200 hover:bg-white/20 hover:text-white transition-colors"
+                className={`p-1.5 rounded-lg transition-colors ${
+                  isDapimActive ? 'text-slate-400 hover:text-white hover:bg-[var(--slate-4)]' : 'text-blue-200 hover:bg-white/20 hover:text-white'
+                }`}
                 title="סגירת חונך"
               >
                 <X className="w-5 h-5" />

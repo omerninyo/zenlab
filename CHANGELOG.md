@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.12] - 2026-10-09
+
+### Added
+- **Wide & Ultrawide Screen Ergonomics & Container-Anchored Floating AI Tutor (`src/App.jsx`, `src/components/ZenAiTutor.jsx`, `src/core/labMeta.js`)**:
+  - **Symmetric Container Alignment**: Harmonized `<header>`, `<main>`, and `<footer>` layouts to a unified `max-w-6xl` (`1152px` = `72rem`) bounding grid, eliminating visual disconnection on 1080p, 1440p, and ultrawide displays.
+  - **Container-Anchored Floating Bot Positioning**: Replaced physical edge docking with dynamic container anchoring (`left: max(0.75rem, calc((100vw - 72rem) / 2 + 1.5rem))`) for both the trigger button and the interactive chat drawer, keeping the tutor immediately proximate to the educational cards rather than isolated against the screen bezel.
+  - **Station Stepper & Title Bug Resolution**: Fixed missing lab titles in the center header navigation by adding canonical `label` attributes across all 8 labs in `LAB_METADATA` (`src/core/labMeta.js`).
+  - **Context-Aware Header Navigation**: Implemented clean station picker pill (`מעבדות מחקר (8) ⌄`) on the Home Roadmap view and segmented stepper navigation (`< מעבדה X: [שם] ⌄ >`) inside active labs.
+  - **De-Cluttered Top Toolbar**: Streamlined the top-left toolbar to essential student utilities (`Stars / 24`, `תעודה`, `Theme`, `Audio`, `More (3 dots)`), moving developer testing buttons into the nested menu.
+  - **Multi-Resolution Responsiveness Verified**: Confirmed layout geometry, squircle card styling, and zero horizontal overflow across 2560x1440 (ultrawide), 1920x1080 (desktop), and 375x667 (mobile).
+
 ## [0.7.11] - 2026-10-09
 
 ### Added
