@@ -80,6 +80,9 @@ Transforming ZenLab from a 2-hour solo experience into an **8-to-12 week structu
 Strategic expansion to deliver a premium, Apple HIG-compliant app for school iPad carts:
 - [x] **Competitive Market Study & FMEA Failure Mode Analysis** (`docs/research/NATIVE_APPS_FEASIBILITY_AND_MARKET_STUDY.he.md`).
 - [x] **RFC 003 Native Architecture Specification** (`docs/proposals/RFC_003_NATIVE_APPLE_AND_ANDROID_ARCHITECTURE.he.md`).
+- [x] **Minimum OS & Hardware Target (iPadOS 17.0 Minimum Target)**:
+  - Broad backward compatibility starting with **iPad 7th gen (2019)**, ensuring 100% support for the thousands of **iPad 8th gen (2020) and iPad 9th gen (2021)** carts deployed across Israeli schools (Geffen / Digital Israel).
+  - Unlocks modern Swift 6 capabilities: native `SwiftData` for local-first storage and `@Observable` macro without legacy Combine boilerplate.
 - [ ] **Phase 0: Monorepo Foundation (`ios/ZenLab`)**:
   - Shared declarative contract `shared/curriculum.json` (Single Source of Truth).
   - Clean Xcode project using Swift Package Manager (SPM) only.
@@ -93,7 +96,18 @@ Strategic expansion to deliver a premium, Apple HIG-compliant app for school iPa
 - [ ] **Phase 2: 8 Labs in SwiftUI & Metal Canvas**:
   - Hardware-accelerated 120fps Metal Canvas for pixel grids, pathfinding, and neural boundaries.
   - Dynamic Server-Driven Curriculum (SDC) synchronization over Cloudflare Edge.
-- [ ] **Phase 3: App Store & Apple School Manager (VPP) Deployment**:
+- [ ] **Phase 3: Apple On-Device AI Integration (Zero-Cloud, 100% Zero-PII)**:
+  - **NaturalLanguage Framework**:
+    - `NLTokenizer`: Real-time on-device Hebrew tokenization for free-text sentences in Lab 8 (0ms latency).
+    - `NLEmbedding`: Pre-trained on-device Hebrew vector embeddings for semantic word distances in Lab 5.
+  - **Core ML & Apple Neural Engine (ANE)**:
+    - Lab 6: Compare manual $3\times3$ Sobel convolution with high-speed Core ML CNN inference executing on the ANE in 1.2ms.
+    - Lab 7: Demonstrate solving XOR limitation using a bundled deep neural network model.
+  - **Vision Framework**:
+    - Contour and shape recognition converting student finger/Apple Pencil drawings directly into $8\times8$ binary grids (Lab 1).
+  - **App Intents & Siri**:
+    - Voice commands for classroom management and lab resets ("Hey Siri, reset the robot maze in ZenLab").
+- [ ] **Phase 4: App Store & Apple School Manager (VPP) Deployment**:
   - Nominal pricing ($1.99–$2.99 with 50% educational volume discount) to cover developer fees.
   - Mathematical Parental Gate and strict Kids Category (Guideline 1.3 / 5.1.4) compliance.
 

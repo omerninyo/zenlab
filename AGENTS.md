@@ -34,12 +34,18 @@
    - Infrastructure via `wrangler.toml` and `.github/workflows/deploy.yml`.
 
 6. **Changelog & Extended Commits**:
-   - Continuous `CHANGELOG.md` updates following SemVer.
+   - Continuous `CHANGELOG.md` and `CHANGELOG.he.md` updates following SemVer.
    - Extended commit format with explicit verification stamps.
 
-7. **Definition of Done (DoD)**:
+7. **Continuous Idea Archiving & Roadmap Governance**:
+   - Zero-loss invariant for user ideas, architectural pivots, and conceptual features.
+   - Bi-directional documentation separation: `CHANGELOG` for past/present releases; `ROADMAP.md` and `ROADMAP.he.md` for strategic vision, phases, and active conceptual backlog.
+   - Deep-dive technical analyses and benchmarks preserved in `docs/research/` and `docs/proposals/`.
+   - Synchronous bi-lingual updates across both English and Hebrew roadmap assets.
+
+8. **Definition of Done (DoD)**:
    - Clean build (`npm run build`).
-   - Updated documentation and changelog.
+   - Updated documentation, changelog, and roadmap.
    - Zero-PII verified.
    - Live browser inspection verifying layout, audio synthesis, and RTL compliance.
 

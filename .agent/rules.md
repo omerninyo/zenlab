@@ -59,7 +59,7 @@ This document defines the non-negotiable operational invariants, architectural s
 ---
 
 ## 6. Continuous Changelog & Extended Conventional Commits
-- **Changelog**: Maintain `CHANGELOG.md` following Semantic Versioning (starting at `v0.1.0`) and "Keep a Changelog" formatting. Must be updated synchronously with all feature or architecture changes.
+- **Changelog**: Maintain `CHANGELOG.md` and `CHANGELOG.he.md` following Semantic Versioning (starting at `v0.1.0`) and "Keep a Changelog" formatting. Must be updated synchronously with all feature or architecture changes.
 - **Extended Conventional Commit Format**:
   ```text
   <type>(<scope>): <concise description>
@@ -72,10 +72,26 @@ This document defines the non-negotiable operational invariants, architectural s
 
 ---
 
-## 7. Cumulative Memory & Definition of Done (DoD)
+## 7. Idea Archiving, Strategic Roadmap & Collective Memory Protocol
+- **Continuous User Idea Ingestion & Zero-Loss Invariant**:
+  - The project owner frequently contributes creative concepts, strategic pivots, pedagogical ideas, platform targets, and business models during interactive conversation.
+  - Autonomous agents must NEVER allow user ideas, architectural insights, or strategic directives to remain ephemeral or get lost in conversation context truncation.
+  - All user concepts, feasibility analyses, and future milestones must be promptly and systematically recorded in permanent repository files.
+- **Bi-Directional Documentation Separation**:
+  - **The Past & Present (`CHANGELOG.md` / `CHANGELOG.he.md`)**: Documents strictly what has been implemented, verified, and released.
+  - **The Future & Vision (`ROADMAP.md` / `ROADMAP.he.md`)**: Serves as the authoritative Central Source of Truth for ongoing milestones, architectural roadmaps, platform phases (Web, Native iPad/iOS, Native Android, Physical Computing), hardware targets, and the conceptual feature backlog.
+  - **Deep-Dive Knowledge (`docs/research/` & `docs/proposals/`)**: Detailed RFCs, feasibility studies, competitive market surveys, FMEA risk assessments, and hardware analyses must be committed to Git as permanent technical assets.
+- **Synchronous Bi-Lingual Roadmap Maintenance**:
+  - Both English (`ROADMAP.md`) and Hebrew (`ROADMAP.he.md`) roadmaps must remain strictly synchronized.
+  - Whenever a new feature idea, OS version decision (e.g., minimum iPadOS target), or AI architecture component (e.g., Apple On-Device Core ML / NaturalLanguage) is discussed and adopted, it must be codified into both roadmap files and relevant RFCs.
+
+---
+
+## 8. Cumulative Memory & Definition of Done (DoD)
 - **Zero Ad-Hoc Patches**: Every bug or edge case must be codified in core logic or regression tests.
 - **Definition of Done Checklist**:
   1. Automated build passes cleanly (`npm run build`).
-  2. `CHANGELOG.md` and `README.md` updated synchronously.
-  3. Zero PII verified across repository contents and git history.
-  4. Live browser inspection via DevTools/Playwright confirming UI rendering, sound effects synthesis, responsive layout, and RTL alignment.
+  2. `CHANGELOG.md` and `CHANGELOG.he.md` updated synchronously with version bump.
+  3. `ROADMAP.md` and `ROADMAP.he.md` updated with any newly introduced ideas, architectural decisions, or future milestone changes.
+  4. Zero PII verified across repository contents and git history.
+  5. Live browser inspection via DevTools/Playwright confirming UI rendering, sound effects synthesis, responsive layout, and RTL alignment.

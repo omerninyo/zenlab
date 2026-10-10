@@ -80,6 +80,9 @@ flowchart LR
 השלב האסטרטגי להפיכת ZenLab למוצר Native יוקרתי לעגלות טאבלטים בבתי ספר:
 - [x] **מחקר שוק השוואתי וניתוח כשלים FMEA** (`docs/research/NATIVE_APPS_FEASIBILITY_AND_MARKET_STUDY.he.md`).
 - [x] **מפרט ארכיטקטורה מפורט RFC 003** (`docs/proposals/RFC_003_NATIVE_APPLE_AND_ANDROID_ARCHITECTURE.he.md`).
+- [x] **הגדרת יעד מערכת הפעלה וחומרה (iPadOS 17.0 Minimum Target)**:
+  - תמיכה רחבה החל מ-**iPad דור 7 (2019)** ומעלה, המבטיחה תאימות של 100% לאלפי מכשירי **iPad דור 8 (2020) ודור 9 (2021)** המותקנים כיום בעגלות בתי הספר בישראל (גפן / ישראל דיגיטלית).
+  - מאפשרת שימוש מלא וטבעי ב-`SwiftData` ובמאקרו `@Observable` ללא תקורות קוד מיושנות.
 - [ ] **Phase 0: הקמת סביבת Monorepo (`ios/ZenLab`)**:
   - הגדרת קובץ `shared/curriculum.json` כ-Single Source of Truth משותף.
   - יצירת פרויקט Xcode מנוהל SPM בלבד (ללא CocoaPods).
@@ -93,7 +96,18 @@ flowchart LR
 - [ ] **Phase 2: יישום 8 המעבדות ב-SwiftUI & Metal Canvas**:
   - רינדור מואץ חומרה ב-120fps למטריצות, רשתות ונוירונים.
   - מודל סנכרון תוכן דינמי (Server-Driven Curriculum) מהקצה של Cloudflare.
-- [ ] **Phase 3: הפצה ב-App Store וב-Apple School Manager (VPP)**:
+- [ ] **Phase 3: שילוב מנועי Apple On-Device AI (ללא תלות בענן, 100% Zero-PII)**:
+  - **NaturalLanguage Framework**:
+    - `NLTokenizer`: טוקניזציה חיה בעברית של משפטים חופשיים במעבדה 8 (0ms שיהוי).
+    - `NLEmbedding`: חישוב מרחק סמנטי מובנה בעברית והצגתו במרחב תכונות גיאומטרי במעבדה 5.
+  - **Core ML & Apple Neural Engine (ANE)**:
+    - מעבדה 6: השוואת חישוב Sobel ידני להרצת רשת CNN מקומית תוך 1.2 מילי-שניות על שבב ה-ANE.
+    - מעבדה 7: הדגמת פתרון שער XOR באמצעות רשת עמוקה קלה ב-Core ML.
+  - **Vision Framework**:
+    - זיהוי ציור חופשי באצבע או ב-Apple Pencil והמרתו לרשת $8 \times 8$ בפיקסלים (מעבדה 1).
+  - **App Intents & Shortcuts**:
+    - פקודות קוליות ב-Siri לתרחישי הוראה בכיתה ("היי סירי, תאפסי את מעבדת הרובוט").
+- [ ] **Phase 4: הפצה ב-App Store וב-Apple School Manager (VPP)**:
   - מחיר סמלי ($1.99–$2.99 עם 50% הנחה למוסדות) לכיסוי עלויות חשבון מפתח ($99/שנה).
   - שער הורים מתמטי (Parental Gate) ותאימות מחמירה לקטגוריית Kids (Guideline 1.3 / 5.1.4).
 

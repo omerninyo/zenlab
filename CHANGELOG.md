@@ -28,7 +28,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Dynamic Server-Driven Curriculum (SDC) synchronization protocol over Cloudflare Edge.
 - **Central Engineering & Pedagogical Roadmap Overhaul (`ROADMAP.he.md`, `ROADMAP.md`)**:
   - Updated both Hebrew and English roadmaps to serve as the unified Central Source of Truth.
-  - Synchronized milestones from v0.1.0 through v0.7.17, adding Phase 3 (Curriculum Suite), Phase 4 (Native iPad/iOS), Phase 5 (Native Android), and Phase 6 (Physical Computing & Edge AI).
+  - Synchronized milestones from v0.1.0 through v0.7.17, adding Phase 3 (Curriculum Suite), Phase 4 (Native iPad/iOS with iPadOS 17.0 min target and Apple On-Device AI frameworks), Phase 5 (Native Android), and Phase 6 (Physical Computing & Edge AI).
+- **Agent Governance & Continuous Roadmap Archiving Protocol (`.agent/rules.md`, `AGENTS.md`)**:
+  - Codified mandatory Rule 7 (Idea Archiving, Strategic Roadmap & Collective Memory Protocol).
+  - Enforced zero-loss invariant for user ideas and conceptual backlogs, requiring bi-directional documentation across `CHANGELOG` (past/present) and `ROADMAP` (future/vision).
+  - Codified minimum iPadOS target (`iPadOS 17.0`) and Apple On-Device AI strategy (Core ML, NaturalLanguage, Vision) in permanent research and roadmap assets.
 
 ## [0.7.17] - 2026-10-10
 
