@@ -71,13 +71,13 @@ export default function Lab2_AlgorithmicRobot({ curriculum }) {
 
   const addCommand = (cmdType) => {
     if (isRunning) return;
-    setCommands([...commands, cmdType]);
+    setCommands(prev => [...prev, cmdType]);
     AudioEngine.playStep();
   };
 
   const removeCommand = (index) => {
     if (isRunning) return;
-    setCommands(commands.filter((_, i) => i !== index));
+    setCommands(prev => prev.filter((_, i) => i !== index));
     AudioEngine.playStep();
   };
 

@@ -77,8 +77,10 @@ export default function Lab5_MachineLearningClassifier({ curriculum }) {
     }
   }, [points, testPoint, kValue, completedChallenges]);
 
+  const isDraggingRef = useRef(false);
+
   const handleSvgClick = (e) => {
-    if (isDragging) return;
+    if (isDragging || isDraggingRef.current) return;
     if (!svgRef.current) return;
 
     const rect = svgRef.current.getBoundingClientRect();
@@ -95,34 +97,46 @@ export default function Lab5_MachineLearningClassifier({ curriculum }) {
       label: selectedClass
     };
 
-    setPoints([...points, newPoint]);
+    setPoints(prev => [...prev, newPoint]);
     AudioEngine.playToggle(true);
   };
 
   const handlePointerDownTestPoint = (e) => {
     e.stopPropagation();
     setIsDragging(true);
+    isDraggingRef.current = true;
   };
 
-  const handlePointerMove = (e) => {
-    if (!isDragging || !svgRef.current) return;
+  useEffect(() => {
+    if (!isDragging) return;
 
-    const rect = svgRef.current.getBoundingClientRect();
-    const moveX = ((e.clientX - rect.left) / rect.width) * 100;
-    const moveY = 100 - ((e.clientY - rect.top) / rect.height) * 100;
+    const onMove = (e) => {
+      if (!svgRef.current) return;
+      const rect = svgRef.current.getBoundingClientRect();
+      const moveX = ((e.clientX - rect.left) / rect.width) * 100;
+      const moveY = 100 - ((e.clientY - rect.top) / rect.height) * 100;
 
-    const boundedX = Math.max(5, Math.min(95, Math.round(moveX)));
-    const boundedY = Math.max(5, Math.min(95, Math.round(moveY)));
+      const boundedX = Math.max(5, Math.min(95, Math.round(moveX)));
+      const boundedY = Math.max(5, Math.min(95, Math.round(moveY)));
 
-    setTestPoint({ x: boundedX, y: boundedY });
-  };
+      setTestPoint({ x: boundedX, y: boundedY });
+    };
 
-  const handlePointerUp = () => {
-    if (isDragging) {
+    const onUp = () => {
       setIsDragging(false);
+      setTimeout(() => {
+        isDraggingRef.current = false;
+      }, 60);
       AudioEngine.playStep();
-    }
-  };
+    };
+
+    window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerup', onUp);
+    return () => {
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup', onUp);
+    };
+  }, [isDragging]);
 
   const resetPoints = () => {
     setPoints([...labData.initialData]);

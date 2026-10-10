@@ -97,6 +97,21 @@ export default function Lab4_Pathfinder({ curriculum }) {
     };
   }, [isPlaying, solution]);
 
+  // Visited set up to currentStepIndex
+  const visibleVisitedSet = useMemo(() => {
+    const s = new Set();
+    for (let i = 0; i < currentStepIndex && i < solution.visitedOrder.length; i++) {
+      const p = solution.visitedOrder[i];
+      s.add(`${p.x},${p.y}`);
+    }
+    return s;
+  }, [currentStepIndex, solution.visitedOrder]);
+
+  const isPathVisible = currentStepIndex >= solution.visitedOrder.length && solution.found;
+  const pathSet = useMemo(() => {
+    return new Set(solution.path.map(p => `${p.x},${p.y}`));
+  }, [solution.path]);
+
   // Challenge checks
   useEffect(() => {
     // Challenge 1: Run A* directly (requires user to actually run search)
@@ -170,21 +185,6 @@ export default function Lab4_Pathfinder({ curriculum }) {
     setIsPlaying(false);
     AudioEngine.playStep();
   };
-
-  // Visited set up to currentStepIndex
-  const visibleVisitedSet = useMemo(() => {
-    const s = new Set();
-    for (let i = 0; i < currentStepIndex && i < solution.visitedOrder.length; i++) {
-      const p = solution.visitedOrder[i];
-      s.add(`${p.x},${p.y}`);
-    }
-    return s;
-  }, [currentStepIndex, solution.visitedOrder]);
-
-  const isPathVisible = currentStepIndex >= solution.visitedOrder.length && solution.found;
-  const pathSet = useMemo(() => {
-    return new Set(solution.path.map(p => `${p.x},${p.y}`));
-  }, [solution.path]);
 
   const completedCount = ['lab4_challenge1', 'lab4_challenge2', 'lab4_challenge3'].filter(
     id => completedChallenges[id]

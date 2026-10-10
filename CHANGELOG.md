@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.16] - 2026-10-10
+
+### Fixed & Hardened (Interactive QA Audit)
+- **Resolved Fatal TDZ Crash in Lab 4 (`src/labs/Lab4_Pathfinder.jsx`)**:
+  - Fixed `ReferenceError: Cannot access 'isPathVisible' before initialization` (minified `ReferenceError: Cannot access 'F' before initialization`) by hoisting `visibleVisitedSet`, `isPathVisible`, and `pathSet` above the `useEffect` challenge checks.
+  - Eliminated white-screen runtime crash when entering Lab 4 ("הווייז של הרובוט").
+- **Fixed Command Batching / State Dropping in Lab 2 (`src/labs/Lab2_AlgorithmicRobot.jsx`)**:
+  - Replaced stale closure `setCommands([...commands, cmd])` and `setCommands(commands.filter(...))` with functional updaters `prev => [...prev, cmd]` and `prev => prev.filter(...)`.
+  - Ensures rapid button clicking or touch input by children never drops robot instructions.
+- **Fixed Query Point Dragging & Missing Pointer Listeners in Lab 5 (`src/labs/Lab5_MachineLearningClassifier.jsx`)**:
+  - Attached global `pointermove` and `pointerup` listeners to `window` with an `isDragging` guard and drag ref.
+  - Fixed issue where dragging the white query point circle on laptops/tablets never updated coordinates, allowing Challenge 2 to be completed reliably.
+- **Interactive Verification Across Live Environment**:
+  - Verified live Edge Function `/api/tutor` answering free-text Hebrew pedagogical questions in real-time.
+  - Completed end-to-end interactive challenges in Labs 1, 2, 3, and 4 in live browser session.
+
 ## [0.7.15] - 2026-10-09
 
 ### Added & Enhanced
