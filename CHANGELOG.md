@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.18] - 2026-10-11
+
+### Added & Documented (Classroom Lesson Plans Suite, Native Strategy & Central Roadmap)
+- **Comprehensive 8-Lesson Plans Suite (`docs/lesson_plans/`)**:
+  - Authored 8 standalone, exhaustive 45-minute lesson plans (with 90-minute workshop extensions) aligned with Israeli Ministry of Education (כיתה ה', מפמ"ר מדעי המחשב ביסודי) and international AI4K12 Big Ideas.
+  - Complete coverage across all 8 labs: `01_PIXELS_AND_BINARY.md`, `02_ALGORITHMIC_ROBOT.md`, `03_DECISION_TREE.md`, `04_PATHFINDER_A_STAR.md`, `05_KNN_CLASSIFIER.md`, `06_VISION_CONVOLUTION.md`, `07_NEURON_PERCEPTRON.md`, and `08_LLM_TOKENIZER.md`.
+  - Every lesson plan features: 7-min Unplugged physical activity, minute-by-minute teacher script, verified 3-challenge walkthroughs matching v0.7.17 codebase, creative sandbox task, 4 common misconceptions with resolutions, differentiated learning (scaffolding vs. gifted), double-sided printable student worksheets, 4-tier assessment rubrics, and family quests.
+- **Strategic Native Apps Feasibility & Market Study (`docs/research/NATIVE_APPS_FEASIBILITY_AND_MARKET_STUDY.he.md`)**:
+  - Global competitive benchmark (Swift Playgrounds, Google Teachable Machine, MIT Day of AI, Code.org, Lightbot, Tynker).
+  - Identification of ZenLab's unique "From Zero to Neural" blue ocean value proposition.
+  - Classroom timing reality analysis: solo learner (~2 hours) vs. 8-week structured school curriculum.
+  - iPad-First ergonomic analysis (10.2"–11" base iPads in school carts, 56x56pt touch targets).
+  - Storage & sync architecture: Local-First (SwiftData) + opportunistic CloudKit sync to bypass shared school iPad MDM iCloud blocks.
+  - Computational LTR canvas vs. linguistic RTL wrapper invariant.
+  - Dual business model: 100% Free & Open-Source MIT Web SPA vs. nominal App Store app ($1.99–$2.99 with 50% Apple School Manager / VPP volume discount) to sustainably cover $99/yr Apple Developer fee.
+  - Comprehensive FMEA (Failure Mode and Effects Analysis) covering 6 major engineering and distribution risks.
+- **RFC 003: Native Apple & Android Architecture (`docs/proposals/RFC_003_NATIVE_APPLE_AND_ANDROID_ARCHITECTURE.he.md`)**:
+  - Monorepo architectural blueprint (`web/`, `ios/`, `android/`, `shared/curriculum.json`).
+  - 100% Apple Native framework specification: SwiftUI 6, Apple HIG (Liquid Glass `.ultraThinMaterial`), Metal Canvas (120fps), AVAudioEngine, CoreHaptics, SwiftData.
+  - Android Native architecture: Jetpack Compose, Material 3, Room Database.
+  - Dynamic Server-Driven Curriculum (SDC) synchronization protocol over Cloudflare Edge.
+- **Central Engineering & Pedagogical Roadmap Overhaul (`ROADMAP.he.md`, `ROADMAP.md`)**:
+  - Updated both Hebrew and English roadmaps to serve as the unified Central Source of Truth.
+  - Synchronized milestones from v0.1.0 through v0.7.17, adding Phase 3 (Curriculum Suite), Phase 4 (Native iPad/iOS), Phase 5 (Native Android), and Phase 6 (Physical Computing & Edge AI).
+
 ## [0.7.17] - 2026-10-10
 
 ### Added & Enhanced (Sandbox Expansion, PWA & Zen Celebration)
