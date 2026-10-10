@@ -10,7 +10,8 @@ import {
   Sliders, 
   Sparkles,
   Layers,
-  ArrowRight
+  ArrowRight,
+  Download
 } from 'lucide-react';
 import { AudioEngine } from '../core/audio.js';
 import { StorageEngine } from '../core/storage.js';
@@ -124,6 +125,94 @@ export default function Lab1_BinaryPixels({ curriculum }) {
     }
   };
 
+  const handleDownloadImage = () => {
+    if (typeof document === 'undefined') return;
+    const canvas = document.createElement('canvas');
+    const size = 512;
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Dark slate background (Zen 2.0 slate-950)
+    ctx.fillStyle = '#020617';
+    ctx.fillRect(0, 0, size, size);
+
+    // Subtle container card
+    const margin = 24;
+    const cardSize = size - margin * 2;
+    ctx.fillStyle = '#0f172a';
+    ctx.strokeStyle = '#1e293b';
+    ctx.lineWidth = 2;
+    if (ctx.roundRect) {
+      ctx.beginPath();
+      ctx.roundRect(margin, margin, cardSize, cardSize, 16);
+      ctx.fill();
+      ctx.stroke();
+    } else {
+      ctx.fillRect(margin, margin, cardSize, cardSize);
+      ctx.strokeRect(margin, margin, cardSize, cardSize);
+    }
+
+    // Grid matrix
+    const gridPadding = 48;
+    const innerGridSize = size - gridPadding * 2;
+    const cellSize = innerGridSize / 8;
+    const cellGap = 4;
+    const cellRadius = 5;
+
+    for (let row = 0; row < 8; row++) {
+      for (let col = 0; col < 8; col++) {
+        const idx = row * 8 + col;
+        const isLit = grid[idx] === 1;
+        const x = gridPadding + col * cellSize + cellGap / 2;
+        const y = gridPadding + row * cellSize + cellGap / 2;
+        const w = cellSize - cellGap;
+        const h = cellSize - cellGap;
+
+        ctx.fillStyle = isLit ? '#f8fafc' : '#1e293b';
+        if (ctx.roundRect) {
+          ctx.beginPath();
+          ctx.roundRect(x, y, w, h, cellRadius);
+          ctx.fill();
+        } else {
+          ctx.fillRect(x, y, w, h);
+        }
+
+        // Cell border
+        ctx.strokeStyle = isLit ? '#ffffff' : '#334155';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        // Binary digit inside cell
+        ctx.fillStyle = isLit ? '#0f172a' : '#475569';
+        ctx.font = 'bold 12px monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(isLit ? '1' : '0', x + w / 2, y + h / 2);
+      }
+    }
+
+    // Header title
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = 'bold 13px system-ui, -apple-system, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('ציור פיקסלים בינארי (8×8)', size / 2, 40);
+
+    // Footer branding watermark
+    ctx.fillStyle = '#64748b';
+    ctx.font = '12px system-ui, -apple-system, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('נוצר במעבדת הפיקסלים • ZenLab', size / 2, size - 34);
+
+    // Download trigger
+    const link = document.createElement('a');
+    link.download = 'zenlab-pixel-art.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    AudioEngine.playCollect();
+  };
+
   const earnedStars = (completedChallenges['lab1_challenge1'] ? 1 : 0) +
                       (completedChallenges['lab1_challenge2'] ? 1 : 0) +
                       (completedChallenges['lab1_challenge3'] ? 1 : 0);
@@ -198,6 +287,16 @@ export default function Lab1_BinaryPixels({ curriculum }) {
                 <div className="flex items-center gap-1.5 shrink-0">
                   <button
                     type="button"
+                    onClick={handleDownloadImage}
+                    className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-blue-950/60 hover:bg-blue-900/80 text-xs text-blue-300 hover:text-white border border-blue-800 transition-colors"
+                    title="הורדת היצירה כקובץ תמונה PNG"
+                  >
+                    <Download className="w-3.5 h-3.5 text-blue-400" />
+                    <span className="hidden sm:inline">הורדת תמונה</span>
+                    <span className="sm:hidden">PNG</span>
+                  </button>
+                  <button
+                    type="button"
                     onClick={handleInvert}
                     className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 border border-slate-700 transition-colors"
                   >
@@ -261,14 +360,25 @@ export default function Lab1_BinaryPixels({ curriculum }) {
                     <h3 className="text-sm font-semibold text-white">קוד המתגים של הציור (0 ו-1)</h3>
                   </div>
 
-                  <button
-                    type="button"
-                    onClick={handleCopyBinary}
-                    className="flex items-center gap-1 text-xs text-slate-400 hover:text-slate-200 transition-colors bg-slate-800 px-2 py-1 rounded border border-slate-700"
-                  >
-                    {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                    <span>{copied ? 'הועתק!' : 'העתק'}</span>
-                  </button>
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={handleDownloadImage}
+                      className="flex items-center gap-1 text-xs text-slate-400 hover:text-slate-200 transition-colors bg-slate-800 px-2 py-1 rounded border border-slate-700"
+                      title="הורדת הציור כקובץ PNG"
+                    >
+                      <Download className="w-3.5 h-3.5 text-blue-400" />
+                      <span>PNG</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleCopyBinary}
+                      className="flex items-center gap-1 text-xs text-slate-400 hover:text-slate-200 transition-colors bg-slate-800 px-2 py-1 rounded border border-slate-700"
+                    >
+                      {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                      <span>{copied ? 'הועתק!' : 'העתק'}</span>
+                    </button>
+                  </div>
                 </div>
 
                 <div 

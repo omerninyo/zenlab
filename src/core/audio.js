@@ -135,8 +135,42 @@ class AudioEngineClass {
     });
   }
 
+  playZenChime() {
+    if (this.muted) return;
+    const now = Date.now();
+    if (this._lastChimeTime && (now - this._lastChimeTime < 350)) return;
+    this._lastChimeTime = now;
+    this.init();
+    if (!this.ctx) return;
+
+    // Peaceful, resonant pentatonic chime (C5, E5, G5, C6)
+    const chords = [523.25, 659.25, 783.99, 1046.50];
+    chords.forEach((freq, idx) => {
+      const startTime = this.ctx.currentTime + idx * 0.08;
+      const duration = 0.85;
+
+      try {
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, startTime);
+
+        gain.gain.setValueAtTime(0.0001, startTime);
+        gain.gain.linearRampToValueAtTime(0.07, startTime + 0.03);
+        gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc.start(startTime);
+        osc.stop(startTime + duration);
+      } catch {}
+    });
+  }
+
   playChallengeSuccess() {
-    this.playSuccess();
+    this.playZenChime();
   }
 
   playError() {

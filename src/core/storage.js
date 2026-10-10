@@ -38,7 +38,8 @@ const defaultState = {
   viewMode: 'home', // 'home' (roadmap overview) | 'lab' (active lab workspace)
   theme: 'light', // 'light' (default bright classroom mode) | 'dark'
   dapimMode: false, // Dapim 4.0 Liquid Glass & Hollow Restraint theme preview
-  dapimPalette: 'champagne-gold' // 'champagne-gold' (default) | 'matte-amber' | 'nordic-ice' | 'emerald-sanctuary'
+  dapimPalette: 'champagne-gold', // 'champagne-gold' (default) | 'matte-amber' | 'nordic-ice' | 'emerald-sanctuary'
+  customAnimals: [] // User-created sandbox animals for Lab 3
 };
 
 class StorageEngineClass {
@@ -124,6 +125,14 @@ class StorageEngineClass {
 
     this.state.totalStars = Object.values(this.state.labStars).reduce((sum, v) => sum + v, 0);
     this.saveState();
+
+    if (typeof window !== 'undefined') {
+      try {
+        window.dispatchEvent(new CustomEvent('zen-challenge-completed', {
+          detail: { labId, challengeId, rewardStars }
+        }));
+      } catch {}
+    }
 
     return { isNew: true, state: this.getState() };
   }
@@ -241,6 +250,30 @@ class StorageEngineClass {
       document.documentElement.setAttribute('data-theme', selected);
     }
     this.saveState();
+  }
+
+  getCustomAnimals() {
+    return Array.isArray(this.state.customAnimals) ? this.state.customAnimals : [];
+  }
+
+  saveCustomAnimals(animals) {
+    this.state.customAnimals = Array.isArray(animals) ? animals : [];
+    this.saveState();
+    this.notify();
+  }
+
+  addCustomAnimal(animal) {
+    const list = this.getCustomAnimals();
+    const nextList = [...list.filter(a => a.id !== animal.id), animal];
+    this.saveCustomAnimals(nextList);
+    return nextList;
+  }
+
+  removeCustomAnimal(animalId) {
+    const list = this.getCustomAnimals();
+    const nextList = list.filter(a => a.id !== animalId);
+    this.saveCustomAnimals(nextList);
+    return nextList;
   }
 
   resetProgress() {

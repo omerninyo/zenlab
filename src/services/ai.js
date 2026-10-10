@@ -419,7 +419,7 @@ export const AIService = {
    * @param {{ rootAttr: string, leftAttr: string, rightAttr: string }} splitRules
    * @returns {{ tree: any, accuracy: number, leafPurity: number }}
    */
-  evaluateDecisionTree(dataset, { rootAttr = 'canFly', leftAttr = 'hasFur', rightAttr = 'legs' }) {
+  evaluateDecisionTree(dataset, { rootAttr = 'canFly', leftAttr = 'hasFur', rightAttr = 'legs', isSingleItemMode = null }) {
     if (!dataset || dataset.length === 0) {
       return { accuracy: 0, leafPurity: 0, nodes: {}, isSingleItemMode: false };
     }
@@ -443,7 +443,7 @@ export const AIService = {
       { key: 'leafRR', path: 'לא / לא', items: leafRR }
     ];
 
-    const isSingleItemMode = dataset.length <= 4;
+    const effectiveSingleItemMode = isSingleItemMode !== null ? isSingleItemMode : (dataset.length <= 4);
     const totalItems = dataset.length;
     let pureItemsCount = 0;
     let isolatedAnimalsCount = 0;
@@ -496,7 +496,7 @@ export const AIService = {
     });
 
     const leafPurity = totalItems > 0 ? Math.round((pureItemsCount / totalItems) * 100) : 0;
-    const accuracy = isSingleItemMode
+    const accuracy = effectiveSingleItemMode
       ? Math.round((isolatedAnimalsCount / totalItems) * 100)
       : leafPurity;
 
@@ -504,7 +504,7 @@ export const AIService = {
       rootAttr,
       leftAttr,
       rightAttr,
-      isSingleItemMode,
+      isSingleItemMode: effectiveSingleItemMode,
       leafDetails,
       nodes: {
         root: { count: dataset.length },

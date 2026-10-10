@@ -427,6 +427,7 @@ export default function App() {
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             {/* Stars Achievement Badge - Tapping opens Certificate */}
             <button
+              id="zen-stars-header-badge"
               type="button"
               onClick={() => { setIsCertificateOpen(true); AudioEngine.playStep(); }}
               title="כוכבים שהושגו - לחצו לצפייה בתעודה"

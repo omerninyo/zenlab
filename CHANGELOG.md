@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.17] - 2026-10-10
+
+### Added & Enhanced (Sandbox Expansion, PWA & Zen Celebration)
+- **Creative Sandbox Expansion (Idea 2)**:
+  - **Lab 1 (Binary Pixels) Image Export**: Added high-resolution (512x512) PNG export (`הורדת תמונה`) directly from the 8x8 pixel canvas with dark slate Zen 2.0 aesthetics, rounded pixel borders, binary digits, and discrete educational watermark (`נוצר במעבדת הפיקסלים • ZenLab`).
+  - **Lab 3 (Decision Tree) Custom Animal Sandbox**: Added interactive "הוסיפו חיה משלכם!" modal. Students can name their own animal, pick an emoji (🦁, 🦊, 🐼, 🐨, 🐸, 🐬, 🐙, 🦉, 🐝, 🦖, etc.), select animal classification (יונק, עוף, זוחל, אחר), and configure traits (canFly, hasFur, legs, hasShell). Custom animals are integrated into the active dataset, evaluated in real time through the decision tree, displayed with custom emojis on leaves, and persisted in `StorageEngine`.
+- **Zen Celebration & Audio-Visual Feedback (Idea 3)**:
+  - **Peaceful Pentatonic Zen Chime (`AudioEngine.playZenChime`)**: Introduced resonant sine-wave pentatonic chords (C5, E5, G5, C6) with debounced guard (350ms) to celebrate learning achievements without arcade noise or sensory overload.
+  - **Organic Flying Star Animation (`src/core/starEffects.js`)**: Created physics-based floating star particle animation that launches upon challenge completion and smoothly flies directly to `#zen-stars-header-badge` with a gentle scale-ring impact effect.
+- **PWA & Offline Capability (Idea 5)**:
+  - **Production-Grade Service Worker (`public/sw.js`)**: Implemented Network-First strategy for HTML navigation, Cache-First for hashed Vite bundles (`/assets/*`), and Stale-While-Revalidate for static resources.
+  - **Offline Classroom Support**: Full offline capability for school Chromebooks and tablets with seamless PWA installation via `manifest.webmanifest`.
+- **Decision Tree Simulator Hardening**:
+  - Updated `AIService.evaluateDecisionTree` to accept explicit `isSingleItemMode`, allowing accurate pigeonhole analysis when students add custom animals to 4-leaf trees.
+
 ## [0.7.16] - 2026-10-10
 
 ### Fixed & Hardened (Interactive QA Audit)

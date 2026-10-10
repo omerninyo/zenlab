@@ -9,7 +9,9 @@ import {
   CheckCircle2, 
   ChevronDown,
   Info,
-  SlidersHorizontal
+  SlidersHorizontal,
+  Plus,
+  X
 } from 'lucide-react';
 import { AudioEngine } from '../core/audio.js';
 import { StorageEngine } from '../core/storage.js';
@@ -31,6 +33,8 @@ const ANIMAL_EMOJIS = {
   ostrich: '🦤'
 };
 
+const getAnimalEmoji = (animal) => animal?.emoji || ANIMAL_EMOJIS[animal?.id] || '🐾';
+
 export default function Lab3_DecisionTree({ curriculum }) {
   const labData = curriculum.labs.lab3;
 
@@ -44,6 +48,18 @@ export default function Lab3_DecisionTree({ curriculum }) {
   const [rightAttr, setRightAttr] = useState('canFly');
   const [selectedTestAnimalId, setSelectedTestAnimalId] = useState('bat');
 
+  const [customAnimals, setCustomAnimals] = useState(() => StorageEngine.getCustomAnimals());
+  const [isAddAnimalModalOpen, setIsAddAnimalModalOpen] = useState(false);
+
+  // Custom animal form fields
+  const [animalName, setAnimalName] = useState('');
+  const [animalEmoji, setAnimalEmoji] = useState('🦁');
+  const [animalSpecies, setAnimalSpecies] = useState('יונק');
+  const [animalCanFly, setAnimalCanFly] = useState(false);
+  const [animalHasFur, setAnimalHasFur] = useState(true);
+  const [animalLegs, setAnimalLegs] = useState(4);
+  const [animalHasShell, setAnimalHasShell] = useState(false);
+
   const [completedChallenges, setCompletedChallenges] = useState(() => {
     return StorageEngine.getState().completedChallenges;
   });
@@ -51,6 +67,9 @@ export default function Lab3_DecisionTree({ curriculum }) {
   useEffect(() => {
     const unsub = StorageEngine.subscribe(state => {
       setCompletedChallenges(state.completedChallenges);
+      if (state.customAnimals) {
+        setCustomAnimals(state.customAnimals);
+      }
     });
     return unsub;
   }, []);
@@ -61,22 +80,59 @@ export default function Lab3_DecisionTree({ curriculum }) {
     AudioEngine.playStep();
   };
 
-  // Active dataset depending on mode
+  // Active dataset combining preset animals and custom student animals
   const activeDataset = useMemo(() => {
+    let base = labData.dataset;
     if (datasetMode === 'eight' && labData.extendedDataset) {
-      return [...labData.dataset, ...labData.extendedDataset];
+      base = [...labData.dataset, ...labData.extendedDataset];
     }
-    return labData.dataset;
-  }, [datasetMode, labData.dataset, labData.extendedDataset]);
+    return [...base, ...customAnimals];
+  }, [datasetMode, labData.dataset, labData.extendedDataset, customAnimals]);
 
   // Evaluate the tree using AIService
   const evaluation = useMemo(() => {
     return AIService.evaluateDecisionTree(activeDataset, {
       rootAttr,
       leftAttr,
-      rightAttr
+      rightAttr,
+      isSingleItemMode: datasetMode === 'four'
     });
-  }, [activeDataset, rootAttr, leftAttr, rightAttr]);
+  }, [activeDataset, rootAttr, leftAttr, rightAttr, datasetMode]);
+
+  const handleSaveCustomAnimal = (e) => {
+    if (e) e.preventDefault();
+    const trimmed = animalName.trim();
+    if (!trimmed) return;
+
+    const newAnimal = {
+      id: `custom_${Date.now()}`,
+      name: trimmed,
+      emoji: animalEmoji || '🐾',
+      species: animalSpecies,
+      canFly: Boolean(animalCanFly),
+      hasFur: Boolean(animalHasFur),
+      legs: Number(animalLegs) || 4,
+      hasShell: Boolean(animalHasShell),
+      isCustom: true
+    };
+
+    const updated = StorageEngine.addCustomAnimal(newAnimal);
+    setCustomAnimals(updated);
+    setSelectedTestAnimalId(newAnimal.id);
+    setIsAddAnimalModalOpen(false);
+    setAnimalName('');
+    AudioEngine.playCollect();
+    fireConfetti();
+  };
+
+  const handleDeleteCustomAnimal = (id) => {
+    const updated = StorageEngine.removeCustomAnimal(id);
+    setCustomAnimals(updated);
+    if (selectedTestAnimalId === id) {
+      setSelectedTestAnimalId('bat');
+    }
+    AudioEngine.playStep();
+  };
 
   // Challenge evaluation
   useEffect(() => {
@@ -313,7 +369,7 @@ export default function Lab3_DecisionTree({ curriculum }) {
                         <div className="flex flex-wrap items-center justify-center gap-1 pt-1">
                           {evaluation.nodes.leafLL.items.map(item => (
                             <span key={item.id} className="text-xs bg-slate-900 px-2 py-0.5 rounded border border-slate-700 text-slate-200" title={`${item.name} (${item.species})`}>
-                              {ANIMAL_EMOJIS[item.id] || '🐾'} {item.name}
+                              {getAnimalEmoji(item)} {item.name}
                             </span>
                           ))}
                         </div>
@@ -345,7 +401,7 @@ export default function Lab3_DecisionTree({ curriculum }) {
                         <div className="flex flex-wrap items-center justify-center gap-1 pt-1">
                           {evaluation.nodes.leafLR.items.map(item => (
                             <span key={item.id} className="text-xs bg-slate-900 px-2 py-0.5 rounded border border-slate-700 text-slate-200" title={`${item.name} (${item.species})`}>
-                              {ANIMAL_EMOJIS[item.id] || '🐾'} {item.name}
+                              {getAnimalEmoji(item)} {item.name}
                             </span>
                           ))}
                         </div>
@@ -401,7 +457,7 @@ export default function Lab3_DecisionTree({ curriculum }) {
                         <div className="flex flex-wrap items-center justify-center gap-1 pt-1">
                           {evaluation.nodes.leafRL.items.map(item => (
                             <span key={item.id} className="text-xs bg-slate-900 px-2 py-0.5 rounded border border-slate-700 text-slate-200" title={`${item.name} (${item.species})`}>
-                              {ANIMAL_EMOJIS[item.id] || '🐾'} {item.name}
+                              {getAnimalEmoji(item)} {item.name}
                             </span>
                           ))}
                         </div>
@@ -433,7 +489,7 @@ export default function Lab3_DecisionTree({ curriculum }) {
                         <div className="flex flex-wrap items-center justify-center gap-1 pt-1">
                           {evaluation.nodes.leafRR.items.map(item => (
                             <span key={item.id} className="text-xs bg-slate-900 px-2 py-0.5 rounded border border-slate-700 text-slate-200" title={`${item.name} (${item.species})`}>
-                              {ANIMAL_EMOJIS[item.id] || '🐾'} {item.name}
+                              {getAnimalEmoji(item)} {item.name}
                             </span>
                           ))}
                         </div>
@@ -454,21 +510,52 @@ export default function Lab3_DecisionTree({ curriculum }) {
                   </div>
                   
                   <div className="flex flex-wrap items-center gap-1.5">
-                    {activeDataset.map(animal => (
-                      <button
-                        key={animal.id}
-                        type="button"
-                        onClick={() => { setSelectedTestAnimalId(animal.id); AudioEngine.playStep(); }}
-                        className={`px-2.5 py-1 rounded-lg text-xs transition-colors flex items-center gap-1 ${
-                          selectedTestAnimalId === animal.id
-                            ? 'bg-blue-600 text-white font-bold shadow'
-                            : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800'
-                        }`}
-                      >
-                        <span>{ANIMAL_EMOJIS[animal.id] || '🐾'}</span>
-                        <span>{animal.name}</span>
-                      </button>
-                    ))}
+                    {activeDataset.map(animal => {
+                      const isCustom = Boolean(animal.isCustom);
+                      return (
+                        <div key={animal.id} className="inline-flex items-center">
+                          <button
+                            type="button"
+                            onClick={() => { setSelectedTestAnimalId(animal.id); AudioEngine.playStep(); }}
+                            className={`px-2.5 py-1 text-xs transition-colors flex items-center gap-1.5 ${
+                              isCustom ? 'rounded-r-lg' : 'rounded-lg'
+                            } ${
+                              selectedTestAnimalId === animal.id
+                                ? 'bg-blue-600 text-white font-bold shadow'
+                                : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800'
+                            }`}
+                          >
+                            <span>{getAnimalEmoji(animal)}</span>
+                            <span>{animal.name}</span>
+                            {isCustom && <span className="text-[10px] text-amber-300 font-normal">(אישי)</span>}
+                          </button>
+                          {isCustom && (
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDeleteCustomAnimal(animal.id);
+                              }}
+                              className="px-1.5 py-1 rounded-l-lg bg-slate-900 hover:bg-rose-950 text-slate-400 hover:text-rose-400 border-y border-l border-slate-800 text-xs transition-colors"
+                              title="מחיקת חיה זו"
+                            >
+                              <X className="w-3 h-3" />
+                            </button>
+                          )}
+                        </div>
+                      );
+                    })}
+
+                    {/* Add Custom Animal Button */}
+                    <button
+                      type="button"
+                      onClick={() => { setIsAddAnimalModalOpen(true); AudioEngine.playStep(); }}
+                      className="px-2.5 py-1 rounded-lg text-xs bg-amber-950/40 hover:bg-amber-900/60 border border-amber-800/80 text-amber-300 hover:text-amber-100 font-medium flex items-center gap-1 transition-colors"
+                      title="הוסיפו חיה חדשה עם תכונות שאתם קובעים"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      <span>הוסיפו חיה משלכם!</span>
+                    </button>
                   </div>
                 </div>
 
@@ -476,7 +563,7 @@ export default function Lab3_DecisionTree({ curriculum }) {
                 <div className="text-xs text-slate-300 bg-slate-900/80 p-3 rounded-lg border border-slate-800 space-y-2">
                   <div className="flex items-center justify-between border-b border-slate-800 pb-2">
                     <span>
-                      החיה שנבחרה: <strong>{ANIMAL_EMOJIS[testAnimal.id]} {testAnimal.name}</strong> ({testAnimal.species})
+                      החיה שנבחרה: <strong>{getAnimalEmoji(testAnimal)} {testAnimal.name}</strong> ({testAnimal.species})
                     </span>
                     <span className="text-[11px] font-mono text-emerald-400">
                       עלה יעד: {targetLeaf?.path || ''}
@@ -570,6 +657,208 @@ export default function Lab3_DecisionTree({ curriculum }) {
             </div>
           </div>
         </div>
+        </div>
+      )}
+
+      {/* Add Custom Animal Modal */}
+      {isAddAnimalModalOpen && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-xs animate-fadeIn"
+          onClick={() => setIsAddAnimalModalOpen(false)}
+        >
+          <div 
+            className="bg-slate-900 border border-slate-700/80 rounded-2xl w-full max-w-md p-5 sm:p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto"
+            onClick={e => e.stopPropagation()}
+            dir="rtl"
+          >
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <div className="flex items-center gap-2.5">
+                <span className="text-2xl p-1.5 bg-slate-950 rounded-xl border border-slate-800">{animalEmoji}</span>
+                <div>
+                  <h3 className="text-base font-bold text-white">הוסיפו חיה משלכם לעץ</h3>
+                  <p className="text-xs text-slate-400">הגדירו תכונות ובדקו לאיזה עלה היא תגיע!</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsAddAnimalModalOpen(false)}
+                className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveCustomAnimal} className="space-y-4 text-xs">
+              {/* Animal Name */}
+              <div>
+                <label className="block text-slate-300 font-semibold mb-1">
+                  שם החיה:
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="למשל: דולפין, פינגווין, קנגורו, צב ים..."
+                  value={animalName}
+                  onChange={e => setAnimalName(e.target.value)}
+                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 text-sm"
+                  autoFocus
+                />
+              </div>
+
+              {/* Emoji Selector */}
+              <div>
+                <label className="block text-slate-300 font-semibold mb-1.5">
+                  בחרו אימוג'י לחיה:
+                </label>
+                <div className="grid grid-cols-8 gap-1.5 p-2 bg-slate-950 rounded-xl border border-slate-800">
+                  {['🦁', '🦊', '🐼', '🐨', '🐸', '🐬', '🐙', '🦉', '🐝', '🦖', '🦄', '🐧', '🦔', '🦩', '🐘', '🦒'].map(emoji => (
+                    <button
+                      key={emoji}
+                      type="button"
+                      onClick={() => setAnimalEmoji(emoji)}
+                      className={`w-8 h-8 rounded-lg flex items-center justify-center text-lg transition-transform ${
+                        animalEmoji === emoji 
+                          ? 'bg-blue-600 scale-110 shadow-md ring-2 ring-blue-400' 
+                          : 'hover:bg-slate-800'
+                      }`}
+                    >
+                      {emoji}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Species / Category */}
+              <div>
+                <label className="block text-slate-300 font-semibold mb-1">
+                  מחלקת בעלי חיים:
+                </label>
+                <div className="grid grid-cols-4 gap-1.5">
+                  {['יונק', 'עוף', 'זוחל', 'אחר'].map(sp => (
+                    <button
+                      key={sp}
+                      type="button"
+                      onClick={() => setAnimalSpecies(sp)}
+                      className={`py-1.5 rounded-lg font-medium transition-all ${
+                        animalSpecies === sp 
+                          ? 'bg-blue-600 text-white font-bold' 
+                          : 'bg-slate-950 text-slate-400 border border-slate-800 hover:text-slate-200'
+                      }`}
+                    >
+                      {sp}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Attributes: Yes / No Toggles */}
+              <div className="space-y-2 pt-2 border-t border-slate-800">
+                <div className="font-semibold text-slate-300">תכונות למיון בעץ ההחלטות:</div>
+
+                {/* Can Fly */}
+                <div className="flex items-center justify-between p-2 rounded-lg bg-slate-950 border border-slate-800">
+                  <span className="text-slate-200 font-medium">האם היא יכולה לעוף?</span>
+                  <div className="flex gap-1">
+                    <button
+                      type="button"
+                      onClick={() => setAnimalCanFly(true)}
+                      className={`px-3 py-1 rounded-md text-xs font-semibold transition-all ${animalCanFly ? 'bg-emerald-600 text-white' : 'bg-slate-900 text-slate-400'}`}
+                    >
+                      כן
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setAnimalCanFly(false)}
+                      className={`px-3 py-1 rounded-md text-xs font-semibold transition-all ${!animalCanFly ? 'bg-amber-600 text-white' : 'bg-slate-900 text-slate-400'}`}
+                    >
+                      לא
+                    </button>
+                  </div>
+                </div>
+
+                {/* Has Fur */}
+                <div className="flex items-center justify-between p-2 rounded-lg bg-slate-950 border border-slate-800">
+                  <span className="text-slate-200 font-medium">האם יש לה פרווה?</span>
+                  <div className="flex gap-1">
+                    <button
+                      type="button"
+                      onClick={() => setAnimalHasFur(true)}
+                      className={`px-3 py-1 rounded-md text-xs font-semibold transition-all ${animalHasFur ? 'bg-emerald-600 text-white' : 'bg-slate-900 text-slate-400'}`}
+                    >
+                      כן
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setAnimalHasFur(false)}
+                      className={`px-3 py-1 rounded-md text-xs font-semibold transition-all ${!animalHasFur ? 'bg-amber-600 text-white' : 'bg-slate-900 text-slate-400'}`}
+                    >
+                      לא
+                    </button>
+                  </div>
+                </div>
+
+                {/* Legs */}
+                <div className="flex items-center justify-between p-2 rounded-lg bg-slate-950 border border-slate-800">
+                  <span className="text-slate-200 font-medium">כמה רגליים יש לה?</span>
+                  <div className="flex gap-1">
+                    <button
+                      type="button"
+                      onClick={() => setAnimalLegs(2)}
+                      className={`px-3 py-1 rounded-md text-xs font-semibold transition-all ${animalLegs === 2 ? 'bg-blue-600 text-white' : 'bg-slate-900 text-slate-400'}`}
+                    >
+                      2 רגליים
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setAnimalLegs(4)}
+                      className={`px-3 py-1 rounded-md text-xs font-semibold transition-all ${animalLegs === 4 ? 'bg-blue-600 text-white' : 'bg-slate-900 text-slate-400'}`}
+                    >
+                      4 רגליים
+                    </button>
+                  </div>
+                </div>
+
+                {/* Has Shell */}
+                <div className="flex items-center justify-between p-2 rounded-lg bg-slate-950 border border-slate-800">
+                  <span className="text-slate-200 font-medium">האם יש לה שריון מגן?</span>
+                  <div className="flex gap-1">
+                    <button
+                      type="button"
+                      onClick={() => setAnimalHasShell(true)}
+                      className={`px-3 py-1 rounded-md text-xs font-semibold transition-all ${animalHasShell ? 'bg-emerald-600 text-white' : 'bg-slate-900 text-slate-400'}`}
+                    >
+                      כן
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setAnimalHasShell(false)}
+                      className={`px-3 py-1 rounded-md text-xs font-semibold transition-all ${!animalHasShell ? 'bg-amber-600 text-white' : 'bg-slate-900 text-slate-400'}`}
+                    >
+                      לא
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Modal Actions */}
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-800">
+                <button
+                  type="button"
+                  onClick={() => setIsAddAnimalModalOpen(false)}
+                  className="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold transition-colors"
+                >
+                  ביטול
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold shadow-md transition-colors flex items-center gap-1.5"
+                >
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>הוספת החיה לעץ!</span>
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
     </div>
