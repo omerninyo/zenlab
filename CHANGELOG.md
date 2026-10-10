@@ -21,6 +21,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Computational LTR canvas vs. linguistic RTL wrapper invariant.
   - Dual business model: 100% Free & Open-Source MIT Web SPA vs. nominal App Store app ($1.99–$2.99 with 50% Apple School Manager / VPP volume discount) to sustainably cover $99/yr Apple Developer fee.
   - Comprehensive FMEA (Failure Mode and Effects Analysis) covering 6 major engineering and distribution risks.
+- **Detailed Product & Technical Specification (`docs/specifications/APP_SPECIFICATION_IOS_NATIVE.he.md`)**:
+  - Comprehensive PRD and technical specification for 100% Apple Native iPadOS application.
+  - Formally codified `Minimum Deploy Target: iPadOS 17.0` (covering iPad 7th-10th gen in Israeli school carts).
+  - Explicit hardware and framework mapping for Apple On-Device AI running locally on older devices: `NaturalLanguage` (Hebrew tokenization & embeddings), `CoreML` (Apple Neural Engine CNN & XOR), `Vision` (drawing/contours), and `App Intents` (Siri voice control).
+  - Defined Apple HIG visual language: `NavigationSplitView`, `.ultraThinMaterial`, 56x56pt touch targets, LTR computational canvas with natural Hebrew RTL surroundings.
 - **RFC 003: Native Apple & Android Architecture (`docs/proposals/RFC_003_NATIVE_APPLE_AND_ANDROID_ARCHITECTURE.he.md`)**:
   - Monorepo architectural blueprint (`web/`, `ios/`, `android/`, `shared/curriculum.json`).
   - 100% Apple Native framework specification: SwiftUI 6, Apple HIG (Liquid Glass `.ultraThinMaterial`), Metal Canvas (120fps), AVAudioEngine, CoreHaptics, SwiftData.

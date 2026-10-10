@@ -22,6 +22,11 @@
   - נעילת קנבס חישובי ל-LTR מול מעטפת RTL טבעית בעברית.
   - מודל כלכלי דואלי: אתר ווב חינמי וקוד פתוח (MIT) מול אפליקציית App Store במחיר סמלי ($1.99–$2.99 / 50% הנחת מוסדות VPP) לכיסוי עלויות חשבון מפתח.
   - ניתוח כשלים וסיכונים הנדסי (FMEA / 10th Man Red Team).
+- **מסמך אפיון אפליקציה מפורט למכשירי iPad ו-iOS (`docs/specifications/APP_SPECIFICATION_IOS_NATIVE.he.md`)**:
+  - אפיון מוצר וטכני מלא ל-100% Apple Native ללא שום רכיבי Web.
+  - הגדרה רשמית של יעד המינימום: `iPadOS 17.0` לתמיכה בכל דגמי iPad 7, 8, 9, 10 בעגלות בתי הספר בישראל.
+  - אפיון מעשי של ניצול מנועי ה-AI המקומיים של אפל במכשירים חינוכיים ללא תלות ב-Apple Intelligence או בענן: `NLTokenizer` (טוקניזציה חיה בעברית), `NLEmbedding` (מרחב וקטורי למרחק סמנטי), `CoreML` (האצת קונבולוציה ב-Neural Engine ורשת XOR), `Vision` (זיהוי קווי מתאר בציור אצבע/עיפרון), ו-`App Intents` (שליטה קולית ב-Siri).
+  - אפיון שפת הממשק Zen 2.0 ו-Apple HIG: `NavigationSplitView`, זכוכית נוזלית, משטחי מגע 56x56pt, ונעילת קנבס ל-LTR מול מעטפת RTL טבעית.
 - **הצעת ארכיטקטורה RFC 003 לאפליקציות Native (`docs/proposals/RFC_003_NATIVE_APPLE_AND_ANDROID_ARCHITECTURE.he.md`)**:
   - מפרט מונוריפו (`web/`, `ios/`, `android/`, `shared/curriculum.json`).
   - חבילת Frameworks מקורית של אפל (100% Apple Native): SwiftUI 6, זכוכית נוזלית (`.ultraThinMaterial`), Metal Canvas, CoreHaptics, AVAudioEngine ו-SwiftData.

@@ -5,7 +5,7 @@
 **תאריך:** אוקטובר 2026  
 **סטטוס:** מוצע ומאושר ליישום הדרגתי (Proposed / Approved for Phased Execution)  
 **צוות:** Code & AI Explorer Team (`team@learnai.internal`)  
-**מסמכים קשורים:** `RFC_001_CORE_ARCHITECTURE.md`, `RFC_002_EIGHT_LAB_MASTER_SUITE.md`, `NATIVE_APPS_FEASIBILITY_AND_MARKET_STUDY.he.md`  
+**מסמכים קשורים:** `RFC_001_CORE_ARCHITECTURE.md`, `RFC_002_EIGHT_LAB_MASTER_SUITE.md`, `NATIVE_APPS_FEASIBILITY_AND_MARKET_STUDY.he.md`, `APP_SPECIFICATION_IOS_NATIVE.he.md`  
 
 ---
 
@@ -68,15 +68,26 @@ LearnAI/
 
 ## 3. מיפוי ה-Frameworks המקוריים של Apple (100% iOS/iPadOS)
 
+### א. יעד מערכת הפעלה מינימלי: `iPadOS 17.0`
+* **חומרה נתמכת בבתי ספר:** iPad דור 7 (2019), iPad דור 8 (2020), iPad דור 9 (2021), iPad דור 10 (2022).
+* **תאימות כיתתית:** 100% כיסוי של עגלות התקשוב בבתי ספר יסודיים בישראל (גפן / ישראל דיגיטלית).
+* **תשתיות קוד מודרניות:** מאפשר שימוש מלא ב-`SwiftData` (ללא CoreData מיושן) ובמאקרו `@Observable` (ללא Combine).
+
+### ב. טבלת Frameworks מקוריים ומיפוי ל-ZenLab:
+
 | רכיב מערכת | Apple Native Framework | תפקיד ב-ZenLab | ערך מוסף פדגוגי |
 | :--- | :--- | :--- | :--- |
-| **ממשק משתמש** | `SwiftUI 6` | `NavigationSplitView` ב-iPad, אדפטיבי ל-iPhone ול-Mac | רספונסיביות טבעית, תמיכה מלאה ב-Dynamic Type ונגישות |
+| **ממשק משתמש** | `SwiftUI 6` (iOS 17+) | `NavigationSplitView` ב-iPad, אדפטיבי ל-iPhone ול-Mac | רספונסיביות טבעית, תמיכה מלאה ב-Dynamic Type ונגישות |
 | **חומריות ועיצוב** | `Apple HIG Materials` | `.ultraThinMaterial`, גבולות Specular עדינים | שקט חזותי, היעדר גירויים זרחניים, שפת Zen 2.0 |
 | **קנבס וסימולציה** | `SwiftUI.Canvas` / `Metal` | מטריצת פיקסלים 8×8, סריקת Sobel, פריסת נקודות k-NN | רינדור מואץ חומרה ב-120fps חלק ללא שום Latency |
 | **מנוע סאונד** | `AVAudioEngine` | סינתזת גלי סינוס לאקורדים פנטטוניים (C5, E5, G5, C6) | אפס תלות בקבצי שמע כבדים, עבודה נקייה עם מתג השתקה |
 | **משוב מגע** | `CoreHaptics` | רטט עדין בלחיצה על מתגים, פעימת הצלחה באתגרים | חוויה גופנית (Kinesthetic) שמחברת את הילד לפעולת המחשב |
 | **אחסון נתונים** | `SwiftData` | שמירת 24 כוכבים, מעקב אתגרים וחיות בארגז החול | Local-First מוחלט ב-Sandbox המקומי, סנכרון CloudKit שקט |
-| **בינה מקומית** | `FoundationModels` / `NaturalLanguage` | טוקניזציה, זיהוי שפה, אימות מושגים במילון | פעולה מיידית ללא תלות ברשת |
+| **טוקניזציה חיה** | `NaturalLanguage` (`NLTokenizer`) | פירוק משפטים חופשיים בעברית לטוקנים במעבדה 8 | 0ms שיהוי, ללא רשת, המחשת ההבדל בין מילה לטוקן |
+| **מרחק סמנטי** | `NaturalLanguage` (`NLEmbedding`) | מרחב וקטורי מובנה בעברית לחישוב קרבת מושגים במעבדה 5 | הוכחה ויזואלית שבינה מלאכותית מבינה משמעות דרך גיאומטריה |
+| **מאיץ חומרה ל-AI** | `CoreML` + `Apple Neural Engine` | הרצת רשת CNN במעבדה 6 ופתרון XOR במעבדה 7 | המחשת המעבר מחישוב ידני איטי לעיבוד מהיר בשבב (1.2ms) |
+| **ראייה ממוחשבת** | `Vision` (`VNDetectContours`) | זיהוי ציור חופשי באצבע/עיפרון והמרה ל-8x8 במעבדה 1 | חיבור אינטואיטיבי בין שרבוט טבעי למטריצת ביטים |
+| **שליטה קולית** | `App Intents` | פקודות Siri לשליטה ואיפוס מעבדות בכיתה | נגישות קולית ואינטגרציה מערכתית מתקדמת |
 
 ---
 
