@@ -203,7 +203,7 @@ export default function HomeDashboard({
               type="button"
               onClick={() => {
                 AudioEngine.playClick();
-                window.dispatchEvent(new CustomEvent('open-zen-tutor', { detail: { labId: nextLabId } }));
+                window.dispatchEvent(new CustomEvent('open-zen-tutor', { detail: { labId: 'home' } }));
               }}
               className={
                 isDapimActive

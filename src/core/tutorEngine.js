@@ -462,7 +462,7 @@ export function searchKnowledge(userQuery, currentLabId = 'lab1') {
     return {
       matched: true,
       text: welcomeText,
-      audioSrc: `/audio/tutor/${currentLabId}_welcome.mp3?v=0.6.3`,
+      audioSrc: `/audio/tutor/${currentLabId}_welcome.mp3?v=0.6.4`,
       category: 'ברכת שלום',
       suggestedNext: (CURATED_TUTOR_KNOWLEDGE[currentLabId]?.prompts || []).slice(0, 3)
     };
@@ -475,7 +475,7 @@ export function searchKnowledge(userQuery, currentLabId = 'lab1') {
     return {
       matched: true,
       text: currentLabCurated.answers[cleanQuery],
-      audioSrc: promptIndex !== -1 ? `/audio/tutor/${currentLabId}_q${promptIndex}.mp3?v=0.6.3` : null,
+      audioSrc: promptIndex !== -1 ? `/audio/tutor/${currentLabId}_q${promptIndex}.mp3?v=0.6.4` : null,
       category: 'תשובת חונך מוקלטת',
       suggestedNext: currentLabCurated.prompts.filter(p => p !== cleanQuery).slice(0, 2)
     };
@@ -523,7 +523,7 @@ export function searchKnowledge(userQuery, currentLabId = 'lab1') {
         labId: labKey,
         title: promptText,
         text: data.answers[promptText],
-        audioSrc: `/audio/tutor/${labKey}_q${idx}.mp3?v=0.6.3`,
+        audioSrc: `/audio/tutor/${labKey}_q${idx}.mp3?v=0.6.4`,
         category: labKey === currentLabId ? 'תשובת חונך' : `מתוך מעבדה ${labKey}`,
         tokens: tokenizeQuery(promptText)
       });

@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.22] - 2026-10-11
+
+### Fixed & Improved (Comprehensive Audio QA, Zero-Desync Architecture & Complete Home Audio Coverage)
+- **Resolved Home Dashboard Audio State Desynchronization (`src/components/HomeDashboard.jsx`, `src/components/ZenAiTutor.jsx`)**:
+  - Eliminated the root cause where asking "מאיפה הכי כדאי להתחיל?" on the main dashboard played Lab 1's audio ("פיקסל הוא כמו קוביית לגו...") while rendering Home text.
+  - Replaced divergent internal `currentLab` state with unified `effectiveLabId = currentLabId || 'home'`, permanently binding knowledge answers, category cards, and audio URLs to the same active lab context.
+  - Corrected `HomeDashboard.jsx` button dispatch from `{ detail: { labId: nextLabId } }` to `{ detail: { labId: 'home' } }`.
+- **Complete 100% Studio Audio Coverage for Home Journey (`public/audio/tutor/home_*.mp3`)**:
+  - Synthesized and deployed all 5 missing Home dashboard audio files:
+    - `home_welcome.mp3`: Welcome greeting introduces the computational journey from binary switches to neural LLMs.
+    - `home_q0.mp3`: "מאיפה הכי כדאי להתחיל?" guiding learners to Lab 1 ("ציור בפיקסלים") or the next station.
+    - `home_q1.mp3`: "מה ההבדל בין שני המסלולים?" contrasting deterministic logic (Track A) with AI/learning (Track B).
+    - `home_q2.mp3`: "איך משיגים תעودת הצטיינות?" detailing the 24-star master certificate pathway.
+    - `home_q3.mp3`: "מה נעשה בכל מעבדה?" summarizing videos, podcasts, and interactive simulations.
+- **Cache-Busting & Global Audio QA Audit (`src/core/tutorEngine.js`, `src/components/ZenAiTutor.jsx`)**:
+  - Upgraded audio cache-busting query parameter across all endpoints to `?v=0.6.4` to guarantee immediate client cache invalidation.
+  - Automated 62-point QA validation suite verifying existence, non-empty bitstream, and 1:1 text-to-audio fidelity across all 46 tutor items, 8 lab narrations, and 8 explainers.
+
 ## [0.7.21] - 2026-10-11
 
 ### Changed & Fixed (Minimalist Header Ergonomics & Light Mode Contrast Remediation)

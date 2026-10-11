@@ -30,30 +30,29 @@ export default function ZenAiTutor({ currentLabId = 'lab1', isDapimActive = fals
   const [isLoading, setIsLoading] = useState(false);
   const [userApiKey, setUserApiKey] = useState('');
   const [showKeyInput, setShowKeyInput] = useState(false);
-  const [currentLab, setCurrentLab] = useState(currentLabId);
   const [activeCategory, setActiveCategory] = useState('hints');
   const messagesEndRef = useRef(null);
 
-  const labKnowledge = CURATED_TUTOR_KNOWLEDGE[currentLabId] || CURATED_TUTOR_KNOWLEDGE.lab1;
-  const categories = getLabCategories(currentLabId);
+  const effectiveLabId = currentLabId || 'home';
+  const labKnowledge = CURATED_TUTOR_KNOWLEDGE[effectiveLabId] || CURATED_TUTOR_KNOWLEDGE.home;
+  const categories = getLabCategories(effectiveLabId);
 
   // Initialize conversation when opening or changing lab
   useEffect(() => {
-    setCurrentLab(currentLabId);
-    const welcomeText = CURATED_TUTOR_KNOWLEDGE[currentLabId]?.welcome || CURATED_TUTOR_KNOWLEDGE.home.welcome;
+    const welcomeText = CURATED_TUTOR_KNOWLEDGE[effectiveLabId]?.welcome || CURATED_TUTOR_KNOWLEDGE.home.welcome;
     setMessages([
       {
         id: 'welcome',
         sender: 'tutor',
         text: welcomeText,
-        category: 'פתיחת המעבדה',
-        audioSrc: `/audio/tutor/${currentLabId}_welcome.mp3?v=0.6.3`,
-        suggestedNext: (CURATED_TUTOR_KNOWLEDGE[currentLabId]?.prompts || []).slice(0, 3),
+        category: effectiveLabId === 'home' ? 'ברוכים הבאים ל-ZenLab' : 'פתיחת המעבדה',
+        audioSrc: `/audio/tutor/${effectiveLabId}_welcome.mp3?v=0.6.4`,
+        suggestedNext: (CURATED_TUTOR_KNOWLEDGE[effectiveLabId]?.prompts || []).slice(0, 3),
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }
     ]);
-    setActiveCategory(currentLabId === 'home' ? 'faqs' : 'hints');
-  }, [currentLabId]);
+    setActiveCategory(effectiveLabId === 'home' ? 'faqs' : 'hints');
+  }, [effectiveLabId]);
 
   // Load API key from localStorage if saved by user
   useEffect(() => {
@@ -66,11 +65,8 @@ export default function ZenAiTutor({ currentLabId = 'lab1', isDapimActive = fals
   }, []);
 
   useEffect(() => {
-    const handleOpenEvent = (e) => {
+    const handleOpenEvent = () => {
       setIsOpen(true);
-      if (e?.detail?.labId) {
-        setCurrentLab(e.detail.labId);
-      }
     };
     if (typeof window !== 'undefined') {
       window.addEventListener('open-zen-tutor', handleOpenEvent);
@@ -125,7 +121,7 @@ export default function ZenAiTutor({ currentLabId = 'lab1', isDapimActive = fals
             text: payloadOverride.text,
             audioSrc: payloadOverride.audioSrc || null,
             category: payloadOverride.category || 'מענה חונך',
-            suggestedNext: payloadOverride.suggestedNext || (CURATED_TUTOR_KNOWLEDGE[currentLab]?.prompts || []).slice(0, 2),
+            suggestedNext: payloadOverride.suggestedNext || (CURATED_TUTOR_KNOWLEDGE[effectiveLabId]?.prompts || []).slice(0, 2),
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
           }
         ]);
@@ -146,7 +142,7 @@ export default function ZenAiTutor({ currentLabId = 'lab1', isDapimActive = fals
             id: 'tutor-' + Date.now(),
             sender: 'tutor',
             text: curatedAnswer,
-            audioSrc: promptIndex !== -1 ? `/audio/tutor/${currentLab}_q${promptIndex}.mp3?v=0.6.3` : null,
+            audioSrc: promptIndex !== -1 ? `/audio/tutor/${effectiveLabId}_q${promptIndex}.mp3?v=0.6.4` : null,
             category: 'תשובת חונך מוקלטת',
             suggestedNext: labKnowledge.prompts.filter(p => p !== questionText).slice(0, 2),
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
@@ -165,7 +161,7 @@ export default function ZenAiTutor({ currentLabId = 'lab1', isDapimActive = fals
         const res = await fetch('/api/tutor', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ query: questionText, labId: currentLab })
+          body: JSON.stringify({ query: questionText, labId: effectiveLabId })
         });
 
         if (res.ok) {
@@ -180,7 +176,7 @@ export default function ZenAiTutor({ currentLabId = 'lab1', isDapimActive = fals
                 text: data.text,
                 isGemini: true,
                 category: 'זֶן AI חכם',
-                suggestedNext: (CURATED_TUTOR_KNOWLEDGE[currentLab]?.prompts || []).slice(0, 2),
+                suggestedNext: (CURATED_TUTOR_KNOWLEDGE[effectiveLabId]?.prompts || []).slice(0, 2),
                 timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
               }
             ]);
@@ -204,7 +200,7 @@ export default function ZenAiTutor({ currentLabId = 'lab1', isDapimActive = fals
     if (userApiKey && userApiKey.trim().length > 10) {
       try {
         const promptSystem = `אתם חונך בינה מלאכותית ידידותי, מעודד וסבלני לילדים וילדות בבית ספר יסודי בישראל, בשם "זֶן הרובוט".
-הנושא הנלמד כעת במעבדה: ${currentLab}.
+הנושא הנלמד כעת במעבדה: ${effectiveLabId}.
 ענו בעברית פשוטה, בהירה, בגובה העיניים של תלמידי בית ספר יסודי. השתמשו באנלוגיות יומיומיות (כמו משחקי לגו, מתגי חשמל, עוגה או ספורט).
 כלל דקדוקי חובה וקריטי: פנו תמיד בלשון רבים מכלילה (אתם, שלכם, נסו, שימו לב, בואו נגלה) או בלשון נקבה, ולעולם אל תפנו בלשון זכר יחיד!
 אל תתנו תשובות ארוכות ומסובכות: עד 2-3 משפטים קצרים ומעצימים. עודדו את התלמידים להמשיך לחקור במעבדה.`;
@@ -231,7 +227,7 @@ export default function ZenAiTutor({ currentLabId = 'lab1', isDapimActive = fals
                 text: reply.trim(),
                 isGemini: true,
                 category: 'Google Gemini 3',
-                suggestedNext: (CURATED_TUTOR_KNOWLEDGE[currentLab]?.prompts || []).slice(0, 2),
+                suggestedNext: (CURATED_TUTOR_KNOWLEDGE[effectiveLabId]?.prompts || []).slice(0, 2),
                 timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
               }
             ]);
@@ -247,7 +243,7 @@ export default function ZenAiTutor({ currentLabId = 'lab1', isDapimActive = fals
 
     // 5. Option B: Fast, intelligent, local semantic intent matcher (Zero Latency, 100% Offline fallback)
     setTimeout(() => {
-      const matchResult = searchKnowledge(questionText, currentLab);
+      const matchResult = searchKnowledge(questionText, effectiveLabId);
       if (matchResult) {
         setMessages(prev => [
           ...prev,
@@ -317,7 +313,7 @@ export default function ZenAiTutor({ currentLabId = 'lab1', isDapimActive = fals
                   </span>
                 </h3>
                 <p className={`text-[10px] sm:text-[11px] font-medium ${isDapimActive ? 'text-slate-400' : 'text-blue-100'}`}>
-                  {currentLab === 'home' ? 'מפת המסע ומדריך כללי' : `עוזר אישי ומילון מושגים למעבדה`}
+                  {effectiveLabId === 'home' ? 'מפת המסע ומדריך כללי' : `עוזר אישי ומילון מושגים למעבדה`}
                 </p>
               </div>
             </div>
