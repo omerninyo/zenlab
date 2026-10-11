@@ -203,9 +203,9 @@ export default function ZenAiTutor({ currentLabId = 'lab1', isDapimActive = fals
     // 4. Optional: Direct client call if user entered a custom key in UI drawer
     if (userApiKey && userApiKey.trim().length > 10) {
       try {
-        const promptSystem = `אתם חונך בינה מלאכותית ידידותי, מעודד וסבלני לילדים וילדות בכיתה ה (גילאי 10-11) בישראל, בשם "זֶן הרובוט".
+        const promptSystem = `אתם חונך בינה מלאכותית ידידותי, מעודד וסבלני לילדים וילדות בבית ספר יסודי בישראל, בשם "זֶן הרובוט".
 הנושא הנלמד כעת במעבדה: ${currentLab}.
-ענו בעברית פשוטה, בהירה, בגובה העיניים של תלמידי כיתה ה. השתמשו באנלוגיות יומיומיות (כמו משחקי לגו, מתגי חשמל, עוגה או ספורט).
+ענו בעברית פשוטה, בהירה, בגובה העיניים של תלמידי בית ספר יסודי. השתמשו באנלוגיות יומיומיות (כמו משחקי לגו, מתגי חשמל, עוגה או ספורט).
 כלל דקדוקי חובה וקריטי: פנו תמיד בלשון רבים מכלילה (אתם, שלכם, נסו, שימו לב, בואו נגלה) או בלשון נקבה, ולעולם אל תפנו בלשון זכר יחיד!
 אל תתנו תשובות ארוכות ומסובכות: עד 2-3 משפטים קצרים ומעצימים. עודדו את התלמידים להמשיך לחקור במעבדה.`;
 
@@ -278,45 +278,13 @@ export default function ZenAiTutor({ currentLabId = 'lab1', isDapimActive = fals
 
   return (
     <>
-      {/* Floating Trigger Button in Bottom Corner - Container-Anchored on Wide Screens */}
-      {!isOpen && (
-        <button
-          type="button"
-          onClick={() => { setIsOpen(true); AudioEngine.playStep(); }}
-          style={{
-            left: 'max(1rem, calc((100vw - 72rem) / 2 + 1.5rem))'
-          }}
-          className={`fixed bottom-4 sm:bottom-6 z-50 flex items-center justify-center sm:justify-start gap-2.5 w-12 h-12 sm:w-auto sm:h-auto rounded-xl p-0 sm:px-3.5 sm:py-2.5 shadow-xl hover:shadow-2xl transition-all group scale-100 hover:scale-105 cursor-pointer ${
-            isDapimActive
-              ? 'bg-slate-900/95 dark:bg-slate-800/95 hover:bg-slate-900 text-white border border-[var(--slate-6)] hover:border-[var(--accent-rim)]'
-              : 'bg-blue-600 hover:bg-blue-700 text-white border-2 border-white/90 dark:border-slate-800'
-          }`}
-          title="שאלו את זֶן הרובוט - חונך הבינה המלאכותית שלכם"
-        >
-          <div className={`relative flex items-center justify-center w-8 h-8 rounded-lg shrink-0 shadow-xs ${
-            isDapimActive
-              ? 'bg-[var(--slate-4)] border border-[var(--slate-6)] text-[var(--accent-base)]'
-              : 'bg-white/20 text-white'
-          }`}>
-            <Bot className="w-5 h-5" />
-            <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-400 rounded-full ring-2 ring-slate-900" />
-          </div>
-          <div className="text-right hidden sm:block">
-            <span className="block text-xs font-bold leading-tight">שאלו את זֶן הרובוט</span>
-            <span className={`block text-[10px] leading-tight ${isDapimActive ? 'text-slate-300' : 'text-blue-200'}`}>
-              חונך חכם ומילון מושגים
-            </span>
-          </div>
-        </button>
-      )}
-
-      {/* Floating Chat Modal / Drawer - Container-Anchored on Wide Screens */}
+      {/* Floating Chat Modal / Drawer - Positioned directly above the launcher button */}
       {isOpen && (
         <div 
           style={{
             left: 'max(0.75rem, calc((100vw - 72rem) / 2 + 1.5rem))'
           }}
-          className={`fixed bottom-3 sm:bottom-6 z-50 w-[calc(100vw-1.5rem)] sm:w-[440px] max-h-[85vh] h-[560px] sm:h-[620px] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-200 ${
+          className={`fixed bottom-[4.5rem] sm:bottom-[5.25rem] z-50 w-[calc(100vw-1.5rem)] sm:w-[440px] max-h-[calc(100vh-6rem)] sm:max-h-[calc(100vh-6.75rem)] h-[520px] sm:h-[580px] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-3 duration-200 ${
             isDapimActive
               ? 'bg-[var(--slate-2)] border border-[var(--slate-6)]'
               : 'bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-800'
@@ -577,6 +545,60 @@ export default function ZenAiTutor({ currentLabId = 'lab1', isDapimActive = fals
           </form>
         </div>
       )}
+
+      {/* Floating Trigger & Toggle Button - ALWAYS anchored in the exact same bottom corner spot */}
+      <button
+        type="button"
+        onClick={() => {
+          setIsOpen(prev => !prev);
+          AudioEngine.playStep();
+        }}
+        style={{
+          left: 'max(1rem, calc((100vw - 72rem) / 2 + 1.5rem))'
+        }}
+        className={`fixed bottom-4 sm:bottom-6 z-50 flex items-center justify-center sm:justify-start gap-2.5 w-12 h-12 sm:w-auto sm:h-auto rounded-xl p-0 sm:px-3.5 sm:py-2.5 shadow-xl hover:shadow-2xl transition-all group scale-100 hover:scale-105 cursor-pointer ${
+          isOpen
+            ? isDapimActive
+              ? 'bg-[var(--slate-4)] hover:bg-[var(--slate-5)] text-white border-2 border-[var(--accent-base)] shadow-[0_0_20px_rgba(245,158,11,0.25)]'
+              : 'bg-slate-800 hover:bg-slate-700 text-white border-2 border-amber-500 shadow-amber-500/20'
+            : isDapimActive
+              ? 'bg-slate-900/95 dark:bg-slate-800/95 hover:bg-slate-900 text-white border border-[var(--slate-6)] hover:border-[var(--accent-rim)]'
+              : 'bg-blue-600 hover:bg-blue-700 text-white border-2 border-white/90 dark:border-slate-800'
+        }`}
+        title={isOpen ? "סגירת זֶן הרובוט (או לחצו כאן שוב לסגירה)" : "שאלו את זֶן הרובוט - חונך הבינה המלאכותית שלכם"}
+        aria-label={isOpen ? "סגירת זֶן הרובוט" : "שאלו את זֶן הרובוט"}
+      >
+        <div className={`relative flex items-center justify-center w-8 h-8 rounded-lg shrink-0 shadow-xs transition-colors ${
+          isOpen
+            ? isDapimActive
+              ? 'bg-[var(--slate-3)] text-[var(--accent-base)]'
+              : 'bg-amber-500/20 text-amber-300'
+            : isDapimActive
+              ? 'bg-[var(--slate-4)] border border-[var(--slate-6)] text-[var(--accent-base)]'
+              : 'bg-white/20 text-white'
+        }`}>
+          {isOpen ? (
+            <X className="w-5 h-5 transition-transform duration-200" />
+          ) : (
+            <>
+              <Bot className="w-5 h-5" />
+              <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-400 rounded-full ring-2 ring-slate-900" />
+            </>
+          )}
+        </div>
+        <div className="text-right hidden sm:block">
+          <span className="block text-xs font-bold leading-tight">
+            {isOpen ? 'סגירת החונך' : 'שאלו את זֶן הרובוט'}
+          </span>
+          <span className={`block text-[10px] leading-tight ${
+            isOpen
+              ? isDapimActive ? 'text-slate-300' : 'text-slate-300'
+              : isDapimActive ? 'text-slate-300' : 'text-blue-200'
+          }`}>
+            {isOpen ? 'לחצו שוב לסגירה' : 'חונך חכם ומילון מושגים'}
+          </span>
+        </div>
+      </button>
     </>
   );
 }

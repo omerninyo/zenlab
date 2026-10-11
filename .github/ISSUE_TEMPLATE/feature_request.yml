@@ -27,6 +27,6 @@ body:
     id: educational_value
     attributes:
       label: 📚 Educational & Pedagogical Value / ערך פדגוגי ולימודי
-      description: How does this help 5th grade students understand computer science or AI? / כיצד זה מסייע לתלמידי כיתה ה' להבין מדעי המחשב ו-AI?
+      description: How does this help elementary school students understand computer science or AI? / כיצד זה מסייע לתלמידי בית ספר יסודי להבין מדעי המחשב ו-AI?
     validations:
       required: false

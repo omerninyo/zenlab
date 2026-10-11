@@ -7,6 +7,18 @@
 
 ---
 
+## [0.7.19] - 2026-10-11
+
+### שונה ושופר (הכללת שכבת גיל ליסודי וכפתור חונך דו-כיווני צף)
+- **כפתור חונך צף חכם ואינטואיטיבי (`src/components/ZenAiTutor.jsx`)**:
+  - שדרוג מנגנון הפתיחה/סגירה של חונך הבינה המלאכותית: כפתור ההפעלה נשאר מעוגן לצמיתות בפינה התחתונה (`fixed bottom-4 sm:bottom-6`), ומשמש הן לפתיחה והן לסגירה באותו מיקום מדויק (In-Place Toggle).
+  - כאשר חלונית השיחה פתוחה מעל הכפתור (`bottom-[4.5rem] sm:bottom-[5.25rem]`), הכפתור הופך מיד למצב סגירה (`X` עם כיתוב "סגירת החונך / לחצו שוב לסגירה" ומסגרת ענבר מובחנת), כך שהתמש/ת אינו צריך לחפש את ה-`X` בראש החלון.
+- **הכללה גורפת של שכבת הגיל מ"כיתה ה'" ל"בית ספר יסודי"**:
+  - עדכון מקיף ורוחבי בכלל קובצי הממשק, הנתונים, התיעוד ומערכי השיעור: החלפת ההגדרה המצמצמת "כיתה ה'" בהגדרה רחבה ושוויונית "בית ספר יסודי (גילאי 10–11, יסודי בוגר)".
+  - עודכנו: `src/App.jsx`, `src/data/curriculum.json`, `src/components/HomeDashboard.jsx`, `src/components/GlossaryModal.jsx`, `src/components/ZenAiTutor.jsx`, `src/core/tutorEngine.js`, `src/components/DesignSystemTestModal.jsx`, `functions/api/tutor.js`, `index.html`.
+  - עודכנו כל 8 מערכי השיעור (`docs/lesson_plans/01_PIXELS_AND_BINARY.md` עד `08_LLM_TOKENIZER.md` ו-`README.md`).
+  - עודכנו כלל מסמכי הארכיטקטורה, האפיון, המחקר והוויקי: `docs/specifications/APP_SPECIFICATION_IOS_NATIVE.he.md`, `docs/proposals/RFC_003_NATIVE_APPLE_AND_ANDROID_ARCHITECTURE.he.md`, `docs/proposals/RFC_002_EIGHT_LAB_MASTER_SUITE.he.md`, `docs/research/*`, `docs/wiki/*`, `docs/notebooklm_pack/*`, `README.he.md`, `README.md`, `CONTRIBUTING.he.md`, `SECURITY.md`, ותבניות GitHub (`.github/`).
+
 ## [0.7.18] - 2026-10-11
 
 ### נוסף ותועד (ערכת מערכי שיעור לכיתה ה', אסטרטגיית Native ומפת דרכים מרכזית)

@@ -1,7 +1,7 @@
 /**
  * Google Veo 3.1 Video Generation CLI for ZenLab Platform
  * 
- * Generates custom 3D animated educational videos for 5th graders using Google Veo 3.1:
+ * Generates custom 3D animated educational videos for elementary school students using Google Veo 3.1:
  * - Aspect Ratio: 16:9
  * - Duration: 6 seconds (loopable educational concept visual)
  * - Output: public/videos/lab<id>.mp4

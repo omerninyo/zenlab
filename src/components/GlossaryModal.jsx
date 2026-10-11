@@ -81,7 +81,7 @@ export default function GlossaryModal({ isOpen, onClose, curriculum }) {
             </div>
             <div>
               <h2 className="text-base font-bold text-white">מילון מונחי מדעי המחשב והבינה המלאכותית</h2>
-              <p className="text-xs text-slate-400">מושגי מפתח, הגדרות פשוטות ודוגמאות לתלמידי כיתה ה'</p>
+              <p className="text-xs text-slate-400">מושגי מפתח, הגדרות פשוטות ודוגמאות לתלמידי בית ספר יסודי</p>
             </div>
           </div>
           <button

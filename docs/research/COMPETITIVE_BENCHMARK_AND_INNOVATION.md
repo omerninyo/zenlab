@@ -2,14 +2,14 @@
 
 **Document ID:** `ZEN-DOC-BENCHMARK-INNOVATION-EN-2026`  
 **Authors:** Code & AI Explorer Team (`team@learnai.internal`)  
-**Target Population:** Elementary Grade 5 Students (Ages 10–11), Educators, and EdTech Curriculum Designers  
+**Target Population:** Elementary School Students (Ages 10–11, Upper Elementary), Educators, and EdTech Curriculum Designers  
 **Purpose:** Codify institutional memory regarding ZenLab's comparative positioning against global elementary CS/AI platforms and define its key structural advantages for broad public deployment.
 
 ---
 
 ## 1. Executive Summary
 
-ZenLab was engineered to bridge the educational divide between classical deterministic computer science (logic, loops, trees, graphs) and modern probabilistic artificial intelligence (machine learning, vision convolutions, neural networks, large language models) for upper elementary students (Grade 5, ages 10–11).
+ZenLab was engineered to bridge the educational divide between classical deterministic computer science (logic, loops, trees, graphs) and modern probabilistic artificial intelligence (machine learning, vision convolutions, neural networks, large language models) for upper elementary students (ages 10–11).
 
 Unlike existing platforms that rely on either rigid closed-ended puzzles (Code.org) or complex block programming assemblies (Scratch), ZenLab introduces a **Zero-Syntax Direct Manipulation** paradigm running 100% in the client browser with strict Zero-PII privacy compliance.
 
@@ -17,7 +17,7 @@ Unlike existing platforms that rely on either rigid closed-ended puzzles (Code.o
 
 ## 2. Global Platform Comparison Matrix
 
-| Platform / Ecosystem | Key Strengths | Critical Limitations for Grade 5 (Ages 10–11) | ZenLab Innovation & Resolution |
+| Platform / Ecosystem | Key Strengths | Critical Limitations for Elementary Students (Ages 10–11) | ZenLab Innovation & Resolution |
 | :--- | :--- | :--- | :--- |
 | **Code.org (CS Fundamentals / Dance Party)** | Massive global reach, polished gamification, multilingual. | Constrained to discrete step puzzles; lacks exposure to internal continuous AI mechanisms (weights, decision boundaries). | ZenLab combines open inquiry micro-labs with continuous direct manipulation of parameters. |
 | **Scratch 3.0 / MIT RAISE** | Open-ended creative sandbox, strong global community. | High extraneous cognitive load from block syntax errors; AI extensions are opaque cloud-dependent black boxes. | ZenLab eliminates syntax frustration (Zero-Syntax) while rendering internal model mathematics transparently. |

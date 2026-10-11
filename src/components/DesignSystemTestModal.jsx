@@ -640,10 +640,10 @@ export default function DesignSystemTestModal({ isOpen, onClose }) {
                   </div>
                   <div className="space-y-1.5">
                     <h3 className="text-sm font-bold text-white">
-                      דוח הצוות האדום (The 10th Man Directive: Stress-Testing Zen 2.0 for Grade 5)
+                      דוח הצוות האדום (The 10th Man Directive: Stress-Testing Zen 2.0 for Elementary School)
                     </h3>
                     <p className="text-xs text-slate-300 leading-relaxed">
-                      הנחיית ה-10th Man דורשת מאיתנו לא להתלהב עיוורת מעיצוב חדש, אלא לבצע ניתוח הנדסי ופדגוגי ביקורתי ומחמיר של התאמת שפת זֶן 2.0 למשתמשי היעד של ZenLab (תלמידי כיתה ה׳, גילאי 10–11).
+                      הנחיית ה-10th Man דורשת מאיתנו לא להתלהב עיוורת מעיצוב חדש, אלא לבצע ניתוח הנדסי ופדגוגי ביקורתי ומחמיר של התאמת שפת זֶן 2.0 למשתמשי היעד של ZenLab (תלמידי בית ספר יסודי, גילאי יסודי).
                     </p>
                   </div>
                 </div>

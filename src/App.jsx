@@ -229,7 +229,7 @@ export default function App() {
                       ? 'badge-glass badge-glass-accent !text-[10px] !px-1.5 !py-0'
                       : 'bg-blue-100 dark:bg-slate-800 text-blue-800 dark:text-slate-300 border border-blue-200/60 dark:border-slate-700'
                   }`}>
-                    כיתה ה׳
+                    בית ספר יסודי
                   </span>
                 </div>
                 <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium hidden md:block">

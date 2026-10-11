@@ -272,7 +272,7 @@ OG_HTML = """<!DOCTYPE html>
     </div>
     <div class="badge-grade">
       <span class="badge-dot"></span>
-      כיתה ה׳ ומעלה • גילאי 10–11
+      בית ספר יסודי • גילאי 10–11
     </div>
   </div>
 

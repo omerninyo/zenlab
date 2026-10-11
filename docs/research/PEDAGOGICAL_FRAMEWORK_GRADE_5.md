@@ -1,9 +1,9 @@
-# Collective Pedagogical & Engineering Memory: Grade 5 AI & CS Education Framework
+# Collective Pedagogical & Engineering Memory: Elementary School AI & CS Education Framework
 
 **Document ID**: `ZEN-DOC-PEDAGOGY-G5-2026`  
 **Author**: Code & AI Explorer Team (`team@learnai.internal`)  
 **Target Audience**: Educational Designers, Software Architects, and AI Agents  
-**Target Demographic**: Grade 5 Elementary Students (Ages 10–11, Upper Elementary)  
+**Target Demographic**: Elementary School Students (Ages 10–11, Upper Elementary)  
 **Standard Compliance**: Israeli Ministry of Education (MOE) AI Competency Rubric & AI4K12 National Guidelines (AAAI / CSTA)  
 
 ---
@@ -12,7 +12,7 @@
 
 This document codifies the permanent institutional memory, pedagogical theory, and technical constraints governing the development of the **ZenLab** educational platform. 
 
-The mandate of ZenLab is to provide an elite, zero-backend, client-side browser laboratory suite for students entering their cognitive transition phase (Grade 5, ages 10–11). It bridges classical computational thinking (algorithms, data structures, bitstreams) and contemporary artificial intelligence (neural networks, convolutions, generative LLMs) while enforcing strict regulatory data protection (Zero-PII) and cognitive ergonomics.
+The mandate of ZenLab is to provide an elite, zero-backend, client-side browser laboratory suite for students entering their cognitive transition phase (Elementary School, ages 10–11). It bridges classical computational thinking (algorithms, data structures, bitstreams) and contemporary artificial intelligence (neural networks, convolutions, generative LLMs) while enforcing strict regulatory data protection (Zero-PII) and cognitive ergonomics.
 
 ---
 

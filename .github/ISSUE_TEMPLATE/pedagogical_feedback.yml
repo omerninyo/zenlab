@@ -1,13 +1,13 @@
 name: 🎓 Pedagogical Feedback / משוב פדגוגי והתאמת שפה
-description: Feedback on curriculum, explanations, age-appropriateness, or MoE alignment / משוב ממורים, מדריכים והורים על התאמה לכיתה ה' ותוכנית משרד החינוך
+description: Feedback on curriculum, explanations, age-appropriateness, or MoE alignment / משוב ממורים, מדריכים והורים על התאמה לבית ספר יסודי ותוכנית משרד החינוך
 title: "[PEDAGOGY]: "
-labels: ["pedagogy", "curriculum", "grade-5-alignment"]
+labels: ["pedagogy", "curriculum", "elementary-alignment"]
 body:
   - type: markdown
     attributes:
       value: |
         משוב פדגוגי הוא לב ליבה של פלטפורמת ZenLab!
-        אנו מחויבים לרמת קריאות והבנה אופטימלית לילדים בכיתה ה' (גילאי 10–11) ולתוכנית הלימודים הישראלית.
+        אנו מחויבים לרמת קריאות והבנה אופטימלית לילדים בבית ספר יסודי (גילאי 10–11) ולתוכנית הלימודים הישראלית.
   - type: dropdown
     id: lab
     attributes:

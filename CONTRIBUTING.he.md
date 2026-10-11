@@ -1,7 +1,7 @@
 # מדריך תרומה ופיתוח לפרויקט ZenLab
 
 תודה רבה על הרצון לתרום ל-**ZenLab**!  
-ZenLab היא פלטפורמת למידה אינטראקטיבית בקוד פתוח, המיועדת להוראת מדעי המחשב, חשיבה מחשובית ובינה מלאכותית לתלמידי כיתה ה' (גילאי 10–11) בישראל ובעולם.
+ZenLab היא פלטפורמת למידה אינטראקטיבית בקוד פתוח, המיועדת להוראת מדעי המחשב, חשיבה מחשובית ובינה מלאכותית לתלמידי בית ספר יסודי (גילאי 10–11) בישראל ובעולם.
 
 ---
 
@@ -67,7 +67,7 @@ npm run preview
    ```
 3. בצעו Commit מנומק לפי מוסכמות הפרויקט:
    ```text
-   feat(lab3): improve decision tree explanation for Grade 5
+   feat(lab3): improve decision tree explanation for elementary school
 
    Clarified entropy splitting analogy using animal guessing game.
    Verified with npm run build. Author: Code & AI Explorer Team <team@learnai.internal>

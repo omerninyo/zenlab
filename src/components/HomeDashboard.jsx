@@ -74,7 +74,7 @@ export default function HomeDashboard({
               : "inline-flex items-center gap-2 px-2.5 py-0.5 rounded-md bg-blue-100/80 dark:bg-blue-950/80 text-blue-800 dark:text-blue-300 border border-blue-200/60 dark:border-blue-800 text-xs font-bold mb-3.5"
           }>
             <Sparkles className={`w-3.5 h-3.5 ${isDapimActive ? 'text-[var(--accent-base)]' : 'text-blue-600 dark:text-blue-400'}`} />
-            <span>{heroData.badge || 'חשיבה מחשובית ובינה מלאכותית • כיתה ה׳'}</span>
+            <span>{heroData.badge || 'חשיבה מחשובית ובינה מלאכותית • בית ספר יסודי'}</span>
           </div>
 
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight leading-snug sm:leading-tight mb-3">

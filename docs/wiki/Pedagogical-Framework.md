@@ -1,12 +1,12 @@
-# Pedagogical Framework & Curriculum Alignment (Grade 5, Ages 10–11)
+# Pedagogical Framework & Curriculum Alignment (Elementary School, Ages 10–11)
 
 > 🇮🇱 **גרסת המסגרת הפדגוגית בעברית**: זמינה ב-[`Pedagogical-Framework.he.md`](Pedagogical-Framework.he.md).
 
 ---
 
-## 1. Educational Foundations for 5th Grade Learners
+## 1. Educational Foundations for Elementary Learners
 
-At ages 10–11 (Israeli Grade 5 / US 5th Grade), students experience a vital developmental shift from concrete operational thinking to early abstract and relational reasoning (Piagetian cognitive stage transition). 
+At ages 10–11 (Upper Elementary School), students experience a vital developmental shift from concrete operational thinking to early abstract and relational reasoning (Piagetian cognitive stage transition). 
 
 To maximize comprehension and retention without causing cognitive overload, ZenLab's pedagogical framework rests upon four core pillars:
 

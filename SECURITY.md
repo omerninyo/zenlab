@@ -4,7 +4,7 @@
 
 **ZenLab is engineered from the ground up to protect student and classroom privacy.**
 
-Because our platform is designed for elementary school students (Grade 5, ages 10–11):
+Because our platform is designed for elementary school students (ages 10–11):
 - **Zero Telemetry**: We do NOT track, collect, log, or profile student behavior.
 - **Zero Server-Side Storage**: No student accounts, passwords, or personal profiles are stored on any server.
 - **Client-Side Isolation**: All learning progress, earned stars, and completion state reside exclusively in the student's browser `window.localStorage`.

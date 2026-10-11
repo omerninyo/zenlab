@@ -2,7 +2,7 @@
  * Tutor Engine for ZenLab Platform
  * 
  * Provides an intelligent, local, child-friendly pedagogical knowledge base
- * and semantic intent matcher for elementary school students (Grade 5, Ages 10-11).
+ * and semantic intent matcher for elementary school students (Ages 10-11).
  * 
  * Combines:
  * - Option A: Rich guided category cards (Hints, FAQs, Glossary, Real-world analogies)
@@ -146,7 +146,7 @@ export const CURATED_TUTOR_KNOWLEDGE = {
       'איך מודל שפה יודע מה המילה הבאה?': 'מודל שפה קרא כמויות אדירות של ספרים ומאמרים. הוא מחשב הסתברויות מתמטיות: אחרי המילים "השמש זורחת ב..." המילה "מזרח" מקבלת 99% סיכוי, והמילה "טוסטר" מקבלת 0.01%!',
       'מה זה חלון הקשר (Context Window)?': 'זהו הזיכרון לטווח קצר של המודל – כמות המילים שהוא מסוגל "לזכור" בשיחה הנוכחית. אם השיחה ארוכה מדי מחלון ההקשר, הוא מתחיל לשכוח את מה שנאמר בהתחלה.',
       'מהי "הזיה" (Hallucination) ב-AI?': 'מכיוון שהמודל רק מנחש מילים לפי הסתברות ולא באמת מבין את המציאות, לפעמים הוא ממציא עובדות שנשמעות מאוד משכנעות אבל הן שגויות לחלוטין. תמיד צריך לבדוק עובדות!',
-      'רמז לכתיבת הנחיה (Prompt)': 'היו ברורים ומדויקים: הגדירו למודל את התפקיד ("הדרכת מדעים"), למי מסבירים ("לתלמידים בכיתה ה"), ובאיזה אורך ("בשני משפטים בלבד").'
+      'רמז לכתיבת הנחיה (Prompt)': 'היו ברורים ומדויקים: הגדירו למודל את התפקיד ("הדרכת מדעים"), למי מסבירים ("לתלמידי בית ספר יסודי"), ובאיזה אורך ("בשני משפטים בלבד").'
     }
   }
 };

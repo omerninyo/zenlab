@@ -1,7 +1,7 @@
 # ZenLab Wiki: The Complete Knowledge & Pedagogical Base
 
 Welcome to the **ZenLab Wiki**!  
-ZenLab is an open-source, client-side interactive workspace engineered to introduce foundational Computer Science, algorithmic thinking, and Artificial Intelligence principles to Grade 5 elementary school students (ages 10–11).
+ZenLab is an open-source, client-side interactive workspace engineered to introduce foundational Computer Science, algorithmic thinking, and Artificial Intelligence principles to elementary school students (ages 10–11).
 
 > 🇮🇱 **גרסת הוויקי בעברית**: מדריך הידע והפדגוגיה המלא בעברית זמין ב-[`Home.he.md`](Home.he.md).
 
@@ -12,7 +12,7 @@ ZenLab is an open-source, client-side interactive workspace engineered to introd
 | Document | English | Hebrew (עברית) | Description |
 | :--- | :--- | :--- | :--- |
 | **Wiki Portal** | [`Home.md`](Home.md) | [`Home.he.md`](Home.he.md) | Overview, navigation, and mission statement |
-| **Pedagogical Framework** | [`Pedagogical-Framework.md`](Pedagogical-Framework.md) | [`Pedagogical-Framework.he.md`](Pedagogical-Framework.he.md) | Israeli MoE Grade 5 standards, AI4K12 5 Big Ideas, Constructionist theory |
+| **Pedagogical Framework** | [`Pedagogical-Framework.md`](Pedagogical-Framework.md) | [`Pedagogical-Framework.he.md`](Pedagogical-Framework.he.md) | Israeli MoE elementary standards, AI4K12 5 Big Ideas, Constructionist theory |
 | **Curriculum Master Index** | [`Curriculum-Master-Index.md`](Curriculum-Master-Index.md) | [`Curriculum-Master-Index.he.md`](Curriculum-Master-Index.he.md) | Deep pedagogical breakdown of all 8 interactive labs |
 | **Architecture & Tech Stack** | [`Architecture-and-Tech-Stack.md`](Architecture-and-Tech-Stack.md) | [`Architecture-and-Tech-Stack.he.md`](Architecture-and-Tech-Stack.he.md) | Client-side SPA, Web Audio API, Zen 2.0 design framework, Zero-PII |
 | **Teacher's Classroom Guide** | [`Teachers-Classroom-Guide.md`](Teachers-Classroom-Guide.md) | [`Teachers-Classroom-Guide.he.md`](Teachers-Classroom-Guide.he.md) | 45-minute lesson plans, guided questions, and rubrics |

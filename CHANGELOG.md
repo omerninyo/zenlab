@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.19] - 2026-10-11
+
+### Changed & Improved (Elementary School Age Generalization & Smart Floating In-Place Tutor Toggle)
+- **Smart Floating In-Place Tutor Toggle (`src/components/ZenAiTutor.jsx`)**:
+  - Transformed the AI Tutor launcher into a permanently anchored, modern floating toggle button (`fixed bottom-4 sm:bottom-6`).
+  - When the chat drawer is open above it (`bottom-[4.5rem] sm:bottom-[5.25rem]`), the launcher button seamlessly switches in-place to a close button (`X` icon with "סגירת החונך / לחצו שוב לסגירה" and amber boundary highlight), allowing students to open and close the tutor in the exact same physical spot without searching for the top `X`.
+- **System-Wide Generalization from "Grade 5" to "Elementary School"**:
+  - Replaced restrictive "Grade 5" (`כיתה ה׳`) references across code, UI badges, pedagogical data, documentation, and lesson plans with the inclusive, broader standard "Elementary School" (`בית ספר יסודי`, Ages 10–11).
+  - Updated UI & Runtime: `src/App.jsx`, `src/data/curriculum.json`, `src/components/HomeDashboard.jsx`, `src/components/GlossaryModal.jsx`, `src/components/ZenAiTutor.jsx`, `src/core/tutorEngine.js`, `src/components/DesignSystemTestModal.jsx`, `functions/api/tutor.js`, `index.html`.
+  - Updated all 8 comprehensive lesson plans (`docs/lesson_plans/01_PIXELS_AND_BINARY.md` to `08_LLM_TOKENIZER.md` and `README.md`).
+  - Updated documentation suites: `docs/specifications/APP_SPECIFICATION_IOS_NATIVE.he.md`, `docs/proposals/RFC_003_NATIVE_APPLE_AND_ANDROID_ARCHITECTURE.he.md`, `docs/proposals/RFC_002_EIGHT_LAB_MASTER_SUITE.he.md`, `docs/research/*`, `docs/wiki/*`, `docs/notebooklm_pack/*`, `README.he.md`, `README.md`, `CONTRIBUTING.he.md`, `SECURITY.md`, and `.github/` templates.
+
 ## [0.7.18] - 2026-10-11
 
 ### Added & Documented (Classroom Lesson Plans Suite, Native Strategy & Central Roadmap)

@@ -9,7 +9,7 @@
 
 ## 1. Context & Motivation
 
-ZenLab is expanding from 4 foundational labs to an 8-lab master curriculum to fully cover the Israeli Ministry of Education Grade 5 CS/AI requirements and the AI4K12 3–5 framework. 
+ZenLab is expanding from 4 foundational labs to an 8-lab master curriculum to fully cover the Israeli Ministry of Education elementary school CS/AI requirements and the AI4K12 3–5 framework. 
 
 This RFC specifies:
 1. The structural contracts for the 4 newly added laboratory components.

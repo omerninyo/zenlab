@@ -9,10 +9,10 @@
 [![Platform: Cloudflare Pages](https://img.shields.io/badge/platform-Cloudflare%20Pages-orange.svg)]()
 [![Privacy: Zero--PII](https://img.shields.io/badge/privacy-Strict%20Zero--PII-emerald.svg)](SECURITY.md)
 [![Design System: Zen 2.0](https://img.shields.io/badge/design%20system-Zen%202.0-yellow.svg)](design-system/README.md)
-[![Target: Grade 5 (Ages 10-11)](https://img.shields.io/badge/curriculum-Grade%205%20MoE%20&%20AI4K12-indigo.svg)](docs/wiki/Pedagogical-Framework.he.md)
+[![Target: Elementary School (Ages 10-11)](https://img.shields.io/badge/curriculum-Elementary%20MoE%20&%20AI4K12-indigo.svg)](docs/wiki/Pedagogical-Framework.he.md)
 [![Language: Hebrew RTL](https://img.shields.io/badge/language-Hebrew%20(RTL)%20Native-blueviolet.svg)](README.he.md)
 
-**סביבת למידה אינטראקטיבית הפועלת כולה בדפדפן, המיועדת להקניית מושגי יסוד בחומרה, אלגוריתמיקה ובינה מלאכותית לתלמידי כיתה ה' (גילאי 10–11).**
+**סביבת למידה אינטראקטיבית הפועלת כולה בדפדפן, המיועדת להקניית מושגי יסוד בחומרה, אלגוריתמיקה ובינה מלאכותית לתלמידי בית ספר יסודי (גילאי 10–11).**
 
 [🌐 פריסה חיה (Cloudflare Pages)](https://zenlab.ninyo.co) &bull; [English Documentation](README.md) &bull; [📚 פורטל הוויקי המלא](docs/wiki/Home.he.md) ([English](docs/wiki/Home.md)) &bull; [💬 פורום דיונים בגיטהאב](https://github.com/omerninyo/zenlab/discussions) &bull; [🎨 ערכת העיצוב Zen 2.0](design-system/README.md)
 
@@ -30,7 +30,7 @@
 - **אפס איסוף מידע אישי (Strict Zero-PII)**: התאמה מלאה להנחיות הפרטיות המחמירות ביותר של משרד החינוך. אין הרשמה, אין סיסמאות, וכל המידע נשמר מקומית ב-`localStorage` של המכשיר.
 - **סינתזת שמע עצמאית (Web Audio API)**: אפקטים קוליים הרמוניים המיוצרים בזמן אמת ע"י הדפדפן ללא צורך בהורדת קבצי אודיו כבדים.
 - **שפת העיצוב Zen 2.0**: זכוכית נוזלית, סקאלת Slate מאופקת, כרטיסיות טקטיליות חדות ואפס עומס ויזואלי.
-- **כיווניות RTL טבעית ושפה עברית עשירה**: ניסוחים שנכתבו בעברית מקורית ומותאמים בדיוק לרמת התפיסה של ילדים בכיתה ה', בהלימה למפמ"ר מדעי המחשב ומסגרת AI4K12.
+- **כיווניות RTL טבעית ושפה עברית עשירה**: ניסוחים שנכתבו בעברית מקורית ומותאמים בדיוק לרמת התפיסה של ילדים בבית ספר יסודי, בהלימה למפמ"ר מדעי המחשב ומסגרת AI4K12.
 - **תקן שפה שוויוני וחד-משמעי**: פנייה בלשון רבים (`לחצו`, `גררו`, `שלכם`) או בשמות פעולה ניטרליים, המבטיחה הכללה מלאה של תלמידות ומונעת שיבושי הגייה במנועי סינתזה קולית (TTS).
 
 ---

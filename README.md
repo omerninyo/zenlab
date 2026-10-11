@@ -9,7 +9,7 @@
 [![Platform: Cloudflare Pages](https://img.shields.io/badge/platform-Cloudflare%20Pages-orange.svg)]()
 [![Privacy: Zero--PII](https://img.shields.io/badge/privacy-Strict%20Zero--PII-emerald.svg)](SECURITY.md)
 [![Design System: Zen 2.0](https://img.shields.io/badge/design%20system-Zen%202.0-yellow.svg)](design-system/README.md)
-[![Target: Grade 5 (Ages 10-11)](https://img.shields.io/badge/curriculum-Grade%205%20MoE%20&%20AI4K12-indigo.svg)](docs/wiki/Pedagogical-Framework.md)
+[![Target: Elementary School (Ages 10-11)](https://img.shields.io/badge/curriculum-Elementary%20MoE%20&%20AI4K12-indigo.svg)](docs/wiki/Pedagogical-Framework.md)
 [![Language: Hebrew RTL](https://img.shields.io/badge/language-Hebrew%20(RTL)%20Native-blueviolet.svg)](README.he.md)
 
 **A tactile, browser-native learning laboratory designed to demystify computer hardware, algorithms, and artificial intelligence for elementary school students.**
@@ -22,7 +22,7 @@
 
 ## 💡 About ZenLab
 
-**ZenLab** is an open-source, client-side educational platform engineered specifically for Grade 5 students (ages 10–11). It bridges the gap between passive syntax block-coding (like Scratch) and black-box AI tools by providing **transparent, manipulable microworlds** where children directly interact with the mathematical and algorithmic foundations of computing.
+**ZenLab** is an open-source, client-side educational platform engineered specifically for elementary school students (ages 10–11). It bridges the gap between passive syntax block-coding (like Scratch) and black-box AI tools by providing **transparent, manipulable microworlds** where children directly interact with the mathematical and algorithmic foundations of computing.
 
 ### Key Highlights
 - **100% Client-Side SPA**: Zero backend servers, zero databases, zero cloud dependencies. Runs entirely inside the modern browser.
@@ -36,7 +36,7 @@
 
 ## 🧪 The Eight-Lab Master Suite
 
-The curriculum is structured into two parallel cognitive tracks designed for 5th graders:
+The curriculum is structured into two parallel cognitive tracks designed for elementary school students:
 
 ### Track 1: Classical Computational Thinking & Algorithms
 | Module | Concept | Interactive Principle Simulation | Hands-on Sandbox |
