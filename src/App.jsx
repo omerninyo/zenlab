@@ -37,6 +37,7 @@ import { fireChampagneConfetti } from './core/confetti.js';
 import CertificateModal from './components/CertificateModal.jsx';
 import GlossaryModal from './components/GlossaryModal.jsx';
 import ClassroomSettingsModal from './components/ClassroomSettingsModal.jsx';
+import ThemeSelectorModal, { ZEN_THEMES } from './components/ThemeSelectorModal.jsx';
 import DesignSystemTestModal from './components/DesignSystemTestModal.jsx';
 import ZenAiTutor from './components/ZenAiTutor.jsx';
 import HomeDashboard from './components/HomeDashboard.jsx';
@@ -68,6 +69,7 @@ export default function App() {
   const [isCertificateOpen, setIsCertificateOpen] = useState(false);
   const [isGlossaryOpen, setIsGlossaryOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isThemeModalOpen, setIsThemeModalOpen] = useState(false);
   const [isDesignTestOpen, setIsDesignTestOpen] = useState(false);
   const [isLabMenuOpen, setIsLabMenuOpen] = useState(false);
   const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
@@ -578,33 +580,22 @@ export default function App() {
                       <span>הגדרות כיתה</span>
                     </button>
 
-                    {/* Design System Zen 2.0 Toggle (Mobile/Drawer) */}
+                    {/* Theme Palette Picker (Zen 2.0 Curated Themes) */}
                     <button
                       type="button"
-                      onClick={() => {
-                        StorageEngine.toggleDapimMode();
-                        setIsMoreMenuOpen(false);
-                        AudioEngine.playStep();
-                      }}
+                      onClick={() => { setIsThemeModalOpen(true); setIsMoreMenuOpen(false); AudioEngine.playStep(); }}
                       className="w-full flex items-center justify-between px-3 py-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-xs sm:text-sm font-semibold transition-colors border-t border-slate-100 dark:border-slate-800/80 mt-1 pt-2 cursor-pointer"
                     >
-                      <div className="flex items-center gap-2">
-                        <span className={`w-2 h-2 rounded-full ${isDapimActive ? 'bg-[var(--accent-base)] animate-pulse' : 'bg-slate-400'}`} />
-                        <span className={isDapimActive ? 'text-[var(--accent-base)] font-bold' : 'text-slate-700 dark:text-slate-200'}>עיצוב זֶן 2.0</span>
+                      <div className="flex items-center gap-2.5">
+                        <Palette className="w-4 h-4 text-[var(--accent-base)]" />
+                        <span className="text-slate-700 dark:text-slate-200">ערכת נושא וצבעים</span>
                       </div>
-                      <span className="text-[11px] font-mono text-slate-400">
-                        {isDapimActive ? 'פעיל' : 'כבוי'}
-                      </span>
-                    </button>
-
-                    {/* Design System Zen 2.0 Test Bench (Mobile/Drawer) */}
-                    <button
-                      type="button"
-                      onClick={() => { setIsDesignTestOpen(true); setIsMoreMenuOpen(false); AudioEngine.playStep(); }}
-                      className="w-full flex items-center gap-2.5 px-3 py-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 transition-colors cursor-pointer"
-                    >
-                      <Palette className="w-4 h-4 text-[var(--accent-base)]" />
-                      <span>מעבדת בדיקות ופלטות</span>
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-2.5 h-2.5 rounded-full bg-[var(--accent-base)] ring-1 ring-black/10 dark:ring-white/10" />
+                        <span className="text-[11px] font-medium text-slate-400">
+                          {ZEN_THEMES.find(t => t.id === dapimPalette)?.name || 'זהב שמפניה'}
+                        </span>
+                      </div>
                     </button>
                   </div>
                 </>
@@ -684,6 +675,12 @@ export default function App() {
       <ClassroomSettingsModal
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}
+      />
+
+      {/* Zen 2.0 Theme Selector Modal */}
+      <ThemeSelectorModal
+        isOpen={isThemeModalOpen}
+        onClose={() => setIsThemeModalOpen(false)}
       />
 
       {/* Dapim 4.0 Liquid Glass & Hollow Restraint Interactive Design Test Modal */}

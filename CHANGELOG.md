@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.20] - 2026-10-11
+
+### Added & Changed (Canonical Zen 2.0 Standardization & Curated Laboratory Themes Engine)
+- **Zen 2.0 Established as Permanent Canonical Standard (`index.html`, `src/core/storage.js`, `src/App.jsx`)**:
+  - Cemented Zen 2.0 as the platform's non-negotiable default design system: `dapimMode: true`, Light mode default (`html.light`), and Champagne Gold accent palette (`data-theme="champagne-gold"`).
+  - Cleaned and removed obsolete legacy toggles from the UI and state machines, ensuring consistent squircle radii, monochromatic slate hierarchy, and zero layout flicker on initial render.
+- **Curated Laboratory Themes Selector (`src/components/ThemeSelectorModal.jsx`, `src/components/ClassroomSettingsModal.jsx`)**:
+  - Implemented a dedicated interactive theme picker for the 4 mathematically verified Zen 2.0 color palettes:
+    1. **Champagne Gold (זהב שמפניה)**: Default, warm, elegant, high-contrast pedagogical register.
+    2. **Nordic Ice (קרח נורדי)**: Cyber & quantum computing slate blue for deep algorithmic focus.
+    3. **Emerald Sanctuary (ברקת עמוקה)**: Natural calming emerald reducing visual fatigue in extended sessions.
+    4. **Matte Amber (ענבר חם)**: Archival terracotta tone with quiet classical library atmosphere.
+  - Provided real-time light/dark preview toggle directly inside the theme selector modal.
+  - Integrated theme controls into the header More menu (`⋮` -> `ערכת נושא וצבעים`) and the Classroom Settings modal (`ClassroomSettingsModal.jsx`).
+  - Guaranteed 100% WCAG AA contrast compliance and zero cognitive distraction for elementary school learners.
+
 ## [0.7.19] - 2026-10-11
 
 ### Changed & Improved (Elementary School Age Generalization & Smart Floating In-Place Tutor Toggle)

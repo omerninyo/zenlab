@@ -37,7 +37,7 @@ const defaultState = {
   activeLabId: 'lab1',
   viewMode: 'home', // 'home' (roadmap overview) | 'lab' (active lab workspace)
   theme: 'light', // 'light' (default bright classroom mode) | 'dark'
-  dapimMode: false, // Dapim 4.0 Liquid Glass & Hollow Restraint theme preview
+  dapimMode: true, // Zen 2.0 Liquid Glass & Hollow Restraint canonical design system
   dapimPalette: 'champagne-gold', // 'champagne-gold' (default) | 'matte-amber' | 'nordic-ice' | 'emerald-sanctuary'
   customAnimals: [] // User-created sandbox animals for Lab 3
 };
@@ -81,7 +81,10 @@ class StorageEngineClass {
         ...parsed,
         labStars: { ...defaultState.labStars, ...(parsed.labStars || {}) },
         completedChallenges: { ...(parsed.completedChallenges || {}) },
-        viewMode: parsed.viewMode || 'home'
+        viewMode: parsed.viewMode || 'home',
+        theme: parsed.theme || 'light',
+        dapimMode: true, // Zen 2.0 is canonical and permanent
+        dapimPalette: parsed.dapimPalette || 'champagne-gold'
       };
     } catch {
       return { ...defaultState };
@@ -209,17 +212,13 @@ class StorageEngineClass {
   }
 
   getDapimMode() {
-    return !!this.state.dapimMode;
+    return true; // Zen 2.0 is permanently active
   }
 
-  setDapimMode(active) {
-    this.state.dapimMode = !!active;
+  setDapimMode(active = true) {
+    this.state.dapimMode = true;
     if (typeof document !== 'undefined') {
-      if (this.state.dapimMode) {
-        document.body.classList.add('dapim-mode');
-      } else {
-        document.body.classList.remove('dapim-mode');
-      }
+      document.body.classList.add('dapim-mode');
       const activeTheme = this.state.theme || 'light';
       if (activeTheme === 'dark') {
         document.documentElement.classList.add('dark');
@@ -233,9 +232,9 @@ class StorageEngineClass {
   }
 
   toggleDapimMode() {
-    const next = !this.state.dapimMode;
-    this.setDapimMode(next);
-    return next;
+    // Kept for backward compatibility, no-op since Zen 2.0 is canonical
+    this.setDapimMode(true);
+    return true;
   }
 
   getDapimPalette() {
