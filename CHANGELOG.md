@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.21] - 2026-10-11
+
+### Changed & Fixed (Minimalist Header Ergonomics & Light Mode Contrast Remediation)
+- **Extreme Interface & Header Minimalism ("Only in Settings" Paradigm)**:
+  - Eliminated the cluttered 3-dots dropdown menu (`MoreVertical`) and redundant toolbar buttons from the top bar.
+  - Streamlined the header toolbar into 4 clean, focused elements: Star achievement counter (`20 / 24 ⭐`), Certificate launcher (`תעודה`), Audio Mute toggle (`Volume2 / VolumeX`), and a single unified Settings gear icon (`Settings`).
+  - Unified all workspace display preferences, Day/Night ambient lighting switcher (`מצב מואר כיתה/יום` vs `מצב כהה סייבר/לילה`), 4 Zen 2.0 themes (Champagne Gold, Nordic Ice, Emerald Sanctuary, Matte Amber), interactive audio toggle, scientific glossary button, and offline JSON backup/reset into a single modal (`ClassroomSettingsModal.jsx`).
+- **Comprehensive Elimination of "Light-on-Light" (`בהיר על בהיר`) Contrast Bugs**:
+  - Resolved contrast regressions where white/light cards rendered white or low-contrast text in Light mode.
+  - Replaced hardcoded `text-white` and `text-slate-300` utilities on `.card-tactile` surfaces in `ClassroomSettingsModal.jsx` and `DesignSystemTestModal.jsx` with adaptive, high-contrast tokens (`text-slate-900 dark:text-white` and `text-slate-600 dark:text-slate-300`).
+  - Verified 100% WCAG AA contrast compliance and crisp legibility across both daytime classroom illumination and night cyber modes via automated Playwright visual testing.
+
 ## [0.7.20] - 2026-10-11
 
 ### Added & Changed (Canonical Zen 2.0 Standardization & Curated Laboratory Themes Engine)

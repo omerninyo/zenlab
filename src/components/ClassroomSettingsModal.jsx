@@ -14,13 +14,53 @@ import {
   FileText,
   Palette,
   Sun,
-  Moon
+  Moon,
+  BookOpen,
+  Sparkles
 } from 'lucide-react';
 import { AudioEngine } from '../core/audio.js';
 import { StorageEngine } from '../core/storage.js';
-import { ZEN_THEMES } from './ThemeSelectorModal.jsx';
 
-export default function ClassroomSettingsModal({ isOpen, onClose }) {
+export const ZEN_THEMES = [
+  {
+    id: 'champagne-gold',
+    name: 'זהב שמפניה',
+    englishName: 'Champagne Gold',
+    badge: 'ברירת מחדל',
+    tagline: 'חם, יוקרתי וממוקד ללמידה ממושכת',
+    accentLight: '#ca8a04',
+    accentDark: '#eab308'
+  },
+  {
+    id: 'nordic-ice',
+    name: 'קרח נורדי',
+    englishName: 'Nordic Ice',
+    badge: 'סייבר וחלל',
+    tagline: 'טכנולוגי, קריר וחד לקונסולות תוכנה',
+    accentLight: '#0284c7',
+    accentDark: '#38bdf8'
+  },
+  {
+    id: 'emerald-sanctuary',
+    name: 'ברקת עמוקה',
+    englishName: 'Emerald Sanctuary',
+    badge: 'טבע ומחקר',
+    tagline: 'אורגני ומרגיע המפחית עייפות בעיניים',
+    accentLight: '#059669',
+    accentDark: '#10b981'
+  },
+  {
+    id: 'matte-amber',
+    name: 'ענבר חם',
+    englishName: 'Matte Amber',
+    badge: 'ספרייה קלאסית',
+    tagline: 'טרקוטה ארכיונית חמימה ואינטימית',
+    accentLight: '#c26928',
+    accentDark: '#d48344'
+  }
+];
+
+export default function ClassroomSettingsModal({ isOpen, onClose, onOpenGlossary }) {
   const [confirmReset, setConfirmReset] = useState(false);
   const [importStatus, setImportStatus] = useState(null);
   const [isMuted, setIsMuted] = useState(() => StorageEngine.getState().isMuted);
@@ -60,10 +100,10 @@ export default function ClassroomSettingsModal({ isOpen, onClose }) {
     }
   };
 
-  const handleToggleThemeMode = () => {
-    const nextTheme = isDark ? 'light' : 'dark';
-    StorageEngine.setTheme(nextTheme);
-    setActiveTheme(nextTheme);
+  const handleSetThemeMode = (mode) => {
+    if (activeTheme === mode) return;
+    StorageEngine.setTheme(mode);
+    setActiveTheme(mode);
     AudioEngine.playStep();
   };
 
@@ -153,15 +193,17 @@ export default function ClassroomSettingsModal({ isOpen, onClose }) {
             </div>
             <div>
               <h2 id="settings-modal-title" className="text-base font-bold text-slate-900 dark:text-white">
-                הגדרות כיתה וניהול התקדמות
+                הגדרות מעבדה ותצוגה
               </h2>
-              <p className="text-xs text-slate-500 dark:text-slate-400">כלים למורים, הורים ולמידה עצמאית</p>
+              <p className="text-xs text-slate-600 dark:text-slate-400">
+                התאמה אישית, תאורה, צלילים וניהול התקדמות
+              </p>
             </div>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-[var(--slate-4)] transition-colors cursor-pointer"
+            className="p-1.5 rounded-lg text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-[var(--slate-4)] transition-colors cursor-pointer"
             title="סגירה (Esc)"
           >
             <X className="w-5 h-5" />
@@ -172,38 +214,72 @@ export default function ClassroomSettingsModal({ isOpen, onClose }) {
         {importStatus && (
           <div className={`p-3 rounded-xl border text-xs flex items-center gap-2 ${
             importStatus.type === 'success' 
-              ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-300 dark:border-emerald-800/60 text-emerald-800 dark:text-emerald-300' 
-              : 'bg-rose-50 dark:bg-rose-950/40 border-rose-300 dark:border-rose-800/60 text-rose-800 dark:text-rose-300'
+              ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-300 dark:border-emerald-800/60 text-emerald-900 dark:text-emerald-300' 
+              : 'bg-rose-50 dark:bg-rose-950/40 border-rose-300 dark:border-rose-800/60 text-rose-900 dark:text-rose-300'
           }`}>
             {importStatus.type === 'success' ? (
               <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
             ) : (
               <AlertCircle className="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0" />
             )}
-            <span>{importStatus.text}</span>
+            <span className="font-medium">{importStatus.text}</span>
           </div>
         )}
 
-        {/* Section: Themes & Lighting Register */}
+        {/* Section 1: Lighting Register (Day / Night Mode) */}
+        <div className="p-4 rounded-xl bg-[var(--slate-3)] border border-[var(--slate-6)] space-y-2.5">
+          <div className="flex items-center justify-between text-xs font-bold text-slate-900 dark:text-slate-100">
+            <span className="flex items-center gap-1.5">
+              <Sun className="w-4 h-4 text-amber-500" />
+              <span>תאורת סביבת העבודה</span>
+            </span>
+            <span className="text-[11px] font-normal text-slate-600 dark:text-slate-400">
+              {isDark ? 'מצב כהה פעיל' : 'מצב מואר פעיל (ברירת מחדל)'}
+            </span>
+          </div>
+
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              type="button"
+              onClick={() => handleSetThemeMode('light')}
+              className={`flex items-center justify-center gap-2 py-2 px-3 rounded-lg border text-xs font-bold transition-all cursor-pointer ${
+                !isDark
+                  ? 'bg-white text-slate-900 border-slate-300 shadow-sm ring-2 ring-[var(--accent-base)]'
+                  : 'bg-[var(--slate-2)] text-slate-700 dark:text-slate-300 border-[var(--slate-6)] hover:bg-[var(--slate-4)]'
+              }`}
+            >
+              <Sun className="w-4 h-4 text-amber-500" />
+              <span>מצב מואר (כיתה/יום)</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => handleSetThemeMode('dark')}
+              className={`flex items-center justify-center gap-2 py-2 px-3 rounded-lg border text-xs font-bold transition-all cursor-pointer ${
+                isDark
+                  ? 'bg-slate-900 text-white border-slate-700 shadow-sm ring-2 ring-[var(--accent-base)]'
+                  : 'bg-[var(--slate-2)] text-slate-700 dark:text-slate-300 border-[var(--slate-6)] hover:bg-[var(--slate-4)]'
+              }`}
+            >
+              <Moon className="w-4 h-4 text-blue-400" />
+              <span>מצב כהה (סייבר/לילה)</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Section 2: Themes & Laboratory Color Presets */}
         <div className="p-4 rounded-xl bg-[var(--slate-3)] border border-[var(--slate-6)] space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Palette className="w-4 h-4 text-[var(--accent-base)]" />
-              <span className="text-xs font-bold text-slate-800 dark:text-slate-200">ערכת צבעי מעבדה (Themes)</span>
+              <span className="text-xs font-bold text-slate-900 dark:text-slate-100">ערכות צבעי מעבדה (Themes)</span>
             </div>
-            
-            <button
-              type="button"
-              onClick={handleToggleThemeMode}
-              className="btn-glass text-xs !py-1 !px-2 flex items-center gap-1.5 cursor-pointer font-medium"
-              title="החלפת מצב תאורה"
-            >
-              {isDark ? <Sun className="w-3.5 h-3.5 text-amber-500" /> : <Moon className="w-3.5 h-3.5 text-blue-400" />}
-              <span>{isDark ? 'מואר' : 'כהה'}</span>
-            </button>
+            <span className="text-[10px] font-mono font-medium text-[var(--accent-base)] bg-[var(--slate-2)] px-2 py-0.5 rounded-full border border-[var(--accent-rim)]">
+              Zen 2.0
+            </span>
           </div>
 
-          <div className="grid grid-cols-2 gap-2 pt-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
             {ZEN_THEMES.map((theme) => {
               const isSelected = activePalette === theme.id;
               const displayHex = isDark ? theme.accentDark : theme.accentLight;
@@ -213,72 +289,102 @@ export default function ClassroomSettingsModal({ isOpen, onClose }) {
                   key={theme.id}
                   type="button"
                   onClick={() => handleSelectPalette(theme.id)}
-                  className={`text-right p-2.5 rounded-lg border transition-all cursor-pointer flex items-center justify-between ${
+                  className={`text-right p-3 rounded-xl border transition-all cursor-pointer flex flex-col justify-between ${
                     isSelected
-                      ? 'bg-[var(--accent-wash)] border-[var(--accent-base)] ring-1 ring-[var(--accent-base)]'
+                      ? 'bg-[var(--accent-wash)] border-[var(--accent-base)] shadow-xs ring-1 ring-[var(--accent-base)]'
                       : 'bg-[var(--slate-2)] hover:bg-[var(--slate-4)] border-[var(--slate-6)]'
                   }`}
                 >
-                  <div className="flex items-center gap-2 min-w-0">
-                    <span 
-                      className="w-3.5 h-3.5 rounded-full shrink-0 shadow-xs ring-1 ring-black/10 dark:ring-white/10"
-                      style={{ backgroundColor: displayHex }}
-                    />
-                    <div className="truncate">
-                      <span className="text-xs font-bold block text-slate-800 dark:text-slate-100 truncate">
+                  <div className="flex items-center justify-between mb-1.5">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span 
+                        className="w-4 h-4 rounded-full shrink-0 shadow-xs ring-2 ring-white/60 dark:ring-black/40"
+                        style={{ backgroundColor: displayHex }}
+                      />
+                      <span className="text-xs font-bold text-slate-900 dark:text-slate-100 truncate">
                         {theme.name}
                       </span>
                     </div>
+                    {isSelected ? (
+                      <span className="flex items-center gap-1 text-[10px] font-bold text-[var(--accent-base)] bg-[var(--slate-2)] px-1.5 py-0.5 rounded-md border border-[var(--accent-rim)]">
+                        <Check className="w-3 h-3 stroke-[3]" />
+                        <span>נבחר</span>
+                      </span>
+                    ) : (
+                      <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">
+                        {theme.badge}
+                      </span>
+                    )}
                   </div>
-                  {isSelected && (
-                    <Check className="w-3.5 h-3.5 text-[var(--accent-base)] stroke-[3] shrink-0" />
-                  )}
+                  <p className="text-[11px] leading-relaxed text-slate-600 dark:text-slate-300">
+                    {theme.tagline}
+                  </p>
                 </button>
               );
             })}
           </div>
         </div>
 
-        {/* Audio Controls */}
+        {/* Section 3: Audio Feedback */}
         <div className="p-4 rounded-xl bg-[var(--slate-3)] border border-[var(--slate-6)] space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Music className="w-4 h-4 text-[var(--accent-base)]" />
-              <span className="text-xs font-bold text-slate-800 dark:text-slate-200">צלילי משוב אינטראקטיביים</span>
+              <span className="text-xs font-bold text-slate-900 dark:text-slate-100">צלילי משוב אינטראקטיביים</span>
             </div>
             <button
               type="button"
               onClick={handleToggleMute}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors cursor-pointer ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold border transition-colors cursor-pointer ${
                 isMuted
-                  ? 'bg-rose-50 dark:bg-rose-950/40 border-rose-300 dark:border-rose-800/60 text-rose-700 dark:text-rose-300'
-                  : 'btn-glass'
+                  ? 'bg-rose-50 dark:bg-rose-950/40 border-rose-300 dark:border-rose-800/60 text-rose-800 dark:text-rose-300'
+                  : 'btn-glass text-slate-900 dark:text-white'
               }`}
             >
               {isMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
               <span>{isMuted ? 'מושתק' : 'פעיל'}</span>
             </button>
           </div>
-          <div className="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 pt-1 border-t border-[var(--slate-6)]">
-            <span>צלילי סינתזה מקומיים (Web Audio API)</span>
+          <div className="flex items-center justify-between text-[11px] text-slate-600 dark:text-slate-400 pt-1 border-t border-[var(--slate-6)]">
+            <span>צלילי סינתזה בזמן אמת (Web Audio API)</span>
             <button
               type="button"
               onClick={handleTestSound}
               disabled={isMuted}
-              className="text-[var(--accent-base)] hover:underline disabled:opacity-40 font-medium cursor-pointer"
+              className="text-[var(--accent-base)] hover:underline disabled:opacity-40 font-bold cursor-pointer"
             >
               בדיקת צליל
             </button>
           </div>
         </div>
 
-        {/* Backup and Restore */}
+        {/* Section 4: Scientific Glossary Shortcut */}
+        {onOpenGlossary && (
+          <div className="p-4 rounded-xl bg-[var(--slate-3)] border border-[var(--slate-6)] flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <BookOpen className="w-4 h-4 text-[var(--accent-base)]" />
+              <div>
+                <span className="text-xs font-bold text-slate-900 dark:text-slate-100 block">מילון מושגים מדעי</span>
+                <span className="text-[11px] text-slate-600 dark:text-slate-400">הגדרות פשוטות לכל מונחי המחשוב והבינה המלאכותית</span>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => { onClose(); onOpenGlossary(); AudioEngine.playStep(); }}
+              className="btn-glass text-xs !py-1.5 !px-3 font-bold cursor-pointer"
+            >
+              פתיחת מילון
+            </button>
+          </div>
+        )}
+
+        {/* Section 5: Backup and Restore */}
         <div className="p-4 rounded-xl bg-[var(--slate-3)] border border-[var(--slate-6)] space-y-3">
           <div className="flex items-center gap-2">
             <FileText className="w-4 h-4 text-[var(--accent-base)]" />
-            <h3 className="text-xs font-bold text-slate-800 dark:text-slate-200">גיבוי וטעינת התקדמות (ללא צורך בחשבון)</h3>
+            <h3 className="text-xs font-bold text-slate-900 dark:text-slate-100">גיבוי וטעינת התקדמות (ללא צורך בחשבון)</h3>
           </div>
-          <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
+          <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
             מתאים למעבר בין מחשבים בכיתת המחשבים או לשמירת ההישגים בבית בסיום השיעור:
           </p>
 
@@ -286,7 +392,7 @@ export default function ClassroomSettingsModal({ isOpen, onClose }) {
             <button
               type="button"
               onClick={handleExportJSON}
-              className="btn-glass flex items-center justify-center gap-2 text-xs !py-2 cursor-pointer font-medium"
+              className="btn-glass flex items-center justify-center gap-2 text-xs !py-2 cursor-pointer font-bold text-slate-900 dark:text-white"
             >
               <Download className="w-3.5 h-3.5 text-[var(--accent-base)]" />
               <span>ייצוא התקדמות (JSON)</span>
@@ -295,9 +401,9 @@ export default function ClassroomSettingsModal({ isOpen, onClose }) {
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="btn-glass flex items-center justify-center gap-2 text-xs !py-2 cursor-pointer font-medium"
+              className="btn-glass flex items-center justify-center gap-2 text-xs !py-2 cursor-pointer font-bold text-slate-900 dark:text-white"
             >
-              <Upload className="w-3.5 h-3.5 text-emerald-500" />
+              <Upload className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
               <span>טעינת התקדמות מקובץ</span>
             </button>
             <input 
@@ -310,18 +416,18 @@ export default function ClassroomSettingsModal({ isOpen, onClose }) {
           </div>
         </div>
 
-        {/* Reset Progress Section */}
+        {/* Section 6: Reset Progress */}
         <div className="p-4 rounded-xl bg-[var(--slate-3)] border border-[var(--slate-6)] space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <RotateCcw className="w-4 h-4 text-amber-500" />
-              <span className="text-xs font-bold text-slate-800 dark:text-slate-200">איפוס התקדמות לשיעור חדש</span>
+              <span className="text-xs font-bold text-slate-900 dark:text-slate-100">איפוס התקדמות לשיעור חדש</span>
             </div>
             {!confirmReset ? (
               <button
                 type="button"
                 onClick={() => setConfirmReset(true)}
-                className="px-3 py-1.5 rounded-lg bg-amber-50 dark:bg-amber-950/30 hover:bg-amber-100 dark:hover:bg-amber-900/50 border border-amber-300 dark:border-amber-800/60 text-xs font-medium text-amber-800 dark:text-amber-300 transition-colors cursor-pointer"
+                className="px-3 py-1.5 rounded-lg bg-amber-50 dark:bg-amber-950/30 hover:bg-amber-100 dark:hover:bg-amber-900/50 border border-amber-300 dark:border-amber-800/60 text-xs font-bold text-amber-900 dark:text-amber-300 transition-colors cursor-pointer"
               >
                 איפוס נתונים
               </button>
@@ -337,7 +443,7 @@ export default function ClassroomSettingsModal({ isOpen, onClose }) {
                 <button
                   type="button"
                   onClick={() => setConfirmReset(false)}
-                  className="btn-glass text-xs !py-1 !px-2 cursor-pointer"
+                  className="btn-glass text-xs !py-1 !px-2 font-bold cursor-pointer"
                 >
                   ביטול
                 </button>
@@ -345,22 +451,23 @@ export default function ClassroomSettingsModal({ isOpen, onClose }) {
             )}
           </div>
           {confirmReset && (
-            <p className="text-[11px] text-amber-800 dark:text-amber-300 leading-relaxed bg-amber-50 dark:bg-amber-950/30 p-2.5 rounded-lg border border-amber-200 dark:border-amber-900/50">
+            <p className="text-[11px] text-amber-900 dark:text-amber-300 leading-relaxed bg-amber-50 dark:bg-amber-950/30 p-2.5 rounded-lg border border-amber-200 dark:border-amber-900/50 font-medium">
               שימו לב: פעולה זו תאפס את כל הכוכבים והאתגרים שנפתרו ותחזיר את המעבדות למצב ההתחלתי.
             </p>
           )}
         </div>
 
-        {/* Privacy & Zero-PII Card */}
-        <div className="p-3.5 rounded-xl bg-[var(--slate-2)] border border-[var(--slate-6)] text-[11px] text-slate-500 dark:text-slate-400 space-y-1.5">
-          <div className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300 font-semibold">
-            <ShieldCheck className="w-4 h-4 text-emerald-500" />
+        {/* Section 7: Privacy & Zero-PII Card */}
+        <div className="p-3.5 rounded-xl bg-[var(--slate-2)] border border-[var(--slate-6)] text-[11px] text-slate-600 dark:text-slate-400 space-y-1.5">
+          <div className="flex items-center gap-1.5 text-slate-900 dark:text-slate-200 font-bold">
+            <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
             <span>התחייבות לבטיחות ופרטיות מלאה (Zero-PII)</span>
           </div>
           <p className="leading-relaxed">
             ZenLab פועלת 100% במחשב המקומי (Client-side). המערכת אינה דורשת הרשמה, אינה שומרת עוגיות (Cookies), אינה מפעילה מעקבים ואינה אוספת שום פרט מזהה על התלמידים.
           </p>
         </div>
+
       </div>
     </div>
   );

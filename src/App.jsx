@@ -37,8 +37,6 @@ import { fireChampagneConfetti } from './core/confetti.js';
 import CertificateModal from './components/CertificateModal.jsx';
 import GlossaryModal from './components/GlossaryModal.jsx';
 import ClassroomSettingsModal from './components/ClassroomSettingsModal.jsx';
-import ThemeSelectorModal, { ZEN_THEMES } from './components/ThemeSelectorModal.jsx';
-import DesignSystemTestModal from './components/DesignSystemTestModal.jsx';
 import ZenAiTutor from './components/ZenAiTutor.jsx';
 import HomeDashboard from './components/HomeDashboard.jsx';
 import Lab1_BinaryPixels from './labs/Lab1_BinaryPixels.jsx';
@@ -69,10 +67,7 @@ export default function App() {
   const [isCertificateOpen, setIsCertificateOpen] = useState(false);
   const [isGlossaryOpen, setIsGlossaryOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [isThemeModalOpen, setIsThemeModalOpen] = useState(false);
-  const [isDesignTestOpen, setIsDesignTestOpen] = useState(false);
   const [isLabMenuOpen, setIsLabMenuOpen] = useState(false);
-  const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
 
   useEffect(() => {
     // Check URL parameters for instant testing on mobile/remote (?design=zen2, ?zen2=true, ?theme=dark|light)
@@ -473,134 +468,15 @@ export default function App() {
               {isMuted ? <VolumeX className="w-4 h-4 text-slate-400" /> : <Volume2 className={`w-4 h-4 ${isDapimActive ? 'text-[var(--accent-base)]' : 'text-blue-600 dark:text-blue-400'}`} />}
             </button>
 
-            {/* Direct Theme Switcher (Desktop & Mobile) */}
+            {/* Central Unified Settings Button */}
             <button
               type="button"
-              onClick={handleToggleTheme}
-              title={isDark ? 'מעבר למצב מואר (Light Mode)' : 'מעבר למצב כהה (Dark Mode)'}
-              className={
-                isDapimActive
-                  ? "btn-hollow !h-8 !w-8 !p-0 flex items-center justify-center text-amber-400"
-                  : "p-1.5 sm:p-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700 transition-colors cursor-pointer"
-              }
+              onClick={() => { setIsSettingsOpen(true); AudioEngine.playStep(); }}
+              title="הגדרות מעבדה ותצוגה"
+              className="btn-hollow !h-8 !w-8 !p-0 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-[var(--accent-base)] cursor-pointer"
             >
-              {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-700 dark:text-slate-300" />}
+              <Settings className="w-4 h-4" />
             </button>
-
-            {/* More Tools Dropdown Menu */}
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => setIsMoreMenuOpen(!isMoreMenuOpen)}
-                title="אפשרויות נוספות"
-                className={
-                  isDapimActive
-                    ? "btn-hollow !h-8 !w-8 !p-0 flex items-center justify-center"
-                    : "p-1.5 sm:p-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700 transition-colors cursor-pointer"
-                }
-              >
-                <MoreVertical className="w-4 h-4" />
-              </button>
-
-              {isMoreMenuOpen && (
-                <>
-                  <div 
-                    className="fixed inset-0 z-40" 
-                    onClick={() => setIsMoreMenuOpen(false)} 
-                  />
-                  <div className="absolute left-0 mt-2 z-50 w-52 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg p-1.5 shadow-xl animate-in fade-in zoom-in-95 duration-150 text-right">
-                    
-                    {/* Home / Roadmap (Mobile) */}
-                    <button
-                      type="button"
-                      onClick={() => { handleGoHome(); setIsMoreMenuOpen(false); }}
-                      className="w-full flex items-center gap-2.5 px-3 py-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 transition-colors"
-                    >
-                      <Home className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                      <span>מפת המסע הראשית</span>
-                    </button>
-
-                    {/* Certificate (Mobile) */}
-                    <button
-                      type="button"
-                      onClick={() => { setIsCertificateOpen(true); setIsMoreMenuOpen(false); AudioEngine.playStep(); }}
-                      className="w-full sm:hidden flex items-center gap-2.5 px-3 py-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-xs sm:text-sm font-semibold text-amber-700 dark:text-amber-400 transition-colors"
-                    >
-                      <Award className="w-4 h-4 text-amber-500" />
-                      <span>תעודת הצטיינות</span>
-                    </button>
-
-                    {/* Audio Mute Switch (Mobile) */}
-                    <button
-                      type="button"
-                      onClick={() => { handleToggleMute(); setIsMoreMenuOpen(false); }}
-                      className="w-full sm:hidden flex items-center gap-2.5 px-3 py-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 transition-colors"
-                    >
-                      {isMuted ? <VolumeX className="w-4 h-4 text-slate-400" /> : <Volume2 className="w-4 h-4 text-blue-600 dark:text-blue-400" />}
-                      <span>{isMuted ? 'הפעלת צלילים' : 'השתקת צלילים'}</span>
-                    </button>
-
-                    {/* Glossary */}
-                    <button
-                      type="button"
-                      onClick={() => { setIsGlossaryOpen(true); setIsMoreMenuOpen(false); AudioEngine.playStep(); }}
-                      className="w-full flex items-center gap-2.5 px-3 py-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 transition-colors"
-                    >
-                      <BookOpen className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                      <span>מילון מושגים</span>
-                    </button>
-
-                    {/* Narration */}
-                    <button
-                      type="button"
-                      onClick={() => { handleToggleNarration(); setIsMoreMenuOpen(false); }}
-                      className="w-full flex items-center gap-2.5 px-3 py-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 transition-colors"
-                    >
-                      <Headphones className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                      <span>{isNarrationEnabled ? 'השבתת ליווי קולי' : 'הפעלת ליווי קולי'}</span>
-                    </button>
-
-                    {/* Theme Toggle */}
-                    <button
-                      type="button"
-                      onClick={() => { handleToggleTheme(); setIsMoreMenuOpen(false); }}
-                      className="w-full flex items-center gap-2.5 px-3 py-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 transition-colors"
-                    >
-                      {isDark ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-blue-600" />}
-                      <span>{isDark ? 'מצב מואר' : 'מצב כהה'}</span>
-                    </button>
-
-                    {/* Classroom Settings */}
-                    <button
-                      type="button"
-                      onClick={() => { setIsSettingsOpen(true); setIsMoreMenuOpen(false); AudioEngine.playStep(); }}
-                      className="w-full flex items-center gap-2.5 px-3 py-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 transition-colors"
-                    >
-                      <Settings className="w-4 h-4 text-slate-500" />
-                      <span>הגדרות כיתה</span>
-                    </button>
-
-                    {/* Theme Palette Picker (Zen 2.0 Curated Themes) */}
-                    <button
-                      type="button"
-                      onClick={() => { setIsThemeModalOpen(true); setIsMoreMenuOpen(false); AudioEngine.playStep(); }}
-                      className="w-full flex items-center justify-between px-3 py-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-xs sm:text-sm font-semibold transition-colors border-t border-slate-100 dark:border-slate-800/80 mt-1 pt-2 cursor-pointer"
-                    >
-                      <div className="flex items-center gap-2.5">
-                        <Palette className="w-4 h-4 text-[var(--accent-base)]" />
-                        <span className="text-slate-700 dark:text-slate-200">ערכת נושא וצבעים</span>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <span className="w-2.5 h-2.5 rounded-full bg-[var(--accent-base)] ring-1 ring-black/10 dark:ring-white/10" />
-                        <span className="text-[11px] font-medium text-slate-400">
-                          {ZEN_THEMES.find(t => t.id === dapimPalette)?.name || 'זהב שמפניה'}
-                        </span>
-                      </div>
-                    </button>
-                  </div>
-                </>
-              )}
-            </div>
 
           </div>
 
@@ -675,18 +551,7 @@ export default function App() {
       <ClassroomSettingsModal
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}
-      />
-
-      {/* Zen 2.0 Theme Selector Modal */}
-      <ThemeSelectorModal
-        isOpen={isThemeModalOpen}
-        onClose={() => setIsThemeModalOpen(false)}
-      />
-
-      {/* Dapim 4.0 Liquid Glass & Hollow Restraint Interactive Design Test Modal */}
-      <DesignSystemTestModal
-        isOpen={isDesignTestOpen}
-        onClose={() => setIsDesignTestOpen(false)}
+        onOpenGlossary={() => setIsGlossaryOpen(true)}
       />
 
       {/* Zen AI Tutor Floating Classroom Companion */}

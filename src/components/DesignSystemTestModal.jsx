@@ -284,16 +284,16 @@ export default function DesignSystemTestModal({ isOpen, onClose }) {
               {/* Highlight Banner */}
               <div className="card-tactile border-l-4 border-l-[var(--accent-base)] p-4">
                 <div className="flex items-start gap-3">
-                  <div className="p-2 rounded-lg bg-white/5 border border-white/10 text-[var(--accent-base)] shrink-0">
+                  <div className="p-2 rounded-lg bg-[var(--accent-wash)] border border-[var(--accent-rim)] text-[var(--accent-base)] shrink-0">
                     <Layers className="w-5 h-5" />
                   </div>
                   <div className="space-y-1">
-                    <h3 className="text-sm font-bold text-white">
+                    <h3 className="text-sm font-bold text-slate-900 dark:text-white">
                       חוק הברזל: הפרדת שתי השכבות (The Two Discrete Layers)
                     </h3>
-                    <p className="text-xs text-slate-300 leading-relaxed">
-                      1. <strong>שכבת התוכן (Content Layer):</strong> 100% מוצקה ואטומה (<code className="text-slate-200 bg-white/5 px-1 py-0.5 rounded">#15161c</code>). ללא שום טשטוש רקע, כדי להבטיח קריאות וחדות מקסימלית (WCAG AAA).<br />
-                      2. <strong>שכבת השליטה (Functional UI Layer):</strong> זכוכית נוזלית צפה (<code className="text-slate-200 bg-white/5 px-1 py-0.5 rounded">backdrop-filter: blur(32px)</code>) השמורה בלעדית לסרגלים, מודאלים ותפריטים צפים.
+                    <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+                      1. <strong>שכבת התוכן (Content Layer):</strong> 100% מוצקה ואטומה (<code className="text-slate-800 dark:text-slate-200 bg-slate-200/60 dark:bg-white/10 px-1 py-0.5 rounded font-mono">#15161c / #ffffff</code>). ללא שום טשטוש רקע, כדי להבטיח קריאות וחדות מקסימלית (WCAG AAA).<br />
+                      2. <strong>שכבת השליטה (Functional UI Layer):</strong> זכוכית נוזלית צפה (<code className="text-slate-800 dark:text-slate-200 bg-slate-200/60 dark:bg-white/10 px-1 py-0.5 rounded font-mono">backdrop-filter: blur(32px)</code>) השמורה בלעדית לסרגלים, מודאלים ותפריטים צפים.
                     </p>
                   </div>
                 </div>
@@ -301,7 +301,7 @@ export default function DesignSystemTestModal({ isOpen, onClose }) {
 
               {/* 4 Theme Palettes Comparison Grid */}
               <div className="space-y-3">
-                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                <h4 className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                   4 ערכות הנושא הארכיטקטוניות (Theme Palettes Engine)
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -312,16 +312,16 @@ export default function DesignSystemTestModal({ isOpen, onClose }) {
                         key={pal.id}
                         onClick={() => handleSelectPalette(pal.id)}
                         className={`card-tactile cursor-pointer p-3.5 transition-all ${
-                          isCurrent ? 'ring-2 ring-[var(--accent-base)] border-[var(--accent-base)]' : 'hover:border-white/20'
+                          isCurrent ? 'ring-2 ring-[var(--accent-base)] border-[var(--accent-base)]' : 'hover:border-slate-300 dark:hover:border-white/20'
                         }`}
                       >
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center gap-2">
                             <span 
-                              className="w-3.5 h-3.5 rounded-full shadow-xs" 
+                              className="w-3.5 h-3.5 rounded-full shadow-xs ring-1 ring-black/10 dark:ring-white/10" 
                               style={{ backgroundColor: pal.accentColor }} 
                             />
-                            <span className="text-xs font-bold text-white">{pal.name}</span>
+                            <span className="text-xs font-bold text-slate-900 dark:text-white">{pal.name}</span>
                           </div>
                           {isCurrent && (
                             <span className="text-[10px] px-1.5 py-0.5 rounded bg-[var(--accent-wash)] text-[var(--accent-base)] font-bold">
@@ -329,8 +329,8 @@ export default function DesignSystemTestModal({ isOpen, onClose }) {
                             </span>
                           )}
                         </div>
-                        <p className="text-[11px] text-slate-400 mb-2">{pal.desc}</p>
-                        <div className="flex items-center gap-1.5 text-[10px] font-mono text-slate-500">
+                        <p className="text-[11px] text-slate-600 dark:text-slate-300 mb-2 leading-relaxed">{pal.desc}</p>
+                        <div className="flex items-center gap-1.5 text-[10px] font-mono text-slate-500 dark:text-slate-400">
                           <span>Accent: {pal.accentColor}</span>
                         </div>
                       </div>
@@ -344,10 +344,13 @@ export default function DesignSystemTestModal({ isOpen, onClose }) {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Binary className="w-4 h-4 text-[var(--accent-base)]" />
-                    <span className="text-xs font-bold text-white">סימולציית כרטיס תוכן במפרט זֶן 2.0</span>
+                    <span className="text-xs font-bold text-slate-900 dark:text-white">סימולציית כרטיס תוכן במפרט זֶן 2.0</span>
                   </div>
-                  <span className="text-[10px] font-mono text-slate-400">Content Layer: 100% Solid</span>
+                  <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400">Content Layer: 100% Solid</span>
                 </div>
+                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                  בדקו את התחושה הטקטילית: לחצו על הפיקסלים במטריצה לעיל. שימו לב שהרקע אטום לחלוטין ללא שקיפות מפריעה, בעוד שהכפתורים לפעולה סביבו הם חלולים מזכוכית.
+                </p>
 
                 <div className="flex flex-col sm:flex-row items-center gap-4 pt-1">
                   <div className="grid grid-cols-4 gap-1 p-2 bg-[#0c0d10] border border-white/10 rounded-lg shrink-0">
@@ -410,17 +413,17 @@ export default function DesignSystemTestModal({ isOpen, onClose }) {
                 {/* 1. Canvas & Velvet Ambient */}
                 <div className="card-tactile space-y-2.5">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-white">תבנית 1: קנבס ו-Velvet Ambient</span>
+                    <span className="text-xs font-bold text-slate-900 dark:text-white">תבנית 1: קנבס ו-Velvet Ambient</span>
                     <span className="text-[10px] font-mono text-[var(--accent-base)]">fixed attachment</span>
                   </div>
-                  <div className="h-20 rounded-lg border border-white/10 p-2 relative overflow-hidden flex items-center justify-center"
+                  <div className="h-20 rounded-lg border border-slate-300 dark:border-white/10 p-2 relative overflow-hidden flex items-center justify-center"
                     style={{ backgroundImage: 'var(--content-bg-gradient)' }}>
                     <div className="text-center">
-                      <span className="text-xs font-bold text-white">תאורת אליפסה עליונה רכה</span>
-                      <p className="text-[10px] text-slate-400">95% 65% at 50% -8% עם Cinema Slate</p>
+                      <span className="text-xs font-bold text-slate-900 dark:text-white">תאורת אליפסה עליונה רכה</span>
+                      <p className="text-[10px] text-slate-600 dark:text-slate-400">95% 65% at 50% -8% עם Cinema Slate</p>
                     </div>
                   </div>
-                  <p className="text-[11px] text-slate-400">
+                  <p className="text-[11px] text-slate-600 dark:text-slate-400">
                     תאורת הערפל העדינה שומרת על עומק חזותי ללא עומס וללא גרדיאנטים ניאוניים זרחניים.
                   </p>
                 </div>
@@ -428,19 +431,19 @@ export default function DesignSystemTestModal({ isOpen, onClose }) {
                 {/* 2. Sticky Optical Glass Header */}
                 <div className="card-tactile space-y-2.5">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-white">תבנית 2: סרגל עליון דביק (Optical Glass)</span>
+                    <span className="text-xs font-bold text-slate-900 dark:text-white">תבנית 2: סרגל עליון דביק (Optical Glass)</span>
                     <span className="text-[10px] font-mono text-[var(--accent-base)]">blur(32px) saturate(190%)</span>
                   </div>
                   <div className="liquid-glass-surface rounded-lg p-2.5 flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <div className="w-5 h-5 rounded bg-white/10 flex items-center justify-center text-white">
+                      <div className="w-5 h-5 rounded bg-slate-200 dark:bg-white/10 flex items-center justify-center text-slate-900 dark:text-white">
                         <Bot className="w-3 h-3" />
                       </div>
-                      <span className="text-xs font-bold text-white">סרגל זכוכית נוזלית</span>
+                      <span className="text-xs font-bold text-slate-900 dark:text-white">סרגל זכוכית נוזלית</span>
                     </div>
-                    <span className="text-[10px] font-mono text-slate-400">inset 0 1px 0 0 rgba(255,255,255,0.16)</span>
+                    <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400">inset 0 1px 0 0 rgba(255,255,255,0.16)</span>
                   </div>
-                  <p className="text-[11px] text-slate-400">
+                  <p className="text-[11px] text-slate-600 dark:text-slate-400">
                     4 שכבות אופטיות: צבע כהה חצי-שקוף, טשטוש רווי, מסגרת דקה וקו אור ספקולרי עליון.
                   </p>
                 </div>
@@ -453,16 +456,16 @@ export default function DesignSystemTestModal({ isOpen, onClose }) {
                 {/* 3. Tactile Card */}
                 <div className="card-tactile space-y-2.5">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-white">תבנית 3: כרטיס תוכן טקטילי אטום</span>
-                    <span className="text-[10px] font-mono text-emerald-400">WCAG AAA Opaque</span>
+                    <span className="text-xs font-bold text-slate-900 dark:text-white">תבנית 3: כרטיס תוכן טקטילי אטום</span>
+                    <span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400">WCAG AAA Opaque</span>
                   </div>
-                  <div className="bg-[#15161c] border border-white/10 rounded-lg p-3 hover:-translate-y-0.5 transition-transform">
-                    <div className="text-xs font-semibold text-white mb-1">כרטיס מידע טקטילי ללא טשטוש</div>
-                    <p className="text-[11px] text-slate-300">
+                  <div className="bg-slate-100 dark:bg-[#15161c] border border-slate-300 dark:border-white/10 rounded-lg p-3 hover:-translate-y-0.5 transition-transform">
+                    <div className="text-xs font-semibold text-slate-900 dark:text-white mb-1">כרטיס מידע טקטילי ללא טשטוש</div>
+                    <p className="text-[11px] text-slate-700 dark:text-slate-300">
                       שכבת התוכן אטומה לחלוטין. התוכן הוא מקור הצבע היחיד במערכת.
                     </p>
                   </div>
-                  <p className="text-[11px] text-slate-400">
+                  <p className="text-[11px] text-slate-600 dark:text-slate-400">
                     מבטיח 100% קריאות וחדות לתלמידים, ללא עיוותי רקע או שקיפויות מסיחות דעת.
                   </p>
                 </div>
@@ -470,14 +473,14 @@ export default function DesignSystemTestModal({ isOpen, onClose }) {
                 {/* 4. Modal & Mobile Sheet */}
                 <div className="card-tactile space-y-2.5">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-white">תבנית 4: מודאל דסקטופ ויריעת מובייל</span>
+                    <span className="text-xs font-bold text-slate-900 dark:text-white">תבנית 4: מודאל דסקטופ ויריעת מובייל</span>
                     <span className="text-[10px] font-mono text-[var(--accent-base)]">90dvh sheet / 640px modal</span>
                   </div>
-                  <div className="bg-white/5 rounded-lg p-2.5 border border-white/10 text-center space-y-1">
-                    <span className="text-xs font-bold text-white">Desktop: 640px Centered • Mobile: 90dvh Sheet</span>
-                    <p className="text-[10px] text-slate-400">רדיוס 18px בדסקטופ, 20px עליון ביריעת מובייל</p>
+                  <div className="bg-slate-100 dark:bg-white/5 rounded-lg p-2.5 border border-slate-300 dark:border-white/10 text-center space-y-1">
+                    <span className="text-xs font-bold text-slate-900 dark:text-white">Desktop: 640px Centered • Mobile: 90dvh Sheet</span>
+                    <p className="text-[10px] text-slate-600 dark:text-slate-400">רדיוס 18px בדסקטופ, 20px עליון ביריעת מובייל</p>
                   </div>
-                  <p className="text-[11px] text-slate-400">
+                  <p className="text-[11px] text-slate-600 dark:text-slate-400">
                     החליפו מעלה לכפתור הטלפון לצפייה בהתנהגות היריעה התחתונה בהתאם לתקן iOS.
                   </p>
                 </div>
@@ -489,7 +492,7 @@ export default function DesignSystemTestModal({ isOpen, onClose }) {
                 
                 {/* 5. Hollow Buttons */}
                 <div className="card-tactile space-y-2.5">
-                  <span className="text-xs font-bold text-white block">תבנית 5: כפתורים חלולים</span>
+                  <span className="text-xs font-bold text-slate-900 dark:text-white block">תבנית 5: כפתורים חלולים</span>
                   <div className="flex flex-col gap-2">
                     <button type="button" className="btn-hollow w-full text-xs">
                       משני: .btn-hollow
@@ -498,14 +501,14 @@ export default function DesignSystemTestModal({ isOpen, onClose }) {
                       ראשי: .btn-hollow-primary
                     </button>
                   </div>
-                  <p className="text-[10px] text-slate-400">
+                  <p className="text-[10px] text-slate-600 dark:text-slate-400">
                     אפס בלוקים אטומים. שקיפות זכוכיתית ושפת הדגשה.
                   </p>
                 </div>
 
                 {/* 6. Form Inputs */}
                 <div className="card-tactile space-y-2.5">
-                  <span className="text-xs font-bold text-white block">תבנית 6: שדות קלט ובקרים</span>
+                  <span className="text-xs font-bold text-slate-900 dark:text-white block">תבנית 6: שדות קלט ובקרים</span>
                   <input
                     type="text"
                     value={testInput}
@@ -513,18 +516,18 @@ export default function DesignSystemTestModal({ isOpen, onClose }) {
                     className="input-glass w-full text-xs"
                     placeholder="הקלידו לבדיקת פוקוס..."
                   />
-                  <p className="text-[10px] text-slate-400">
+                  <p className="text-[10px] text-slate-600 dark:text-slate-400">
                     גובה 40px, פונט 16px במובייל למניעת זום באייפון.
                   </p>
                 </div>
 
                 {/* 7. Mobile Standards */}
                 <div className="card-tactile space-y-2.5">
-                  <span className="text-xs font-bold text-white block">תבנית 7: תקן מובייל ו-iOS</span>
-                  <div className="h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-[11px] font-mono text-[var(--accent-base)]">
+                  <span className="text-xs font-bold text-slate-900 dark:text-white block">תבנית 7: תקן מובייל ו-iOS</span>
+                  <div className="h-10 rounded-lg bg-slate-100 dark:bg-white/5 border border-slate-300 dark:border-white/10 flex items-center justify-center text-[11px] font-mono text-[var(--accent-base)] font-bold">
                     min-height: 44px touch target
                   </div>
-                  <p className="text-[10px] text-slate-400">
+                  <p className="text-[10px] text-slate-600 dark:text-slate-400">
                     מרחב לחיצה 44px, אפס גלילה אופקית, הגנת בטיחות מסך.
                   </p>
                 </div>
@@ -539,14 +542,14 @@ export default function DesignSystemTestModal({ isOpen, onClose }) {
             <div className="space-y-5 animate-in fade-in duration-150">
               <div className="card-tactile p-4 space-y-3">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-bold text-white">
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-white">
                     חוק בל יעבור: ארכיטקטורת הכפתורים החלולים (Hollow Glass Mandate)
                   </h3>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-red-950/60 border border-red-800 text-red-300">
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-red-100 dark:bg-red-950/60 border border-red-300 dark:border-red-800 text-red-800 dark:text-red-300">
                     Zero Solid Fills
                   </span>
                 </div>
-                <p className="text-xs text-slate-300 leading-relaxed">
+                <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
                   לפי סעיף 3 במסמך העיצוב, כפתורים לעולם אינם עשויים מבלוק צבע אטום או מגרדיאנט בוהק. כל הכפתורים שקופים למחצה (חצי-זכוכית) עם שפת אור ספקולרית (Specular Highlight) ושפת הדגשה עדינה בלבד.
                 </p>
               </div>
@@ -558,10 +561,10 @@ export default function DesignSystemTestModal({ isOpen, onClose }) {
                 <div className="card-tactile space-y-3 border-[var(--accent-rim)]">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold text-[var(--accent-base)]">תקן זֶן 2.0: Hollow Glass</span>
-                    <span className="text-[10px] font-mono text-emerald-400">תקין לפי מפרט זֶן 2.0</span>
+                    <span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400">תקין לפי מפרט זֶן 2.0</span>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-[#0c0d10] border border-white/5 space-y-3">
+                  <div className="p-4 rounded-xl bg-slate-950 border border-white/5 space-y-3">
                     <div className="flex items-center gap-2">
                       <button 
                         type="button" 
@@ -591,11 +594,11 @@ export default function DesignSystemTestModal({ isOpen, onClose }) {
                 {/* LEGACY SOLID / CONVENTIONAL BUTTON */}
                 <div className="card-tactile space-y-3 opacity-80">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-slate-400">כפתור קונבנציונלי אטום (Solid)</span>
-                    <span className="text-[10px] font-mono text-amber-400">נאסר ע"פ design.md</span>
+                    <span className="text-xs font-bold text-slate-700 dark:text-slate-400">כפתור קונבנציונלי אטום (Solid)</span>
+                    <span className="text-[10px] font-mono text-amber-600 dark:text-amber-400">נאסר ע"פ design.md</span>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-[#0c0d10] border border-white/5 space-y-3">
+                  <div className="p-4 rounded-xl bg-slate-950 border border-white/5 space-y-3">
                     <div className="flex items-center gap-2">
                       <button 
                         type="button" 
@@ -622,8 +625,8 @@ export default function DesignSystemTestModal({ isOpen, onClose }) {
               </div>
 
               {/* Click Counter Feedback */}
-              <div className="flex items-center justify-between text-xs text-slate-400 px-2">
-                <span>סה"כ לחיצות מבחן: <strong className="text-white font-mono">{buttonClickCount}</strong></span>
+              <div className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400 px-2">
+                <span>סה"כ לחיצות מבחן: <strong className="text-slate-900 dark:text-white font-mono">{buttonClickCount}</strong></span>
                 <span className="text-[var(--accent-base)] font-mono">Feedback: Web Audio API Active</span>
               </div>
             </div>
@@ -635,14 +638,14 @@ export default function DesignSystemTestModal({ isOpen, onClose }) {
               
               <div className="card-tactile border-l-4 border-l-amber-500 p-4">
                 <div className="flex items-start gap-3">
-                  <div className="p-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 shrink-0">
+                  <div className="p-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-500 shrink-0">
                     <ShieldAlert className="w-5 h-5" />
                   </div>
                   <div className="space-y-1.5">
-                    <h3 className="text-sm font-bold text-white">
+                    <h3 className="text-sm font-bold text-slate-900 dark:text-white">
                       דוח הצוות האדום (The 10th Man Directive: Stress-Testing Zen 2.0 for Elementary School)
                     </h3>
-                    <p className="text-xs text-slate-300 leading-relaxed">
+                    <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
                       הנחיית ה-10th Man דורשת מאיתנו לא להתלהב עיוורת מעיצוב חדש, אלא לבצע ניתוח הנדסי ופדגוגי ביקורתי ומחמיר של התאמת שפת זֶן 2.0 למשתמשי היעד של ZenLab (תלמידי בית ספר יסודי, גילאי יסודי).
                     </p>
                   </div>
@@ -651,7 +654,7 @@ export default function DesignSystemTestModal({ isOpen, onClose }) {
 
               {/* Core Friction Points Table */}
               <div className="card-tactile p-4 space-y-3">
-                <h4 className="text-xs font-bold text-white">
+                <h4 className="text-xs font-bold text-slate-900 dark:text-white">
                   3 נקודות החיכוך המרכזיות ופתרונות הגישור המומלצים:
                 </h4>
 
