@@ -90,6 +90,23 @@ Transforming ZenLab from a 2-hour solo experience into an **8-to-12 week structu
 
 ---
 
+## Phase 3c: The Matific-Grade Ludic Engine Initiative (Experimental Game Runtimes)
+
+Strategic expansion to transition from "Dashboard & Form Inputs" to **Tangible Pedagogical Games (similar to Matific, Toca Boca, and Duolingo Kids)**:
+- [x] **Core Architectural Diagnosis**: Recognizing the inherent limitations of the HTML DOM tree for child-centric games, shifting toward Game Loops, direct physical manipulatives, and expressive character state machines.
+- [ ] **Lab 1 Matific-Grade Pilot (Energy Bulbs & Living Space Rover)**:
+  - Playful game arena stripped of developer jargon (no hexadecimals, no 64-bit memory registers).
+  - Living robot character with emotional feedback (blinking, smiling, jumping) upon finger-lighting bulbs.
+  - Melodic pentatonic chime synthesis for each bulb row like a toy xylophone.
+- [ ] **Cross-Platform Ludic Engine Research**:
+  - **Rive Engine**: Vector state-machine animation with skeletal bone rigging (the Duolingo standard). Runs at 120 FPS via WebGL in the browser and 100% native via Swift/Metal on iPad.
+  - **Godot 4 (Wasm & Native)**: Lightweight open-source 2D engine compiling to Web and native iOS/Android.
+  - **Flutter + Flame**: High-performance canvas with native Hebrew RTL rendering.
+- [ ] **Pedagogical Contract Invariant (`curriculum.json`)**:
+  - Pedagogical logic, objectives, and progression remain decoupled in JSON, driven by the central state machine.
+
+---
+
 ## Phase 4: Native iPad & iOS Application (100% Apple Native)
 
 Strategic expansion to deliver a premium, Apple HIG-compliant app for school iPad carts:

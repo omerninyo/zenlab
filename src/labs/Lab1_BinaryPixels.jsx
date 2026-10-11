@@ -24,6 +24,7 @@ import LabMissionGuide from '../components/LabMissionGuide.jsx';
 import SvgBinaryAnimation from '../components/animations/SvgBinaryAnimation.jsx';
 import SvgLogicGatesAnimation from '../components/animations/SvgLogicGatesAnimation.jsx';
 import Lab1MissionArcadeView from '../components/Lab1MissionArcadeView.jsx';
+import MatificPilotLab1 from '../components/MatificPilotLab1.jsx';
 
 export default function Lab1_BinaryPixels({ curriculum }) {
   const labData = curriculum.labs.lab1;
@@ -32,7 +33,7 @@ export default function Lab1_BinaryPixels({ curriculum }) {
   const [phase, setPhase] = useState(() => StorageEngine.getLabPhase('lab1'));
   const [grid, setGrid] = useState(() => new Array(64).fill(0));
   const [copied, setCopied] = useState(false);
-  const [viewStyle, setViewStyle] = useState('arcade'); // 'arcade' | 'classic'
+  const [viewStyle, setViewStyle] = useState('matific'); // 'matific' | 'arcade' | 'classic'
   const [completedChallenges, setCompletedChallenges] = useState(() => {
     return StorageEngine.getState().completedChallenges;
   });
@@ -260,6 +261,18 @@ export default function Lab1_BinaryPixels({ curriculum }) {
               <div className="inline-flex items-center bg-slate-100 dark:bg-slate-800/90 p-1 rounded-xl border border-slate-200/80 dark:border-slate-700/80 shadow-inner">
                 <button
                   type="button"
+                  onClick={() => { setViewStyle('matific'); AudioEngine.playStep(); }}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                    viewStyle === 'matific'
+                      ? 'bg-amber-400 text-slate-950 shadow-sm ring-1 ring-amber-300 font-black'
+                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                  }`}
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                  <span>🌟 פיילוט משחקי (Matific)</span>
+                </button>
+                <button
+                  type="button"
                   onClick={() => { setViewStyle('arcade'); AudioEngine.playStep(); }}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                     viewStyle === 'arcade'
@@ -268,7 +281,7 @@ export default function Lab1_BinaryPixels({ curriculum }) {
                   }`}
                 >
                   <Gamepad2 className="w-3.5 h-3.5" />
-                  <span>🎮 קונסולת משימה (Game HUD)</span>
+                  <span>🎮 קונסולת סייבר</span>
                 </button>
                 <button
                   type="button"
@@ -280,7 +293,7 @@ export default function Lab1_BinaryPixels({ curriculum }) {
                   }`}
                 >
                   <FlaskConical className="w-3.5 h-3.5" />
-                  <span>🔬 מעבדה מדעית קלאסית</span>
+                  <span>🔬 מעבדה מדעית</span>
                 </button>
               </div>
             </div>
@@ -290,7 +303,17 @@ export default function Lab1_BinaryPixels({ curriculum }) {
             </span>
           </div>
 
-          {viewStyle === 'arcade' ? (
+          {viewStyle === 'matific' ? (
+            <MatificPilotLab1
+              grid={grid}
+              onCellClick={handleCellClick}
+              onApplyPreset={handleApplyPreset}
+              onClear={handleClear}
+              completedChallenges={completedChallenges}
+              earnedStars={earnedStars}
+              labData={labData}
+            />
+          ) : viewStyle === 'arcade' ? (
             <Lab1MissionArcadeView
               labData={labData}
               grid={grid}

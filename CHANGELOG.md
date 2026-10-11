@@ -7,15 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.7.26] - 2026-10-11
 
-### Added (Lab 1 Interactive Mission Game HUD & 100% Reversible View Switcher)
+### Added (Matific-Grade Living Toy Pilot for Lab 1 & 3-Way Reversible View Switcher)
+- **Matific-Grade Living Toy Pilot (`src/components/MatificPilotLab1.jsx`)**:
+  - Implemented an authentic early-childhood / upper-elementary manipulative game environment inspired by Matific, Toca Boca, and digital physical toys.
+  - **Living Character & Eye Tracking**: Interactive Zen Robot companion with procedural SVG eyes that smoothly track cursor and touch movements in real time, reacting with glowing antenna pulses, celebration jump bounces, and animated heart-eyes upon challenge completion.
+  - **Tactile Light Bulbs Torso Matrix**: 8×8 grid of glowing glass light bulbs with filament physics, direct finger drag-to-paint (`touch-action: none`), and pentatonic xylophone audio chimes (C4 to C6) per row on toggle.
+  - **Manipulative Tools & Direct Action**: Replaced all developer/abstract jargon with tangible child-friendly controls ("צייר לב ❤️", "צייר סמיילי 😊", "רמז קסום 🪄" ghost stencil overlay, "ניקוי לוח").
+  - **Playful Satellite Telemetry & Reward Jars**: Star collector jars, satellite radio dish transmitting laser beam signals to Zen, and celebratory golden confetti without corporate or academic friction.
 - **Interactive Mission Game HUD for Lab 1 (`src/components/Lab1MissionArcadeView.jsx`)**:
-  - Implemented an immersive Game / Mission Terminal interface for Lab 1 (Binary Pixels & Bits) featuring a cybernetic mission terminal with live telemetry and Zen companion holographic status.
-  - Designed tactile 8x8 matrix buttons with physical glow (`1` illuminated amber with bevel / `0` recessed dark mechanical key) and iPad/tablet touch optimization (`touch-action: none`, min 40px targets).
-  - Added Data Cartridges bar (Plug-in presets: ❤️ Heart, 😊 Smiley, 🗡️ Sword) with physical tactile click sounds and spring animations.
-  - Added Cyber Memory Register displaying live 64-bit binary stream, 8 hexadecimal byte offsets (`B0`..`B7`), one-click PNG game screenshot export, and Victory Fanfare banner upon completion.
-- **100% Reversible In-Place Lab View Switcher (`src/labs/Lab1_BinaryPixels.jsx`)**:
-  - Added seamless segmented toggle: `[ 🎮 קונסולת משימה (Game HUD) | 🔬 מעבדה מדעית קלאסית ]`.
-  - Preserves 100% of original lab layout and state machine, enabling instant switching without reload or data loss.
+  - Cybernetic arcade HUD alternative featuring cyber telemetry, physical 8×8 matrix LED keys, data cartridges, and hexadecimal memory register.
+- **100% Reversible 3-Way In-Place View Switcher (`src/labs/Lab1_BinaryPixels.jsx`)**:
+  - Integrated a 3-way segmented toggle: `[ 🌟 פיילוט משחקי (Matific) | 🎮 קונסולת סייבר | 🔬 מעבדה מדעית ]`.
+  - Fully reversible with zero data loss or state regression.
+- **Roadmap Architecture (Phase 3c Added)**:
+  - Documented Phase 3c in `ROADMAP.md` and `ROADMAP.he.md` detailing the Matific-grade ludic engine initiative exploring Rive state-machines, Godot 4 Wasm, and Flutter + Flame.
 
 ## [0.7.25] - 2026-10-11
 
