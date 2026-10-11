@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.23] - 2026-10-11
+
+### Added & Improved (Inclusive Plural Voiceover, 100% Pre-rendered Challenge Hints & Audio Calibration)
+- **100% Inclusive Plural Audio Across All 46 Tutor Modules (`public/audio/tutor/*.mp3`)**:
+  - Re-synthesized and deployed all 46 audio files in `public/audio/tutor/` to ensure 100% exact alignment with the inclusive plural text ("שלכם", "אנחנו חוקרים יחד", "תרצו לשאול").
+  - Eliminated legacy masculine singular recordings that had persisted from earlier releases.
+- **100% Studio Audio Coverage for All 24 Challenge Hints (`public/audio/hints/labX_chY.mp3`)**:
+  - Synthesized and deployed all 24 interactive challenge hint audio files (`lab1_ch1.mp3` through `lab8_ch3.mp3`), completely eliminating fallback to the robotic OS computer voice (Carmit on macOS).
+  - Enriched `src/data/curriculum.json` with dedicated, high-quality `instructions` and `hint` fields for Labs 3, 4, 6, and 7, eliminating `undefined` string artifacts in tutor hint prompts.
+- **Acoustic Calibration, Pace & Speech Sanitization (`src/core/narration.js`)**:
+  - Calibrated HTML5 Audio playback speed to true `1.0x` (removing the artificial `0.92x` drag that distorted pitch and energy).
+  - Upgraded Web Speech fallback engine to `rate = 1.04` and `pitch = 1.0` for a lively, engaging elementary school cadence.
+  - Enhanced `cleanHebrewForSpeech` sanitization to strip emojis (`[\u{1F300}-\u{1F9FF}]...`) and quotes to prevent browser speech synthesizers from stuttering or vocalizing punctuation.
+- **Floating Robot In-Place Toggle Ergonomics (`src/components/ZenAiTutor.jsx`)**:
+  - Validated and hardened floating trigger button behavior: clicking the bot button opens the drawer, and clicking the exact same button toggles it closed in-place without searching for an 'X' icon.
+- **Full Elementary School Lesson Plans (`docs/lesson_plans/01..08_*.md`)**:
+  - Completed all 8 comprehensive lesson plans (28KB–34KB each) covering unplugged activities, minute-by-minute schedules, guided challenge solutions, misconceptions, differentiation, and printable student worksheets.
+- **Architectural Hebrew Voice Modernization Study (`docs/research/hebrew_tts_voice_modernization_2026.md`)**:
+  - Published comprehensive benchmark and evaluation of Hebrew TTS technologies in 2026: Pre-rendered Studio Masters, ElevenLabs Multilingual v3/Flash, OpenAI TTS-1-HD, Google Cloud Journey, WebAssembly Piper, and native Apple ANE / AVSpeech.
+
 ## [0.7.22] - 2026-10-11
 
 ### Fixed & Improved (Comprehensive Audio QA, Zero-Desync Architecture & Complete Home Audio Coverage)

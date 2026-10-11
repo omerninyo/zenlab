@@ -2,7 +2,7 @@
 ## Multi-Year Technical & Pedagogical Evolution: Web SPA, Native iPadOS, Lesson Plans, and Physical Computing
 
 **Document ID:** `ZEN-ROADMAP-EN-2026`  
-**Current Version:** `v0.7.17` (Updated: October 2026)  
+**Current Version:** `v0.7.23` (Updated: October 2026)  
 **Team:** Code & AI Explorer Team (`team@learnai.internal`)  
 **Governance:** Zero-PII Strict Compliance • 10th Man Red Team Protocol • MIT License  
 
@@ -12,15 +12,16 @@ This document serves as the **Central Source of Truth** for all collective memor
 
 ```mermaid
 flowchart LR
-    P1["Phases 1-2: Core 8 Web Labs\n(Completed v0.7.17)"] --> P3["Phase 3: Classroom Lesson Plans Suite\n(Completed docs/lesson_plans/)"]
-    P3 --> P4["Phase 4: Native iPad App\n(100% Apple HIG & SwiftUI)"]
+    P1["Phases 1-2: Core 8 Web Labs\n(Completed v0.7.23)"] --> P3["Phase 3: Classroom Lesson Plans Suite\n(Completed docs/lesson_plans/)"]
+    P3 --> P3B["Phase 3B: 100% Audio & Voice Coverage\n(Completed 70 Neural MP3s)"]
+    P3B --> P4["Phase 4: Native iPad App\n(100% Apple HIG & SwiftUI)"]
     P4 --> P5["Phase 5: Native Android App\n(Jetpack Compose & Material 3)"]
     P5 --> P6["Phase 6: Physical Computing & Edge AI\n(micro:bit & Teachable Machine)"]
 ```
 
 ---
 
-## Phases 1 & 2: Client Infrastructure & 8 Core Web Labs (Completed - v0.7.17)
+## Phases 1 & 2: Client Infrastructure & 8 Core Web Labs (Completed - v0.7.23)
 
 ### A. Core Platform Engines & Zen 2.0 Design System
 - [x] **Zero-PII Compliance & Git Hygiene**: Absolute prohibition of personal names, emails, or absolute machine paths in code and commits.
@@ -72,6 +73,20 @@ Transforming ZenLab from a 2-hour solo experience into an **8-to-12 week structu
   - Family AI Quest.
 - [ ] **Teacher Portal UI in Web App**:
   - Dedicated "מדריכי הוראה לכיתה" navigation tab for one-click viewing and printing of lesson plans and worksheets.
+
+---
+
+## Phase 3B: Complete Voice & Audio Modernization (Completed v0.7.23)
+
+- [x] **100% Pre-rendered Neural Voice Assets (70 studio files)**:
+  - 46 Tutor Q&A and greeting files (`public/audio/tutor/*.mp3`).
+  - 24 Challenge hint files (`public/audio/hints/labX_chY.mp3`).
+- [x] **Inclusive Plural Alignment**:
+  - Full alignment of audio scripts with inclusive classroom Hebrew ("שלכם", "אנחנו חוקרים יחד", "תרצו לשאול").
+- [x] **Acoustic Calibration**:
+  - True 1.0x playback speed, energetic 1.04x fallback rate, and automated regex stripping for emojis and quotation marks.
+- [x] **Architectural Research Paper**:
+  - Published `docs/research/hebrew_tts_voice_modernization_2026.md` comparing ElevenLabs, OpenAI TTS, Google Cloud Journey, WASM Piper, and Apple ANE Siri Enhanced.
 
 ---
 

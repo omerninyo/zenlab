@@ -21,6 +21,10 @@ function cleanHebrewForSpeech(text) {
     .replace(/[*_`#~]/g, '')
     .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // markdown links
     .replace(/[•&bull;]/g, '')
+    // Strip emojis (💡, 📖, 🔍, ❓, ⭐, 🤖, ✨, 🔑, etc.) so speech synthesizers don't pause or stutter
+    .replace(/[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '')
+    // Replace quotes that cause robotic engines to vocalize 'quotation mark'
+    .replace(/["'״׳]/g, ' ')
     // Normalize technical terms to natural spoken Hebrew
     .replace(/\bCPU\b/gi, 'סִי-פִּי-יוּ, המעבד המרכזי')
     .replace(/\bRAM\b/gi, 'רָאם, הזיכרון הראשי')
@@ -55,8 +59,8 @@ class NarrationEngineClass {
     this.isPlaying = false;
     this.isPaused = false;
     this.progress = 0; // 0 to 100
-    this.rate = 0.92; // slightly slower, clear and friendly for kids
-    this.pitch = 1.05; // warmer, enthusiastic frequency
+    this.rate = 1.04; // snappy, lively and engaging cadence for modern young learners
+    this.pitch = 1.0; // natural, non-robotic acoustic pitch
     this.currentText = '';
     this.spokenText = '';
     this.currentVoiceName = '';
@@ -183,7 +187,7 @@ class NarrationEngineClass {
     if (audioSrc && typeof window !== 'undefined') {
       try {
         this.html5Audio = new Audio(audioSrc);
-        this.html5Audio.playbackRate = this.rate;
+        this.html5Audio.playbackRate = 1.0; // Pre-recorded studio master files must play at true 1.0x speed
 
         this.html5Audio.addEventListener('timeupdate', () => {
           if (this.html5Audio && this.html5Audio.duration) {

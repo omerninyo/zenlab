@@ -393,18 +393,26 @@ export function getLabCategories(labId) {
   }
 
   // 2. Practical Challenge Hints from curriculum.json
-  const hints = (lab.challenges || []).map((ch, idx) => ({
-    id: `hint-${idx}`,
-    type: 'hint',
-    title: `רמז לאתגר ${idx + 1}: ${ch.title}`,
-    query: `רמז לאתגר ${idx + 1}`,
-    badge: `אתגר ${idx + 1} ⭐`,
-    icon: 'Lightbulb',
-    payload: {
-      text: `💡 רמז לאתגר "${ch.title}": ${ch.hint}\n\nההנחיה היא: ${ch.instructions}`,
-      category: 'רמז מעשי לאתגר'
-    }
-  }));
+  const hints = (lab.challenges || []).map((ch, idx) => {
+    const hintText = ch.hint || ch.description || '';
+    const instText = ch.instructions || ch.description || '';
+    const displayText = hintText && instText && hintText !== instText
+      ? `💡 רמז לאתגר "${ch.title}": ${hintText}\n\nההנחיה היא: ${instText}`
+      : `💡 רמז לאתגר "${ch.title}": ${hintText || instText}`;
+    return {
+      id: `hint-${idx}`,
+      type: 'hint',
+      title: `רמז לאתגר ${idx + 1}: ${ch.title}`,
+      query: `רמז לאתגר ${idx + 1}`,
+      badge: `אתגר ${idx + 1} ⭐`,
+      icon: 'Lightbulb',
+      payload: {
+        text: displayText,
+        audioSrc: `/audio/hints/${labId}_ch${idx + 1}.mp3?v=0.6.4`,
+        category: 'רמז מעשי לאתגר'
+      }
+    };
+  });
 
   // 3. Glossary Terms from curriculum.json
   const glossary = (lab.glossary || []).map((item, idx) => {
@@ -498,10 +506,15 @@ export function searchKnowledge(userQuery, currentLabId = 'lab1') {
       ) || (cleanQuery.includes('רמז') && cleanQuery.includes(String(i + 1)));
 
       if (isMatch) {
+        const hintText = ch.hint || ch.description || '';
+        const instText = ch.instructions || ch.description || '';
+        const displayText = hintText && instText && hintText !== instText
+          ? `💡 רמז לאתגר "${ch.title}": ${hintText}\n\nההנחיה היא: ${instText}`
+          : `💡 רמז לאתגר "${ch.title}": ${hintText || instText}`;
         return {
           matched: true,
-          text: `💡 רמז לאתגר ${i + 1} ("${ch.title}"):\n${ch.hint}\n\nההנחיה: ${ch.instructions}`,
-          audioSrc: null,
+          text: displayText,
+          audioSrc: `/audio/hints/${currentLabId}_ch${i + 1}.mp3?v=0.6.4`,
           category: `רמז לאתגר ${i + 1}`,
           suggestedNext: [
             i + 1 < currentLab.challenges.length ? `רמז לאתגר ${i + 2}` : 'איך זה עובד בעולם האמיתי?',
@@ -548,14 +561,19 @@ export function searchKnowledge(userQuery, currentLabId = 'lab1') {
   // C. Challenge Hints
   if (currentLab && currentLab.challenges) {
     currentLab.challenges.forEach((ch, idx) => {
+      const hintText = ch.hint || ch.description || '';
+      const instText = ch.instructions || ch.description || '';
+      const displayText = hintText && instText && hintText !== instText
+        ? `💡 רמז לאתגר "${ch.title}": ${hintText}\n\nההנחיה היא: ${instText}`
+        : `💡 רמז לאתגר "${ch.title}": ${hintText || instText}`;
       candidates.push({
         type: 'hint',
         labId: currentLabId,
         title: `רמז לאתגר ${idx + 1}: ${ch.title}`,
-        text: `💡 רמז לאתגר "${ch.title}": ${ch.hint}\n\nהמשימה: ${ch.instructions}`,
-        audioSrc: null,
+        text: displayText,
+        audioSrc: `/audio/hints/${currentLabId}_ch${idx + 1}.mp3?v=0.6.4`,
         category: `רמז לאתגר ${idx + 1}`,
-        tokens: tokenizeQuery(`${ch.title} ${ch.hint} רמז אתגר ${idx + 1}`)
+        tokens: tokenizeQuery(`${ch.title} ${hintText} ${instText} רמז אתגר ${idx + 1}`)
       });
     });
   }
