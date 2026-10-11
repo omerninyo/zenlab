@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.26] - 2026-10-11
+
+### Added (Lab 1 Interactive Mission Game HUD & 100% Reversible View Switcher)
+- **Interactive Mission Game HUD for Lab 1 (`src/components/Lab1MissionArcadeView.jsx`)**:
+  - Implemented an immersive Game / Mission Terminal interface for Lab 1 (Binary Pixels & Bits) featuring a cybernetic mission terminal with live telemetry and Zen companion holographic status.
+  - Designed tactile 8x8 matrix buttons with physical glow (`1` illuminated amber with bevel / `0` recessed dark mechanical key) and iPad/tablet touch optimization (`touch-action: none`, min 40px targets).
+  - Added Data Cartridges bar (Plug-in presets: ❤️ Heart, 😊 Smiley, 🗡️ Sword) with physical tactile click sounds and spring animations.
+  - Added Cyber Memory Register displaying live 64-bit binary stream, 8 hexadecimal byte offsets (`B0`..`B7`), one-click PNG game screenshot export, and Victory Fanfare banner upon completion.
+- **100% Reversible In-Place Lab View Switcher (`src/labs/Lab1_BinaryPixels.jsx`)**:
+  - Added seamless segmented toggle: `[ 🎮 קונסולת משימה (Game HUD) | 🔬 מעבדה מדעית קלאסית ]`.
+  - Preserves 100% of original lab layout and state machine, enabling instant switching without reload or data loss.
+
 ## [0.7.25] - 2026-10-11
 
 ### Added (Interactive Gamified Overworld Journey Map & Layout Switcher)
