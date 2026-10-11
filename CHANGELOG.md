@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.27] - 2026-10-11
+
+### Improved (Embedded Pedagogical Depth in Matific Living Toy Pilot)
+- **Binary X-Ray Lens (`showXRay` toggle in `MatificPilotLab1.jsx`)**:
+  - Integrated glowing `0` (dark recessed) and `1` (illuminated amber) numerals directly inside the physical glass bulbs on the robot's chest.
+  - Added an interactive tactile switch (`עדשת קוד [01]`) allowing learners to toggle between raw drawing mode and the binary bit lens with sound effects.
+- **8-Byte Row Rulers ('Each Row is a Byte')**:
+  - Embedded tactile byte badges along the 8 rows (`בייט 1`..`בייט 8`) showing live 8-bit sequences (e.g., `01100110`) and hexadecimal byte representations (e.g., `0x66`).
+  - Added interactive row audio chords and whole-row illumination on hover and click.
+- **Interactive 64-Bit Memory Tape & Two-Way Direct Manipulation**:
+  - Added a live punch-tape memory register beneath the robot's chest divided into 8 byte segments (`B1`..`B8`).
+  - Bidirectional manipulation: clicking any bit in the memory ribbon toggles the corresponding bulb on the robot, and hovering connects them visually.
+  - Added live bit counters (`40 ביטים דולקים (1) • 24 כבויים (0)`) and an interactive theory explanation modal ("איך זה עובד?").
+
 ## [0.7.26] - 2026-10-11
 
 ### Added (Matific-Grade Living Toy Pilot for Lab 1 & 3-Way Reversible View Switcher)
