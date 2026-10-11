@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   Star, 
   Award, 
@@ -8,11 +8,14 @@ import {
   ChevronLeft,
   Bot,
   Sparkles,
-  Zap
+  Zap,
+  Compass,
+  LayoutGrid
 } from 'lucide-react';
 import { AudioEngine } from '../core/audio.js';
 import { LAB_ICONS, getLabMeta } from '../core/labMeta.js';
 import LabCardPreview from './LabCardPreview.jsx';
+import AdventureJourneyMap from './AdventureJourneyMap.jsx';
 
 export default function HomeDashboard({
   curriculum,
@@ -52,6 +55,7 @@ export default function HomeDashboard({
     : 'חוקר/ת מתחיל/ה';
 
   const progressPercentage = Math.round((totalStars / 24) * 100);
+  const [dashboardLayout, setDashboardLayout] = useState('adventure'); // 'adventure' | 'grid'
 
   const handleLaunchLab = (labId) => {
     AudioEngine.playStep();
@@ -218,6 +222,55 @@ export default function HomeDashboard({
         </div>
       </section>
 
+      {/* 2. Layout Mode Switcher: Gamified Adventure Map vs Classic Grid */}
+      <div className="flex items-center justify-between gap-3 pb-2 border-b border-slate-200/80 dark:border-slate-800 flex-wrap">
+        <div className="flex items-center gap-2.5">
+          <span className="text-xs font-bold text-slate-500 dark:text-slate-400">
+            תצוגת מסלול:
+          </span>
+          <div className="inline-flex items-center bg-slate-100 dark:bg-slate-800/90 p-1 rounded-xl border border-slate-200/80 dark:border-slate-700/80 shadow-inner">
+            <button
+              type="button"
+              onClick={() => { setDashboardLayout('adventure'); AudioEngine.playStep(); }}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                dashboardLayout === 'adventure'
+                  ? 'bg-amber-500 text-slate-950 shadow-sm ring-1 ring-amber-400 font-black'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              <Compass className="w-3.5 h-3.5" />
+              <span>🗺️ מפת מסע משחקית</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => { setDashboardLayout('grid'); AudioEngine.playStep(); }}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                dashboardLayout === 'grid'
+                  ? 'bg-blue-600 text-white shadow-sm font-black'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              <LayoutGrid className="w-3.5 h-3.5" />
+              <span>📋 תצוגת מעבדות כיתתית</span>
+            </button>
+          </div>
+        </div>
+
+        <div className="text-xs font-mono font-bold text-slate-400 dark:text-slate-500 hidden sm:block">
+          8 מעבדות • 24 כוכבים
+        </div>
+      </div>
+
+      {dashboardLayout === 'adventure' ? (
+        <AdventureJourneyMap
+          curriculum={curriculum}
+          labStars={labStars}
+          totalStars={totalStars}
+          onSelectLab={onSelectLab}
+          isDapimActive={isDapimActive}
+        />
+      ) : (
+        <>
       {/* 2. "התחנה הבאה שלכם" / Quick Launch Recommended Station */}
       <section className={
         isDapimActive
@@ -540,6 +593,8 @@ export default function HomeDashboard({
           );
         })}
       </section>
+        </>
+      )}
 
       {/* 5. Quick Tools Footer Links */}
       <section className="flex flex-wrap items-center justify-center gap-3 pt-4 border-t border-slate-200/80 dark:border-slate-800 text-xs font-bold">

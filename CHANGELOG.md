@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.25] - 2026-10-11
+
+### Added (Interactive Gamified Overworld Journey Map & Layout Switcher)
+- **Gamified Overworld Journey Map (`src/components/AdventureJourneyMap.jsx`)**:
+  - Implemented an interactive quest adventure world map for the home dashboard connecting all 8 laboratories along a winding technological path.
+  - Added real-time Zen robot companion status dialogue box with live status beacon and adaptive rank calculation ("חוקר מתחיל", "בלש קוד", "נווט אלגוריתמים", "מהנדס רשתות", "מאסטר AI").
+  - Designed interactive station nodes featuring station number badges, completed checkmarks, glowing active pulse ring, and Zen avatar token placed on the current recommended station ("אתם כאן!").
+  - Fully responsive layout with mobile/iPad touch-friendly targets (64×64px), tactile spring feedback (`active:scale-95`), and Web Audio sound effects.
+- **Dynamic Layout Mode Switcher (`src/components/HomeDashboard.jsx`)**:
+  - Integrated an in-place segmented layout toggle: `[ 🗺️ מפת מסע משחקית | 📋 תצוגת מעבדות כיתתית ]`.
+  - Enables students and teachers to seamlessly switch between the gamified adventure journey and the classic classroom laboratory grid without losing state.
+
 ## [0.7.24] - 2026-10-11
 
 ### Improved (Global +15% Audio Speed Acceleration & Pitch-Preserved Pacing)
