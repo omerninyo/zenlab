@@ -49,7 +49,7 @@ export default function AudioNarrationPlayer({ narrationData }) {
   };
 
   const handleSpeedCycle = () => {
-    const rates = [1.0, 1.25, 1.5];
+    const rates = [1.15, 1.3, 1.5];
     const currentIndex = rates.indexOf(engineState.rate);
     const nextRate = rates[(currentIndex + 1) % rates.length];
     NarrationEngine.setRate(nextRate);

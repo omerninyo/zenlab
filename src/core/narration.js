@@ -59,7 +59,7 @@ class NarrationEngineClass {
     this.isPlaying = false;
     this.isPaused = false;
     this.progress = 0; // 0 to 100
-    this.rate = 1.04; // snappy, lively and engaging cadence for modern young learners
+    this.rate = 1.15; // 15% acceleration (>=10%) for snappy, lively, and energetic pacing
     this.pitch = 1.0; // natural, non-robotic acoustic pitch
     this.currentText = '';
     this.spokenText = '';
@@ -85,6 +85,10 @@ class NarrationEngineClass {
         };
       }
     }
+  }
+
+  speak(text) {
+    this.play(text);
   }
 
   subscribe(listener) {
@@ -114,8 +118,13 @@ class NarrationEngineClass {
   }
 
   setRate(newRate) {
-    this.rate = Math.max(0.7, Math.min(1.5, newRate));
+    this.rate = Math.max(0.8, Math.min(1.75, newRate));
     if (this.html5Audio) {
+      if ('preservesPitch' in this.html5Audio) {
+        this.html5Audio.preservesPitch = true;
+      } else if ('webkitPreservesPitch' in this.html5Audio) {
+        this.html5Audio.webkitPreservesPitch = true;
+      }
       this.html5Audio.playbackRate = this.rate;
     }
     this.notify();
@@ -187,7 +196,18 @@ class NarrationEngineClass {
     if (audioSrc && typeof window !== 'undefined') {
       try {
         this.html5Audio = new Audio(audioSrc);
-        this.html5Audio.playbackRate = 1.0; // Pre-recorded studio master files must play at true 1.0x speed
+        if ('preservesPitch' in this.html5Audio) {
+          this.html5Audio.preservesPitch = true;
+        } else if ('webkitPreservesPitch' in this.html5Audio) {
+          this.html5Audio.webkitPreservesPitch = true;
+        }
+        this.html5Audio.playbackRate = this.rate; // 15% acceleration (1.15x) for energetic, child-friendly cadence
+
+        this.html5Audio.addEventListener('play', () => {
+          if (this.html5Audio) {
+            this.html5Audio.playbackRate = this.rate;
+          }
+        });
 
         this.html5Audio.addEventListener('timeupdate', () => {
           if (this.html5Audio && this.html5Audio.duration) {

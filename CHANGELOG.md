@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.24] - 2026-10-11
+
+### Improved (Global +15% Audio Speed Acceleration & Pitch-Preserved Pacing)
+- **Universal +15% Pacing Acceleration Across All Audio & Voice Engines (`src/core/narration.js`)**:
+  - Accelerated the global default playback rate to `1.15x` (15% faster, exceeding the requested 10% minimum boost) across all HTML5 Audio streams and Web Speech synthesizers.
+  - Enabled browser-native `preservesPitch = true` (and `webkitPreservesPitch`), ensuring voices sound snappy, crisp, and energetic without chipmunk distortion or tonal shift.
+  - Bound the dynamic `play` event listener on `html5Audio` to guarantee that browser engine resets do not revert `playbackRate` to 1.0x.
+  - Added `speak(text)` alias method on `NarrationEngineClass` resolving direct speech calls from `LabMissionGuide.jsx`.
+- **Podcast & Audio Player Speed Cycle Upgrades (`PodcastPlayer.jsx`, `AudioNarrationPlayer.jsx`)**:
+  - Set default podcast playback rate to `1.15x` with active pitch preservation.
+  - Upgraded speed cycle steps to `[1.15x, 1.30x, 1.50x]`, catering to modern young learners who process information at brisk tempos.
+
 ## [0.7.23] - 2026-10-11
 
 ### Added & Improved (Inclusive Plural Voiceover, 100% Pre-rendered Challenge Hints & Audio Calibration)

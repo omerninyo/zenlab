@@ -24,17 +24,26 @@ export default function PodcastPlayer({ podcastData }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(336); // default ~5:36
-  const [playbackRate, setPlaybackRate] = useState(1.0);
+  const [playbackRate, setPlaybackRate] = useState(1.15);
   const [isMuted, setIsMuted] = useState(false);
 
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
+    if ('preservesPitch' in audio) {
+      audio.preservesPitch = true;
+    }
+    audio.playbackRate = playbackRate;
+
     const handleLoadedMetadata = () => {
       if (audio.duration && !isNaN(audio.duration)) {
         setDuration(audio.duration);
       }
+      if ('preservesPitch' in audio) {
+        audio.preservesPitch = true;
+      }
+      audio.playbackRate = playbackRate;
     };
 
     const handleTimeUpdate = () => {
@@ -95,10 +104,13 @@ export default function PodcastPlayer({ podcastData }) {
   };
 
   const cyclePlaybackRate = () => {
-    const rates = [1.0, 1.25, 1.5];
+    const rates = [1.15, 1.3, 1.5];
     const nextRate = rates[(rates.indexOf(playbackRate) + 1) % rates.length];
     setPlaybackRate(nextRate);
     if (audioRef.current) {
+      if ('preservesPitch' in audioRef.current) {
+        audioRef.current.preservesPitch = true;
+      }
       audioRef.current.playbackRate = nextRate;
     }
     AudioEngine.playStep();
