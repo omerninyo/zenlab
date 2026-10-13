@@ -10,7 +10,9 @@ import {
   Info, 
   MousePointer,
   HelpCircle,
-  ArrowRight
+  ArrowRight,
+  Sparkles,
+  FlaskConical
 } from 'lucide-react';
 import { AudioEngine } from '../core/audio.js';
 import { StorageEngine } from '../core/storage.js';
@@ -20,12 +22,14 @@ import LabPhaseHeader from '../components/LabPhaseHeader.jsx';
 import TheoryView from '../components/TheoryView.jsx';
 import LabMissionGuide from '../components/LabMissionGuide.jsx';
 import SvgClassifierAnimation from '../components/animations/SvgClassifierAnimation.jsx';
+import MatificLab5Classifier from '../components/MatificLab5Classifier.jsx';
 
 export default function Lab5_MachineLearningClassifier({ curriculum }) {
   const labData = curriculum.labs.lab5;
 
   // Phase state: 'theory' | 'interactive'
   const [phase, setPhase] = useState(() => StorageEngine.getLabPhase('lab5'));
+  const [viewStyle, setViewStyle] = useState('matific'); // 'matific' | 'classic'
   const [points, setPoints] = useState(() => [...labData.initialData]);
   const [selectedClass, setSelectedClass] = useState('A'); // 'A' | 'B'
   const [kValue, setKValue] = useState(3);
@@ -79,6 +83,24 @@ export default function Lab5_MachineLearningClassifier({ curriculum }) {
 
   const isDraggingRef = useRef(false);
 
+  const handleAddPoint = (x, y, label = selectedClass) => {
+    const newPoint = {
+      id: Date.now() + Math.random(),
+      x,
+      y,
+      label
+    };
+    setPoints(prev => [...prev, newPoint]);
+    AudioEngine.playToggle(true);
+  };
+
+  const handleRandomizeTestPoint = () => {
+    const rx = Math.floor(15 + Math.random() * 70);
+    const ry = Math.floor(15 + Math.random() * 70);
+    setTestPoint({ x: rx, y: ry });
+    AudioEngine.playCollect();
+  };
+
   const handleSvgClick = (e) => {
     if (isDragging || isDraggingRef.current) return;
     if (!svgRef.current) return;
@@ -90,15 +112,7 @@ export default function Lab5_MachineLearningClassifier({ curriculum }) {
     const boundedX = Math.max(5, Math.min(95, Math.round(clickX)));
     const boundedY = Math.max(5, Math.min(95, Math.round(clickY)));
 
-    const newPoint = {
-      id: Date.now(),
-      x: boundedX,
-      y: boundedY,
-      label: selectedClass
-    };
-
-    setPoints(prev => [...prev, newPoint]);
-    AudioEngine.playToggle(true);
+    handleAddPoint(boundedX, boundedY, selectedClass);
   };
 
   const handlePointerDownTestPoint = (e) => {
@@ -153,7 +167,7 @@ export default function Lab5_MachineLearningClassifier({ curriculum }) {
                       (completedChallenges['lab5_challenge3'] ? 1 : 0);
 
   return (
-    <div className="space-y-6" onPointerUp={handlePointerUp} onPointerMove={handlePointerMove}>
+    <div className="space-y-6">
       {/* 2-Phase Header */}
       <LabPhaseHeader
         labData={labData}
@@ -179,6 +193,63 @@ export default function Lab5_MachineLearningClassifier({ curriculum }) {
       {/* Phase 2: Interactive Simulator */}
       {phase === 'interactive' && (
         <div className="space-y-6 animate-fadeIn">
+          {/* View Mode Switcher: Matific Game Pilot vs Classic Lab */}
+          <div className="flex items-center justify-between gap-3 pb-2 border-b border-slate-200/80 dark:border-slate-800 flex-wrap">
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold text-slate-500 dark:text-slate-400">
+                סגנון ממשק מעבדה:
+              </span>
+              <div className="inline-flex items-center bg-slate-100 dark:bg-slate-800/90 p-1 rounded-xl border border-slate-200/80 dark:border-slate-700/80 shadow-inner">
+                <button
+                  type="button"
+                  onClick={() => { setViewStyle('matific'); AudioEngine.playStep(); }}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                    viewStyle === 'matific'
+                      ? 'bg-amber-400 text-slate-950 shadow-sm ring-1 ring-amber-300 font-black'
+                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                  }`}
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                  <span>🌟 פיילוט משחקי (Matific)</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setViewStyle('classic'); AudioEngine.playStep(); }}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                    viewStyle === 'classic'
+                      ? 'bg-blue-600 text-white shadow-sm font-black'
+                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                  }`}
+                >
+                  <FlaskConical className="w-3.5 h-3.5" />
+                  <span>🔬 מעבדה מדעית</span>
+                </button>
+              </div>
+            </div>
+
+            <span className="text-[11px] font-mono font-bold text-slate-400 dark:text-slate-500 hidden sm:inline">
+              מגרש דו-ממדי • סיווג k-NN
+            </span>
+          </div>
+
+          {viewStyle === 'matific' ? (
+            <MatificLab5Classifier
+              points={points}
+              selectedClass={selectedClass}
+              onSelectClass={(cls) => { setSelectedClass(cls); AudioEngine.playStep(); }}
+              kValue={kValue}
+              onSelectK={(k) => { setKValue(k); AudioEngine.playStep(); }}
+              testPoint={testPoint}
+              onMoveTestPoint={setTestPoint}
+              onAddPoint={handleAddPoint}
+              onRandomizeTestPoint={handleRandomizeTestPoint}
+              onReset={resetPoints}
+              classification={classification}
+              completedChallenges={completedChallenges}
+              labData={labData}
+            />
+          ) : (
+            <>
           {/* Active Mission Guidance Banner */}
           <LabMissionGuide
             challenges={labData.challenges}
@@ -467,6 +538,8 @@ export default function Lab5_MachineLearningClassifier({ curriculum }) {
             </div>
           </div>
         </div>
+            </>
+          )}
       </div>
     )}
   </div>

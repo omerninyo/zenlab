@@ -20,11 +20,13 @@ import TheoryView from '../components/TheoryView.jsx';
 import LabMissionGuide from '../components/LabMissionGuide.jsx';
 import SvgPerceptronAnimation from '../components/animations/SvgPerceptronAnimation.jsx';
 import SvgLogicGatesAnimation from '../components/animations/SvgLogicGatesAnimation.jsx';
+import MatificLab7Perceptron from '../components/MatificLab7Perceptron.jsx';
 
 export default function Lab7_Perceptron({ curriculum }) {
   const labData = curriculum.labs.lab7;
 
   const [phase, setPhase] = useState(() => StorageEngine.getLabPhase('lab7'));
+  const [viewStyle, setViewStyle] = useState('matific'); // 'matific' | 'scientific'
   const [selectedGate, setSelectedGate] = useState('AND'); // 'AND' | 'OR' | 'XOR'
   const [w1, setW1] = useState(0.5);
   const [w2, setW2] = useState(0.5);
@@ -162,6 +164,61 @@ export default function Lab7_Perceptron({ curriculum }) {
             labNumber={7}
           />
 
+          {/* Reversible Visual Mode Switcher */}
+          <div className="flex items-center justify-between bg-slate-900/90 border border-slate-800 px-4 py-2.5 rounded-2xl shadow-sm">
+            <span className="text-xs font-bold text-slate-300">סגנון תצוגת המעבדה:</span>
+            <div className="inline-flex rounded-xl bg-slate-950 p-1 border border-slate-800">
+              <button
+                type="button"
+                onClick={() => {
+                  setViewStyle('matific');
+                  AudioEngine.playStep();
+                }}
+                className={`px-3 py-1.5 rounded-lg text-xs font-black transition-all cursor-pointer ${
+                  viewStyle === 'matific'
+                    ? 'bg-amber-400 text-slate-950 shadow-sm'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                🌟 פיילוט משחקי (Matific)
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setViewStyle('scientific');
+                  AudioEngine.playStep();
+                }}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  viewStyle === 'scientific'
+                    ? 'bg-blue-600 text-white shadow-sm'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                🔬 מעבדה מדעית
+              </button>
+            </div>
+          </div>
+
+          {viewStyle === 'matific' ? (
+            <MatificLab7Perceptron
+              selectedGate={selectedGate}
+              w1={w1}
+              w2={w2}
+              bias={bias}
+              activation={activation}
+              evaluation={evaluation}
+              currentAccuracy={currentAccuracy}
+              linePoints={linePoints}
+              toSvgCoords={toSvgCoords}
+              completedChallenges={completedChallenges}
+              onSelectGate={handleSelectGate}
+              onChangeW1={setW1}
+              onChangeW2={setW2}
+              onChangeBias={setBias}
+              onChangeActivation={setActivation}
+              onReset={handleReset}
+            />
+          ) : (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left Column: Direct Manipulation Sliders & 2D Decision Plot */}
           <div className="lg:col-span-8 space-y-4 sm:space-y-6">
@@ -423,6 +480,7 @@ export default function Lab7_Perceptron({ curriculum }) {
             </div>
           </div>
         </div>
+          )}
         </div>
       )}
     </div>

@@ -17,7 +17,9 @@ import {
   Trash2,
   FastForward,
   Flag,
-  ArrowRight
+  ArrowRight,
+  Sparkles,
+  FlaskConical
 } from 'lucide-react';
 import { AudioEngine } from '../core/audio.js';
 import { StorageEngine } from '../core/storage.js';
@@ -25,6 +27,7 @@ import { fireConfetti } from '../core/canvas-particles.js';
 import LabPhaseHeader from '../components/LabPhaseHeader.jsx';
 import TheoryView from '../components/TheoryView.jsx';
 import LabMissionGuide from '../components/LabMissionGuide.jsx';
+import MatificLab2Robot from '../components/MatificLab2Robot.jsx';
 import SvgRobotAnimation from '../components/animations/SvgRobotAnimation.jsx';
 import SvgCpuPipelineAnimation from '../components/animations/SvgCpuPipelineAnimation.jsx';
 
@@ -37,6 +40,7 @@ export default function Lab2_AlgorithmicRobot({ curriculum }) {
 
   // Phase state: 'theory' | 'interactive'
   const [phase, setPhase] = useState(() => StorageEngine.getLabPhase('lab2'));
+  const [viewStyle, setViewStyle] = useState('matific'); // 'matific' | 'classic'
   const [commands, setCommands] = useState([]);
   const [executingIndex, setExecutingIndex] = useState(-1);
   const [isRunning, setIsRunning] = useState(false);
@@ -71,7 +75,9 @@ export default function Lab2_AlgorithmicRobot({ curriculum }) {
 
   const addCommand = (cmdType) => {
     if (isRunning) return;
-    setCommands(prev => [...prev, cmdType]);
+    const normalized =
+      cmdType === 'LEFT' ? 'TURN_LEFT' : cmdType === 'RIGHT' ? 'TURN_RIGHT' : cmdType;
+    setCommands(prev => [...prev, normalized]);
     AudioEngine.playStep();
   };
 
@@ -399,6 +405,68 @@ export default function Lab2_AlgorithmicRobot({ curriculum }) {
             labNumber={2}
           />
 
+          {/* 100% Reversible Switcher Bar: Matific Ludic Pilot vs Classic Scientific Lab */}
+          <div className="flex flex-wrap items-center justify-between gap-3 bg-slate-900/90 border border-slate-800 rounded-2xl p-2.5 px-4 shadow-md">
+            <div className="flex items-center gap-2 text-xs text-slate-300">
+              <Sparkles className="w-4 h-4 text-amber-400" />
+              <span className="font-bold">סגנון תצוגת מעבדה:</span>
+            </div>
+            <div className="flex items-center gap-1.5 bg-slate-950 p-1 rounded-xl border border-slate-800">
+              <button
+                type="button"
+                onClick={() => {
+                  setViewStyle('matific');
+                  AudioEngine.playStep();
+                }}
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  viewStyle === 'matific'
+                    ? 'bg-amber-400 text-slate-950 shadow-md'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>🌟 פיילוט משחקי (Matific)</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setViewStyle('classic');
+                  AudioEngine.playStep();
+                }}
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  viewStyle === 'classic'
+                    ? 'bg-blue-600 text-white shadow-md'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <FlaskConical className="w-3.5 h-3.5" />
+                <span>🔬 מעבדה מדעית</span>
+              </button>
+            </div>
+          </div>
+
+          {viewStyle === 'matific' ? (
+            <MatificLab2Robot
+              labData={labData}
+              board={board}
+              gridSize={gridSize}
+              robotPos={robotPos}
+              hasKey={hasKey}
+              isGateUnlocked={isGateUnlocked}
+              status={status}
+              statusMessage={statusMessage}
+              commands={commands}
+              executingIndex={executingIndex}
+              isRunning={isRunning}
+              addCommand={addCommand}
+              removeCommand={removeCommand}
+              clearCommands={clearCommands}
+              runAlgorithm={runAlgorithm}
+              runSingleStep={runSingleStep}
+              resetSimulation={resetSimulation}
+              completedChallenges={completedChallenges}
+            />
+          ) : (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Maze Grid Column */}
           <div className="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-xl p-6 flex flex-col items-center">
@@ -685,6 +753,7 @@ export default function Lab2_AlgorithmicRobot({ curriculum }) {
             </div>
           </div>
         </div>
+          )}
       </div>
     )}
   </div>

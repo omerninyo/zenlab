@@ -11,7 +11,8 @@ import {
   Navigation, 
   Sliders, 
   Target, 
-  ShieldAlert 
+  ShieldAlert,
+  FlaskConical
 } from 'lucide-react';
 import { AudioEngine } from '../core/audio.js';
 import { StorageEngine } from '../core/storage.js';
@@ -21,11 +22,13 @@ import LabPhaseHeader from '../components/LabPhaseHeader.jsx';
 import TheoryView from '../components/TheoryView.jsx';
 import LabMissionGuide from '../components/LabMissionGuide.jsx';
 import SvgPathfinderAnimation from '../components/animations/SvgPathfinderAnimation.jsx';
+import MatificLab4Pathfinder from '../components/MatificLab4Pathfinder.jsx';
 
 export default function Lab4_Pathfinder({ curriculum }) {
   const labData = curriculum.labs.lab4;
 
   const [phase, setPhase] = useState(() => StorageEngine.getLabPhase('lab4'));
+  const [viewStyle, setViewStyle] = useState('matific'); // 'matific' | 'classic'
   const [grid, setGrid] = useState(() => new Array(64).fill(0));
   const [start, setStart] = useState({ x: 0, y: 0 });
   const [goal, setGoal] = useState({ x: 7, y: 7 });
@@ -142,15 +145,24 @@ export default function Lab4_Pathfinder({ curriculum }) {
     }
   }, [solution, algorithm, grid, currentStepIndex, isPathVisible, lastAstarCount, lastBfsCount, completedChallenges]);
 
-  const toggleWall = (x, y) => {
+  const toggleWall = (x, y, forceVal = null) => {
     if ((x === start.x && y === start.y) || (x === goal.x && y === goal.y)) return;
     const idx = y * 8 + x;
     const next = [...grid];
-    next[idx] = next[idx] === 1 ? 0 : 1;
+    const targetVal = forceVal !== null ? forceVal : (next[idx] === 1 ? 0 : 1);
+    if (next[idx] === targetVal) return;
+    next[idx] = targetVal;
     setGrid(next);
     setCurrentStepIndex(0);
     setIsPlaying(false);
-    AudioEngine.playToggle(next[idx] === 1);
+    AudioEngine.playToggle(targetVal === 1);
+  };
+
+  const handleSelectAlgorithm = (nextAlgo) => {
+    setAlgorithm(nextAlgo);
+    setCurrentStepIndex(0);
+    setIsPlaying(false);
+    AudioEngine.playStep();
   };
 
   const handlePlay = () => {
@@ -210,6 +222,71 @@ export default function Lab4_Pathfinder({ curriculum }) {
 
       {phase === 'interactive' && (
         <div className="space-y-6 animate-fadeIn">
+          {/* View Mode Switcher: Matific Game Pilot vs Classic Lab */}
+          <div className="flex items-center justify-between gap-3 pb-2 border-b border-slate-200/80 dark:border-slate-800 flex-wrap">
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold text-slate-500 dark:text-slate-400">
+                סגנון ממשק מעבדה:
+              </span>
+              <div className="inline-flex items-center bg-slate-100 dark:bg-slate-800/90 p-1 rounded-xl border border-slate-200/80 dark:border-slate-700/80 shadow-inner">
+                <button
+                  type="button"
+                  onClick={() => { setViewStyle('matific'); AudioEngine.playStep(); }}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                    viewStyle === 'matific'
+                      ? 'bg-amber-400 text-slate-950 shadow-sm ring-1 ring-amber-300 font-black'
+                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                  }`}
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                  <span>🌟 פיילוט משחקי (Matific)</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setViewStyle('classic'); AudioEngine.playStep(); }}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                    viewStyle === 'classic'
+                      ? 'bg-blue-600 text-white shadow-sm font-black'
+                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+                  }`}
+                >
+                  <FlaskConical className="w-3.5 h-3.5" />
+                  <span>🔬 מעבדה מדעית</span>
+                </button>
+              </div>
+            </div>
+
+            <span className="text-[11px] font-mono font-bold text-slate-400 dark:text-slate-500 hidden sm:inline">
+              מכ״ם 8×8 • אלגוריתם A* מול BFS
+            </span>
+          </div>
+
+          {viewStyle === 'matific' ? (
+            <MatificLab4Pathfinder
+              grid={grid}
+              start={start}
+              goal={goal}
+              algorithm={algorithm}
+              onSelectAlgorithm={handleSelectAlgorithm}
+              isPlaying={isPlaying}
+              currentStepIndex={currentStepIndex}
+              solution={solution}
+              visibleVisitedSet={visibleVisitedSet}
+              isPathVisible={isPathVisible}
+              pathSet={pathSet}
+              lastAstarCount={lastAstarCount}
+              lastBfsCount={lastBfsCount}
+              onToggleWall={toggleWall}
+              onPlay={handlePlay}
+              onPause={handlePause}
+              onInstantReveal={() => { setCurrentStepIndex(solution.visitedOrder.length); AudioEngine.playStep(); }}
+              onClear={handleReset}
+              onLoadPresetWall={handleLoadPresetWall}
+              completedChallenges={completedChallenges}
+              labData={labData}
+            />
+          ) : (
+            <>
           {/* Active Mission Guidance Banner */}
           <LabMissionGuide
             challenges={labData.challenges}
@@ -428,6 +505,8 @@ export default function Lab4_Pathfinder({ curriculum }) {
             </div>
           </div>
         </div>
+            </>
+          )}
         </div>
       )}
     </div>

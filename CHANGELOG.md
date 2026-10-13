@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.0] - 2026-10-13
+
+### Added (Site-Wide Matific-Grade Living Toy & X-Ray Code Lens Transformation)
+- **Shared Living Toy Core Architecture (`src/components/ZenLivingAvatar.jsx`, `src/components/LudicLabShell.jsx`)**:
+  - Extracted a reusable SVG robot companion (`ZenLivingAvatar`) with real-time cursor/touch pupil tracking, dynamic antenna states, and expressive moods (`happy`, `thinking`, `celebrating`, `error`).
+  - Built `LudicLabShell` providing the cosmic toy stage, satellite telemetry header, interactive "איך זה עובד?" pedagogical popover, 3 star collector jars, and the unified X-Ray Code Lens toggle (`עדשת קוד`).
+- **Cosmic Overworld Journey Map & Streamlined Shell (`AdventureJourneyMap.jsx`, `HomeDashboard.jsx`, `LabPhaseHeader.jsx`, `TheoryView.jsx`)**:
+  - Upgraded the Home Overworld into "מפת הכוכבים של זֶן" with a unified Command Bridge (`ZenLivingAvatar`, live developer rank badge, 24-star progress bar, Certificate & Glossary triggers) and eliminated the duplicate white Hero banner when in adventure mode.
+  - Compacted `LabPhaseHeader.jsx` into a sleek single-row bar to keep the interactive toy stage immediately above the fold.
+  - Enhanced `TheoryView.jsx` into "אולם התדריכים של זֶן" with a cosmic media console and tactile CTA button.
+- **Matific-Grade Living Toy & X-Ray Lens Views for Labs 2–8 (100% Reversible)**:
+  - **Lab 2 (`MatificLab2Robot.jsx` & `Lab2_AlgorithmicRobot.jsx`)**: 6×6 lunar surface, directional rover headlight, X-Ray `[XY]` coordinates + planned step badges (`#1`, `#2`...), tactile command pad, and live Algorithmic Memory Tape.
+  - **Lab 3 (`MatificLab3Trees.jsx` & `Lab3_DecisionTree.jsx`)**: Biological sorting machine with illuminated `כן`/`לא` chutes, `IF/ELSE` X-Ray conditions, 4 collection baskets, and live boolean attribute ribbon.
+  - **Lab 4 (`MatificLab4Pathfinder.jsx` & `Lab4_Pathfinder.jsx`)**: 8×8 cosmic radar matrix with drag-to-paint asteroid walls, X-Ray `[f=g+h]` Manhattan heuristics & discovery order, and live A* vs BFS efficiency gauge.
+  - **Lab 5 (`MatificLab5Classifier.jsx` & `Lab5_MachineLearningClassifier.jsx`)**: 2D cosmic starfield, draggable Mystery Probe, elastic laser beams to $k$ nearest neighbors, dashed radar circle, X-Ray Euclidean distance labels, and live neighbor voting scoreboard.
+  - **Lab 6 (`MatificLab6Vision.jsx` & `Lab6_VisionKernels.jsx`)**: 8×8 input light matrix with 3×3 amber scanner frame, 3×3 Kernel lens, 6×6 edge detector map, and live convolution sum (`Σ`) ribbon.
+  - **Lab 7 (`MatificLab7Perceptron.jsx` & `Lab7_Perceptron.jsx`)**: Electrical neuron chamber, tactile weight/bias controls, 300×300 SVG laser boundary arena, X-Ray `Σ` equation, and 4-bulb live truth table ribbon.
+  - **Lab 8 (`MatificLab8Llm.jsx` & `Lab8_LanguageModelPredictor.jsx`)**: Thermal dial (`❄️ 0.0` to `🔥 1.2`), candidate word capsules with X-Ray Softmax `P%`, and live story teleprompter ribbon.
+
 ## [0.7.27] - 2026-10-11
 
 ### Improved (Embedded Pedagogical Depth in Matific Living Toy Pilot)

@@ -11,7 +11,8 @@ import {
   Info,
   SlidersHorizontal,
   Plus,
-  X
+  X,
+  FlaskConical
 } from 'lucide-react';
 import { AudioEngine } from '../core/audio.js';
 import { StorageEngine } from '../core/storage.js';
@@ -20,6 +21,7 @@ import { AIService, testTreeAttribute } from '../services/ai.js';
 import LabPhaseHeader from '../components/LabPhaseHeader.jsx';
 import TheoryView from '../components/TheoryView.jsx';
 import LabMissionGuide from '../components/LabMissionGuide.jsx';
+import MatificLab3Trees from '../components/MatificLab3Trees.jsx';
 import SvgDecisionTreeAnimation from '../components/animations/SvgDecisionTreeAnimation.jsx';
 
 const ANIMAL_EMOJIS = {
@@ -39,6 +41,7 @@ export default function Lab3_DecisionTree({ curriculum }) {
   const labData = curriculum.labs.lab3;
 
   const [phase, setPhase] = useState(() => StorageEngine.getLabPhase('lab3'));
+  const [viewStyle, setViewStyle] = useState('matific'); // 'matific' | 'classic'
   // Mode: 'four' (exact 1:1 animal guessing for 4 animals) or 'eight' (classification of 8 animals into 3 classes)
   const [datasetMode, setDatasetMode] = useState('four');
   
@@ -209,6 +212,67 @@ export default function Lab3_DecisionTree({ curriculum }) {
             labNumber={3}
           />
 
+          {/* 100% Reversible Switcher Bar: Matific Ludic Pilot vs Classic Scientific Lab */}
+          <div className="flex flex-wrap items-center justify-between gap-3 bg-slate-900/90 border border-slate-800 rounded-2xl p-2.5 px-4 shadow-md">
+            <div className="flex items-center gap-2 text-xs text-slate-300">
+              <Sparkles className="w-4 h-4 text-amber-400" />
+              <span className="font-bold">סגנון תצוגת מעבדה:</span>
+            </div>
+            <div className="flex items-center gap-1.5 bg-slate-950 p-1 rounded-xl border border-slate-800">
+              <button
+                type="button"
+                onClick={() => {
+                  setViewStyle('matific');
+                  AudioEngine.playStep();
+                }}
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  viewStyle === 'matific'
+                    ? 'bg-amber-400 text-slate-950 shadow-md'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>🌟 פיילוט משחקי (Matific)</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setViewStyle('classic');
+                  AudioEngine.playStep();
+                }}
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  viewStyle === 'classic'
+                    ? 'bg-blue-600 text-white shadow-md'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <FlaskConical className="w-3.5 h-3.5" />
+                <span>🔬 מעבדה מדעית</span>
+              </button>
+            </div>
+          </div>
+
+          {viewStyle === 'matific' ? (
+            <MatificLab3Trees
+              labData={labData}
+              datasetMode={datasetMode}
+              setDatasetMode={setDatasetMode}
+              activeDataset={activeDataset}
+              rootAttr={rootAttr}
+              setRootAttr={setRootAttr}
+              leftAttr={leftAttr}
+              setLeftAttr={setLeftAttr}
+              rightAttr={rightAttr}
+              setRightAttr={setRightAttr}
+              selectedTestAnimalId={selectedTestAnimalId}
+              setSelectedTestAnimalId={setSelectedTestAnimalId}
+              evaluation={evaluation}
+              onOpenAddAnimal={() => setIsAddAnimalModalOpen(true)}
+              onDeleteCustomAnimal={handleDeleteCustomAnimal}
+              onReset={handleReset}
+              completedChallenges={completedChallenges}
+            />
+          ) : (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left Column: Interactive Tree Visualizer */}
           <div className="lg:col-span-8 space-y-6">
@@ -657,6 +721,7 @@ export default function Lab3_DecisionTree({ curriculum }) {
             </div>
           </div>
         </div>
+          )}
         </div>
       )}
 

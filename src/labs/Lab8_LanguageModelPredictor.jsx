@@ -23,11 +23,13 @@ import TheoryView from '../components/TheoryView.jsx';
 import LabMissionGuide from '../components/LabMissionGuide.jsx';
 import SvgLlmAnimation from '../components/animations/SvgLlmAnimation.jsx';
 import SvgSelfAttentionAnimation from '../components/animations/SvgSelfAttentionAnimation.jsx';
+import MatificLab8Llm from '../components/MatificLab8Llm.jsx';
 
 export default function Lab8_LanguageModelPredictor({ curriculum }) {
   const labData = curriculum.labs.lab8;
   // Phase state: 'theory' | 'interactive'
   const [phase, setPhase] = useState(() => StorageEngine.getLabPhase('lab8'));
+  const [viewStyle, setViewStyle] = useState('matific'); // 'matific' | 'scientific'
   const [selectedPromptId, setSelectedPromptId] = useState(labData.prompts[0].id);
   const [temperature, setTemperature] = useState(0.7);
   const [generatedTokens, setGeneratedTokens] = useState([]);
@@ -145,6 +147,57 @@ export default function Lab8_LanguageModelPredictor({ curriculum }) {
             labNumber={8}
           />
 
+          {/* Reversible Visual Mode Switcher */}
+          <div className="flex items-center justify-between bg-slate-900/90 border border-slate-800 px-4 py-2.5 rounded-2xl shadow-sm">
+            <span className="text-xs font-bold text-slate-300">סגנון תצוגת המעבדה:</span>
+            <div className="inline-flex rounded-xl bg-slate-950 p-1 border border-slate-800">
+              <button
+                type="button"
+                onClick={() => {
+                  setViewStyle('matific');
+                  AudioEngine.playStep();
+                }}
+                className={`px-3 py-1.5 rounded-lg text-xs font-black transition-all cursor-pointer ${
+                  viewStyle === 'matific'
+                    ? 'bg-amber-400 text-slate-950 shadow-sm'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                🌟 פיילוט משחקי (Matific)
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setViewStyle('scientific');
+                  AudioEngine.playStep();
+                }}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  viewStyle === 'scientific'
+                    ? 'bg-blue-600 text-white shadow-sm'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                🔬 מעבדה מדעית
+              </button>
+            </div>
+          </div>
+
+          {viewStyle === 'matific' ? (
+            <MatificLab8Llm
+              labData={labData}
+              selectedPromptId={selectedPromptId}
+              activePrompt={activePrompt}
+              temperature={temperature}
+              generatedTokens={generatedTokens}
+              tokenDistribution={tokenDistribution}
+              completedChallenges={completedChallenges}
+              onSelectPrompt={handleSelectPrompt}
+              onChangeTemperature={setTemperature}
+              onAppendToken={appendToken}
+              onPredictNext={handlePredictNext}
+              onReset={handleReset}
+            />
+          ) : (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Sentence Builder & Stream Column */}
           <div className="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl p-3.5 sm:p-6 space-y-4 sm:space-y-6 shadow-xs">
@@ -347,6 +400,7 @@ export default function Lab8_LanguageModelPredictor({ curriculum }) {
             </div>
           </div>
         </div>
+          )}
       </div>
     )}
   </div>

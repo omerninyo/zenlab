@@ -19,11 +19,13 @@ import LabPhaseHeader from '../components/LabPhaseHeader.jsx';
 import TheoryView from '../components/TheoryView.jsx';
 import LabMissionGuide from '../components/LabMissionGuide.jsx';
 import SvgKernelAnimation from '../components/animations/SvgKernelAnimation.jsx';
+import MatificLab6Vision from '../components/MatificLab6Vision.jsx';
 
 export default function Lab6_VisionKernels({ curriculum }) {
   const labData = curriculum.labs.lab6;
 
   const [phase, setPhase] = useState(() => StorageEngine.getLabPhase('lab6'));
+  const [viewStyle, setViewStyle] = useState('matific'); // 'matific' | 'scientific'
   const [selectedPreset, setSelectedPreset] = useState('cross');
   const [inputGrid, setInputGrid] = useState(() => labData.presets.cross.grid);
   const [activeKernelKey, setActiveKernelKey] = useState('blur');
@@ -141,6 +143,59 @@ export default function Lab6_VisionKernels({ curriculum }) {
             labNumber={6}
           />
 
+          {/* Reversible Visual Mode Switcher */}
+          <div className="flex items-center justify-between bg-slate-900/90 border border-slate-800 px-4 py-2.5 rounded-2xl shadow-sm">
+            <span className="text-xs font-bold text-slate-300">סגנון תצוגת המעבדה:</span>
+            <div className="inline-flex rounded-xl bg-slate-950 p-1 border border-slate-800">
+              <button
+                type="button"
+                onClick={() => {
+                  setViewStyle('matific');
+                  AudioEngine.playStep();
+                }}
+                className={`px-3 py-1.5 rounded-lg text-xs font-black transition-all cursor-pointer ${
+                  viewStyle === 'matific'
+                    ? 'bg-amber-400 text-slate-950 shadow-sm'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                🌟 פיילוט משחקי (Matific)
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setViewStyle('scientific');
+                  AudioEngine.playStep();
+                }}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  viewStyle === 'scientific'
+                    ? 'bg-blue-600 text-white shadow-sm'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                🔬 מעבדה מדעית
+              </button>
+            </div>
+          </div>
+
+          {viewStyle === 'matific' ? (
+            <MatificLab6Vision
+              labData={labData}
+              selectedPreset={selectedPreset}
+              inputGrid={inputGrid}
+              activeKernelKey={activeKernelKey}
+              currentKernel={currentKernel}
+              convolutionResult={convolutionResult}
+              inspectedCell={inspectedCell}
+              inspectedDetail={inspectedDetail}
+              completedChallenges={completedChallenges}
+              onTogglePixel={toggleInputPixel}
+              onSelectPreset={handleSelectPreset}
+              onSelectKernel={setActiveKernelKey}
+              onInspectCell={setInspectedCell}
+              onClear={handleClear}
+            />
+          ) : (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left Column: Visual Convolution Workspace */}
           <div className="lg:col-span-8 space-y-4 sm:space-y-6">
@@ -216,7 +271,7 @@ export default function Lab6_VisionKernels({ curriculum }) {
                       {inputGrid.map((val, idx) => {
                         const x = idx % 8;
                         const y = Math.floor(idx / 8);
-                        const isInspected = Math.abs(x - inspectedCell.x) <= 1 && Math.abs(y - inspectedCell.y) <= 1;
+                        const isInspected = inspectedCell && Math.abs(x - inspectedCell.x) <= 1 && Math.abs(y - inspectedCell.y) <= 1;
 
                         return (
                           <button
@@ -250,7 +305,7 @@ export default function Lab6_VisionKernels({ curriculum }) {
                       {convolutionResult.outputGrid.map((val, idx) => {
                         const x = idx % 8;
                         const y = Math.floor(idx / 8);
-                        const isCurrentInspected = x === inspectedCell.x && y === inspectedCell.y;
+                        const isCurrentInspected = inspectedCell && x === inspectedCell.x && y === inspectedCell.y;
 
                         // Visual brightness representation
                         const opacity = Math.max(0.15, Math.min(1, val));
@@ -360,6 +415,7 @@ export default function Lab6_VisionKernels({ curriculum }) {
             </div>
           </div>
         </div>
+          )}
         </div>
       )}
     </div>
