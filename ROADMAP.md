@@ -2,7 +2,7 @@
 ## Multi-Year Technical & Pedagogical Evolution: Web SPA, Native iPadOS, Lesson Plans, and Physical Computing
 
 **Document ID:** `ZEN-ROADMAP-EN-2026`  
-**Current Version:** `v0.7.23` (Updated: October 2026)  
+**Current Version:** `v0.8.1` (Updated: October 2026)  
 **Team:** Code & AI Explorer Team (`team@learnai.internal`)  
 **Governance:** Zero-PII Strict Compliance • 10th Man Red Team Protocol • MIT License  
 
@@ -12,9 +12,9 @@ This document serves as the **Central Source of Truth** for all collective memor
 
 ```mermaid
 flowchart LR
-    P1["Phases 1-2: Core 8 Web Labs\n(Completed v0.7.23)"] --> P3["Phase 3: Classroom Lesson Plans Suite\n(Completed docs/lesson_plans/)"]
-    P3 --> P3B["Phase 3B: 100% Audio & Voice Coverage\n(Completed 70 Neural MP3s)"]
-    P3B --> P4["Phase 4: Native iPad App\n(100% Apple HIG & SwiftUI)"]
+    P1["Phases 1-2: Core 8 Web Labs\n(Completed v0.7.23)"] --> P3["Phase 3: Classroom Lesson Plans\n& 70 Neural MP3s (Completed)"]
+    P3 --> P3C["Phase 3C: Site-Wide Matific Living Toy\n& X-Ray Code Lens (Completed v0.8.1)"]
+    P3C --> P4["Phase 4: Native iPad App\n(100% Apple HIG & SwiftUI)"]
     P4 --> P5["Phase 5: Native Android App\n(Jetpack Compose & Material 3)"]
     P5 --> P6["Phase 6: Physical Computing & Edge AI\n(micro:bit & Teachable Machine)"]
 ```
@@ -90,20 +90,24 @@ Transforming ZenLab from a 2-hour solo experience into an **8-to-12 week structu
 
 ---
 
-## Phase 3c: The Matific-Grade Ludic Engine Initiative (Experimental Game Runtimes)
+## Phase 3C: Site-Wide Matific-Grade Living Toy & Embedded X-Ray Code Lens (Completed v0.7.24 – v0.8.1)
 
-Strategic expansion to transition from "Dashboard & Form Inputs" to **Tangible Pedagogical Games (similar to Matific, Toca Boca, and Duolingo Kids)**:
-- [x] **Core Architectural Diagnosis**: Recognizing the inherent limitations of the HTML DOM tree for child-centric games, shifting toward Game Loops, direct physical manipulatives, and expressive character state machines.
-- [ ] **Lab 1 Matific-Grade Pilot (Energy Bulbs & Living Space Rover)**:
-  - Playful game arena stripped of developer jargon (no hexadecimals, no 64-bit memory registers).
-  - Living robot character with emotional feedback (blinking, smiling, jumping) upon finger-lighting bulbs.
-  - Melodic pentatonic chime synthesis for each bulb row like a toy xylophone.
-- [ ] **Cross-Platform Ludic Engine Research**:
-  - **Rive Engine**: Vector state-machine animation with skeletal bone rigging (the Duolingo standard). Runs at 120 FPS via WebGL in the browser and 100% native via Swift/Metal on iPad.
-  - **Godot 4 (Wasm & Native)**: Lightweight open-source 2D engine compiling to Web and native iOS/Android.
-  - **Flutter + Flame**: High-performance canvas with native Hebrew RTL rendering.
-- [ ] **Pedagogical Contract Invariant (`curriculum.json`)**:
-  - Pedagogical logic, objectives, and progression remain decoupled in JSON, driven by the central state machine.
+Strategic UI/UX transformation bridging tactile early-childhood manipulatives (Matific / Toca Boca) with authentic Computer Science & AI depth:
+- [x] **Dual-Mode Classroom Accessibility (`v0.7.24`)**:
+  - Added "מצב דפים (כיתה מוארת)" (`isDapimActive`) for high-contrast sunlit classroom projectors alongside Dark Mode.
+- [x] **Cosmic Overworld Journey Map & 2-Phase Progressive Disclosure (`v0.7.25` & `v0.8.0`)**:
+  - Built `AdventureJourneyMap.jsx` ("מפת הכוכבים של זֶן") with an 8-station winding constellation path, unified Command Bridge (`ZenLivingAvatar`, developer rank progression, 24-star progress bar, Certificate & Glossary triggers), and a 100% reversible toggle back to the classic grid (`📋 תצוגת מעבדות כיתתית`).
+  - Split every lab into **Phase 1: Media & Theory Briefing (`TheoryView.jsx`)** and **Phase 2: Interactive Toy Stage** via `LabPhaseHeader.jsx`.
+- [x] **Shared Living Toy Core & Embedded X-Ray Code Lens (`v0.7.26` – `v0.8.0`)**:
+  - Created `ZenLivingAvatar.jsx` (living SVG robot companion with expressive moods and antenna states) and `LudicLabShell.jsx` (cosmic toy chassis, satellite telemetry header, floating "איך זה עובד?" popover, 3 star collector jars, and the unified `עדשת קוד` toggle).
+  - Expanded the Matific-grade Living Toy + X-Ray Code Lens across **all 8 Labs** (`MatificPilotLab1.jsx` through `MatificLab8Llm.jsx`), each with a 100% reversible view switcher (`🌟 פיילוט משחקי (Matific)` vs `🔬 מעבדה מדעית`).
+- [x] **Zero-Layout-Shift (`CLS = 0` / `ΔY = 0px`) & 60fps DOM Eye Tracking Stabilization (`v0.8.1`)**:
+  - Replaced React `useState` mousemove listeners with direct DOM `useRef` + `requestAnimationFrame` (`translate3d`) pupil transforms.
+  - Locked heights of all X-Ray formula bars, `IF/ELSE` badges, Manhattan heuristic bars, neighbor voting grids, and convolution ribbons (`ΔY = 0px` verified via automated Playwright suite across Overworld and Labs 1–8).
+- [x] **Architectural RFC**:
+  - Codified in `docs/proposals/RFC_004_MATIFIC_LUDIC_ENGINE_AND_XRAY_LENS.he.md` and `RFC_004_MATIFIC_LUDIC_ENGINE_AND_XRAY_LENS.md`.
+- [ ] **Future External Ludic Engine Research (Optional Phase 4+ Bridge)**:
+  - Evaluation of Rive State Machines, Godot 4 Wasm, or Flutter + Flame for native mobile parity while keeping `curriculum.json` decoupled.
 
 ---
 
