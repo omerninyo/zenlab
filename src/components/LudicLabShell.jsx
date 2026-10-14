@@ -38,72 +38,56 @@ export default function LudicLabShell({
   children
 }) {
   const [showTheoryCard, setShowTheoryCard] = useState(false);
-  const [pupilOffset, setPupilOffset] = useState({ x: 0, y: 0 });
-  const stageRef = useRef(null);
-
-  const handleMouseMove = (e) => {
-    if (!stageRef.current) return;
-    const rect = stageRef.current.getBoundingClientRect();
-    const relX = (e.clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
-    const relY = (e.clientY - (rect.top + rect.height / 3)) / (rect.height / 3);
-    setPupilOffset({
-      x: Math.max(-5, Math.min(5, relX * 5)),
-      y: Math.max(-4, Math.min(4, relY * 4))
-    });
-  };
 
   return (
     <div
-      ref={stageRef}
-      onMouseMove={handleMouseMove}
-      className="w-full relative overflow-hidden rounded-3xl border-4 border-amber-400/40 shadow-2xl p-4 sm:p-7 select-none text-white transition-all space-y-5"
+      className="w-full relative overflow-hidden rounded-3xl border-4 border-amber-400/40 shadow-2xl p-4 sm:p-7 select-none text-white space-y-5"
       style={{
         background: 'radial-gradient(ellipse at 50% 15%, #1e1b4b 0%, #0f172a 60%, #020617 100%)'
       }}
       dir="rtl"
     >
-      {/* 1. Starry Animated Sky Background */}
-      <div className="absolute inset-0 pointer-events-none opacity-40">
-        <div className="absolute top-4 left-10 w-2 h-2 bg-amber-200 rounded-full animate-ping" />
-        <div className="absolute top-16 right-20 w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
-        <div className="absolute top-28 left-1/3 w-2 h-2 bg-blue-300 rounded-full animate-pulse" />
-        <div className="absolute top-8 right-1/3 w-1 h-1 bg-amber-100 rounded-full animate-ping" />
+      {/* 1. Starry Static Sky Background (No jarring ping animations) */}
+      <div className="absolute inset-0 pointer-events-none opacity-35">
+        <div className="absolute top-4 left-10 w-1.5 h-1.5 bg-amber-200 rounded-full" />
+        <div className="absolute top-16 right-20 w-1.5 h-1.5 bg-white rounded-full" />
+        <div className="absolute top-28 left-1/3 w-2 h-2 bg-blue-300/80 rounded-full" />
+        <div className="absolute top-8 right-1/3 w-1 h-1 bg-amber-100 rounded-full" />
       </div>
 
-      {/* 2. Top Game Stage Header: Satellite Telemetry & Star Jars */}
-      <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4 pb-4 border-b border-white/10">
+      {/* 2. Top Game Stage Header: Satellite Telemetry & Star Jars (Locked Height) */}
+      <div className="relative z-20 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 pb-4 border-b border-white/10">
         
-        {/* Friendly Hovering Satellite with CS Telemetry */}
-        <div className="flex items-center gap-3.5 bg-white/10 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-white/20 shadow-lg w-full sm:w-auto">
+        {/* Friendly Hovering Satellite with CS Telemetry (Fixed min-h so multi-line text never jumps the board) */}
+        <div className="flex items-center gap-3.5 bg-white/10 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-white/20 shadow-lg flex-1 min-h-[72px]">
           <div className="relative shrink-0">
-            <div className="w-12 h-12 rounded-2xl bg-indigo-500/30 border-2 border-indigo-400 flex items-center justify-center text-indigo-300 shadow-inner">
-              <StationIcon className={`w-6 h-6 ${isBeamActive ? 'animate-bounce text-amber-300' : 'animate-pulse'}`} />
+            <div className="w-11 h-11 rounded-2xl bg-indigo-500/30 border-2 border-indigo-400 flex items-center justify-center text-indigo-300 shadow-inner">
+              <StationIcon className={`w-5 h-5 transition-colors ${isBeamActive ? 'text-amber-300' : 'text-indigo-200'}`} />
             </div>
             {isBeamActive && (
-              <span className="absolute -top-1 -right-1 flex h-4 w-4">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-4 w-4 bg-amber-500"></span>
+              <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5">
+                <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-amber-400 border border-slate-950" />
               </span>
             )}
           </div>
 
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-[11px] font-black px-2 py-0.5 rounded-full bg-indigo-500/40 text-indigo-200 border border-indigo-400/30">
+              <span className="text-[11px] font-black px-2 py-0.5 rounded-full bg-indigo-500/40 text-indigo-200 border border-indigo-400/30 whitespace-nowrap">
                 {stationBadge}
               </span>
-              <span className="text-[11px] text-amber-300 font-bold">
+              <span className="text-[11px] text-amber-300 font-bold truncate">
                 {stationStatus}
               </span>
             </div>
-            <p className="text-xs sm:text-sm font-bold text-white mt-0.5 leading-snug">
+            <p className="text-xs sm:text-sm font-bold text-white mt-0.5 leading-snug line-clamp-2">
               {stationMessage}
             </p>
           </div>
         </div>
 
         {/* Golden Star Jars & Pedagogical Info Button */}
-        <div className="flex items-center gap-3 self-end sm:self-center shrink-0">
+        <div className="flex items-center justify-between sm:justify-end gap-3 shrink-0">
           {theoryText && (
             <button
               type="button"
@@ -111,10 +95,14 @@ export default function LudicLabShell({
                 setShowTheoryCard(!showTheoryCard);
                 AudioEngine.playStep();
               }}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-500/20 hover:bg-indigo-500/30 border border-indigo-400/40 text-indigo-200 text-xs font-bold transition-all cursor-pointer shadow-sm active:scale-95"
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border text-xs font-bold transition-colors cursor-pointer shadow-sm ${
+                showTheoryCard
+                  ? 'bg-amber-400 text-slate-950 border-white font-black'
+                  : 'bg-indigo-500/20 hover:bg-indigo-500/30 border-indigo-400/40 text-indigo-200'
+              }`}
               title="איך המדע שמאחורי הצעצוע עובד?"
             >
-              <Info className="w-3.5 h-3.5 text-indigo-300" />
+              <Info className="w-3.5 h-3.5 shrink-0" />
               <span>איך זה עובד?</span>
             </button>
           )}
@@ -126,9 +114,9 @@ export default function LudicLabShell({
                 {stars.map((starObj, sIdx) => (
                   <div
                     key={starObj.id || sIdx}
-                    className={`w-7 h-7 rounded-xl flex items-center justify-center transition-all duration-300 shadow-md ${
+                    className={`w-7 h-7 rounded-xl flex items-center justify-center transition-colors duration-200 shadow-md ${
                       starObj.done
-                        ? 'bg-amber-400 text-slate-950 scale-110 shadow-amber-400/50'
+                        ? 'bg-amber-400 text-slate-950 shadow-amber-400/40'
                         : 'bg-white/10 text-white/30 border border-white/10'
                     }`}
                     title={starObj.label}
@@ -142,9 +130,9 @@ export default function LudicLabShell({
         </div>
       </div>
 
-      {/* Popover Theory Card: Simple CS Explanation */}
+      {/* Floating Overlay Popover Theory Card (Zero vertical layout shift!) */}
       {showTheoryCard && theoryText && (
-        <div className="relative z-20 bg-indigo-950/90 border-2 border-indigo-400/50 rounded-2xl p-4 shadow-2xl backdrop-blur-md text-xs sm:text-sm animate-in fade-in zoom-in-95 duration-200">
+        <div className="absolute top-24 left-4 right-4 sm:left-8 sm:right-8 z-40 bg-indigo-950/95 border-2 border-amber-400/80 rounded-2xl p-4 shadow-[0_20px_50px_rgba(0,0,0,0.85)] backdrop-blur-md text-xs sm:text-sm">
           <div className="flex items-start justify-between gap-4">
             <div className="space-y-1.5">
               <h4 className="font-black text-amber-300 flex items-center gap-2 text-sm">
@@ -158,9 +146,9 @@ export default function LudicLabShell({
             <button
               type="button"
               onClick={() => setShowTheoryCard(false)}
-              className="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white/80 hover:text-white text-xs font-bold cursor-pointer shrink-0"
+              className="px-3 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-black cursor-pointer shrink-0"
             >
-              סגור
+              סגור ✕
             </button>
           </div>
         </div>
@@ -172,7 +160,6 @@ export default function LudicLabShell({
           <ZenLivingAvatar
             mood={robotMood}
             isBeamActive={isBeamActive}
-            pupilOffset={pupilOffset}
             size={avatarSize}
             showBeamRay={true}
           />
@@ -195,7 +182,7 @@ export default function LudicLabShell({
                   onToggleXRay(!showXRay);
                   AudioEngine.playToggle(!showXRay);
                 }}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border text-xs font-black transition-all cursor-pointer shadow-md active:scale-95 ${
+                className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border text-xs font-black transition-colors cursor-pointer shadow-md ${
                   showXRay
                     ? 'bg-amber-400 text-slate-950 border-amber-300 shadow-amber-400/30'
                     : 'bg-white/10 hover:bg-white/20 text-white/80 border-white/20'

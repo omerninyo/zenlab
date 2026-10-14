@@ -104,9 +104,9 @@ export default function MatificLab8Llm({
               <div className="flex items-center justify-between">
                 <span className="text-xs sm:text-sm font-black text-white flex items-center gap-1.5">
                   {thermalMode === 'icy' ? (
-                    <Snowflake className="w-4 h-4 text-cyan-400 animate-spin" style={{ animationDuration: '8s' }} />
+                    <Snowflake className="w-4 h-4 text-cyan-400" />
                   ) : thermalMode === 'fiery' ? (
-                    <Flame className="w-4 h-4 text-amber-400 animate-bounce" />
+                    <Flame className="w-4 h-4 text-amber-400" />
                   ) : (
                     <Sun className="w-4 h-4 text-indigo-300" />
                   )}
@@ -124,7 +124,7 @@ export default function MatificLab8Llm({
                   T = {temperature.toFixed(2)}
                 </span>
               </div>
-              <p className="text-[11px] text-slate-300 leading-relaxed">
+              <p className="text-[11px] text-slate-300 leading-relaxed min-h-[36px]">
                 {thermalMode === 'icy'
                   ? '❄️ קפוא ומדויק: כל ההסתברות (100%) מתרכזת במילה הצפויה ביותר. אפס הפתעות!'
                   : thermalMode === 'fiery'
@@ -145,7 +145,7 @@ export default function MatificLab8Llm({
                       onChangeTemperature(preset.value);
                       AudioEngine.playStep();
                     }}
-                    className={`w-full px-3.5 py-2.5 rounded-2xl border-2 text-xs font-black transition-all cursor-pointer active:scale-95 flex items-center justify-between ${
+                    className={`w-full px-3.5 py-2.5 rounded-2xl border-2 text-xs font-black transition-colors cursor-pointer flex items-center justify-between ${
                       isActive
                         ? preset.mode === 'icy'
                           ? 'bg-cyan-400 text-slate-950 border-white shadow-[0_0_15px_rgba(34,211,238,0.6)]'
@@ -192,7 +192,7 @@ export default function MatificLab8Llm({
             <button
               type="button"
               onClick={handleRollNext}
-              className={`w-full py-3.5 px-4 rounded-2xl border-2 font-black text-sm flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-95 shadow-xl ${
+              className={`w-full py-3.5 px-4 rounded-2xl border-2 font-black text-sm flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-xl ${
                 thermalMode === 'icy'
                   ? 'bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 border-cyan-200 shadow-cyan-500/30'
                   : thermalMode === 'fiery'
@@ -234,7 +234,7 @@ export default function MatificLab8Llm({
                     key={item.token || idx}
                     type="button"
                     onClick={() => handleCapsuleClick(item.token)}
-                    className={`w-full p-3 rounded-2xl border-2 text-right transition-all cursor-pointer active:scale-98 group relative overflow-hidden ${
+                    className={`w-full p-3 rounded-2xl border-2 text-right transition-colors cursor-pointer group relative overflow-hidden ${
                       isRecentlyPicked
                         ? 'bg-slate-900 border-amber-300 shadow-[0_0_16px_rgba(251,191,36,0.4)]'
                         : isTopCandidate
@@ -242,19 +242,19 @@ export default function MatificLab8Llm({
                         : 'bg-slate-900/70 hover:bg-slate-800 border-slate-800'
                     }`}
                   >
-                    <div className="flex items-center justify-between gap-2 mb-1.5 relative z-10">
-                      <div className="flex items-center gap-2">
-                        <span className="px-2.5 py-0.5 rounded-xl bg-white/10 group-hover:bg-amber-400 group-hover:text-slate-950 font-black text-xs sm:text-sm text-white transition-colors">
+                    <div className="flex items-center justify-between gap-2 mb-1.5 relative z-10 h-7">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span className="px-2.5 py-0.5 rounded-xl bg-white/10 group-hover:bg-amber-400 group-hover:text-slate-950 font-black text-xs sm:text-sm text-white transition-colors shrink-0">
                           "{item.token}"
                         </span>
-                        <span className="text-[11px] text-slate-400 hidden sm:inline">
+                        <span className="text-[11px] text-slate-400 hidden sm:inline truncate">
                           {item.explanation}
                         </span>
                       </div>
 
                       {showXRay ? (
                         <span
-                          className={`font-mono font-black text-xs sm:text-sm px-2 py-0.5 rounded-lg border ${
+                          className={`font-mono font-black text-xs sm:text-sm px-2 py-0.5 rounded-lg border shrink-0 ${
                             thermalMode === 'icy' && prob > 0.5
                               ? 'bg-cyan-400 text-slate-950 border-cyan-200'
                               : thermalMode === 'fiery'
@@ -265,7 +265,7 @@ export default function MatificLab8Llm({
                           {exactPercent}%
                         </span>
                       ) : (
-                        <span className="text-[11px] font-bold text-amber-300">
+                        <span className="text-[11px] font-bold text-amber-300 shrink-0">
                           {prob > 0.5 ? 'סיכוי גבוה ⭐' : prob > 0.15 ? 'סיכוי בינוני' : 'הפתעה נדירה ✨'}
                         </span>
                       )}
@@ -307,7 +307,7 @@ export default function MatificLab8Llm({
                     key={p.id}
                     type="button"
                     onClick={() => onSelectPrompt(p.id)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-black border transition-all cursor-pointer active:scale-95 ${
+                    className={`px-3 py-1.5 rounded-xl text-xs font-black border transition-colors cursor-pointer ${
                       isSelected
                         ? 'bg-amber-400 text-slate-950 border-amber-200 shadow-md'
                         : 'bg-slate-900 hover:bg-slate-800 text-slate-300 border-slate-700'
@@ -327,7 +327,7 @@ export default function MatificLab8Llm({
                 type="button"
                 onClick={onReset}
                 disabled={generatedTokens.length === 0}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 disabled:opacity-40 text-xs font-black text-slate-200 border border-slate-700 transition-all cursor-pointer active:scale-95"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 disabled:opacity-40 text-xs font-black text-slate-200 border border-slate-700 transition-colors cursor-pointer"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>איפוס סיפור 🔄</span>
@@ -344,7 +344,7 @@ export default function MatificLab8Llm({
             {generatedTokens.map((token, idx) => (
               <span
                 key={`${token}-${idx}`}
-                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-gradient-to-br from-amber-300 via-amber-400 to-amber-500 text-slate-950 font-black text-sm sm:text-base border-2 border-white shadow-[0_0_15px_rgba(251,191,36,0.6)] animate-fadeIn"
+                className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-gradient-to-br from-amber-300 via-amber-400 to-amber-500 text-slate-950 font-black text-sm sm:text-base border-2 border-white shadow-[0_0_15px_rgba(251,191,36,0.6)]"
               >
                 <span>{token}</span>
                 <span className="text-[10px] font-mono bg-slate-950/20 px-1 rounded text-slate-900">
@@ -354,7 +354,7 @@ export default function MatificLab8Llm({
             ))}
 
             {/* Glowing Cursor Pill */}
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-indigo-500/20 border border-dashed border-indigo-400/60 text-indigo-300 text-xs font-bold animate-pulse">
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-indigo-500/20 border border-dashed border-indigo-400/60 text-indigo-300 text-xs font-bold">
               <span>{generatedTokens.length === 0 ? 'ממתין למילה הראשונה...' : 'המילה הבאה...'}</span>
             </span>
           </div>

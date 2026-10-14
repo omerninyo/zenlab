@@ -392,20 +392,18 @@ export default function MatificLab5Classifier({
             </div>
           </div>
 
-          {/* X-Ray Distance Formula Explainer when X-Ray is on */}
-          {showXRay && (
-            <div className="p-3 rounded-2xl bg-indigo-950/70 border border-amber-400/40 text-xs space-y-1">
-              <div className="flex items-center justify-between font-black text-amber-300">
-                <span>📐 עדשת מרחקים אוקלידיים [k={kValue}]:</span>
-                <span className="font-mono text-[11px] bg-amber-400/20 px-2 py-0.5 rounded-md border border-amber-300/30">
-                  רדיוס מעגל: {kthRadius.toFixed(1)}
-                </span>
-              </div>
-              <p className="text-indigo-100 text-[11px] leading-relaxed">
-                המעגל המקווקו נמתח בדיוק עד לשכן ה-<strong>{kValue}</strong> במרחקו! כל קרן לייזר מציגה את המרחק <strong>d</strong> מהגשושית לכוכב השכן.
-              </p>
+          {/* X-Ray Distance Formula Explainer — always mounted at constant height */}
+          <div className="p-3 rounded-2xl bg-indigo-950/70 border border-amber-400/40 text-xs space-y-1 min-h-[76px] flex flex-col justify-center">
+            <div className="flex items-center justify-between font-black text-amber-300">
+              <span>📐 {showXRay ? `עדשת מרחקים אוקלידיים [k=${kValue}]:` : `מעגל שכנים קרובים [k=${kValue}]:`}</span>
+              <span className="font-mono text-[11px] bg-amber-400/20 px-2 py-0.5 rounded-md border border-amber-300/30">
+                {showXRay ? `רדיוס מעגל: ${kthRadius.toFixed(1)}` : `שכנים נבדקים: ${kValue}`}
+              </span>
             </div>
-          )}
+            <p className="text-indigo-100 text-[11px] leading-relaxed">
+              המעגל המקווקו נמתח בדיוק עד לשכן ה-<strong>{kValue}</strong> במרחקו! {showXRay ? 'כל קרן לייזר מציגה את המרחק d מהגשושית לכוכב השכן.' : 'הפעילו את עדשת המרחקים כדי לראות את המרחק d על כל קרן.'}
+            </p>
+          </div>
 
           {/* 3 Interactive Challenges Checklist */}
           <div className="bg-slate-950/80 rounded-2xl border border-white/10 p-3.5 space-y-2">
@@ -424,7 +422,7 @@ export default function MatificLab5Classifier({
                 return (
                   <div
                     key={ch.id}
-                    className={`flex items-center justify-between gap-2 px-3 py-2 rounded-xl border text-xs transition-all ${
+                    className={`flex items-center justify-between gap-2 px-3 py-2 rounded-xl border text-xs transition-colors ${
                       isDone
                         ? 'bg-emerald-950/50 border-emerald-500/50 text-emerald-200'
                         : 'bg-slate-900/80 border-white/10 text-slate-300'
@@ -470,14 +468,14 @@ export default function MatificLab5Classifier({
           </div>
         </div>
 
-        {/* Ordered Neighbor Badges */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 gap-2">
+        {/* Ordered Neighbor Badges — locked height so changing k=1/3/5 never shifts layout */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 gap-2 min-h-[42px] items-center">
           {neighbors.map((nn, idx) => {
             const isA = nn.label === 'A';
             return (
               <div
                 key={nn.id || idx}
-                className={`flex items-center justify-between px-3 py-2 rounded-xl border text-xs transition-all ${
+                className={`flex items-center justify-between px-3 py-2 rounded-xl border text-xs transition-colors ${
                   isA
                     ? 'bg-sky-950/60 border-sky-400/50 text-sky-100'
                     : 'bg-amber-950/60 border-amber-400/50 text-amber-100'
@@ -509,9 +507,9 @@ export default function MatificLab5Classifier({
               key={val}
               type="button"
               onClick={() => onSelectK(val)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-mono font-black transition-all cursor-pointer active:scale-95 ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-mono font-black transition-colors cursor-pointer ${
                 kValue === val
-                  ? 'bg-amber-400 text-slate-950 shadow-md scale-105'
+                  ? 'bg-amber-400 text-slate-950 shadow-md'
                   : 'bg-white/5 hover:bg-white/15 text-white/80'
               }`}
             >
@@ -525,9 +523,9 @@ export default function MatificLab5Classifier({
           <button
             type="button"
             onClick={() => onSelectClass('A')}
-            className={`flex items-center gap-1.5 px-3.5 py-2 rounded-2xl text-xs font-black transition-all cursor-pointer active:scale-95 border-2 ${
+            className={`flex items-center gap-1.5 px-3.5 py-2 rounded-2xl text-xs font-black transition-colors cursor-pointer border-2 ${
               selectedClass === 'A'
-                ? 'bg-sky-500 text-slate-950 border-white shadow-[0_0_15px_rgba(14,165,233,0.5)] scale-105'
+                ? 'bg-sky-500 text-slate-950 border-white shadow-[0_0_15px_rgba(14,165,233,0.5)]'
                 : 'bg-sky-950/50 hover:bg-sky-900/60 text-sky-200 border-sky-500/40'
             }`}
           >
@@ -537,9 +535,9 @@ export default function MatificLab5Classifier({
           <button
             type="button"
             onClick={() => onSelectClass('B')}
-            className={`flex items-center gap-1.5 px-3.5 py-2 rounded-2xl text-xs font-black transition-all cursor-pointer active:scale-95 border-2 ${
+            className={`flex items-center gap-1.5 px-3.5 py-2 rounded-2xl text-xs font-black transition-colors cursor-pointer border-2 ${
               selectedClass === 'B'
-                ? 'bg-amber-400 text-slate-950 border-white shadow-[0_0_15px_rgba(251,191,36,0.5)] scale-105'
+                ? 'bg-amber-400 text-slate-950 border-white shadow-[0_0_15px_rgba(251,191,36,0.5)]'
                 : 'bg-amber-950/50 hover:bg-amber-900/60 text-amber-200 border-amber-500/40'
             }`}
           >
@@ -552,7 +550,7 @@ export default function MatificLab5Classifier({
           <button
             type="button"
             onClick={onRandomizeTestPoint}
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-2xl bg-indigo-500/30 hover:bg-indigo-500/45 text-indigo-100 border border-indigo-400/50 text-xs font-black transition-all cursor-pointer active:scale-95 shadow-md"
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-2xl bg-indigo-500/30 hover:bg-indigo-500/45 text-indigo-100 border border-indigo-400/50 text-xs font-black transition-colors cursor-pointer shadow-md"
           >
             <span>שגר גשושית למיקום חדש 🚀</span>
           </button>
@@ -560,7 +558,7 @@ export default function MatificLab5Classifier({
           <button
             type="button"
             onClick={onReset}
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-2xl bg-white/10 hover:bg-white/20 text-white/80 hover:text-white border border-white/20 text-xs font-bold transition-all cursor-pointer active:scale-95 shadow-md"
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-2xl bg-white/10 hover:bg-white/20 text-white/80 hover:text-white border border-white/20 text-xs font-bold transition-colors cursor-pointer shadow-md"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             <span>איפוס מגרש 🔄</span>

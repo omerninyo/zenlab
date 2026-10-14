@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.1] - 2026-10-14
+
+### Fixed & Stabilized (Zero-Layout-Shift `CLS = 0` & Zero-Render 60fps Eye Tracking Across Overworld & Labs 1–8)
+- **Zero-Render 60fps Eye Tracking (`ZenLivingAvatar.jsx`, `LudicLabShell.jsx`, `MatificPilotLab1.jsx`)**:
+  - Replaced React `useState` mousemove listeners (which triggered 60+ full-tree re-renders per second across the active lab) with direct DOM `useRef` + `window.requestAnimationFrame` `.style.transform = translate3d(...)` updates on Zen's pupils.
+- **Zero Vertical Layout Jumps (`ΔY = 0px` Verified via Playwright Across All 8 Labs)**:
+  - Converted the "איך זה עובד?" pedagogical drawer in `LudicLabShell.jsx` and `MatificPilotLab1.jsx` into an absolute floating overlay (`absolute top-24 left-4 right-4 z-40`) so opening/closing it causes `0px` vertical displacement of the game board.
+  - Kept X-Ray Code Lens explainer panels, `if/else` code badges, Manhattan heuristic bars, neighbor voting grids, and Perceptron `Σ` formula bars permanently mounted at locked heights (`min-h-[76px]`, `h-11`, `min-h-[104px]`) across Labs 2–8 so toggling `עדשת קוד` causes `0px` layout shift (`xRayTopDeltaY = 0`, `xRayScrollHeightDelta = 0`).
+  - Locked Zen's speech bubble height (`min-h-[78px]`) on `AdventureJourneyMap.jsx` so hovering over the 8 cosmic station cards causes `0px` page shift (`deltaHover = 0`).
+- **Eliminated Tactile Button & Grid Cell Jitter**:
+  - Removed `border-b-4 active:border-b-0` button height shifts in `MatificLab2Robot.jsx`, `scale-105`/`scale-110`/`scale-95` transforms on adjacent grid cells (Labs 1–8), and continuous `animate-bounce` / `animate-ping` loops.
+- **Floating Control De-confliction (`ZenAiTutor.jsx`)**:
+  - Anchored the floating "שאל את זֶן" AI tutor button cleanly at `fixed bottom-4 left-4 z-50` so it never overlaps left-column lab controls inside the `72rem` workspace container.
+
 ## [0.8.0] - 2026-10-13
 
 ### Added (Site-Wide Matific-Grade Living Toy & X-Ray Code Lens Transformation)

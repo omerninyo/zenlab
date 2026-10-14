@@ -8,7 +8,6 @@ import { Heart, Sparkles, AlertTriangle, Key } from 'lucide-react';
 export default function ZenLivingAvatar({
   mood = 'happy', // 'happy' | 'thinking' | 'celebrating' | 'curious' | 'error'
   isBeamActive = false,
-  pupilOffset: externalPupilOffset = null,
   size = 'md', // 'sm' | 'md' | 'lg'
   showBeamRay = false,
   badgeText = null,
@@ -17,29 +16,37 @@ export default function ZenLivingAvatar({
   onClick = null
 }) {
   const headRef = useRef(null);
-  const [internalOffset, setInternalOffset] = useState({ x: 0, y: 0 });
+  const pupil0Ref = useRef(null);
+  const pupil1Ref = useRef(null);
+  const rafRef = useRef(null);
 
   useEffect(() => {
-    if (externalPupilOffset !== null) return;
-
     const handlePointerMove = (e) => {
-      if (!headRef.current) return;
-      const rect = headRef.current.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      const dx = (e.clientX - centerX) / (window.innerWidth / 2);
-      const dy = (e.clientY - centerY) / (window.innerHeight / 2);
-      setInternalOffset({
-        x: Math.max(-5, Math.min(5, dx * 6)),
-        y: Math.max(-4, Math.min(4, dy * 5))
+      if (rafRef.current) return;
+      const clientX = e.clientX;
+      const clientY = e.clientY;
+      rafRef.current = window.requestAnimationFrame(() => {
+        rafRef.current = null;
+        if (!headRef.current) return;
+        const rect = headRef.current.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const dx = (clientX - centerX) / Math.max(window.innerWidth / 2, 200);
+        const dy = (clientY - centerY) / Math.max(window.innerHeight / 2, 200);
+        const ox = Math.max(-4.5, Math.min(4.5, dx * 5.5)).toFixed(2);
+        const oy = Math.max(-3.5, Math.min(3.5, dy * 4.5)).toFixed(2);
+        const transformStr = `translate3d(${ox}px, ${oy}px, 0)`;
+        if (pupil0Ref.current) pupil0Ref.current.style.transform = transformStr;
+        if (pupil1Ref.current) pupil1Ref.current.style.transform = transformStr;
       });
     };
 
-    window.addEventListener('mousemove', handlePointerMove, { passive: true });
-    return () => window.removeEventListener('mousemove', handlePointerMove);
-  }, [externalPupilOffset]);
-
-  const offset = externalPupilOffset || internalOffset;
+    window.addEventListener('pointermove', handlePointerMove, { passive: true });
+    return () => {
+      window.removeEventListener('pointermove', handlePointerMove);
+      if (rafRef.current) window.cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
 
   const sizeClasses = {
     sm: {
@@ -91,25 +98,29 @@ export default function ZenLivingAvatar({
     >
       {/* Optional Laser Beam Ray */}
       {showBeamRay && isBeamActive && (
-        <div className="absolute -top-12 w-3 h-28 bg-gradient-to-t from-amber-400 via-amber-200 to-transparent rounded-full blur-xs animate-pulse pointer-events-none" />
+        <div className="absolute -top-10 w-2.5 h-20 bg-gradient-to-t from-amber-400/70 via-amber-200/30 to-transparent rounded-full blur-xs pointer-events-none" />
       )}
 
-      {/* Robot Head Chassis */}
+      {/* Robot Head Chassis (Fixed geometry - zero layout-shifting scale/translate) */}
       <div
-        className={`relative bg-gradient-to-b from-slate-700 to-slate-800 border-amber-400/75 shadow-2xl flex flex-col items-center justify-center transition-transform duration-300 ${sizeClasses.chassis} ${
-          mood === 'celebrating' ? 'scale-110 -translate-y-1.5 border-amber-300' : ''
-        } ${mood === 'error' ? 'border-rose-400/80' : ''} ${onClick ? 'group-hover:scale-105' : ''}`}
+        className={`relative bg-gradient-to-b from-slate-700 to-slate-800 shadow-2xl flex flex-col items-center justify-center transition-colors duration-200 ${sizeClasses.chassis} ${
+          mood === 'celebrating'
+            ? 'border-amber-300 shadow-[0_0_25px_rgba(251,191,36,0.45)]'
+            : mood === 'error'
+            ? 'border-rose-400/80'
+            : 'border-amber-400/75'
+        } ${onClick ? 'group-hover:border-amber-300' : ''}`}
       >
         {/* Antenna */}
         <div className={`absolute bg-amber-400 rounded-full flex flex-col items-center ${sizeClasses.antennaWrap}`}>
           <div
-            className={`rounded-full border-2 border-white transition-all ${sizeClasses.antennaBulb} ${
+            className={`rounded-full border-2 border-white transition-colors duration-200 ${sizeClasses.antennaBulb} ${
               isBeamActive || mood === 'celebrating'
-                ? 'bg-amber-300 shadow-[0_0_20px_#fde047] scale-125'
+                ? 'bg-amber-300 shadow-[0_0_16px_#fde047]'
                 : mood === 'thinking'
-                ? 'bg-indigo-400 shadow-[0_0_14px_#818cf8] animate-pulse'
+                ? 'bg-indigo-400 shadow-[0_0_12px_#818cf8]'
                 : mood === 'error'
-                ? 'bg-rose-500 shadow-[0_0_14px_#f43f5e]'
+                ? 'bg-rose-500 shadow-[0_0_12px_#f43f5e]'
                 : 'bg-amber-500 shadow-md'
             }`}
           />
@@ -117,7 +128,7 @@ export default function ZenLivingAvatar({
 
         {/* Optional Key Held Indicator (e.g. Lab 2) */}
         {hasKey && (
-          <div className="absolute -top-2 -left-2 w-6 h-6 rounded-full bg-amber-400 text-slate-950 border-2 border-white shadow-lg flex items-center justify-center animate-bounce z-20">
+          <div className="absolute -top-2 -left-2 w-6 h-6 rounded-full bg-amber-400 text-slate-950 border-2 border-white shadow-lg flex items-center justify-center z-20">
             <Key className="w-3.5 h-3.5" />
           </div>
         )}
@@ -126,17 +137,17 @@ export default function ZenLivingAvatar({
         <div className={`w-full bg-slate-950 border-2 border-slate-700 flex items-center justify-around shadow-inner relative overflow-hidden ${sizeClasses.visor}`}>
           {mood === 'celebrating' ? (
             <>
-              <Heart className={`${sizeClasses.icon} text-rose-400 fill-rose-500 animate-bounce`} />
-              <Heart className={`${sizeClasses.icon} text-rose-400 fill-rose-500 animate-bounce`} />
+              <Heart className={`${sizeClasses.icon} text-rose-400 fill-rose-500`} />
+              <Heart className={`${sizeClasses.icon} text-rose-400 fill-rose-500`} />
             </>
           ) : mood === 'error' ? (
             <>
-              <AlertTriangle className={`${sizeClasses.icon} text-rose-400 animate-pulse`} />
-              <AlertTriangle className={`${sizeClasses.icon} text-rose-400 animate-pulse`} />
+              <AlertTriangle className={`${sizeClasses.icon} text-rose-400`} />
+              <AlertTriangle className={`${sizeClasses.icon} text-rose-400`} />
             </>
           ) : (
             <>
-              {[0, 1].map((eyeIdx) => (
+              {[pupil0Ref, pupil1Ref].map((pRef, eyeIdx) => (
                 <div
                   key={eyeIdx}
                   className={`rounded-full bg-slate-800 border-blue-400/60 flex items-center justify-center relative overflow-hidden shadow-inner ${sizeClasses.eyeOuter} ${
@@ -144,14 +155,12 @@ export default function ZenLivingAvatar({
                   }`}
                 >
                   <div
-                    className={`rounded-full transition-transform duration-75 ${sizeClasses.eyeInner} ${
+                    ref={pRef}
+                    className={`rounded-full will-change-transform ${sizeClasses.eyeInner} ${
                       mood === 'thinking'
                         ? 'bg-amber-400 shadow-[0_0_8px_#fbbf24]'
                         : 'bg-blue-400 shadow-[0_0_8px_#60a5fa]'
                     }`}
-                    style={{
-                      transform: `translate(${offset.x}px, ${offset.y}px)`
-                    }}
                   >
                     <div className={`bg-white rounded-full mt-0.5 ml-0.5 ${sizeClasses.spark}`} />
                   </div>

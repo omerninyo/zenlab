@@ -109,7 +109,7 @@ export default function MatificLab7Perceptron({
                 <div className="flex items-center justify-between gap-2">
                   <span className="text-xs sm:text-sm font-black">{gate.label}</span>
                   {isSelected && (
-                    <span className="w-2.5 h-2.5 rounded-full bg-amber-300 animate-ping shrink-0" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-amber-300 shrink-0" />
                   )}
                 </div>
                 <span className={`text-[11px] mt-1 ${isSelected ? 'text-purple-100' : 'text-slate-400'}`}>
@@ -303,12 +303,18 @@ export default function MatificLab7Perceptron({
               </div>
             </div>
 
-            {/* Live X-Ray Formula Bar */}
-            {showXRay && (
-              <div className="p-3 rounded-2xl bg-indigo-950/70 border border-indigo-400/40 text-center font-mono text-xs sm:text-sm text-indigo-200" dir="ltr">
-                <span className="text-amber-300 font-black">Σ</span> = ({w1.toFixed(1)})·x₁ + ({w2.toFixed(1)})·x₂ + ({bias.toFixed(1)})
-              </div>
-            )}
+            {/* Live X-Ray Formula Bar — always mounted at constant height */}
+            <div className="p-3 rounded-2xl bg-indigo-950/70 border border-indigo-400/40 text-center font-mono text-xs sm:text-sm text-indigo-200 h-11 flex items-center justify-center" dir="ltr">
+              {showXRay ? (
+                <span>
+                  <span className="text-amber-300 font-black">Σ</span> = ({w1.toFixed(1)})·x₁ + ({w2.toFixed(1)})·x₂ + ({bias.toFixed(1)})
+                </span>
+              ) : (
+                <span className="text-slate-400 text-xs" dir="rtl">
+                  הפעילו את "עדשת משוואת נוירון [Σ]" כדי לחשוף את משוואת הקו החיה
+                </span>
+              )}
+            </div>
           </div>
 
           {/* Chamber 2: זירת הלייזר של הנוירון (SVG 300×300) */}
@@ -468,20 +474,40 @@ export default function MatificLab7Perceptron({
           </div>
         </div>
 
-        {/* XOR Pedagogical Discovery Banner */}
-        {selectedGate === 'XOR' && (
-          <div className="bg-amber-950/60 border-2 border-amber-400/60 rounded-2xl p-3.5 text-xs text-amber-100 flex items-start gap-3 shadow-lg">
-            <ShieldAlert className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
-            <div>
-              <h4 className="font-black text-amber-300 text-xs sm:text-sm">
-                חידת ה-XOR: מדוע קו לייזר ישר אחד מגיע רק ל-75% דיוק?
-              </h4>
-              <p className="mt-1 leading-relaxed">
-                הסתכלו על הכוכבים הדולקים ⭐ בנקודות (0,1) ו-(1,0): הם נמצאים באלכסון! אי אפשר למתוח קו ישר אחד שיפריד אותם משתי הנקודות הכבויות 🌑 ב-(0,0) ו-(1,1). כדי לפתור XOR צריך לחבר <strong>כמה נוירונים יחד לרשת עצבית רב-שכבתית</strong>!
-              </p>
-            </div>
+        {/* Gate Pedagogical Discovery Banner — always mounted at constant height so switching gates never jumps layout */}
+        <div
+          className={`rounded-2xl p-3.5 text-xs flex items-start gap-3 shadow-lg border-2 min-h-[76px] ${
+            selectedGate === 'XOR'
+              ? 'bg-amber-950/60 border-amber-400/60 text-amber-100'
+              : 'bg-indigo-950/50 border-indigo-500/40 text-indigo-100'
+          }`}
+        >
+          <ShieldAlert className={`w-5 h-5 shrink-0 mt-0.5 ${selectedGate === 'XOR' ? 'text-amber-400' : 'text-indigo-400'}`} />
+          <div>
+            <h4 className={`font-black text-xs sm:text-sm ${selectedGate === 'XOR' ? 'text-amber-300' : 'text-indigo-200'}`}>
+              {selectedGate === 'XOR'
+                ? 'חידת ה-XOR: מדוע קו לייזר ישר אחד מגיע רק ל-75% דיוק?'
+                : selectedGate === 'AND'
+                ? 'שער וגם (AND): הפרדה ליניארית של הפינה הימנית-עליונה (1,1)'
+                : 'שער או (OR): הפרדת שלוש הנקודות הדולקות מנקודת ה-(0,0)'}
+            </h4>
+            <p className="mt-1 leading-relaxed">
+              {selectedGate === 'XOR' ? (
+                <>
+                  הסתכלו על הכוכבים הדולקים ⭐ בנקודות (0,1) ו-(1,0): הם נמצאים באלכסון! אי אפשר למתוח קו ישר אחד שיפריד אותם משתי הנקודות הכבויות 🌑 ב-(0,0) ו-(1,1). כדי לפתור XOR צריך לחבר <strong>כמה נוירונים יחד לרשת עצבית רב-שכבתית</strong>!
+                </>
+              ) : selectedGate === 'AND' ? (
+                <>
+                  בשער <strong>AND</strong> רק הנקודה <strong>(1,1)</strong> צריכה להידלק ⭐. תנו משקולות חיוביות ל-w₁ ול-w₂ וסף החלטה (b) שלילי כך שרק כששניהם דלוקים הסכום יעבור את ה-0!
+                </>
+              ) : (
+                <>
+                  בשער <strong>OR</strong> מספיק שאחד המתגים ידלק ⭐ כדי שהנוירון יירה! מקמו את קרן הלייזר כך שרק הנקודה <strong>(0,0)</strong> תישאר בצד הכבוי 🌑.
+                </>
+              )}
+            </p>
           </div>
-        )}
+        </div>
 
         {/* Live Truth-Table Ribbon (4 Glowing Test Bulbs) */}
         <div className="bg-slate-950/90 rounded-3xl border-2 border-indigo-500/30 p-4 space-y-3 shadow-lg">
@@ -515,7 +541,7 @@ export default function MatificLab7Perceptron({
               return (
                 <div
                   key={idx}
-                  className={`p-3 rounded-2xl border-2 flex flex-col justify-between gap-2 transition-all ${
+                  className={`p-3 rounded-2xl border-2 flex flex-col justify-between gap-2 transition-colors ${
                     isMatch
                       ? 'bg-emerald-950/40 border-emerald-500/60 shadow-[0_0_15px_rgba(16,185,129,0.15)]'
                       : 'bg-rose-950/40 border-rose-500/60'
@@ -545,11 +571,9 @@ export default function MatificLab7Perceptron({
                     </span>
                   </div>
 
-                  {showXRay && (
-                    <div className="text-[10px] font-mono text-indigo-300 bg-black/40 px-2 py-1 rounded-lg text-center" dir="ltr">
-                      Σ = {pt.z}
-                    </div>
-                  )}
+                  <div className="text-[10px] font-mono text-indigo-300 bg-black/40 px-2 py-1 rounded-lg text-center h-6 flex items-center justify-center" dir="ltr">
+                    {showXRay ? `Σ = ${pt.z}` : `פלט: ${pt.output}`}
+                  </div>
                 </div>
               );
             })}

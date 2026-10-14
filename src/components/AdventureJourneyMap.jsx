@@ -62,16 +62,16 @@ export default function AdventureJourneyMap({
       }}
       dir="rtl"
     >
-      {/* Twinkling Cosmic Starfield Dots */}
-      <div className="absolute inset-0 pointer-events-none opacity-45">
-        <div className="absolute top-6 left-10 w-2 h-2 bg-amber-200 rounded-full animate-ping" />
-        <div className="absolute top-16 right-20 w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
-        <div className="absolute top-36 left-1/4 w-2 h-2 bg-blue-300 rounded-full animate-pulse" />
-        <div className="absolute top-10 right-1/3 w-1.5 h-1.5 bg-amber-100 rounded-full animate-ping" />
-        <div className="absolute top-1/2 left-12 w-1.5 h-1.5 bg-indigo-300 rounded-full animate-pulse" />
-        <div className="absolute top-2/3 right-14 w-2 h-2 bg-amber-200 rounded-full animate-pulse" />
-        <div className="absolute bottom-24 left-1/3 w-1.5 h-1.5 bg-white rounded-full animate-ping" />
-        <div className="absolute bottom-12 right-1/4 w-2 h-2 bg-emerald-300 rounded-full animate-pulse" />
+      {/* Twinkling Cosmic Starfield Dots (Static glow - zero layout jitter) */}
+      <div className="absolute inset-0 pointer-events-none opacity-40">
+        <div className="absolute top-6 left-10 w-2 h-2 bg-amber-200 rounded-full" />
+        <div className="absolute top-16 right-20 w-1.5 h-1.5 bg-white rounded-full" />
+        <div className="absolute top-36 left-1/4 w-2 h-2 bg-blue-300 rounded-full" />
+        <div className="absolute top-10 right-1/3 w-1.5 h-1.5 bg-amber-100 rounded-full" />
+        <div className="absolute top-1/2 left-12 w-1.5 h-1.5 bg-indigo-300 rounded-full" />
+        <div className="absolute top-2/3 right-14 w-2 h-2 bg-amber-200 rounded-full" />
+        <div className="absolute bottom-24 left-1/3 w-1.5 h-1.5 bg-white rounded-full" />
+        <div className="absolute bottom-12 right-1/4 w-2 h-2 bg-emerald-300 rounded-full" />
       </div>
 
       {/* 1. Unified Command Bridge Header */}
@@ -93,7 +93,7 @@ export default function AdventureJourneyMap({
               />
             </div>
 
-            <div className="space-y-2.5 max-w-xl">
+            <div className="space-y-2.5 max-w-xl w-full">
               {/* Stage Title & Rank Pill */}
               <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
                 <span className="inline-flex items-center gap-1.5 text-xs font-black px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/40">
@@ -107,9 +107,9 @@ export default function AdventureJourneyMap({
                 </span>
               </div>
 
-              {/* Speech Bubble */}
-              <div className="bg-slate-950/85 border border-amber-400/30 rounded-2xl p-3.5 sm:p-4 shadow-inner">
-                <p className="text-sm sm:text-base font-bold text-white leading-relaxed">
+              {/* Speech Bubble (Fixed min-height so hovering station cards below never shifts the page!) */}
+              <div className="bg-slate-950/85 border border-amber-400/30 rounded-2xl p-3.5 sm:p-4 shadow-inner min-h-[78px] flex items-center">
+                <p className="text-sm sm:text-base font-bold text-white leading-relaxed line-clamp-2">
                   {isAllCompleted
                     ? 'מדהים! כבשתם את כל 8 התחנות במפת הכוכבים וצברתם 24 כוכבים! תעודת המאסטר הרשמית שלכם מוכנה!'
                     : hoveredLabId
@@ -152,7 +152,7 @@ export default function AdventureJourneyMap({
                     AudioEngine.playClick();
                     onOpenCertificate();
                   }}
-                  className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs shadow-md shadow-amber-500/20 transition-all active:scale-95 cursor-pointer whitespace-nowrap"
+                  className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs shadow-md shadow-amber-500/20 transition-colors cursor-pointer whitespace-nowrap"
                 >
                   <Award className="w-3.5 h-3.5 shrink-0" />
                   <span>תעודת הצטיינות 🏆</span>
@@ -166,7 +166,7 @@ export default function AdventureJourneyMap({
                     AudioEngine.playClick();
                     onOpenGlossary();
                   }}
-                  className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-600 font-bold text-xs transition-all active:scale-95 cursor-pointer whitespace-nowrap"
+                  className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-600 font-bold text-xs transition-colors cursor-pointer whitespace-nowrap"
                 >
                   <BookOpen className="w-3.5 h-3.5 text-blue-400 shrink-0" />
                   <span>מילון מושגים 📖</span>
@@ -230,9 +230,9 @@ export default function AdventureJourneyMap({
                 {/* Station Interactive Planetary Orb */}
                 <div className="relative shrink-0 flex items-center justify-center sm:mx-0">
                   
-                  {/* Floating Action Badge on Current Station Orb */}
+                  {/* Floating Action Badge on Current Station Orb (Stable - no bounce) */}
                   {isCurrent && (
-                    <div className="absolute -top-6 right-1/2 translate-x-1/2 flex items-center gap-1 bg-amber-400 text-slate-950 font-black text-[10px] px-2.5 py-0.5 rounded-full shadow-lg border-2 border-white animate-bounce z-20 whitespace-nowrap">
+                    <div className="absolute -top-6 right-1/2 translate-x-1/2 flex items-center gap-1 bg-amber-400 text-slate-950 font-black text-[10px] px-2.5 py-0.5 rounded-full shadow-lg border-2 border-white z-20 whitespace-nowrap">
                       <Sparkles className="w-3 h-3 fill-slate-950" />
                       <span>אתם כאן!</span>
                     </div>
@@ -241,11 +241,11 @@ export default function AdventureJourneyMap({
                   <button
                     type="button"
                     onClick={() => handleLaunchStation(labId)}
-                    className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-3xl flex items-center justify-center transition-all duration-200 cursor-pointer active:scale-95 border-2 ${
+                    className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-3xl flex items-center justify-center transition-colors duration-200 cursor-pointer border-2 ${
                       isCompleted
                         ? 'bg-gradient-to-b from-emerald-400 to-emerald-600 text-slate-950 border-emerald-200 ring-4 ring-emerald-500/30 shadow-[0_0_25px_rgba(16,185,129,0.5)]'
                         : isCurrent
-                        ? 'bg-gradient-to-b from-amber-300 to-amber-500 text-slate-950 border-white ring-4 ring-amber-400/40 shadow-[0_0_30px_rgba(251,191,36,0.6)] animate-pulse'
+                        ? 'bg-gradient-to-b from-amber-300 to-amber-500 text-slate-950 border-white ring-4 ring-amber-400/40 shadow-[0_0_30px_rgba(251,191,36,0.6)]'
                         : isInProgress
                         ? 'bg-gradient-to-b from-blue-500 to-blue-700 text-white border-blue-300 ring-4 ring-blue-500/30 shadow-lg'
                         : 'bg-slate-800/90 text-slate-300 border-slate-600 hover:border-amber-400/70 hover:text-white shadow-md'
@@ -271,7 +271,7 @@ export default function AdventureJourneyMap({
                 {/* Rich Tactile Toy Station Card */}
                 <div 
                   onClick={() => handleLaunchStation(labId)}
-                  className={`flex-1 w-full p-4 sm:p-5 rounded-2xl bg-slate-900/85 backdrop-blur-md border-2 transition-all duration-200 cursor-pointer hover:-translate-y-0.5 active:scale-[0.99] group ${
+                  className={`flex-1 w-full p-4 sm:p-5 rounded-2xl bg-slate-900/85 backdrop-blur-md border-2 transition-colors duration-200 cursor-pointer group ${
                     isCurrent
                       ? 'border-amber-400 shadow-[0_0_30px_rgba(251,191,36,0.22)] ring-2 ring-amber-400/30'
                       : isCompleted

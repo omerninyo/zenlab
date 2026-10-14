@@ -274,12 +274,12 @@ export default function MatificLab3Trees({
                       setSelectedTestAnimalId(animal.id);
                       playAnimalChime(idx);
                     }}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-black transition-all cursor-pointer ${
+                    className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-black transition-colors cursor-pointer ${
                       isCustom ? 'rounded-r-xl' : 'rounded-xl'
                     } ${
                       isSelected
-                        ? 'bg-gradient-to-r from-amber-300 to-amber-400 text-slate-950 border-2 border-white shadow-[0_0_16px_rgba(251,191,36,0.8)] scale-105'
-                        : 'bg-slate-900/90 hover:bg-slate-800 text-slate-200 border border-slate-700'
+                        ? 'bg-gradient-to-r from-amber-300 to-amber-400 text-slate-950 border-2 border-white shadow-[0_0_16px_rgba(251,191,36,0.8)]'
+                        : 'bg-slate-900/90 hover:bg-slate-800 text-slate-200 border-2 border-slate-700'
                     }`}
                   >
                     <span className="text-base">{getAnimalEmoji(animal)}</span>
@@ -304,20 +304,26 @@ export default function MatificLab3Trees({
           </div>
         </div>
 
-        {/* 3. The Sorting Machine (Tree Blueprint) */}
+        {/* 3. The Sorting Machine (Tree Blueprint - Constant Geometry) */}
         <div className="relative bg-slate-950/90 p-4 sm:p-6 rounded-3xl border-2 border-indigo-500/30 shadow-inner space-y-6">
           {/* LEVEL 0: ROOT NODE SWITCH */}
           <div className="flex flex-col items-center">
             <div className="w-full max-w-xl bg-gradient-to-b from-indigo-900/90 to-slate-900 p-4 rounded-3xl border-3 border-amber-400 shadow-[0_0_25px_rgba(251,191,36,0.3)] space-y-3">
-              <div className="flex items-center justify-between flex-wrap gap-2">
+              <div className="flex items-center justify-between flex-wrap gap-2 min-h-[26px]">
                 <span className="text-xs font-black px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950">
                   שער מיון ראשי (Root Node) • כל {activeDataset.length} החיות
                 </span>
-                {showXRay && (
-                  <code className="text-xs font-mono font-bold text-amber-300 bg-slate-950/90 px-2.5 py-0.5 rounded-lg border border-amber-400/40">
-                    {ATTR_SHORT_META[rootAttr]?.code || `if (animal.${rootAttr})`}
-                  </code>
-                )}
+                <code
+                  className={`text-xs font-mono font-bold px-2.5 py-0.5 rounded-lg border transition-opacity ${
+                    showXRay
+                      ? 'text-amber-300 bg-slate-950/90 border-amber-400/40 opacity-100'
+                      : 'text-slate-400 bg-slate-950/50 border-white/10 opacity-75'
+                  }`}
+                >
+                  {showXRay
+                    ? ATTR_SHORT_META[rootAttr]?.code || `if (animal.${rootAttr})`
+                    : `בדיקה: ${ATTR_SHORT_META[rootAttr]?.short || rootAttr}`}
+                </code>
               </div>
 
               <div className="text-center text-sm sm:text-base font-black text-white">
@@ -337,9 +343,9 @@ export default function MatificLab3Trees({
                         setRootAttr(attr.id);
                         AudioEngine.playStep();
                       }}
-                      className={`flex flex-col items-center justify-center py-2 px-2 rounded-xl border text-xs font-black transition-all cursor-pointer ${
+                      className={`flex flex-col items-center justify-center py-2 px-2 rounded-xl border-2 text-xs font-black transition-colors cursor-pointer ${
                         active
-                          ? 'bg-amber-400 text-slate-950 border-white shadow-md scale-105'
+                          ? 'bg-amber-400 text-slate-950 border-white shadow-md'
                           : 'bg-slate-950/80 hover:bg-slate-800 text-slate-300 border-slate-700'
                       }`}
                     >
@@ -355,9 +361,9 @@ export default function MatificLab3Trees({
             <div className="grid grid-cols-2 gap-6 sm:gap-16 w-full max-w-2xl mt-3 px-4">
               {/* Right side in RTL = Left Branch (YES / True) */}
               <div
-                className={`flex items-center justify-center gap-2 py-2 px-3 rounded-2xl border-2 font-black text-xs sm:text-sm transition-all ${
+                className={`h-11 flex items-center justify-center gap-2 px-3 rounded-2xl border-2 font-black text-xs sm:text-sm transition-colors ${
                   isRootYes
-                    ? 'bg-amber-400 text-slate-950 border-white shadow-[0_0_20px_rgba(251,191,36,0.9)] scale-105'
+                    ? 'bg-amber-400 text-slate-950 border-white shadow-[0_0_20px_rgba(251,191,36,0.9)]'
                     : 'bg-emerald-950/50 text-emerald-300 border-emerald-500/40'
                 }`}
               >
@@ -366,15 +372,15 @@ export default function MatificLab3Trees({
                   ({evaluation?.nodes?.leftGroup?.count || 0})
                 </span>
                 {isRootYes && (
-                  <span className="text-base animate-bounce">{getAnimalEmoji(testAnimal)}</span>
+                  <span className="text-base">{getAnimalEmoji(testAnimal)}</span>
                 )}
               </div>
 
               {/* Left side in RTL = Right Branch (NO / False) */}
               <div
-                className={`flex items-center justify-center gap-2 py-2 px-3 rounded-2xl border-2 font-black text-xs sm:text-sm transition-all ${
+                className={`h-11 flex items-center justify-center gap-2 px-3 rounded-2xl border-2 font-black text-xs sm:text-sm transition-colors ${
                   !isRootYes
-                    ? 'bg-amber-400 text-slate-950 border-white shadow-[0_0_20px_rgba(251,191,36,0.9)] scale-105'
+                    ? 'bg-amber-400 text-slate-950 border-white shadow-[0_0_20px_rgba(251,191,36,0.9)]'
                     : 'bg-rose-950/50 text-rose-300 border-rose-500/40'
                 }`}
               >
@@ -383,7 +389,7 @@ export default function MatificLab3Trees({
                   ({evaluation?.nodes?.rightGroup?.count || 0})
                 </span>
                 {!isRootYes && (
-                  <span className="text-base animate-bounce">{getAnimalEmoji(testAnimal)}</span>
+                  <span className="text-base">{getAnimalEmoji(testAnimal)}</span>
                 )}
               </div>
             </div>
@@ -393,22 +399,22 @@ export default function MatificLab3Trees({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {/* Branch 1: When Root is YES (True) */}
             <div
-              className={`p-4 rounded-3xl border-2 transition-all space-y-3 ${
+              className={`p-4 rounded-3xl border-2 transition-colors space-y-3 ${
                 isRootYes
                   ? 'bg-gradient-to-b from-amber-500/15 via-slate-900 to-slate-950 border-amber-400 shadow-[0_0_25px_rgba(251,191,36,0.25)]'
                   : 'bg-slate-900/70 border-slate-800'
               }`}
             >
-              <div className="flex items-center justify-between flex-wrap gap-1.5">
+              <div className="flex items-center justify-between flex-wrap gap-1.5 min-h-[24px]">
                 <span className="text-xs font-black text-emerald-300 flex items-center gap-1.5">
                   <span className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
                   <span>מתג ענף &quot;כן&quot; ({evaluation?.nodes?.leftGroup?.count || 0} חיות)</span>
                 </span>
-                {showXRay && (
-                  <code className="text-[11px] font-mono font-bold text-amber-300 bg-slate-950 px-2 py-0.5 rounded border border-amber-400/30">
-                    {ATTR_SHORT_META[leftAttr]?.code || `if (animal.${leftAttr})`}
-                  </code>
-                )}
+                <code className="text-[11px] font-mono font-bold text-amber-300 bg-slate-950 px-2 py-0.5 rounded border border-amber-400/30">
+                  {showXRay
+                    ? ATTR_SHORT_META[leftAttr]?.code || `if (animal.${leftAttr})`
+                    : ATTR_SHORT_META[leftAttr]?.short || leftAttr}
+                </code>
               </div>
 
               <div className="text-xs sm:text-sm font-black text-white text-center">
@@ -427,9 +433,9 @@ export default function MatificLab3Trees({
                         setLeftAttr(attr.id);
                         AudioEngine.playStep();
                       }}
-                      className={`flex flex-col items-center justify-center py-1.5 px-1.5 rounded-xl border text-[11px] font-black transition-all cursor-pointer ${
+                      className={`flex flex-col items-center justify-center py-1.5 px-1.5 rounded-xl border-2 text-[11px] font-black transition-colors cursor-pointer ${
                         active
-                          ? 'bg-emerald-400 text-slate-950 border-white shadow-md scale-105'
+                          ? 'bg-emerald-400 text-slate-950 border-white shadow-md'
                           : 'bg-slate-950/80 hover:bg-slate-800 text-slate-300 border-slate-700'
                       }`}
                     >
@@ -443,22 +449,22 @@ export default function MatificLab3Trees({
 
             {/* Branch 2: When Root is NO (False) */}
             <div
-              className={`p-4 rounded-3xl border-2 transition-all space-y-3 ${
+              className={`p-4 rounded-3xl border-2 transition-colors space-y-3 ${
                 !isRootYes
                   ? 'bg-gradient-to-b from-amber-500/15 via-slate-900 to-slate-950 border-amber-400 shadow-[0_0_25px_rgba(251,191,36,0.25)]'
                   : 'bg-slate-900/70 border-slate-800'
               }`}
             >
-              <div className="flex items-center justify-between flex-wrap gap-1.5">
+              <div className="flex items-center justify-between flex-wrap gap-1.5 min-h-[24px]">
                 <span className="text-xs font-black text-rose-300 flex items-center gap-1.5">
                   <span className="w-2.5 h-2.5 rounded-full bg-rose-400" />
                   <span>מתג ענף &quot;לא&quot; ({evaluation?.nodes?.rightGroup?.count || 0} חיות)</span>
                 </span>
-                {showXRay && (
-                  <code className="text-[11px] font-mono font-bold text-amber-300 bg-slate-950 px-2 py-0.5 rounded border border-amber-400/30">
-                    {ATTR_SHORT_META[rightAttr]?.code || `if (animal.${rightAttr})`}
-                  </code>
-                )}
+                <code className="text-[11px] font-mono font-bold text-amber-300 bg-slate-950 px-2 py-0.5 rounded border border-amber-400/30">
+                  {showXRay
+                    ? ATTR_SHORT_META[rightAttr]?.code || `if (animal.${rightAttr})`
+                    : ATTR_SHORT_META[rightAttr]?.short || rightAttr}
+                </code>
               </div>
 
               <div className="text-xs sm:text-sm font-black text-white text-center">
@@ -477,9 +483,9 @@ export default function MatificLab3Trees({
                         setRightAttr(attr.id);
                         AudioEngine.playStep();
                       }}
-                      className={`flex flex-col items-center justify-center py-1.5 px-1.5 rounded-xl border text-[11px] font-black transition-all cursor-pointer ${
+                      className={`flex flex-col items-center justify-center py-1.5 px-1.5 rounded-xl border-2 text-[11px] font-black transition-colors cursor-pointer ${
                         active
-                          ? 'bg-rose-400 text-slate-950 border-white shadow-md scale-105'
+                          ? 'bg-rose-400 text-slate-950 border-white shadow-md'
                           : 'bg-slate-950/80 hover:bg-slate-800 text-slate-300 border-slate-700'
                       }`}
                     >
@@ -492,7 +498,7 @@ export default function MatificLab3Trees({
             </div>
           </div>
 
-          {/* LEVEL 2: 4 COLLECTION BASKETS AT THE BOTTOM */}
+          {/* LEVEL 2: 4 COLLECTION BASKETS AT THE BOTTOM (Constant Height) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-2">
             {leafNodes.map((leaf) => {
               const leafData = leaf.data;
@@ -506,9 +512,9 @@ export default function MatificLab3Trees({
               return (
                 <div
                   key={leaf.key}
-                  className={`relative p-3.5 rounded-2xl border-2 flex flex-col justify-between gap-2.5 transition-all ${
+                  className={`relative p-3.5 rounded-2xl border-2 flex flex-col justify-between gap-2.5 transition-colors ${
                     isActiveTarget
-                      ? 'bg-gradient-to-b from-amber-400/25 via-slate-900 to-slate-950 border-amber-300 shadow-[0_0_24px_rgba(251,191,36,0.5)] scale-[1.03] z-10'
+                      ? 'bg-gradient-to-b from-amber-400/25 via-slate-900 to-slate-950 border-amber-300 shadow-[0_0_24px_rgba(251,191,36,0.45)] z-10'
                       : isClean
                       ? 'bg-emerald-950/35 border-emerald-500/60'
                       : isMixed
@@ -517,7 +523,7 @@ export default function MatificLab3Trees({
                   }`}
                 >
                   {/* Basket Header */}
-                  <div className="flex items-center justify-between gap-1">
+                  <div className="flex items-center justify-between gap-1 min-h-[24px]">
                     <span className="text-[11px] font-mono font-black px-2 py-0.5 rounded-md bg-black/40 text-indigo-200 border border-white/10">
                       {leaf.chuteLabel}
                     </span>
@@ -537,15 +543,13 @@ export default function MatificLab3Trees({
                     )}
                   </div>
 
-                  {/* X-Ray Code Path */}
-                  {showXRay && (
-                    <code className="text-[10px] font-mono text-amber-300/90 bg-black/40 px-2 py-1 rounded border border-white/5 truncate">
-                      {leaf.codePath}
-                    </code>
-                  )}
+                  {/* X-Ray Code Path (Always mounted at fixed height so toggling X-Ray never shifts basket height!) */}
+                  <code className="text-[10px] font-mono text-amber-300/90 bg-black/40 px-2 py-1 rounded border border-white/5 truncate block">
+                    {showXRay ? leaf.codePath : `${leaf.title} (${leaf.chuteLabel})`}
+                  </code>
 
                   {/* Predicted Class / Animal Label */}
-                  <div className="text-center py-1">
+                  <div className="text-center py-0.5">
                     <div className="text-xs font-black text-white">
                       {leafData.predictedLabel}
                     </div>
@@ -566,9 +570,9 @@ export default function MatificLab3Trees({
                               setSelectedTestAnimalId(item.id);
                               AudioEngine.playStep();
                             }}
-                            className={`flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                            className={`flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
                               isTestItem
-                                ? 'bg-amber-400 text-slate-950 ring-2 ring-white font-black scale-110 shadow-md'
+                                ? 'bg-amber-400 text-slate-950 ring-2 ring-white font-black shadow-md'
                                 : 'bg-slate-800 text-slate-200 hover:bg-slate-700'
                             }`}
                             title={`${item.name} (${item.species})`}
@@ -586,7 +590,7 @@ export default function MatificLab3Trees({
           </div>
         </div>
 
-        {/* 4. Bottom Live Telemetry & X-Ray Boolean Attribute Table for Selected Animal */}
+        {/* 4. Bottom Live Telemetry & X-Ray Boolean Attribute Table (Constant Height) */}
         <div className="w-full p-4 bg-slate-950/90 rounded-2xl border-2 border-indigo-500/30 space-y-2.5 shadow-inner">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-2 text-xs sm:text-sm font-black text-amber-300">
@@ -601,25 +605,23 @@ export default function MatificLab3Trees({
             </span>
           </div>
 
-          {showXRay && (
-            <div className="p-2.5 rounded-xl bg-black/50 border border-white/10 font-mono text-xs text-indigo-200 flex flex-wrap items-center justify-center gap-3 sm:gap-5">
-              <span>
-                רגליים: <strong className="text-amber-300">{testAnimal.legs ?? 4}</strong>
-              </span>
-              <span className="text-slate-600">|</span>
-              <span>
-                עף: <strong className="text-amber-300">{String(Boolean(testAnimal.canFly))}</strong>
-              </span>
-              <span className="text-slate-600">|</span>
-              <span>
-                פרווה: <strong className="text-amber-300">{String(Boolean(testAnimal.hasFur))}</strong>
-              </span>
-              <span className="text-slate-600">|</span>
-              <span>
-                שריון: <strong className="text-amber-300">{String(Boolean(testAnimal.hasShell))}</strong>
-              </span>
-            </div>
-          )}
+          <div className="p-2.5 rounded-xl bg-black/50 border border-white/10 font-mono text-xs text-indigo-200 flex flex-wrap items-center justify-center gap-3 sm:gap-5">
+            <span>
+              רגליים: <strong className="text-amber-300">{testAnimal.legs ?? 4}</strong>
+            </span>
+            <span className="text-slate-600">|</span>
+            <span>
+              עף: <strong className="text-amber-300">{showXRay ? String(Boolean(testAnimal.canFly)) : (testAnimal.canFly ? 'כן' : 'לא')}</strong>
+            </span>
+            <span className="text-slate-600">|</span>
+            <span>
+              פרווה: <strong className="text-amber-300">{showXRay ? String(Boolean(testAnimal.hasFur)) : (testAnimal.hasFur ? 'כן' : 'לא')}</strong>
+            </span>
+            <span className="text-slate-600">|</span>
+            <span>
+              שריון: <strong className="text-amber-300">{showXRay ? String(Boolean(testAnimal.hasShell)) : (testAnimal.hasShell ? 'כן' : 'לא')}</strong>
+            </span>
+          </div>
         </div>
       </div>
     </LudicLabShell>

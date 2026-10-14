@@ -205,13 +205,13 @@ export default function MatificLab6Vision({
                       key={idx}
                       type="button"
                       onClick={() => onTogglePixel(idx)}
-                      className={`relative rounded-lg flex items-center justify-center transition-all duration-150 cursor-pointer select-none ${
+                      className={`relative rounded-lg flex items-center justify-center transition-colors duration-150 cursor-pointer select-none ${
                         isLit
                           ? 'bg-gradient-to-br from-blue-400 to-blue-600 text-white border border-blue-200 shadow-[0_0_10px_rgba(59,130,246,0.7)]'
                           : 'bg-slate-950 hover:bg-slate-800 text-slate-500 border border-slate-800'
                       } ${
                         isInsideScanner
-                          ? 'ring-2 ring-amber-400 z-10 scale-105 shadow-[0_0_14px_rgba(251,191,36,0.75)]'
+                          ? 'ring-2 ring-amber-400 z-10 shadow-[0_0_14px_rgba(251,191,36,0.75)]'
                           : ''
                       }`}
                       title={`נורה (${x}, ${y}): ערך ${val}`}
@@ -236,7 +236,7 @@ export default function MatificLab6Vision({
               </div>
             </div>
 
-            <p className="text-[11px] text-slate-400 mt-2.5 text-center">
+            <p className="text-[11px] text-slate-400 mt-2.5 text-center min-h-[32px] flex items-center justify-center">
               {inspectedCell
                 ? `מסגרת הסורק הצהובה (3×3) מראה אילו 9 נורות נבדקות כעת סביב (${inspectedCell.x},${inspectedCell.y}).`
                 : 'לחצו על הנורות כדי לצייר, או בחרו משבצת במפת הקצוות משמאל!'}
@@ -263,7 +263,7 @@ export default function MatificLab6Vision({
                 return (
                   <div
                     key={idx}
-                    className={`w-10 h-10 rounded-xl border-2 flex items-center justify-center font-mono font-black text-[11px] transition-all ${
+                    className={`w-10 h-10 rounded-xl border-2 flex items-center justify-center font-mono font-black text-[11px] transition-colors ${
                       isPos
                         ? 'bg-amber-400/20 border-amber-400 text-amber-300 shadow-inner'
                         : isNeg
@@ -320,9 +320,9 @@ export default function MatificLab6Vision({
                       key={`${cell.x}-${cell.y}`}
                       type="button"
                       onClick={() => handleInspectClick(cell.x, cell.y, cell.sum)}
-                      className={`relative rounded-xl flex flex-col items-center justify-center transition-all duration-150 cursor-pointer select-none border-2 ${
+                      className={`relative rounded-xl flex flex-col items-center justify-center transition-colors duration-150 cursor-pointer select-none border-2 ${
                         isSelected
-                          ? 'bg-amber-400 text-slate-950 border-white scale-110 z-10 shadow-[0_0_20px_rgba(251,191,36,0.95)]'
+                          ? 'bg-amber-400 text-slate-950 border-white ring-2 ring-amber-200 z-10 shadow-[0_0_20px_rgba(251,191,36,0.95)]'
                           : isStrongEdge
                           ? 'bg-gradient-to-br from-emerald-400 to-emerald-600 text-slate-950 border-emerald-200 shadow-[0_0_14px_rgba(16,185,129,0.7)]'
                           : isMediumEdge
@@ -358,14 +358,14 @@ export default function MatificLab6Vision({
               </div>
             </div>
 
-            <p className="text-[11px] text-slate-400 mt-2.5 text-center">
+            <p className="text-[11px] text-slate-400 mt-2.5 text-center min-h-[32px] flex items-center justify-center">
               משבצות ירוקות זוהרות מסמנות שזֶן מצא התאמה חזקה לפילטר של "{currentKernel?.name}"!
             </p>
           </div>
         </div>
 
-        {/* Live Convolution Ribbon at the bottom */}
-        <div className="bg-slate-950/90 rounded-2xl border-2 border-amber-400/40 p-4 shadow-lg">
+        {/* Live Convolution Ribbon at the bottom — locked min-height so inspecting cells never jumps the page */}
+        <div className="bg-slate-950/90 rounded-2xl border-2 border-amber-400/40 p-4 shadow-lg min-h-[104px] flex flex-col justify-center">
           {inspectedDetail && inspectedCell ? (
             <div className="space-y-3">
               <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-2.5">
@@ -416,7 +416,7 @@ export default function MatificLab6Vision({
           ) : (
             <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-300">
               <div className="flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-amber-400 animate-pulse shrink-0" />
+                <Sparkles className="w-5 h-5 text-amber-400 shrink-0" />
                 <span className="font-bold">
                   רוצים לראות איך זכוכית המגדלת מחשבת כל משבצת? לחצו על אחת מ-36 המשבצות ב"מפת הקצוות שזֶן רואה (6×6)"!
                 </span>
@@ -424,7 +424,7 @@ export default function MatificLab6Vision({
               <button
                 type="button"
                 onClick={() => handleInspectClick(3, 3, 1)}
-                className="px-3.5 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs transition-all cursor-pointer shrink-0 active:scale-95"
+                className="px-3.5 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs transition-colors cursor-pointer shrink-0"
               >
                 בדקו את משבצת האמצע (3,3) 🔍
               </button>

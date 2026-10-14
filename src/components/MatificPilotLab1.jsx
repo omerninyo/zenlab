@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { AudioEngine } from '../core/audio.js';
 import { fireChampagneConfetti } from '../core/confetti.js';
+import ZenLivingAvatar from './ZenLivingAvatar.jsx';
 
 export default function MatificPilotLab1({
   grid,
@@ -40,9 +41,6 @@ export default function MatificPilotLab1({
   const [showTheoryCard, setShowTheoryCard] = useState(false);
   const [robotMood, setRobotMood] = useState('happy'); // 'happy' | 'thinking' | 'celebrating'
   const [isBeamActive, setIsBeamActive] = useState(false);
-  const [pupilOffset, setPupilOffset] = useState({ x: 0, y: 0 });
-
-  const stageRef = useRef(null);
 
   // Challenge checks
   const isHeartCompleted = !!completedChallenges['lab1_challenge1'];
@@ -75,18 +73,6 @@ export default function MatificPilotLab1({
     }
     return rows;
   }, [grid]);
-
-  // Track cursor for cute robot eye-tracking
-  const handleMouseMove = (e) => {
-    if (!stageRef.current) return;
-    const rect = stageRef.current.getBoundingClientRect();
-    const relX = (e.clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
-    const relY = (e.clientY - (rect.top + rect.height / 3)) / (rect.height / 3);
-    setPupilOffset({
-      x: Math.max(-5, Math.min(5, relX * 5)),
-      y: Math.max(-4, Math.min(4, relY * 4))
-    });
-  };
 
   // Trigger beam and celebration animation when a challenge completes
   useEffect(() => {
@@ -127,35 +113,32 @@ export default function MatificPilotLab1({
 
   return (
     <div 
-      ref={stageRef}
-      onMouseMove={handleMouseMove}
-      className="w-full relative overflow-hidden rounded-3xl border-4 border-amber-400/40 shadow-2xl p-4 sm:p-7 select-none text-white transition-all space-y-6"
+      className="w-full relative overflow-hidden rounded-3xl border-4 border-amber-400/40 shadow-2xl p-4 sm:p-7 select-none text-white space-y-5"
       style={{
         background: 'radial-gradient(ellipse at 50% 15%, #1e1b4b 0%, #0f172a 60%, #020617 100%)'
       }}
       dir="rtl"
     >
-      {/* 1. Starry Animated Sky Background */}
-      <div className="absolute inset-0 pointer-events-none opacity-40">
-        <div className="absolute top-4 left-10 w-2 h-2 bg-amber-200 rounded-full animate-ping" />
-        <div className="absolute top-16 right-20 w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
-        <div className="absolute top-28 left-1/3 w-2 h-2 bg-blue-300 rounded-full animate-pulse" />
-        <div className="absolute top-8 right-1/3 w-1 h-1 bg-amber-100 rounded-full animate-ping" />
+      {/* 1. Starry Static Sky Background */}
+      <div className="absolute inset-0 pointer-events-none opacity-35">
+        <div className="absolute top-4 left-10 w-1.5 h-1.5 bg-amber-200 rounded-full" />
+        <div className="absolute top-16 right-20 w-1.5 h-1.5 bg-white rounded-full" />
+        <div className="absolute top-28 left-1/3 w-2 h-2 bg-blue-300/80 rounded-full" />
+        <div className="absolute top-8 right-1/3 w-1 h-1 bg-amber-100 rounded-full" />
       </div>
 
-      {/* 2. Top Game Stage Header: Satellite & Floating Mission */}
-      <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4 pb-4 border-b border-white/10">
+      {/* 2. Top Game Stage Header: Satellite & Floating Mission (Locked Height) */}
+      <div className="relative z-20 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 pb-4 border-b border-white/10">
         
         {/* Friendly Hovering Satellite with CS Telemetry */}
-        <div className="flex items-center gap-3.5 bg-white/10 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-white/20 shadow-lg w-full sm:w-auto">
+        <div className="flex items-center gap-3.5 bg-white/10 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-white/20 shadow-lg flex-1 min-h-[72px]">
           <div className="relative shrink-0">
-            <div className="w-12 h-12 rounded-2xl bg-indigo-500/30 border-2 border-indigo-400 flex items-center justify-center text-indigo-300 shadow-inner">
-              <Radio className={`w-7 h-7 ${isBeamActive ? 'animate-bounce text-amber-300' : 'animate-pulse'}`} />
+            <div className="w-11 h-11 rounded-2xl bg-indigo-500/30 border-2 border-indigo-400 flex items-center justify-center text-indigo-300 shadow-inner">
+              <Radio className={`w-5 h-5 transition-colors ${isBeamActive ? 'text-amber-300' : 'text-indigo-200'}`} />
             </div>
             {isBeamActive && (
-              <span className="absolute -top-1 -right-1 flex h-4 w-4">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-4 w-4 bg-amber-500"></span>
+              <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5">
+                <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-amber-400 border border-slate-950" />
               </span>
             )}
           </div>
@@ -169,7 +152,7 @@ export default function MatificPilotLab1({
                 {isBeamActive ? 'קולט שידור חי! 📡' : 'ממתין לקוד הבינארי שלכם...'}
               </span>
             </div>
-            <p className="text-xs sm:text-sm font-bold text-white mt-0.5 truncate sm:whitespace-normal">
+            <p className="text-xs sm:text-sm font-bold text-white mt-0.5 leading-snug line-clamp-2">
               {litCount === 0
                 ? 'בטנו של זֶן כבויה לחלוטין (כל 64 הביטים הם 0). הדליקו נורות כדי להעביר חשמל!'
                 : isHeartCompleted 
@@ -180,7 +163,7 @@ export default function MatificPilotLab1({
         </div>
 
         {/* Golden Star Jars & Pedagogical Info Button */}
-        <div className="flex items-center gap-3 self-end sm:self-center">
+        <div className="flex items-center justify-between sm:justify-end gap-3 shrink-0">
           
           {/* Quick CS Concept Modal Toggle */}
           <button
@@ -189,11 +172,15 @@ export default function MatificPilotLab1({
               setShowTheoryCard(!showTheoryCard);
               AudioEngine.playStep();
             }}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-500/20 hover:bg-indigo-500/30 border border-indigo-400/40 text-indigo-200 text-xs font-bold transition-all cursor-pointer shadow-sm active:scale-95"
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-xl border text-xs font-bold transition-colors cursor-pointer shadow-sm ${
+              showTheoryCard
+                ? 'bg-amber-400 text-slate-950 border-white font-black'
+                : 'bg-indigo-500/20 hover:bg-indigo-500/30 border-indigo-400/40 text-indigo-200'
+            }`}
             title="איך המחשב מצייר תמונות?"
           >
-            <Info className="w-3.5 h-3.5 text-indigo-300" />
-            <span className="hidden md:inline">איך זה עובד?</span>
+            <Info className="w-3.5 h-3.5 shrink-0" />
+            <span>איך זה עובד?</span>
           </button>
 
           {/* 3 Golden Star Jars */}
@@ -207,9 +194,9 @@ export default function MatificPilotLab1({
               ].map((starObj, sIdx) => (
                 <div 
                   key={sIdx}
-                  className={`w-7 h-7 rounded-xl flex items-center justify-center transition-all duration-300 shadow-md ${
+                  className={`w-7 h-7 rounded-xl flex items-center justify-center transition-colors duration-200 shadow-md ${
                     starObj.done
-                      ? 'bg-amber-400 text-slate-950 scale-110 shadow-amber-400/50'
+                      ? 'bg-amber-400 text-slate-950 shadow-amber-400/40'
                       : 'bg-white/10 text-white/30 border border-white/10'
                   }`}
                   title={starObj.label}
@@ -224,9 +211,9 @@ export default function MatificPilotLab1({
 
       </div>
 
-      {/* Popover Theory Card: Simple CS Explanation */}
+      {/* Floating Overlay Popover Theory Card (Zero vertical layout shift!) */}
       {showTheoryCard && (
-        <div className="relative z-20 bg-indigo-950/90 border-2 border-indigo-400/50 rounded-2xl p-4 shadow-2xl backdrop-blur-md text-xs sm:text-sm animate-in fade-in zoom-in-95 duration-200">
+        <div className="absolute top-24 left-4 right-4 sm:left-8 sm:right-8 z-40 bg-indigo-950/95 border-2 border-amber-400/80 rounded-2xl p-4 shadow-[0_20px_50px_rgba(0,0,0,0.85)] backdrop-blur-md text-xs sm:text-sm">
           <div className="flex items-start justify-between gap-4">
             <div className="space-y-1.5">
               <h4 className="font-black text-amber-300 flex items-center gap-2 text-sm">
@@ -242,9 +229,9 @@ export default function MatificPilotLab1({
             <button
               type="button"
               onClick={() => setShowTheoryCard(false)}
-              className="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white/80 hover:text-white text-xs font-bold cursor-pointer"
+              className="px-3 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-black cursor-pointer shrink-0"
             >
-              סגור
+              סגור ✕
             </button>
           </div>
         </div>
@@ -253,58 +240,12 @@ export default function MatificPilotLab1({
       {/* 3. The Living Robot Character & Interactive Light Matrix */}
       <div className="relative z-10 flex flex-col items-center">
         
-        {/* Animated Laser Beam when transmitting */}
-        {isBeamActive && (
-          <div className="absolute top-0 w-3 h-36 bg-gradient-to-t from-amber-400 via-amber-200 to-transparent rounded-full blur-xs animate-pulse" />
-        )}
-
-        {/* Robot Head with Expressive Eyes */}
-        <div className={`relative w-44 h-24 bg-gradient-to-b from-slate-700 to-slate-800 rounded-3xl border-4 border-amber-400/70 shadow-2xl flex flex-col items-center justify-center p-3 transition-transform duration-300 ${
-          robotMood === 'celebrating' ? 'scale-110 -translate-y-2' : ''
-        }`}>
-          {/* Antenna */}
-          <div className="absolute -top-7 w-2 h-7 bg-amber-400 rounded-full flex flex-col items-center">
-            <div className={`w-5 h-5 -mt-2 rounded-full border-2 border-white transition-all ${
-              isBeamActive ? 'bg-amber-300 shadow-[0_0_20px_#fde047] scale-125' : 'bg-amber-500 shadow-md'
-            }`} />
-          </div>
-
-          {/* Screen Visor with Eyes */}
-          <div className="w-full h-14 bg-slate-950 rounded-2xl border-2 border-slate-700 flex items-center justify-around px-4 shadow-inner relative overflow-hidden">
-            {robotMood === 'celebrating' ? (
-              // Heart Eyes in celebration
-              <>
-                <Heart className="w-7 h-7 text-rose-400 fill-rose-500 animate-bounce" />
-                <Heart className="w-7 h-7 text-rose-400 fill-rose-500 animate-bounce" />
-              </>
-            ) : (
-              // Living Tracking Eyes
-              <>
-                <div className="w-7 h-7 rounded-full bg-slate-800 border-2 border-blue-400/60 flex items-center justify-center relative overflow-hidden shadow-inner">
-                  <div 
-                    className="w-3.5 h-3.5 rounded-full bg-blue-400 shadow-[0_0_8px_#60a5fa] transition-transform duration-75"
-                    style={{
-                      transform: `translate(${pupilOffset.x}px, ${pupilOffset.y}px)`
-                    }}
-                  >
-                    <div className="w-1 h-1 bg-white rounded-full mt-0.5 ml-0.5" />
-                  </div>
-                </div>
-
-                <div className="w-7 h-7 rounded-full bg-slate-800 border-2 border-blue-400/60 flex items-center justify-center relative overflow-hidden shadow-inner">
-                  <div 
-                    className="w-3.5 h-3.5 rounded-full bg-blue-400 shadow-[0_0_8px_#60a5fa] transition-transform duration-75"
-                    style={{
-                      transform: `translate(${pupilOffset.x}px, ${pupilOffset.y}px)`
-                    }}
-                  >
-                    <div className="w-1 h-1 bg-white rounded-full mt-0.5 ml-0.5" />
-                  </div>
-                </div>
-              </>
-            )}
-          </div>
-        </div>
+        <ZenLivingAvatar
+          mood={robotMood}
+          isBeamActive={isBeamActive}
+          size="md"
+          showBeamRay={true}
+        />
 
         {/* Robot Torso with 8x8 Physical Glass Bulbs + 8-Byte Row Rulers */}
         <div className="relative mt-2 p-4 sm:p-6 bg-gradient-to-b from-slate-800 via-slate-850 to-slate-900 rounded-4xl border-4 border-amber-400/80 shadow-[0_20px_50px_rgba(0,0,0,0.6)] flex flex-col items-center max-w-full">
@@ -323,7 +264,7 @@ export default function MatificPilotLab1({
                 setShowXRay(!showXRay);
                 AudioEngine.playToggle(!showXRay);
               }}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border text-xs font-black transition-all cursor-pointer shadow-md active:scale-95 ${
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border text-xs font-black transition-colors cursor-pointer shadow-md ${
                 showXRay
                   ? 'bg-amber-400 text-slate-950 border-amber-300 shadow-amber-400/30'
                   : 'bg-white/10 hover:bg-white/20 text-white/80 border-white/20'
@@ -338,7 +279,7 @@ export default function MatificPilotLab1({
           {/* Matrix & 8-Byte Rulers Flex Container */}
           <div className="flex items-center justify-center gap-3 sm:gap-4 max-w-full overflow-x-auto pb-2">
             
-            {/* The 8x8 Grid of Living Bulbs */}
+            {/* The 8x8 Grid of Living Bulbs (Zero scale jitter on hover) */}
             <div className="relative p-2.5 sm:p-4 bg-slate-950/90 rounded-3xl border-3 border-slate-700/80 shadow-2xl backdrop-blur-xs">
               <div 
                 className="grid grid-cols-8 gap-2 sm:gap-2.5 w-[260px] h-[260px] sm:w-[340px] sm:h-[340px] select-none"
@@ -365,16 +306,16 @@ export default function MatificPilotLab1({
                         if (isDragging) handleBulbTouch(idx, 1);
                       }}
                       onMouseLeave={() => setHoveredBitIndex(null)}
-                      className={`relative rounded-xl flex items-center justify-center transition-all duration-150 cursor-pointer shadow-md focus:outline-none ${
+                      className={`relative rounded-xl flex items-center justify-center transition-colors duration-100 cursor-pointer shadow-md focus:outline-none ${
                         isLit
                           ? isHovered
-                            ? 'bg-gradient-to-br from-amber-200 via-amber-300 to-amber-400 scale-110 border-2 border-white shadow-[0_0_24px_rgba(255,255,255,1)] ring-2 ring-white'
-                            : 'bg-gradient-to-br from-amber-300 via-amber-400 to-amber-500 scale-105 border-2 border-white shadow-[0_0_16px_rgba(251,191,36,0.9)]'
+                            ? 'bg-gradient-to-br from-amber-200 via-amber-300 to-amber-400 border-2 border-white shadow-[0_0_18px_rgba(255,255,255,0.9)]'
+                            : 'bg-gradient-to-br from-amber-300 via-amber-400 to-amber-500 border-2 border-white shadow-[0_0_12px_rgba(251,191,36,0.8)]'
                           : isGhost
-                          ? 'bg-slate-800/80 border-2 border-dashed border-amber-300/40 animate-pulse'
+                          ? 'bg-slate-800/80 border-2 border-dashed border-amber-300/50'
                           : isHovered
-                          ? 'bg-slate-800 border-2 border-indigo-400 scale-95 ring-2 ring-indigo-400/50'
-                          : 'bg-slate-900/90 hover:bg-slate-800 border-2 border-slate-800 active:scale-90'
+                          ? 'bg-slate-800 border-2 border-indigo-400'
+                          : 'bg-slate-900/90 hover:bg-slate-800 border-2 border-slate-800'
                       }`}
                     >
                       {/* Inside Bulb: Glowing Bit (1/0) or Physical Filament */}
@@ -419,7 +360,7 @@ export default function MatificPilotLab1({
                     }}
                     onMouseEnter={() => setHoveredRowIndex(rb.rowIndex)}
                     onMouseLeave={() => setHoveredRowIndex(null)}
-                    className={`flex items-center gap-1.5 px-2 py-1 rounded-lg border text-[10px] sm:text-xs font-mono transition-all text-right cursor-pointer ${
+                    className={`flex items-center gap-1.5 px-2 py-1 rounded-lg border text-[10px] sm:text-xs font-mono transition-colors text-right cursor-pointer ${
                       isRowHovered || rb.litInRow > 0
                         ? 'bg-indigo-900/60 border-indigo-400 text-amber-200 shadow-sm'
                         : 'bg-slate-900/60 border-slate-700/60 text-slate-400 hover:text-white'
@@ -451,14 +392,14 @@ export default function MatificPilotLab1({
               </span>
             </div>
 
-            {/* 8 Bytes Blocks of Bits */}
+            {/* 8 Bytes Blocks of Bits (Zero scale jitter) */}
             <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 p-1 bg-black/40 rounded-xl border border-white/5">
               {rowBytes.map((rb, rIdx) => (
                 <div 
                   key={rIdx}
-                  className={`flex items-center gap-0.5 px-1.5 py-0.5 rounded-lg border transition-all ${
+                  className={`flex items-center gap-0.5 px-1.5 py-0.5 rounded-lg border transition-colors ${
                     hoveredRowIndex === rIdx
-                      ? 'bg-indigo-900/80 border-indigo-400 scale-105'
+                      ? 'bg-indigo-900/80 border-indigo-400'
                       : 'bg-slate-900/80 border-slate-800'
                   }`}
                   title={`בייט ${rIdx + 1} (${rb.hex})`}
@@ -476,9 +417,9 @@ export default function MatificPilotLab1({
                         onClick={() => handleBulbTouch(globalIdx)}
                         onMouseEnter={() => setHoveredBitIndex(globalIdx)}
                         onMouseLeave={() => setHoveredBitIndex(null)}
-                        className={`w-3.5 h-5 sm:w-4 sm:h-5 text-[10px] font-mono font-bold rounded flex items-center justify-center transition-all cursor-pointer ${
+                        className={`w-3.5 h-5 sm:w-4 sm:h-5 text-[10px] font-mono font-bold rounded flex items-center justify-center transition-colors cursor-pointer ${
                           isLit 
-                            ? 'bg-amber-400 text-slate-950 font-black shadow-xs scale-105' 
+                            ? 'bg-amber-400 text-slate-950 font-black shadow-xs' 
                             : isHovered
                             ? 'bg-indigo-500 text-white'
                             : 'bg-slate-800 text-slate-400 hover:text-white'

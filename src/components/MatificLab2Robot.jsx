@@ -250,9 +250,9 @@ export default function MatificLab2Robot({
 
           <div className="flex items-center gap-2">
             <div
-              className={`flex items-center gap-1.5 text-xs font-black px-3 py-1 rounded-xl border transition-all ${
+              className={`flex items-center gap-1.5 text-xs font-black px-3 py-1 rounded-xl border transition-colors ${
                 hasKey
-                  ? 'bg-amber-400 text-slate-950 border-white shadow-[0_0_15px_rgba(251,191,36,0.6)] scale-105'
+                  ? 'bg-amber-400 text-slate-950 border-white shadow-[0_0_15px_rgba(251,191,36,0.6)]'
                   : 'bg-slate-900/90 border-slate-700 text-slate-400'
               }`}
             >
@@ -261,9 +261,9 @@ export default function MatificLab2Robot({
             </div>
 
             <div
-              className={`flex items-center gap-1.5 text-xs font-black px-3 py-1 rounded-xl border transition-all ${
+              className={`flex items-center gap-1.5 text-xs font-black px-3 py-1 rounded-xl border transition-colors ${
                 isGateUnlocked
-                  ? 'bg-emerald-400 text-slate-950 border-white shadow-[0_0_15px_rgba(52,211,153,0.6)] scale-105'
+                  ? 'bg-emerald-400 text-slate-950 border-white shadow-[0_0_15px_rgba(52,211,153,0.6)]'
                   : 'bg-rose-950/60 border-rose-500/40 text-rose-300'
               }`}
             >
@@ -274,9 +274,9 @@ export default function MatificLab2Robot({
         </div>
 
         {/* Main Workspace: 6x6 Lunar Board + Tactile Controller Pad */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
           {/* 6x6 Lunar Surface Board */}
-          <div className="lg:col-span-7 flex flex-col items-center">
+          <div className="lg:col-span-7 flex flex-col items-center justify-center">
             <div className="relative p-3 sm:p-4 bg-slate-950/95 rounded-3xl border-3 border-indigo-500/40 shadow-[inset_0_0_30px_rgba(15,23,42,0.9)]">
               <div
                 className="grid grid-cols-6 gap-2 sm:gap-2.5 w-[280px] h-[280px] sm:w-[360px] sm:h-[360px] select-none"
@@ -294,7 +294,6 @@ export default function MatificLab2Robot({
                     const cellKey = `${cIdx},${rIdx}`;
                     const plannedVisits = plannedTrace[cellKey] || [];
                     const latestVisit = plannedVisits[plannedVisits.length - 1];
-                    const isHovered = hoveredTile === cellKey;
 
                     let tileClasses =
                       'bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950/70 border-2 border-slate-700/80 hover:border-indigo-400/70';
@@ -323,12 +322,8 @@ export default function MatificLab2Robot({
                     return (
                       <div
                         key={cellKey}
-                        onMouseEnter={() => setHoveredTile(cellKey)}
-                        onMouseLeave={() => setHoveredTile(null)}
                         onClick={() => AudioEngine.playTone(240 + (cIdx + rIdx) * 30, 'sine', 0.05)}
-                        className={`relative rounded-2xl flex items-center justify-center transition-all duration-200 overflow-hidden cursor-pointer ${tileClasses} ${
-                          isHovered ? 'scale-105 z-10' : ''
-                        }`}
+                        className={`relative rounded-2xl flex items-center justify-center transition-colors duration-150 overflow-hidden cursor-pointer ${tileClasses}`}
                       >
                         {/* Lunar Crater Texture Dots */}
                         {!wall && !isRobot && (
@@ -361,7 +356,7 @@ export default function MatificLab2Robot({
 
                         {/* Glowing Golden Key 🔑 */}
                         {isKeyCell && !isRobot && (
-                          <div className="flex flex-col items-center justify-center animate-bounce select-none pointer-events-none">
+                          <div className="flex flex-col items-center justify-center select-none pointer-events-none">
                             <span className="text-xl sm:text-2xl drop-shadow-[0_0_10px_rgba(251,191,36,0.9)]">
                               🔑
                             </span>
@@ -372,7 +367,7 @@ export default function MatificLab2Robot({
                         {isGateCell && !isRobot && (
                           <div className="flex flex-col items-center justify-center select-none pointer-events-none">
                             {!isGateUnlocked && (
-                              <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-1 bg-rose-500/80 shadow-[0_0_10px_#f43f5e] animate-pulse" />
+                              <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-1 bg-rose-500/80 shadow-[0_0_10px_#f43f5e]" />
                             )}
                             <span className="relative z-10 text-xl sm:text-2xl drop-shadow-[0_0_10px_rgba(255,255,255,0.6)]">
                               {isGateUnlocked ? '🔓' : '🔒'}
@@ -383,7 +378,7 @@ export default function MatificLab2Robot({
                         {/* Space Beacon / Goal Flag 🏁 */}
                         {isGoalCell && !isRobot && (
                           <div className="flex flex-col items-center justify-center select-none pointer-events-none">
-                            <span className="text-xl sm:text-2xl animate-pulse drop-shadow-[0_0_12px_rgba(52,211,153,0.95)]">
+                            <span className="text-xl sm:text-2xl drop-shadow-[0_0_12px_rgba(52,211,153,0.95)]">
                               🏁
                             </span>
                           </div>
@@ -394,7 +389,7 @@ export default function MatificLab2Robot({
                           <div className="relative w-full h-full flex items-center justify-center z-20">
                             {/* Rotating Assembly pointing in robotPos.dir */}
                             <div
-                              className={`relative w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center transition-transform duration-300 ${getDirRotationClass(
+                              className={`relative w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center transition-transform duration-200 ${getDirRotationClass(
                                 robotPos.dir
                               )}`}
                             >
@@ -417,7 +412,7 @@ export default function MatificLab2Robot({
                             {/* Floating Key Badge when hasKey is true */}
                             {hasKey && (
                               <span
-                                className="absolute -top-1 -left-1 text-xs sm:text-sm bg-amber-400 text-slate-950 rounded-full w-5 h-5 flex items-center justify-center border border-white shadow-md animate-bounce z-30"
+                                className="absolute -top-1 -left-1 text-xs sm:text-sm bg-amber-400 text-slate-950 rounded-full w-5 h-5 flex items-center justify-center border border-white shadow-md z-30"
                                 title="המפתח בידי זֶן!"
                               >
                                 🔑
@@ -433,8 +428,8 @@ export default function MatificLab2Robot({
             </div>
           </div>
 
-          {/* Right Column: Tactile Action Controls */}
-          <div className="lg:col-span-5 flex flex-col gap-4 bg-slate-950/75 p-4 sm:p-5 rounded-3xl border-2 border-white/10 shadow-xl">
+          {/* Right Column: Tactile Action Controls (Fixed geometry - zero border-b-4 click shift!) */}
+          <div className="lg:col-span-5 flex flex-col justify-between gap-4 bg-slate-950/75 p-4 sm:p-5 rounded-3xl border-2 border-white/10 shadow-xl">
             <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
               <span className="text-xs sm:text-sm font-black text-amber-300 flex items-center gap-1.5">
                 <Sparkles className="w-4 h-4 text-amber-400" />
@@ -451,7 +446,7 @@ export default function MatificLab2Robot({
                 type="button"
                 onClick={() => addCommand('FORWARD')}
                 disabled={isRunning}
-                className="col-span-2 flex items-center justify-center gap-2 py-3 px-4 rounded-2xl font-black text-sm bg-gradient-to-b from-blue-500 to-indigo-600 hover:from-blue-400 hover:to-indigo-500 text-white border-b-4 border-indigo-800 active:border-b-0 active:translate-y-1 transition-all cursor-pointer shadow-lg disabled:opacity-50"
+                className="col-span-2 h-12 flex items-center justify-center gap-2 px-4 rounded-2xl font-black text-sm bg-gradient-to-b from-blue-500 to-indigo-600 hover:from-blue-400 hover:to-indigo-500 text-white border-2 border-blue-300/60 transition-colors cursor-pointer shadow-lg disabled:opacity-50"
               >
                 <span>צעד קדימה ⬆️</span>
                 {showXRay && (
@@ -465,7 +460,7 @@ export default function MatificLab2Robot({
                 type="button"
                 onClick={() => addCommand('TURN_RIGHT')}
                 disabled={isRunning}
-                className="flex items-center justify-center gap-1.5 py-3 px-3 rounded-2xl font-black text-xs sm:text-sm bg-gradient-to-b from-fuchsia-500 to-pink-600 hover:from-fuchsia-400 hover:to-pink-500 text-white border-b-4 border-pink-800 active:border-b-0 active:translate-y-1 transition-all cursor-pointer shadow-lg disabled:opacity-50"
+                className="h-11 flex items-center justify-center gap-1.5 px-3 rounded-2xl font-black text-xs sm:text-sm bg-gradient-to-b from-fuchsia-500 to-pink-600 hover:from-fuchsia-400 hover:to-pink-500 text-white border-2 border-fuchsia-300/60 transition-colors cursor-pointer shadow-lg disabled:opacity-50"
               >
                 <span>פנייה ימינה ↪️</span>
               </button>
@@ -474,7 +469,7 @@ export default function MatificLab2Robot({
                 type="button"
                 onClick={() => addCommand('TURN_LEFT')}
                 disabled={isRunning}
-                className="flex items-center justify-center gap-1.5 py-3 px-3 rounded-2xl font-black text-xs sm:text-sm bg-gradient-to-b from-violet-500 to-purple-600 hover:from-violet-400 hover:to-purple-500 text-white border-b-4 border-purple-800 active:border-b-0 active:translate-y-1 transition-all cursor-pointer shadow-lg disabled:opacity-50"
+                className="h-11 flex items-center justify-center gap-1.5 px-3 rounded-2xl font-black text-xs sm:text-sm bg-gradient-to-b from-violet-500 to-purple-600 hover:from-violet-400 hover:to-purple-500 text-white border-2 border-violet-300/60 transition-colors cursor-pointer shadow-lg disabled:opacity-50"
               >
                 <span>פנייה שמאלה ↩️</span>
               </button>
@@ -483,7 +478,7 @@ export default function MatificLab2Robot({
                 type="button"
                 onClick={() => addCommand('PICK_KEY')}
                 disabled={isRunning}
-                className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-2xl font-black text-xs sm:text-sm bg-gradient-to-b from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 border-b-4 border-amber-700 active:border-b-0 active:translate-y-1 transition-all cursor-pointer shadow-lg disabled:opacity-50"
+                className="h-11 flex items-center justify-center gap-1.5 px-3 rounded-2xl font-black text-xs sm:text-sm bg-gradient-to-b from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 border-2 border-amber-200 transition-colors cursor-pointer shadow-lg disabled:opacity-50"
               >
                 <span>איסוף מפתח 🔑</span>
               </button>
@@ -492,7 +487,7 @@ export default function MatificLab2Robot({
                 type="button"
                 onClick={() => addCommand('UNLOCK_GATE')}
                 disabled={isRunning}
-                className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-2xl font-black text-xs sm:text-sm bg-gradient-to-b from-teal-400 to-emerald-600 hover:from-teal-300 hover:to-emerald-500 text-slate-950 border-b-4 border-emerald-800 active:border-b-0 active:translate-y-1 transition-all cursor-pointer shadow-lg disabled:opacity-50"
+                className="h-11 flex items-center justify-center gap-1.5 px-3 rounded-2xl font-black text-xs sm:text-sm bg-gradient-to-b from-teal-400 to-emerald-600 hover:from-teal-300 hover:to-emerald-500 text-slate-950 border-2 border-emerald-200 transition-colors cursor-pointer shadow-lg disabled:opacity-50"
               >
                 <span>פתיחת שער 🔓</span>
               </button>
@@ -504,7 +499,7 @@ export default function MatificLab2Robot({
                 type="button"
                 onClick={runAlgorithm}
                 disabled={isRunning || commands.length === 0}
-                className="w-full flex items-center justify-center gap-2 py-3.5 px-5 rounded-2xl font-black text-base bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 hover:from-emerald-300 hover:to-teal-400 text-slate-950 border-b-4 border-emerald-700 active:border-b-0 active:translate-y-1 transition-all cursor-pointer shadow-[0_0_20px_rgba(52,211,153,0.4)] disabled:opacity-40 disabled:pointer-events-none"
+                className="w-full h-12 flex items-center justify-center gap-2 px-5 rounded-2xl font-black text-base bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 hover:from-emerald-300 hover:to-teal-400 text-slate-950 border-2 border-white/80 transition-colors cursor-pointer shadow-[0_0_20px_rgba(52,211,153,0.4)] disabled:opacity-40 disabled:pointer-events-none"
               >
                 <span>הפעל רובוט ▶️</span>
                 <span className="text-xs font-mono bg-slate-950/20 px-2 py-0.5 rounded-lg">
@@ -518,7 +513,7 @@ export default function MatificLab2Robot({
                     type="button"
                     onClick={runSingleStep}
                     disabled={isRunning || commands.length === 0}
-                    className="flex items-center justify-center gap-1 py-2 px-2.5 rounded-xl bg-indigo-500/25 hover:bg-indigo-500/40 text-indigo-200 border border-indigo-400/40 text-xs font-bold transition-all cursor-pointer active:scale-95 disabled:opacity-40"
+                    className="flex items-center justify-center gap-1 py-2 px-2.5 rounded-xl bg-indigo-500/25 hover:bg-indigo-500/40 text-indigo-200 border border-indigo-400/40 text-xs font-bold transition-colors cursor-pointer disabled:opacity-40"
                     title="הרצת פקודה אחת בכל לחיצה"
                   >
                     <FastForward className="w-3.5 h-3.5" />
@@ -529,7 +524,7 @@ export default function MatificLab2Robot({
                 <button
                   type="button"
                   onClick={resetSimulation}
-                  className="flex items-center justify-center gap-1 py-2 px-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/20 text-xs font-bold transition-all cursor-pointer active:scale-95"
+                  className="flex items-center justify-center gap-1 py-2 px-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/20 text-xs font-bold transition-colors cursor-pointer"
                 >
                   <span>איפוס מסלול 🔄</span>
                 </button>
@@ -538,7 +533,7 @@ export default function MatificLab2Robot({
                   type="button"
                   onClick={clearCommands}
                   disabled={isRunning || commands.length === 0}
-                  className="flex items-center justify-center gap-1 py-2 px-2.5 rounded-xl bg-rose-500/20 hover:bg-rose-500/35 text-rose-200 border border-rose-400/40 text-xs font-bold transition-all cursor-pointer active:scale-95 disabled:opacity-40"
+                  className="flex items-center justify-center gap-1 py-2 px-2.5 rounded-xl bg-rose-500/20 hover:bg-rose-500/35 text-rose-200 border border-rose-400/40 text-xs font-bold transition-colors cursor-pointer disabled:opacity-40"
                 >
                   <span>ניקוי פקודות 🗑️</span>
                 </button>
@@ -547,7 +542,7 @@ export default function MatificLab2Robot({
           </div>
         </div>
 
-        {/* Bottom Live Command Ribbon: סרט הפקודות החי של זֶן (Algorithmic Memory Tape) */}
+        {/* Bottom Live Command Ribbon: סרט הפקודות החי של זֶן (Locked min-h so adding commands doesn't shift page) */}
         <div className="w-full p-4 bg-slate-950/90 rounded-2xl border-2 border-indigo-500/30 space-y-3 shadow-inner">
           <div className="flex items-center justify-between flex-wrap gap-2">
             <div className="flex items-center gap-2 text-xs sm:text-sm font-black text-indigo-200">
@@ -559,60 +554,62 @@ export default function MatificLab2Robot({
             </span>
           </div>
 
-          {commands.length === 0 ? (
-            <div className="py-5 text-center text-xs sm:text-sm text-slate-400 bg-black/40 rounded-xl border border-dashed border-slate-700">
-              סרט הזיכרון ריק כרגע. לחצו על כפתורי הבקרה (⬆️ ↩️ ↪️ 🔑 🔓) כדי להרכיב את האלגוריתם של זֶן!
-            </div>
-          ) : (
-            <div className="flex flex-wrap items-center gap-2 p-2.5 bg-black/50 rounded-xl border border-white/10">
-              {commands.map((cmd, idx) => {
-                const isExecuting = executingIndex === idx;
-                const meta = CMD_META[cmd] || {
-                  shortLabel: cmd,
-                  code: cmd,
-                  color: 'from-slate-700 to-slate-800 border-slate-500 text-white'
-                };
+          <div className="min-h-[56px] flex items-center p-2.5 bg-black/50 rounded-xl border border-white/10">
+            {commands.length === 0 ? (
+              <div className="w-full text-center text-xs sm:text-sm text-slate-400">
+                סרט הזיכרון ריק כרגע. לחצו על כפתורי הבקרה (⬆️ ↩️ ↪️ 🔑 🔓) כדי להרכיב את האלגוריתם של זֶן!
+              </div>
+            ) : (
+              <div className="flex flex-wrap items-center gap-2">
+                {commands.map((cmd, idx) => {
+                  const isExecuting = executingIndex === idx;
+                  const meta = CMD_META[cmd] || {
+                    shortLabel: cmd,
+                    code: cmd,
+                    color: 'from-slate-700 to-slate-800 border-slate-500 text-white'
+                  };
 
-                return (
-                  <button
-                    key={idx}
-                    type="button"
-                    disabled={isRunning}
-                    onClick={() => removeCommand(idx)}
-                    title="לחצו להסרת פקודה זו"
-                    className={`group relative flex items-center gap-1.5 px-3 py-1.5 rounded-xl border-2 text-xs font-black transition-all cursor-pointer ${
-                      isExecuting
-                        ? 'bg-amber-400 text-slate-950 border-white scale-110 shadow-[0_0_20px_rgba(251,191,36,0.95)] z-10 animate-bounce'
-                        : `bg-gradient-to-b ${meta.color} hover:scale-105 active:scale-95 shadow-md`
-                    }`}
-                  >
-                    <span
-                      className={`font-mono text-[10px] px-1.5 py-0.2 rounded ${
-                        isExecuting ? 'bg-slate-950 text-amber-300' : 'bg-black/30 text-white/90'
+                  return (
+                    <button
+                      key={idx}
+                      type="button"
+                      disabled={isRunning}
+                      onClick={() => removeCommand(idx)}
+                      title="לחצו להסרת פקודה זו"
+                      className={`group relative h-9 flex items-center gap-1.5 px-3 rounded-xl border-2 text-xs font-black transition-colors cursor-pointer ${
+                        isExecuting
+                          ? 'bg-amber-400 text-slate-950 border-white shadow-[0_0_20px_rgba(251,191,36,0.95)] z-10'
+                          : `bg-gradient-to-b ${meta.color} shadow-md`
                       }`}
                     >
-                      {idx + 1}.
-                    </span>
-                    <span>{meta.shortLabel}</span>
-                    {showXRay && (
-                      <code
-                        className={`text-[10px] font-mono ${
-                          isExecuting ? 'text-slate-900' : 'opacity-80'
+                      <span
+                        className={`font-mono text-[10px] px-1.5 py-0.2 rounded ${
+                          isExecuting ? 'bg-slate-950 text-amber-300' : 'bg-black/30 text-white/90'
                         }`}
                       >
-                        [{meta.code}]
-                      </code>
-                    )}
-                    {!isRunning && (
-                      <span className="opacity-0 group-hover:opacity-100 text-[10px] bg-rose-600 text-white rounded px-1 transition-opacity">
-                        ✕
+                        {idx + 1}.
                       </span>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-          )}
+                      <span>{meta.shortLabel}</span>
+                      {showXRay && (
+                        <code
+                          className={`text-[10px] font-mono ${
+                            isExecuting ? 'text-slate-900' : 'opacity-80'
+                          }`}
+                        >
+                          [{meta.code}]
+                        </code>
+                      )}
+                      {!isRunning && (
+                        <span className="text-[10px] bg-black/30 group-hover:bg-rose-600 text-white rounded px-1 transition-colors">
+                          ✕
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </LudicLabShell>

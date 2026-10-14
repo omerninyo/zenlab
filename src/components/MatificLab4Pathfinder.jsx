@@ -199,34 +199,34 @@ export default function MatificLab4Pathfinder({
                         ? `אסטרואיד חוסם (${x},${y}) - לחצו להסרה`
                         : `משבצת (${x},${y}) | מרחק מהיעד h=${hCost}`
                     }
-                    className={`relative rounded-xl flex flex-col items-center justify-center transition-all duration-150 cursor-pointer focus:outline-none overflow-hidden ${
+                    className={`relative rounded-xl flex flex-col items-center justify-center transition-colors duration-100 cursor-pointer focus:outline-none overflow-hidden ${
                       isStart
-                        ? 'bg-gradient-to-br from-indigo-500 via-blue-600 to-cyan-500 border-2 border-white shadow-[0_0_18px_rgba(56,189,248,0.9)] scale-105 z-10'
+                        ? 'bg-gradient-to-br from-indigo-500 via-blue-600 to-cyan-500 border-2 border-white shadow-[0_0_16px_rgba(56,189,248,0.85)] z-10'
                         : isGoal
-                        ? 'bg-gradient-to-br from-amber-400 via-orange-500 to-rose-500 border-2 border-white shadow-[0_0_20px_rgba(251,191,36,0.95)] scale-105 z-10'
+                        ? 'bg-gradient-to-br from-amber-400 via-orange-500 to-rose-500 border-2 border-white shadow-[0_0_18px_rgba(251,191,36,0.9)] z-10'
                         : isWall
-                        ? 'bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 border-2 border-slate-500/80 shadow-inner scale-95'
+                        ? 'bg-gradient-to-br from-slate-700 via-slate-800 to-slate-900 border-2 border-slate-500/80 shadow-inner'
                         : isInFinalPath
-                        ? 'bg-gradient-to-br from-amber-300 via-amber-400 to-yellow-500 border-2 border-white text-slate-950 shadow-[0_0_20px_rgba(251,191,36,0.9)] scale-105 z-10'
+                        ? 'bg-gradient-to-br from-amber-300 via-amber-400 to-yellow-500 border-2 border-white text-slate-950 shadow-[0_0_16px_rgba(251,191,36,0.85)] z-10'
                         : isVisited
                         ? algorithm === 'astar'
-                          ? 'bg-gradient-to-br from-cyan-600/85 to-indigo-800/90 border-2 border-cyan-300/80 text-white shadow-[0_0_12px_rgba(34,211,238,0.45)]'
-                          : 'bg-gradient-to-br from-indigo-700/80 to-blue-900/90 border-2 border-indigo-400/70 text-indigo-100 shadow-[0_0_10px_rgba(99,102,241,0.35)]'
+                          ? 'bg-gradient-to-br from-cyan-600/85 to-indigo-800/90 border-2 border-cyan-300/80 text-white shadow-[0_0_10px_rgba(34,211,238,0.4)]'
+                          : 'bg-gradient-to-br from-indigo-700/80 to-blue-900/90 border-2 border-indigo-400/70 text-indigo-100 shadow-[0_0_8px_rgba(99,102,241,0.3)]'
                         : isHovered
-                        ? 'bg-slate-800 border-2 border-amber-400/60 scale-95'
+                        ? 'bg-slate-800 border-2 border-amber-400/70'
                         : 'bg-slate-900/90 hover:bg-slate-800/80 border border-slate-800/90'
                     }`}
                   >
                     {/* Start Spacecraft */}
                     {isStart && (
-                      <span className="text-base sm:text-xl drop-shadow animate-pulse select-none" role="img" aria-label="Spacecraft">
+                      <span className="text-base sm:text-xl drop-shadow select-none" role="img" aria-label="Spacecraft">
                         🚀
                       </span>
                     )}
 
                     {/* Goal Planet */}
                     {isGoal && (
-                      <span className="text-base sm:text-xl drop-shadow animate-bounce select-none" role="img" aria-label="Target Planet">
+                      <span className="text-base sm:text-xl drop-shadow select-none" role="img" aria-label="Target Planet">
                         🪐
                       </span>
                     )}
@@ -267,7 +267,7 @@ export default function MatificLab4Pathfinder({
                           isInFinalPath ? (
                             <span className="text-xs sm:text-sm font-black text-slate-950 select-none">★</span>
                           ) : isVisited ? (
-                            <div className="w-2 h-2 rounded-full bg-cyan-300 shadow-[0_0_6px_#67e8f9] animate-pulse" />
+                            <div className="w-2 h-2 rounded-full bg-cyan-300 shadow-[0_0_6px_#67e8f9]" />
                           ) : (
                             <div className="w-1 h-1 rounded-full bg-slate-800" />
                           )
@@ -279,21 +279,21 @@ export default function MatificLab4Pathfinder({
               })}
             </div>
 
-            {/* Hovered Cell X-Ray Telemetry Pill */}
-            <div className="mt-2.5 flex items-center justify-between text-[11px] font-mono text-indigo-200 bg-slate-900/90 px-3 py-1.5 rounded-xl border border-indigo-500/30">
+            {/* Hovered Cell X-Ray Telemetry Pill (Locked height h-9 so hovering never shifts layout!) */}
+            <div className="mt-2.5 h-9 flex items-center justify-between text-[11px] font-mono text-indigo-200 bg-slate-900/90 px-3 rounded-xl border border-indigo-500/30 overflow-hidden">
               {hoveredCell ? (
                 <>
-                  <span>
+                  <span className="truncate">
                     משבצת ({hoveredCell.x},{hoveredCell.y})
                   </span>
-                  <span className="text-amber-300 font-bold">
-                    h = |{hoveredCell.x}-{goal.x}| + |{hoveredCell.y}-{goal.y}| = {Math.abs(hoveredCell.x - goal.x) + Math.abs(hoveredCell.y - goal.y)} צעדים ליעד
+                  <span className="text-amber-300 font-bold shrink-0">
+                    h = |{hoveredCell.x}-{goal.x}| + |{hoveredCell.y}-{goal.y}| = {Math.abs(hoveredCell.x - goal.x) + Math.abs(hoveredCell.y - goal.y)} צעדים
                   </span>
                 </>
               ) : (
                 <>
-                  <span>💡 לחצו וגררו על המכ״ם כדי לבנות או להסיר קירות אסטרואידים ☄️</span>
-                  <span className="text-amber-300 font-bold hidden sm:inline">אסטרואידים: {wallCount}</span>
+                  <span className="truncate">💡 לחצו וגררו על המכ״ם לבניית קירות אסטרואידים ☄️</span>
+                  <span className="text-amber-300 font-bold shrink-0">אסטרואידים: {wallCount}</span>
                 </>
               )}
             </div>
@@ -323,20 +323,20 @@ export default function MatificLab4Pathfinder({
               </div>
             </div>
 
-            {/* X-Ray Formula Explainer Card when X-Ray is on */}
-            {showXRay && (
-              <div className="p-3 rounded-2xl bg-indigo-950/70 border border-amber-400/40 text-xs space-y-1">
-                <div className="flex items-center justify-between font-black text-amber-300">
-                  <span>🔍 מקרא עדשת עלויות [f = g + h]:</span>
-                  <span className="font-mono text-[11px] bg-amber-400/20 px-2 py-0.5 rounded-md border border-amber-300/30">
-                    h = מרחק מנהטן
-                  </span>
-                </div>
-                <p className="text-indigo-100 text-[11px] leading-relaxed">
-                  <strong>#1, #2...</strong> מציג את סדר הבדיקה של המשבצות. <strong>h</strong> הוא מרחק הקו האווירי לכוכב היעד 🪐. שימו לב איך <strong>A*</strong> בוחר משבצות עם <strong>h</strong> הולך וקטן, בעוד <strong>BFS</strong> מתפזר לכל הכיוונים!
-                </p>
+            {/* X-Ray Formula Explainer Card (Always mounted with fixed min-h so toggling X-Ray causes zero vertical shift!) */}
+            <div className="p-3 rounded-2xl bg-indigo-950/70 border border-amber-400/40 text-xs space-y-1 min-h-[76px] flex flex-col justify-center">
+              <div className="flex items-center justify-between font-black text-amber-300">
+                <span>{showXRay ? '🔍 מקרא עדשת עלויות [f = g + h]:' : '🛸 מקרא מכ״ם החלל:'}</span>
+                <span className="font-mono text-[11px] bg-amber-400/20 px-2 py-0.5 rounded-md border border-amber-300/30">
+                  {showXRay ? 'h = מרחק מנהטן' : '🚀 שיגור ← 🪐 יעד'}
+                </span>
               </div>
-            )}
+              <p className="text-indigo-100 text-[11px] leading-relaxed">
+                {showXRay
+                  ? '#1, #2... מציג את סדר הבדיקה של המשבצות, ו-h הוא מרחק הקו האווירי לכוכב היעד 🪐. שימו לב איך A* בוחר משבצות עם h הולך וקטן!'
+                  : 'הדליקו את "עדשת עלויות [f=g+h]" למעלה כדי לראות את חישוב המרחקים ואת סדר הבדיקה המדויק של כל משבצת במכ״ם!'}
+              </p>
+            </div>
 
             {/* 3 Interactive Challenges Checklist */}
             <div className="bg-slate-950/80 rounded-2xl border border-white/10 p-3.5 space-y-2">

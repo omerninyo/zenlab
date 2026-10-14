@@ -542,17 +542,14 @@ export default function ZenAiTutor({ currentLabId = 'lab1', isDapimActive = fals
         </div>
       )}
 
-      {/* Floating Trigger & Toggle Button - ALWAYS anchored in the exact same bottom corner spot */}
+      {/* Floating Trigger & Toggle Button - Anchored cleanly at viewport corner */}
       <button
         type="button"
         onClick={() => {
           setIsOpen(prev => !prev);
           AudioEngine.playStep();
         }}
-        style={{
-          left: 'max(1rem, calc((100vw - 72rem) / 2 + 1.5rem))'
-        }}
-        className={`fixed bottom-4 sm:bottom-6 z-50 flex items-center justify-center sm:justify-start gap-2.5 w-12 h-12 sm:w-auto sm:h-auto rounded-xl p-0 sm:px-3.5 sm:py-2.5 shadow-xl hover:shadow-2xl transition-all group scale-100 hover:scale-105 cursor-pointer ${
+        className={`fixed bottom-4 left-4 z-50 flex items-center justify-center sm:justify-start gap-2 w-12 h-12 sm:w-auto sm:h-auto rounded-2xl p-0 sm:px-3 sm:py-2 shadow-xl transition-colors cursor-pointer ${
           isOpen
             ? isDapimActive
               ? 'bg-[var(--slate-4)] hover:bg-[var(--slate-5)] text-white border-2 border-[var(--accent-base)] shadow-[0_0_20px_rgba(245,158,11,0.25)]'
