@@ -347,6 +347,68 @@ class StorageEngineClass {
       return { success: false, error: err.message || 'שגיאה בפענוח הקובץ' };
     }
   }
+
+  /**
+   * Generates a compact 6-character Hex classroom save code (e.g. "3F8A21")
+   * representing the 24 challenge bits across Labs 1..8 (Zero-PII).
+   */
+  getSaveCode() {
+    let bitmask = 0;
+    for (let lab = 1; lab <= 8; lab++) {
+      for (let ch = 1; ch <= 3; ch++) {
+        const bitIndex = (lab - 1) * 3 + (ch - 1);
+        const key = `lab${lab}_challenge${ch}`;
+        if (this.state.completedChallenges?.[key]) {
+          bitmask |= (1 << bitIndex);
+        }
+      }
+    }
+    // XOR with a fixed classroom salt (0x5A454E = "ZEN") so 0 stars isn't just "000000"
+    const salted = (bitmask ^ 0x5A454E) >>> 0;
+    return salted.toString(16).toUpperCase().padStart(6, '0');
+  }
+
+  /**
+   * Restores completedChallenges and labStars from a 6-character Hex classroom save code.
+   */
+  restoreFromSaveCode(rawCode) {
+    if (!rawCode || typeof rawCode !== 'string') {
+      return { success: false, error: 'נא להזין קוד שמירה בן 6 תווים' };
+    }
+    const clean = rawCode.trim().replace(/^ZN-/i, '').replace(/[^0-9A-Fa-f]/g, '').toUpperCase();
+    if (clean.length !== 6) {
+      return { success: false, error: 'קוד השמירה חייב להכיל 6 תווים (ספרות 0-9 או אותיות A-F)' };
+    }
+    const salted = parseInt(clean, 16);
+    if (Number.isNaN(salted)) {
+      return { success: false, error: 'קוד שמירה לא תקין' };
+    }
+    const bitmask = (salted ^ 0x5A454E) & 0xFFFFFF;
+    const completedChallenges = {};
+    const labStars = {};
+    let totalStars = 0;
+
+    for (let lab = 1; lab <= 8; lab++) {
+      let starsForLab = 0;
+      for (let ch = 1; ch <= 3; ch++) {
+        const bitIndex = (lab - 1) * 3 + (ch - 1);
+        const isDone = Boolean((bitmask >> bitIndex) & 1);
+        if (isDone) {
+          completedChallenges[`lab${lab}_challenge${ch}`] = true;
+          starsForLab += 1;
+        }
+      }
+      labStars[`lab${lab}`] = starsForLab;
+      totalStars += starsForLab;
+    }
+
+    this.state.completedChallenges = completedChallenges;
+    this.state.labStars = labStars;
+    this.state.totalStars = totalStars;
+    this.saveState();
+    return { success: true, totalStars };
+  }
 }
 
 export const StorageEngine = new StorageEngineClass();
+

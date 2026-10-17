@@ -52,29 +52,29 @@ export default function MatificLab5Classifier({
   const isCh3Done = !!completedChallenges['lab5_challenge3'];
 
   const starsList = useMemo(() => [
-    { id: 'lab5_challenge1', done: isCh1Done, label: 'איסוף 10 כוכבי אימון במגרש' },
-    { id: 'lab5_challenge2', done: isCh2Done, label: 'שיגור גשושית המסתורין לסיווג' },
+    { id: 'lab5_challenge1', done: isCh1Done, label: 'שתילת 10 פירות אימון בלוח' },
+    { id: 'lab5_challenge2', done: isCh2Done, label: 'גרירת פרי המסתורין לסיווג' },
     { id: 'lab5_challenge3', done: isCh3Done, label: 'הצבעת רוב עם k=5 שכנים' }
   ], [isCh1Done, isCh2Done, isCh3Done]);
 
   const stationStatus = useMemo(() => {
     if (predictedClass === 'A') {
-      return `הגשושית מסווגת: כוכב כחול 💎 (קבוצה א׳ • ${confidence}%)`;
+      return `הפרי המסתורי סווג: תפוח אדום 🍎 (קבוצה א׳ • ${confidence}%)`;
     }
-    return `הגשושית מסווגת: כוכב כתום ⭐ (קבוצה ב׳ • ${confidence}%)`;
+    return `הפרי המסתורי סווג: אבטיח ירוק 🍉 (קבוצה ב׳ • ${confidence}%)`;
   }, [predictedClass, confidence]);
 
   const stationMessage = useMemo(() => {
     if (!isCh1Done) {
-      return `משימה 1: לחצו על מפת החלל כדי לשתול כוכבי אימון חדשים עד שיהיו לפחות 10 כוכבים במגרש (כרגע: ${points.length}/10)!`;
+      return `משימה 1: לחצו על לוח המתיקות והגודל כדי להוסיף פירות אימון חדשים עד שיהיו לפחות 10 פירות בלוח (כרגע: ${points.length}/10)!`;
     }
     if (!isCh2Done) {
-      return 'משימה 2: גררו את גשושית המסתורין 🛸 במגרש (או לחצו ״שגר גשושית למיקום חדש 🚀״) כדי לראות איך השכנים מצביעים!';
+      return 'משימה 2: גררו את פרי המסתורין (?) בלוח (או לחצו ״קפיצה למיקום אקראי 🎲״) כדי לראות איך הפירות השכנים מצביעים!';
     }
     if (!isCh3Done) {
       return 'משימה 3: העבירו את בורר השכנים ל-k=5 כדי לשאול 5 שכנים קרובים במקום 3!';
     }
-    return 'כל 3 כוכבי למידת המכונה הושגו! נסו להזיז את הגשושית לאזורי גבול ולראות כיצד שינוי k הופך את ההחלטה.';
+    return 'כל 3 כוכבי למידת המכונה הושגו! נסו להזיז את פרי המסתורין לאזורי גבול ולראות כיצד שינוי k הופך את ההחלטה.';
   }, [isCh1Done, isCh2Done, isCh3Done, points.length]);
 
   // Handle dragging the Mystery Probe across the 2D SVG starfield
@@ -346,18 +346,18 @@ export default function MatificLab5Classifier({
                     fontFamily="monospace"
                     fontWeight="bold"
                   >
-                    גשושית ({testPoint.x},{testPoint.y})
+                    פרי ? ({testPoint.x},{testPoint.y})
                   </text>
                 )}
               </g>
             </svg>
           </div>
 
-          {/* Caption below Starfield */}
+          {/* Caption below Fruit Board */}
           <div className="mt-2.5 flex items-center justify-between text-[11px] text-indigo-200 bg-slate-900/90 px-3 py-1.5 rounded-xl border border-indigo-500/30">
-            <span>👆 לחצו לשתילת כוכב • גררו את הגשושית <strong>(?)</strong> בחלל!</span>
+            <span>👆 לחצו להוספת פרי ללוח (מתיקות × גודל) • גררו את <strong>פרי המסתורין (?)</strong>!</span>
             <span className="font-mono font-bold text-amber-300 shrink-0">
-              סה״כ כוכבים: {points.length}
+              סה״כ פירות: {points.length}
             </span>
           </div>
         </div>
@@ -375,14 +375,14 @@ export default function MatificLab5Classifier({
               <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-2xl border-2 border-white shadow-md ${
                 predictedClass === 'A' ? 'bg-sky-500' : 'bg-amber-500'
               }`}>
-                {predictedClass === 'A' ? '💎' : '⭐'}
+                {predictedClass === 'A' ? '🍎' : '🍉'}
               </div>
               <div>
-                <div className="text-xs font-bold text-indigo-200">החלטת המחשב עבור הגשושית:</div>
+                <div className="text-xs font-bold text-indigo-200">החלטת המחשב עבור פרי המסתורין (?):</div>
                 <div className="text-base sm:text-lg font-black text-white">
                   {predictedClass === 'A'
-                    ? `קבוצה א׳: כוכב כחול 💎 (${labData?.classes?.A?.name || 'תפוח'})`
-                    : `קבוצה ב׳: כוכב כתום ⭐ (${labData?.classes?.B?.name || 'אגס'})`}
+                    ? `קבוצה א׳: ${labData?.classes?.A?.name || 'תפוח אדום'} 🍎`
+                    : `קבוצה ב׳: ${labData?.classes?.B?.name || 'אבטיח ירוק'} 🍉`}
                 </div>
               </div>
             </div>
@@ -401,7 +401,7 @@ export default function MatificLab5Classifier({
               </span>
             </div>
             <p className="text-indigo-100 text-[11px] leading-relaxed">
-              המעגל המקווקו נמתח בדיוק עד לשכן ה-<strong>{kValue}</strong> במרחקו! {showXRay ? 'כל קרן לייזר מציגה את המרחק d מהגשושית לכוכב השכן.' : 'הפעילו את עדשת המרחקים כדי לראות את המרחק d על כל קרן.'}
+              המעגל המקווקו נמתח בדיוק עד לשכן ה-<strong>{kValue}</strong> במרחקו! {showXRay ? 'כל קרן מציגה את המרחק d מפרי המסתורין לפרי השכן.' : 'הפעילו את עדשת המרחקים כדי לראות את המרחק d על כל קרן.'}
             </p>
           </div>
 
@@ -410,7 +410,7 @@ export default function MatificLab5Classifier({
             <div className="flex items-center justify-between text-xs font-black text-amber-300 pb-1.5 border-b border-white/10">
               <span className="flex items-center gap-1.5">
                 <Award className="w-4 h-4 text-amber-400" />
-                <span>משימות סיווג הכוכבים:</span>
+                <span>משימות סיווג הפירות:</span>
               </span>
               <span className="font-mono text-amber-200">
                 {[isCh1Done, isCh2Done, isCh3Done].filter(Boolean).length}/3 כוכבים ⭐
@@ -455,15 +455,15 @@ export default function MatificLab5Classifier({
         <div className="flex items-center justify-between flex-wrap gap-2">
           <div className="flex items-center gap-2 text-xs sm:text-sm font-black text-amber-300">
             <Vote className="w-4 h-4 text-amber-400" />
-            <span>קלפי ההצבעה של k={kValue} השכנים הקרובים (מסודרים מהקרוב לרחוק):</span>
+            <span>קלפי ההצבעה של k={kValue} הפירות השכנים הקרובים (מהקרוב לרחוק):</span>
           </div>
           <div className="flex items-center gap-2 text-xs font-black">
             <span className="px-2.5 py-1 rounded-lg bg-sky-500/20 border border-sky-400/40 text-sky-300">
-              💎 קבוצה א': {votesA} קולות
+              🍎 תפוח אדום (א'): {votesA} קולות
             </span>
             <span className="text-slate-500">|</span>
             <span className="px-2.5 py-1 rounded-lg bg-amber-500/20 border border-amber-400/40 text-amber-300">
-              ⭐ קבוצה ב': {votesB} קולות
+              🍉 אבטיח ירוק (ב'): {votesB} קולות
             </span>
           </div>
         </div>
@@ -485,7 +485,7 @@ export default function MatificLab5Classifier({
                   <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-black/40 text-white">
                     #{idx + 1}
                   </span>
-                  <span>{isA ? '💎 כחול (א׳)' : '⭐ כתום (ב׳)'}</span>
+                  <span>{isA ? '🍎 תפוח (א׳)' : '🍉 אבטיח (ב׳)'}</span>
                 </div>
                 <span className="font-mono text-[11px] font-bold text-white/90">
                   d={nn.distance.toFixed(1)}
@@ -529,7 +529,7 @@ export default function MatificLab5Classifier({
                 : 'bg-sky-950/50 hover:bg-sky-900/60 text-sky-200 border-sky-500/40'
             }`}
           >
-            <span>💎 שתול כוכב כחול (א')</span>
+            <span>🍎 הוסף תפוח אדום (א')</span>
           </button>
 
           <button
@@ -541,7 +541,7 @@ export default function MatificLab5Classifier({
                 : 'bg-amber-950/50 hover:bg-amber-900/60 text-amber-200 border-amber-500/40'
             }`}
           >
-            <span>⭐ שתול כוכב כתום (ב')</span>
+            <span>🍉 הוסף אבטיח ירוק (ב')</span>
           </button>
         </div>
 
@@ -552,7 +552,7 @@ export default function MatificLab5Classifier({
             onClick={onRandomizeTestPoint}
             className="flex items-center gap-1.5 px-3.5 py-2 rounded-2xl bg-indigo-500/30 hover:bg-indigo-500/45 text-indigo-100 border border-indigo-400/50 text-xs font-black transition-colors cursor-pointer shadow-md"
           >
-            <span>שגר גשושית למיקום חדש 🚀</span>
+            <span>קפיצה למיקום אקראי 🎲</span>
           </button>
 
           <button

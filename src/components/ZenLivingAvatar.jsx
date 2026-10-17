@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Heart, Sparkles, AlertTriangle, Key } from 'lucide-react';
+import { Heart, AlertTriangle, Key } from 'lucide-react';
+import { StorageEngine } from '../core/storage.js';
+import { getEquippedZenGadget } from './BespokeIllustrations.jsx';
 
 /**
- * ZenLivingAvatar - The living, expressive robot companion head with real-time eye tracking.
- * Used across the Home Overworld Map and all 8 Interactive Labs for unified Matific-grade feel.
+ * ZenLivingAvatar - The living, expressive robot companion head with real-time 60fps eye tracking
+ * and customizable metagame Workshop Gadgets.
  */
 export default function ZenLivingAvatar({
   mood = 'happy', // 'happy' | 'thinking' | 'celebrating' | 'curious' | 'error'
@@ -19,6 +21,23 @@ export default function ZenLivingAvatar({
   const pupil0Ref = useRef(null);
   const pupil1Ref = useRef(null);
   const rafRef = useRef(null);
+  const [equippedGadget, setEquippedGadget] = useState(() =>
+    getEquippedZenGadget(StorageEngine.getState()?.totalStars || 0)
+  );
+
+  useEffect(() => {
+    const onGadgetChange = (e) => {
+      if (e.detail?.gadgetId) setEquippedGadget(e.detail.gadgetId);
+    };
+    const unsubStorage = StorageEngine.subscribe((state) => {
+      setEquippedGadget(getEquippedZenGadget(state.totalStars || 0));
+    });
+    window.addEventListener('zen-gadget-change', onGadgetChange);
+    return () => {
+      window.removeEventListener('zen-gadget-change', onGadgetChange);
+      unsubStorage();
+    };
+  }, []);
 
   useEffect(() => {
     const handlePointerMove = (e) => {
@@ -101,16 +120,80 @@ export default function ZenLivingAvatar({
         <div className="absolute -top-10 w-2.5 h-20 bg-gradient-to-t from-amber-400/70 via-amber-200/30 to-transparent rounded-full blur-xs pointer-events-none" />
       )}
 
-      {/* Robot Head Chassis (Fixed geometry - zero layout-shifting scale/translate) */}
+      {/* Gadget: Floating Neural Halo (15+ Stars) */}
+      {equippedGadget === 'halo_neural' && (
+        <svg
+          width="140"
+          height="26"
+          viewBox="0 0 140 26"
+          fill="none"
+          className="absolute -top-9 pointer-events-none z-20"
+        >
+          <ellipse
+            cx="70"
+            cy="13"
+            rx="54"
+            ry="7"
+            stroke="#34d399"
+            strokeWidth="2.5"
+            strokeDasharray="6 3"
+          />
+          <circle cx="16" cy="13" r="3.5" fill="#6ee7b7" />
+          <circle cx="124" cy="13" r="3.5" fill="#6ee7b7" />
+          <circle cx="70" cy="6" r="3.5" fill="#fbbf24" />
+        </svg>
+      )}
+
+      {/* Gadget: Golden Constellation Crown (9+ Stars) */}
+      {equippedGadget === 'crown_radar' && (
+        <svg
+          width="68"
+          height="24"
+          viewBox="0 0 68 24"
+          fill="none"
+          className="absolute -top-6 pointer-events-none z-20"
+        >
+          <path
+            d="M8 22L14 7L27 15L34 3L41 15L54 7L60 22H8Z"
+            fill="#f59e0b"
+            stroke="#fef3c7"
+            strokeWidth="1.8"
+            strokeLinejoin="round"
+          />
+          <circle cx="34" cy="3" r="2.5" fill="#fef08a" />
+          <circle cx="14" cy="7" r="2" fill="#38bdf8" />
+          <circle cx="54" cy="7" r="2" fill="#38bdf8" />
+        </svg>
+      )}
+
+      {/* Robot Head Chassis */}
       <div
-        className={`relative bg-gradient-to-b from-slate-700 to-slate-800 shadow-2xl flex flex-col items-center justify-center transition-colors duration-200 ${sizeClasses.chassis} ${
+        className={`relative bg-gradient-to-b from-slate-700 via-slate-800 to-slate-900 shadow-2xl flex flex-col items-center justify-center transition-colors duration-200 ${sizeClasses.chassis} ${
           mood === 'celebrating'
             ? 'border-amber-300 shadow-[0_0_25px_rgba(251,191,36,0.45)]'
             : mood === 'error'
             ? 'border-rose-400/80'
+            : equippedGadget === 'visor_cyber'
+            ? 'border-cyan-400/85 shadow-[0_0_22px_rgba(34,211,238,0.28)]'
+            : equippedGadget === 'halo_neural'
+            ? 'border-emerald-400/85 shadow-[0_0_22px_rgba(52,211,153,0.28)]'
             : 'border-amber-400/75'
         } ${onClick ? 'group-hover:border-amber-300' : ''}`}
       >
+        {/* Gadget: Twin Plasma Wing Thrusters (5+ Stars) */}
+        {(equippedGadget === 'ears_plasma' || equippedGadget === 'halo_neural') && (
+          <>
+            <svg width="16" height="36" viewBox="0 0 16 36" fill="none" className="absolute -left-4 top-1/2 -translate-y-1/2 pointer-events-none">
+              <path d="M15 6L3 12V24L15 30V6Z" fill="#6366f1" stroke="#c7d2fe" strokeWidth="1.5" strokeLinejoin="round" />
+              <rect x="0" y="14" width="4" height="8" rx="2" fill="#38bdf8" />
+            </svg>
+            <svg width="16" height="36" viewBox="0 0 16 36" fill="none" className="absolute -right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+              <path d="M1 6L13 12V24L1 30V6Z" fill="#6366f1" stroke="#c7d2fe" strokeWidth="1.5" strokeLinejoin="round" />
+              <rect x="12" y="14" width="4" height="8" rx="2" fill="#38bdf8" />
+            </svg>
+          </>
+        )}
+
         {/* Antenna */}
         <div className={`absolute bg-amber-400 rounded-full flex flex-col items-center ${sizeClasses.antennaWrap}`}>
           <div
@@ -121,6 +204,8 @@ export default function ZenLivingAvatar({
                 ? 'bg-indigo-400 shadow-[0_0_12px_#818cf8]'
                 : mood === 'error'
                 ? 'bg-rose-500 shadow-[0_0_12px_#f43f5e]'
+                : equippedGadget === 'visor_cyber'
+                ? 'bg-cyan-400 shadow-[0_0_12px_#22d3ee]'
                 : 'bg-amber-500 shadow-md'
             }`}
           />
@@ -134,7 +219,24 @@ export default function ZenLivingAvatar({
         )}
 
         {/* Screen Visor with Expressive Eyes */}
-        <div className={`w-full bg-slate-950 border-2 border-slate-700 flex items-center justify-around shadow-inner relative overflow-hidden ${sizeClasses.visor}`}>
+        <div
+          className={`w-full bg-slate-950 border-2 flex items-center justify-around shadow-inner relative overflow-hidden ${sizeClasses.visor} ${
+            equippedGadget === 'visor_cyber'
+              ? 'border-cyan-400/70 bg-gradient-to-b from-cyan-950/90 to-slate-950'
+              : 'border-slate-700'
+          }`}
+        >
+          {/* Subtle HUD grid lines when Cyber Visor is equipped */}
+          {equippedGadget === 'visor_cyber' && (
+            <div
+              className="absolute inset-0 pointer-events-none opacity-25"
+              style={{
+                backgroundImage: 'linear-gradient(to right, #22d3ee 1px, transparent 1px), linear-gradient(to bottom, #22d3ee 1px, transparent 1px)',
+                backgroundSize: '8px 8px'
+              }}
+            />
+          )}
+
           {mood === 'celebrating' ? (
             <>
               <Heart className={`${sizeClasses.icon} text-rose-400 fill-rose-500`} />
@@ -151,7 +253,11 @@ export default function ZenLivingAvatar({
                 <div
                   key={eyeIdx}
                   className={`rounded-full bg-slate-800 border-blue-400/60 flex items-center justify-center relative overflow-hidden shadow-inner ${sizeClasses.eyeOuter} ${
-                    mood === 'thinking' ? 'border-amber-400/70' : ''
+                    mood === 'thinking'
+                      ? 'border-amber-400/70'
+                      : equippedGadget === 'visor_cyber'
+                      ? 'border-cyan-300/80'
+                      : ''
                   }`}
                 >
                   <div
@@ -159,6 +265,10 @@ export default function ZenLivingAvatar({
                     className={`rounded-full will-change-transform ${sizeClasses.eyeInner} ${
                       mood === 'thinking'
                         ? 'bg-amber-400 shadow-[0_0_8px_#fbbf24]'
+                        : equippedGadget === 'halo_neural'
+                        ? 'bg-emerald-400 shadow-[0_0_10px_#34d399]'
+                        : equippedGadget === 'visor_cyber'
+                        ? 'bg-cyan-300 shadow-[0_0_10px_#22d3ee]'
                         : 'bg-blue-400 shadow-[0_0_8px_#60a5fa]'
                     }`}
                   >
@@ -180,3 +290,4 @@ export default function ZenLivingAvatar({
     </div>
   );
 }
+

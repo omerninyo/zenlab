@@ -47,10 +47,18 @@ export default function Lab8_LanguageModelPredictor({ curriculum }) {
     return labData.prompts.find(p => p.id === selectedPromptId) || labData.prompts[0];
   }, [selectedPromptId, labData]);
 
-  // Compute dynamic next-token probability distribution
+  // Compute dynamic next-token probability distribution for the current story step
+  const activeVocabulary = useMemo(() => {
+    if (Array.isArray(activePrompt.stepVocabularies) && activePrompt.stepVocabularies.length > 0) {
+      const stepIdx = Math.min(generatedTokens.length, activePrompt.stepVocabularies.length - 1);
+      return activePrompt.stepVocabularies[stepIdx];
+    }
+    return activePrompt.vocabulary;
+  }, [activePrompt, generatedTokens.length]);
+
   const tokenDistribution = useMemo(() => {
-    return AIService.computeTokenProbabilities(activePrompt.vocabulary, temperature);
-  }, [activePrompt, temperature]);
+    return AIService.computeTokenProbabilities(activeVocabulary, temperature);
+  }, [activeVocabulary, temperature]);
 
   // Check challenges
   useEffect(() => {
@@ -87,11 +95,21 @@ export default function Lab8_LanguageModelPredictor({ curriculum }) {
     AudioEngine.playToken();
   };
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.__ZEN_LAB_TELEMETRY__ = {
+        ...(window.__ZEN_LAB_TELEMETRY__ || {}),
+        lab8: { selectedPromptId, temperature, generatedTokensCount: generatedTokens.length }
+      };
+    }
+  }, [selectedPromptId, temperature, generatedTokens.length]);
+
   const handlePredictNext = () => {
     const sampled = AIService.sampleToken(tokenDistribution, temperature);
     if (sampled) {
       appendToken(sampled);
     }
+    return sampled;
   };
 
   const handleReset = () => {
@@ -139,48 +157,14 @@ export default function Lab8_LanguageModelPredictor({ curriculum }) {
 
       {/* Phase 2: Interactive Simulator */}
       {phase === 'interactive' && (
-        <div className="space-y-6 animate-fadeIn">
-          {/* Active Mission Guidance Banner */}
-          <LabMissionGuide
-            challenges={labData.challenges}
-            completedChallenges={completedChallenges}
-            labNumber={8}
-          />
-
-          {/* Reversible Visual Mode Switcher */}
-          <div className="flex items-center justify-between bg-slate-900/90 border border-slate-800 px-4 py-2.5 rounded-2xl shadow-sm">
-            <span className="text-xs font-bold text-slate-300">סגנון תצוגת המעבדה:</span>
-            <div className="inline-flex rounded-xl bg-slate-950 p-1 border border-slate-800">
-              <button
-                type="button"
-                onClick={() => {
-                  setViewStyle('matific');
-                  AudioEngine.playStep();
-                }}
-                className={`px-3 py-1.5 rounded-lg text-xs font-black transition-all cursor-pointer ${
-                  viewStyle === 'matific'
-                    ? 'bg-amber-400 text-slate-950 shadow-sm'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                🌟 פיילוט משחקי (Matific)
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setViewStyle('scientific');
-                  AudioEngine.playStep();
-                }}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                  viewStyle === 'scientific'
-                    ? 'bg-blue-600 text-white shadow-sm'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                🔬 מעבדה מדעית
-              </button>
-            </div>
-          </div>
+        <div className="space-y-4 animate-fadeIn">
+          {viewStyle !== 'matific' && (
+            <LabMissionGuide
+              challenges={labData.challenges}
+              completedChallenges={completedChallenges}
+              labNumber={8}
+            />
+          )}
 
           {viewStyle === 'matific' ? (
             <MatificLab8Llm

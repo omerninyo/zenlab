@@ -69,8 +69,8 @@ export default function Lab6_VisionKernels({ curriculum }) {
       fireConfetti();
     }
 
-    // Challenge 2: Horizontal edge on square
-    if (selectedPreset === 'square' && activeKernelKey === 'horizontalEdge' && !completedChallenges['lab6_challenge2']) {
+    // Challenge 2: Edge filter (horizontal or vertical) on square
+    if (selectedPreset === 'square' && (activeKernelKey === 'horizontalEdge' || activeKernelKey === 'verticalEdge') && !completedChallenges['lab6_challenge2']) {
       StorageEngine.completeChallenge('lab6', 'lab6_challenge2', 1);
       AudioEngine.playChallengeSuccess();
       fireConfetti();
@@ -116,6 +116,15 @@ export default function Lab6_VisionKernels({ curriculum }) {
     );
   }, [convolutionResult, inspectedCell]);
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.__ZEN_LAB_TELEMETRY__ = {
+        ...(window.__ZEN_LAB_TELEMETRY__ || {}),
+        lab6: { selectedPreset, activeKernelKey, inspectedCell }
+      };
+    }
+  }, [selectedPreset, activeKernelKey, inspectedCell]);
+
   return (
     <div className="space-y-6">
       <LabPhaseHeader
@@ -135,48 +144,14 @@ export default function Lab6_VisionKernels({ curriculum }) {
       )}
 
       {phase === 'interactive' && (
-        <div className="space-y-6 animate-fadeIn">
-          {/* Active Mission Guidance Banner */}
-          <LabMissionGuide
-            challenges={labData.challenges}
-            completedChallenges={completedChallenges}
-            labNumber={6}
-          />
-
-          {/* Reversible Visual Mode Switcher */}
-          <div className="flex items-center justify-between bg-slate-900/90 border border-slate-800 px-4 py-2.5 rounded-2xl shadow-sm">
-            <span className="text-xs font-bold text-slate-300">סגנון תצוגת המעבדה:</span>
-            <div className="inline-flex rounded-xl bg-slate-950 p-1 border border-slate-800">
-              <button
-                type="button"
-                onClick={() => {
-                  setViewStyle('matific');
-                  AudioEngine.playStep();
-                }}
-                className={`px-3 py-1.5 rounded-lg text-xs font-black transition-all cursor-pointer ${
-                  viewStyle === 'matific'
-                    ? 'bg-amber-400 text-slate-950 shadow-sm'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                🌟 פיילוט משחקי (Matific)
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setViewStyle('scientific');
-                  AudioEngine.playStep();
-                }}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                  viewStyle === 'scientific'
-                    ? 'bg-blue-600 text-white shadow-sm'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                🔬 מעבדה מדעית
-              </button>
-            </div>
-          </div>
+        <div className="space-y-4 animate-fadeIn">
+          {viewStyle !== 'matific' && (
+            <LabMissionGuide
+              challenges={labData.challenges}
+              completedChallenges={completedChallenges}
+              labNumber={6}
+            />
+          )}
 
           {viewStyle === 'matific' ? (
             <MatificLab6Vision

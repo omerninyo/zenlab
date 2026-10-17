@@ -2,7 +2,7 @@
 ## Multi-Year Technical & Pedagogical Evolution: Web SPA, Native iPadOS, Lesson Plans, and Physical Computing
 
 **Document ID:** `ZEN-ROADMAP-EN-2026`  
-**Current Version:** `v0.8.1` (Updated: October 2026)  
+**Current Version:** `v1.0.0` (Updated: October 2026)  
 **Team:** Code & AI Explorer Team (`team@learnai.internal`)  
 **Governance:** Zero-PII Strict Compliance • 10th Man Red Team Protocol • MIT License  
 
@@ -13,7 +13,7 @@ This document serves as the **Central Source of Truth** for all collective memor
 ```mermaid
 flowchart LR
     P1["Phases 1-2: Core 8 Web Labs\n(Completed v0.7.23)"] --> P3["Phase 3: Classroom Lesson Plans\n& 70 Neural MP3s (Completed)"]
-    P3 --> P3C["Phase 3C: Site-Wide Matific Living Toy\n& X-Ray Code Lens (Completed v0.8.1)"]
+    P3 --> P3C["Phase 3C-3D: iPadOS Studio App\n& Desktop Chrome v1.0.0 (Completed)"]
     P3C --> P4["Phase 4: Native iPad App\n(100% Apple HIG & SwiftUI)"]
     P4 --> P5["Phase 5: Native Android App\n(Jetpack Compose & Material 3)"]
     P5 --> P6["Phase 6: Physical Computing & Edge AI\n(micro:bit & Teachable Machine)"]
@@ -106,6 +106,11 @@ Strategic UI/UX transformation bridging tactile early-childhood manipulatives (M
   - Locked heights of all X-Ray formula bars, `IF/ELSE` badges, Manhattan heuristic bars, neighbor voting grids, and convolution ribbons (`ΔY = 0px` verified via automated Playwright suite across Overworld and Labs 1–8).
 - [x] **Architectural RFC**:
   - Codified in `docs/proposals/RFC_004_MATIFIC_LUDIC_ENGINE_AND_XRAY_LENS.he.md` and `RFC_004_MATIFIC_LUDIC_ENGINE_AND_XRAY_LENS.md`.
+- [x] **Phase 3D: iPadOS Flagship Studio App + Desktop Chrome Parity & Full-Site Hebrew Audio/Copy Audit (`v1.0.0`)**:
+  - **`LudicLabShell 3.0` (Zen Dynamic Island Command Bar)**: Eliminated the 220px vertical robot stage blocker and double yellow cartoon borders; integrated `<ZenLivingAvatar size="sm" />`, mission banner, `🔊 השמע משימה` studio MP3 button (`/audio/hints/labX_chY.mp3`), `עדשת קוד` toggle, `איך זה עובד?` studio audio popover (`/audio/narration/labX.wav`), and 3 Bespoke Star Badges into a compact floating command bar — lifting all 8 interactive lab stages ~220px higher (Above the Fold).
+  - **`TheoryView 3.0` (4-Step Interactive Card Deck + Full-Page Toggle)**: Replaced the 4,000px vertical scroll wall with a 4-step studio deck (`1. סרטון וסיפור` | `2. נסו בעצמכם` | `3. בעולם האמיתי` | `4. חידון הבנה`), keyboard navigation (`←`/`→`), studio voice buttons, and a 1-click full-page view toggle.
+  - **`AdventureJourneyMap 3.0` (World Filter Hub)**: Added World Filter Pills (`כל העולמות (8)` | `עולם 1–4`), collapsible `שדרוגי זֶן` drawer, and `🔊 שמעו את זֶן` studio welcome audio button (`/audio/tutor/home_welcome.mp3`).
+  - **Acoustic Rate Calibration & Age 10–11 Copy Audit**: Prevented double-acceleration of pre-rendered `+12%` MP3s (`getEffectivePlaybackRate()`), expanded Hebrew TTS phonetic rules, removed all developer/marketing slogans (`From Zero to Neural`, `NotebookLM`, `בסגנון Brilliant`), and aligned Lab 4–8 challenge instructions with UI button labels.
 - [ ] **Future External Ludic Engine Research (Optional Phase 4+ Bridge)**:
   - Evaluation of Rive State Machines, Godot 4 Wasm, or Flutter + Flame for native mobile parity while keeping `curriculum.json` decoupled.
 

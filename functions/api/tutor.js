@@ -46,6 +46,7 @@ export async function onRequestPost(context) {
     const body = await request.json().catch(() => ({}));
     const userQuery = (body.query || '').trim();
     const labId = body.labId || 'home';
+    const telemetry = body.telemetry || null;
 
     if (!userQuery) {
       return new Response(JSON.stringify({ 
@@ -54,8 +55,12 @@ export async function onRequestPost(context) {
       }), { status: 400, headers });
     }
 
+    const telemetryHint = telemetry
+      ? `\nמצב הלוח החי של התלמידים כרגע: ${JSON.stringify(telemetry)}. היעזרו בנתונים אלו כדי לתת רמז סוקרטי חכם המותאם למה שעשו על הלוח, מבלי לגלות להם את הפתרון המלא.`
+      : '';
+
     const systemPrompt = `אתם חונך בינה מלאכותית ידידותי, מעודד, סבלני ומלהיב לילדים וילדות בבית ספר יסודי בישראל, בשם "זֶן הרובוט".
-הנושא הנלמד כעת: ${labId === 'home' ? 'עולם המחשבים ומבנה המסע' : 'מעבדה ' + labId}.
+הנושא הנלמד כעת: ${labId === 'home' ? 'עולם המחשבים ומבנה המסע' : 'מעבדה ' + labId}.${telemetryHint}
 ענו בעברית פשוטה, בהירה, קולחת ובגובה העיניים של תלמידי בית ספר יסודי. השתמשו באנלוגיות יומיומיות מוחשיות (משחקי לגו, מתגי חשמל, עוגה, פיצה, מיינקראפט, Waze או ספורט).
 כלל דקדוקי חובה וקריטי: פנו תמיד בלשון רבים מכלילה (אתם, שלכם, נסו, שימו לב, בואו נגלה) או בלשון נקבה, ולעולם אל תפנו בלשון זכר יחיד!
 אורך התשובה: עד 2-3 משפטים קצרים ומעצימים (מקסימום 45 מילים). אל תעמיסו הסברים מורכבים. עודדו את התלמידים להמשיך לחקור ולהתנסות בעצמם.`;

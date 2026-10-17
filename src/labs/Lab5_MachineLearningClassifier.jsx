@@ -166,6 +166,15 @@ export default function Lab5_MachineLearningClassifier({ curriculum }) {
                       (completedChallenges['lab5_challenge2'] ? 1 : 0) +
                       (completedChallenges['lab5_challenge3'] ? 1 : 0);
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.__ZEN_LAB_TELEMETRY__ = {
+        ...(window.__ZEN_LAB_TELEMETRY__ || {}),
+        lab5: { pointsCount: points.length, kValue, testPoint, predictedLabel: classification.predictedLabel }
+      };
+    }
+  }, [points.length, kValue, testPoint, classification.predictedLabel]);
+
   return (
     <div className="space-y-6">
       {/* 2-Phase Header */}
@@ -192,46 +201,7 @@ export default function Lab5_MachineLearningClassifier({ curriculum }) {
 
       {/* Phase 2: Interactive Simulator */}
       {phase === 'interactive' && (
-        <div className="space-y-6 animate-fadeIn">
-          {/* View Mode Switcher: Matific Game Pilot vs Classic Lab */}
-          <div className="flex items-center justify-between gap-3 pb-2 border-b border-slate-200/80 dark:border-slate-800 flex-wrap">
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-slate-500 dark:text-slate-400">
-                סגנון ממשק מעבדה:
-              </span>
-              <div className="inline-flex items-center bg-slate-100 dark:bg-slate-800/90 p-1 rounded-xl border border-slate-200/80 dark:border-slate-700/80 shadow-inner">
-                <button
-                  type="button"
-                  onClick={() => { setViewStyle('matific'); AudioEngine.playStep(); }}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                    viewStyle === 'matific'
-                      ? 'bg-amber-400 text-slate-950 shadow-sm ring-1 ring-amber-300 font-black'
-                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
-                  }`}
-                >
-                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                  <span>🌟 פיילוט משחקי (Matific)</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => { setViewStyle('classic'); AudioEngine.playStep(); }}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                    viewStyle === 'classic'
-                      ? 'bg-blue-600 text-white shadow-sm font-black'
-                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
-                  }`}
-                >
-                  <FlaskConical className="w-3.5 h-3.5" />
-                  <span>🔬 מעבדה מדעית</span>
-                </button>
-              </div>
-            </div>
-
-            <span className="text-[11px] font-mono font-bold text-slate-400 dark:text-slate-500 hidden sm:inline">
-              מגרש דו-ממדי • סיווג k-NN
-            </span>
-          </div>
-
+        <div className="space-y-4 animate-fadeIn">
           {viewStyle === 'matific' ? (
             <MatificLab5Classifier
               points={points}

@@ -63,47 +63,7 @@ export default function HomeDashboard({
   };
 
   return (
-    <div className="w-full space-y-5 sm:space-y-6 animate-in fade-in duration-300 pb-12" dir="rtl">
-      
-      {/* Top Layout Mode Switcher: Immediately visible above the fold */}
-      <div className="flex items-center justify-between gap-3 pb-2 border-b border-slate-200/80 dark:border-slate-800 flex-wrap">
-        <div className="flex items-center gap-2.5">
-          <span className="text-xs font-bold text-slate-500 dark:text-slate-400">
-            תצוגת מסלול:
-          </span>
-          <div className="inline-flex items-center bg-slate-100 dark:bg-slate-800/90 p-1 rounded-xl border border-slate-200/80 dark:border-slate-700/80 shadow-inner">
-            <button
-              type="button"
-              onClick={() => { setDashboardLayout('adventure'); AudioEngine.playStep(); }}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                dashboardLayout === 'adventure'
-                  ? 'bg-amber-500 text-slate-950 shadow-sm ring-1 ring-amber-400 font-black'
-                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
-              }`}
-            >
-              <Compass className="w-3.5 h-3.5" />
-              <span>🗺️ מפת מסע משחקית</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => { setDashboardLayout('grid'); AudioEngine.playStep(); }}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                dashboardLayout === 'grid'
-                  ? 'bg-blue-600 text-white shadow-sm font-black'
-                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
-              }`}
-            >
-              <LayoutGrid className="w-3.5 h-3.5" />
-              <span>📋 תצוגת מעבדות כיתתית</span>
-            </button>
-          </div>
-        </div>
-
-        <div className="text-xs font-mono font-bold text-slate-400 dark:text-slate-500 hidden sm:block">
-          8 מעבדות • 24 כוכבים
-        </div>
-      </div>
-
+    <div className="w-full space-y-5 animate-in fade-in duration-300 pb-8" dir="rtl">
       {dashboardLayout === 'adventure' ? (
         <AdventureJourneyMap
           curriculum={curriculum}
@@ -627,6 +587,29 @@ export default function HomeDashboard({
         </>
       )}
 
+      {/* Subtle Bottom Layout Switcher */}
+      <div className="flex justify-center pt-2">
+        <button
+          type="button"
+          onClick={() => {
+            setDashboardLayout(prev => (prev === 'adventure' ? 'grid' : 'adventure'));
+            AudioEngine.playStep();
+          }}
+          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer transition-colors"
+        >
+          {dashboardLayout === 'adventure' ? (
+            <>
+              <LayoutGrid className="w-3.5 h-3.5" />
+              <span>מעבר לתצוגת כרטיסים כיתתית</span>
+            </>
+          ) : (
+            <>
+              <Compass className="w-3.5 h-3.5" />
+              <span>חזרה למפת המסע של זֶן</span>
+            </>
+          )}
+        </button>
+      </div>
     </div>
   );
 }

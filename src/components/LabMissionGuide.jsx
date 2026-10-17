@@ -41,11 +41,14 @@ export default function LabMissionGuide({
 
   const handleSpeakMission = () => {
     if (!currentChallenge) return;
-    const textToSpeak = `משימה ${activeIndex + 1}: ${currentChallenge.title}. ${currentChallenge.instructions || currentChallenge.description || ''}`;
+    const hintText = currentChallenge.hint || currentChallenge.description || '';
+    const instText = currentChallenge.instructions || currentChallenge.description || '';
+    const textToSpeak = `משימה ${activeIndex + 1}: ${currentChallenge.title}. ${instText} ${hintText ? `רמז: ${hintText}` : ''}`;
+    const audioSrc = `/audio/hints/lab${labNumber}_ch${activeIndex + 1}.mp3?v=0.6.4`;
     
     setIsSpeaking(true);
     AudioEngine.playStep();
-    NarrationEngine.speak(textToSpeak);
+    NarrationEngine.play(textToSpeak, audioSrc);
     setTimeout(() => setIsSpeaking(false), 4000);
   };
 

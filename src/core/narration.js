@@ -31,7 +31,17 @@ function cleanHebrewForSpeech(text) {
     .replace(/\bALU\b/gi, 'אֵיי-אֵל-יוּ, יחידת החישוב')
     .replace(/\bLLM\b/gi, 'אֵל-אֵל-אֵם, מודל שפה')
     .replace(/\bLLMs\b/gi, 'מודלי שפה')
-    .replace(/\bA\*\b/gi, 'אֵיי סטאר')
+    .replace(/\*A|A\*/gi, 'אֵיי סטאר')
+    .replace(/\bBFS\b/gi, 'בִּי אֵף אֵס')
+    .replace(/\bk-NN\b/gi, 'קֵיי אֵן אֵן, השכנים הקרובים')
+    .replace(/\bk=5\b/gi, 'קֵיי שווה חמש')
+    .replace(/\bk=3\b/gi, 'קֵיי שווה שלוש')
+    .replace(/\bk=1\b/gi, 'קֵיי שווה אחת')
+    .replace(/\bRGB\b/gi, 'אָר גִ׳י בִּי')
+    .replace(/3[×xX]3/g, 'שלוש על שלוש')
+    .replace(/8[×xX]8/g, 'שמונה על שמונה')
+    .replace(/6[×xX]6/g, 'שש על שש')
+    .replace(/\bAI\b/gi, 'בִּינָה מְלָאכוּתִית')
     .replace(/\bXOR\b/gi, 'אֶקְס-אוֹר')
     .replace(/\bAND\b/gi, 'שער וְגַם')
     .replace(/\bOR\b/gi, 'שער אוֹ')
@@ -41,6 +51,8 @@ function cleanHebrewForSpeech(text) {
     .replace(/\bIR\b/gi, 'אוגר פקודה')
     .replace(/\bACC\b/gi, 'אוגר הצובר')
     .replace(/\bChatGPT\b/gi, 'צָ׳אט גִ׳י פִּי טִי')
+    .replace(/\bGemini\b/gi, 'גֶ׳מִינַיי')
+    .replace(/\bWaze\b/gi, 'וֵוייז')
     .replace(/\bZen\b/gi, 'זֶן')
     .replace(/\bזן\b/g, 'זֶן')
     .replace(/0\s*ו-1/g, 'אפס ואחת')
@@ -55,11 +67,12 @@ function cleanHebrewForSpeech(text) {
 class NarrationEngineClass {
   constructor() {
     this.html5Audio = null;
+    this.currentAudioSrc = '';
     this.currentUtterance = null;
     this.isPlaying = false;
     this.isPaused = false;
     this.progress = 0; // 0 to 100
-    this.rate = 1.15; // 15% acceleration (>=10%) for snappy, lively, and energetic pacing
+    this.rate = 1.08; // Lively, natural cadence for studio WAVs; pre-accelerated MP3s auto-calibrate to 1.0x
     this.pitch = 1.0; // natural, non-robotic acoustic pitch
     this.currentText = '';
     this.spokenText = '';
@@ -87,8 +100,8 @@ class NarrationEngineClass {
     }
   }
 
-  speak(text) {
-    this.play(text);
+  speak(text, audioSrc = '') {
+    this.play(text, audioSrc);
   }
 
   subscribe(listener) {
@@ -117,6 +130,16 @@ class NarrationEngineClass {
     };
   }
 
+  getEffectivePlaybackRate(src = this.currentAudioSrc) {
+    // Studio hint & tutor MP3s are already synthesized with +12% rate via he-IL-HilaNeural.
+    // Avoid double-accelerating them unless the user explicitly changed the speed multiplier.
+    const isPreAcceleratedMp3 = src && (src.includes('/audio/hints/') || src.includes('/audio/tutor/'));
+    if (isPreAcceleratedMp3) {
+      return Math.max(0.8, Math.min(1.5, Number((this.rate / 1.08).toFixed(2))));
+    }
+    return this.rate;
+  }
+
   setRate(newRate) {
     this.rate = Math.max(0.8, Math.min(1.75, newRate));
     if (this.html5Audio) {
@@ -125,7 +148,7 @@ class NarrationEngineClass {
       } else if ('webkitPreservesPitch' in this.html5Audio) {
         this.html5Audio.webkitPreservesPitch = true;
       }
-      this.html5Audio.playbackRate = this.rate;
+      this.html5Audio.playbackRate = this.getEffectivePlaybackRate();
     }
     this.notify();
   }
@@ -188,6 +211,7 @@ class NarrationEngineClass {
 
     this.stop();
     this.currentText = text;
+    this.currentAudioSrc = audioSrc || '';
     this.spokenText = cleanHebrewForSpeech(text);
     this.estimatedDuration = durationSec || 60;
     this.progress = 0;
@@ -201,11 +225,13 @@ class NarrationEngineClass {
         } else if ('webkitPreservesPitch' in this.html5Audio) {
           this.html5Audio.webkitPreservesPitch = true;
         }
-        this.html5Audio.playbackRate = this.rate; // 15% acceleration (1.15x) for energetic, child-friendly cadence
+        const effectiveRate = this.getEffectivePlaybackRate(audioSrc);
+        this.html5Audio.playbackRate = effectiveRate;
+        this.currentVoiceName = 'קריינות אולפן (הילה)';
 
         this.html5Audio.addEventListener('play', () => {
           if (this.html5Audio) {
-            this.html5Audio.playbackRate = this.rate;
+            this.html5Audio.playbackRate = this.getEffectivePlaybackRate(audioSrc);
           }
         });
 

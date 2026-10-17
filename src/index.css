@@ -22,13 +22,28 @@
   }
 
   body {
-    @apply bg-slate-50 text-slate-800 font-sans antialiased selection:bg-blue-200 selection:text-blue-900;
+    @apply bg-slate-100 text-slate-800 font-sans antialiased selection:bg-blue-200 selection:text-blue-900;
+    background-image:
+      radial-gradient(ellipse 90% 55% at 50% -10%, rgba(99, 102, 241, 0.08) 0%, rgba(251, 191, 36, 0.04) 45%, transparent 80%),
+      linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+    background-attachment: fixed;
     overflow-x: hidden;
     width: 100%;
   }
 
   html.dark body {
     @apply bg-slate-950 text-slate-100 selection:bg-slate-800 selection:text-slate-100;
+    background-image:
+      radial-gradient(ellipse 90% 55% at 50% -10%, rgba(99, 102, 241, 0.16) 0%, rgba(251, 191, 36, 0.05) 45%, transparent 80%),
+      linear-gradient(180deg, #090d16 0%, #020617 100%);
+    background-attachment: fixed;
+  }
+
+  /* Native View Transitions API smooth cross-fade */
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 220ms;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   /* Custom responsive scrollbars */

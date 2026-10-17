@@ -12,6 +12,13 @@ function cleanForSpeech(text) {
   if (!text) return '';
   return text
     .replace(/[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '')
+    .replace(/\*A|A\*/gi, 'אֵיי סטאר')
+    .replace(/\bBFS\b/gi, 'בִּי אֵף אֵס')
+    .replace(/\bk-NN\b/gi, 'קֵיי אֵן אֵן')
+    .replace(/\bk=5\b/gi, 'קֵיי שווה חמש')
+    .replace(/\bXOR\b/gi, 'אֶקְס אוֹר')
+    .replace(/\bAND\b/gi, 'וְגַם')
+    .replace(/\bOR\b/gi, 'אוֹ')
     .replace(/["'\u05F4\u05F3`]/g, '')
     .replace(/\s+/g, ' ')
     .trim();

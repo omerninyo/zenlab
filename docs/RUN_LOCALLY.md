@@ -24,7 +24,7 @@ npm -v
 
 ```bash
 # 1. שיבוט המאגר (במידת הצורך)
-git clone https://github.com/omerninyo/zenlab.git
+git clone <repository-url> zenlab
 cd zenlab
 
 # 2. התקנת כלל החבילות הנדרשות

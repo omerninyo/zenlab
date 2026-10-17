@@ -51,7 +51,10 @@ export default function MatificLab8Llm({
   };
 
   const handleRollNext = () => {
-    onPredictNext();
+    const sampled = onPredictNext();
+    if (sampled) {
+      setLastSampledToken(sampled);
+    }
   };
 
   const tempPresets = [
@@ -211,14 +214,16 @@ export default function MatificLab8Llm({
               <div>
                 <h3 className="text-xs sm:text-sm font-black text-amber-300 flex items-center gap-1.5">
                   <Sparkles className="w-4 h-4 text-amber-400" />
-                  <span>2. גלגל קפסולות המילים (מועמדות למילה הבאה)</span>
+                  <span>
+                    2. גלגל קפסולות המילים (המשך שלב {Math.min(generatedTokens.length + 1, 4)} מתוך 4 בסיפור)
+                  </span>
                 </h3>
                 <p className="text-[11px] text-slate-400 mt-0.5">
-                  לחצו על כל קפסולת מילה כדי להוסיף אותה ישירות לסיפור!
+                  בכל שלב המחשב מחשב סיכויים חדשים למילים הבאות שמתאימות להמשך המשפט!
                 </p>
               </div>
               <span className="text-[11px] font-mono text-indigo-300 bg-indigo-950/70 px-2.5 py-1 rounded-xl border border-indigo-500/40 shrink-0">
-                {showXRay ? 'Softmax P% פעיל' : 'תצוגת עוצמה'}
+                {showXRay ? `שלב #${Math.min(generatedTokens.length + 1, 4)} • P%` : 'תצוגת עוצמה'}
               </span>
             </div>
 

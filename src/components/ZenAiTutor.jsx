@@ -154,14 +154,43 @@ export default function ZenAiTutor({ currentLabId = 'lab1', isDapimActive = fals
       return;
     }
 
-    // 3. Cloudflare Pages Function Proxy (/api/tutor) with Circuit Breaker
-    // Uses the user's GEMINI_API_KEY securely hosted on Cloudflare edge
+    // 3. Option B (Prioritized before remote LLM): Fast, deterministic local semantic intent matcher
+    // Ensures 100% of matching curriculum/hint/glossary queries use pre-recorded studio MP3s at zero latency
+    const matchResult = searchKnowledge(questionText, effectiveLabId);
+    if (matchResult && matchResult.matched) {
+      setTimeout(() => {
+        setMessages(prev => [
+          ...prev,
+          {
+            id: 'tutor-' + Date.now(),
+            sender: 'tutor',
+            text: matchResult.text,
+            audioSrc: matchResult.audioSrc,
+            category: matchResult.category,
+            suggestedNext: matchResult.suggestedNext || [],
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          }
+        ]);
+        setIsLoading(false);
+        AudioEngine.playSuccess();
+      }, 280);
+      return;
+    }
+
+    const liveTelemetry = (typeof window !== 'undefined' && window.__ZEN_LAB_TELEMETRY__?.[effectiveLabId]) || null;
+
+    // 4. Cloudflare Pages Function Proxy (/api/tutor) with Circuit Breaker for open-ended questions
+    // Uses GEMINI_API_KEY securely hosted on Cloudflare edge + live board telemetry
     if (globalCircuitBreaker.isAvailable()) {
       try {
         const res = await fetch('/api/tutor', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ query: questionText, labId: effectiveLabId })
+          body: JSON.stringify({
+            query: questionText,
+            labId: effectiveLabId,
+            telemetry: liveTelemetry
+          })
         });
 
         if (res.ok) {
@@ -196,11 +225,14 @@ export default function ZenAiTutor({ currentLabId = 'lab1', isDapimActive = fals
       }
     }
 
-    // 4. Optional: Direct client call if user entered a custom key in UI drawer
+    // 5. Optional: Direct client call if user entered a custom key in UI drawer
     if (userApiKey && userApiKey.trim().length > 10) {
       try {
+        const telemetryContext = liveTelemetry
+          ? `\nמצב הלוח החי של התלמיד כרגע: ${JSON.stringify(liveTelemetry)}. היעזרו בנתון זה כדי לתת רמז סוקרטי ממוקד בלי לגלות את התשובה המלאה.`
+          : '';
         const promptSystem = `אתם חונך בינה מלאכותית ידידותי, מעודד וסבלני לילדים וילדות בבית ספר יסודי בישראל, בשם "זֶן הרובוט".
-הנושא הנלמד כעת במעבדה: ${effectiveLabId}.
+הנושא הנלמד כעת במעבדה: ${effectiveLabId}.${telemetryContext}
 ענו בעברית פשוטה, בהירה, בגובה העיניים של תלמידי בית ספר יסודי. השתמשו באנלוגיות יומיומיות (כמו משחקי לגו, מתגי חשמל, עוגה או ספורט).
 כלל דקדוקי חובה וקריטי: פנו תמיד בלשון רבים מכלילה (אתם, שלכם, נסו, שימו לב, בואו נגלה) או בלשון נקבה, ולעולם אל תפנו בלשון זכר יחיד!
 אל תתנו תשובות ארוכות ומסובכות: עד 2-3 משפטים קצרים ומעצימים. עודדו את התלמידים להמשיך לחקור במעבדה.`;
@@ -226,7 +258,7 @@ export default function ZenAiTutor({ currentLabId = 'lab1', isDapimActive = fals
                 sender: 'tutor',
                 text: reply.trim(),
                 isGemini: true,
-                category: 'Google Gemini 3',
+                category: 'Google Gemini',
                 suggestedNext: (CURATED_TUTOR_KNOWLEDGE[effectiveLabId]?.prompts || []).slice(0, 2),
                 timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
               }
@@ -241,9 +273,8 @@ export default function ZenAiTutor({ currentLabId = 'lab1', isDapimActive = fals
       }
     }
 
-    // 5. Option B: Fast, intelligent, local semantic intent matcher (Zero Latency, 100% Offline fallback)
+    // 6. Honest, encouraging out-of-domain fallback response (100% Offline resilient)
     setTimeout(() => {
-      const matchResult = searchKnowledge(questionText, effectiveLabId);
       if (matchResult) {
         setMessages(prev => [
           ...prev,
@@ -260,7 +291,7 @@ export default function ZenAiTutor({ currentLabId = 'lab1', isDapimActive = fals
       }
       setIsLoading(false);
       AudioEngine.playSuccess();
-    }, 350);
+    }, 300);
   };
 
   const categoryTabs = [

@@ -5,6 +5,77 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0] - 2026-10-17
+
+### Added, Fixed & Upgraded (Flagship iPadOS & Desktop Chrome Studio Architecture, Zen Dynamic Island, 4-Step Interactive Card Deck, Full Hebrew Voice Integration & Pedagogical Copy Audit)
+- **Inverted Studio Paradigm — `LudicLabShell 3.0` & Zen Dynamic Island (`src/components/LudicLabShell.jsx`, `src/labs/Lab1`–`Lab8`)**:
+  - Replaced the double-bordered cartoon container and 220px vertical robot head blocker with a unified **Zen Dynamic Island Command Bar** at the top of the studio stage.
+  - Houses `<ZenLivingAvatar size="sm" />` (with 60fps cursor/touch eye tracking and equipped Workshop Gadgets), mission status, **`🔊 השמע משימה` studio voiceover button**, **`עדשת קוד` (X-Ray) toggle**, **`איך זה עובד?` popover**, and **3 Bespoke Star Badges** in a single sleek bar — elevating the interactive game canvas **~220px higher (Above the Fold)** on iPad, iPhone, and Desktop Chrome.
+  - Removed the redundant developer mode switcher (`"🌟 פיילוט משחקי (Matific) / 🔬 מעבדה מדעית"`) from the top of all 8 labs.
+- **Interactive 4-Step Lesson Card Deck — `TheoryView 3.0` (`src/components/TheoryView.jsx`)**:
+  - Replaced the 4,000px vertical wall of text with a **4-Step Interactive Card Deck** (`1. סרטון וסיפור` | `2. נסו בעצמכם` | `3. בעולם האמיתי` | `4. חידון הבנה`), complete with a **`הקראת השיעור` studio audio button**, **`תצוגה מלאה / תצוגת שלבים` toggle**, and Desktop Chrome keyboard arrow navigation (`←` / `→`).
+- **World Hub 3.0 — `AdventureJourneyMap 3.0` (`src/components/AdventureJourneyMap.jsx`, `src/components/HomeDashboard.jsx`)**:
+  - Added **World Chapter Filter Pills** (`כל העולמות (8)` | `עולם 1–4`), a **`🔊 שמעו את זֶן` studio welcome button** (`/audio/tutor/home_welcome.mp3`), and a collapsible **`שדרוגי זֶן` Workshop Drawer** so the 8 stations sit immediately above the fold.
+- **100% Hebrew Studio Voiceover & Phonetic Calibration (`src/core/narration.js`, `scripts/prepare_hints_json.js`)**:
+  - Connected `LudicLabShell.jsx` directly to `/audio/hints/labX_chY.mp3` and `/audio/narration/labX.wav`.
+  - Calibrated `NarrationEngine.getEffectivePlaybackRate()` so pre-accelerated (`+12%`) `he-IL-HilaNeural` MP3 files play at natural `1.0x` cadence without double-speed compounding, and expanded `cleanHebrewForSpeech()` for `A*`, `BFS`, `k-NN`, `RGB`, `3×3`, `8×8`, `Gemini`, and `Waze`.
+- **Full-Site Pedagogical Copy & Title Audit for Ages 10–11 (`src/data/curriculum.json`, `src/core/labMeta.js`, `src/components/InteractiveConceptSandbox.jsx`, `src/App.jsx`, `index.html`)**:
+  - Removed all English/developer/marketing slogans (`"From Zero to Neural"`, `"בסגנון Brilliant"`, `"NotebookLM Video Explainer"`, `"NotebookLM Audio Deep Dive"`), fixed the `'העליונים'` typo in `labMeta.js`, aligned `lab4.challenges` button names, and synchronized `lab5` narration transcript (`תפוחים לאבטיחים`).
+
+## [0.9.5] - 2026-10-17
+
+### Added & Upgraded (Next-Gen 60fps Browser Game Engine, Bespoke Geometric Art & Brilliant-Style Interactive Sandboxes — Phase A Vertical Slice)
+- **Bespoke Vector Art System & Zen's Robot Upgrade Workshop (`src/components/BespokeIllustrations.jsx`, `src/components/ZenLivingAvatar.jsx`, `src/components/AdventureJourneyMap.jsx`)**:
+  - Replaced generic OS emojis (`🚀, 🪐, ☄️, ⭐, ❤️, 😊`) across the core shell, Overworld Journey Map, Theory views, and Pilot Labs 1 & 4 with custom-crafted multi-layered SVG vector illustrations (`<BespokeSpacecraft />`, `<BespokeRingedPlanet />`, `<BespokeAsteroid />`, `<BespokeHeartGlyph />`, `<BespokeSmileyGlyph />`, `<BespokeStarBadge />`, `<BespokeRealWorldBadge />`).
+  - Added **"סדנת השדרוגים של זֶן" (`<ZenWorkshopBar />`)** to the Overworld Command Bridge: earning stars across the 8 labs unlocks real visual gear (`משקפי רנטגן בינאריים`, `כנפי סילון מגנטיות`, `כתר נווט כוכבים`, `הילת מוח מלאכותי`) that dynamically equips onto `<ZenLivingAvatar />` across every lab in real time.
+- **Brilliant.org-Style Interactive Micro-Lessons (`src/components/InteractiveConceptSandbox.jsx`, `src/components/TheoryView.jsx`)**:
+  - Embedded a 15-second hands-on interactive discovery widget right below the Media Theater in `TheoryView.jsx` for all 8 labs (`lab1`–`lab8`), turning passive reading into immediate tactile experimentation before entering the game stage.
+- **Next-Gen 60fps 2.5D / HTML5 Canvas Engines (`src/components/MatificPilotLab1.jsx`, `src/components/MatificLab4Pathfinder.jsx`)**:
+  - **Lab 1 (`MatificPilotLab1.jsx`)**: Upgraded to 2.5D extruded light-prism tiles with ambient neighbor light bleed, a real-time 60fps hardware-accelerated HTML5 Canvas **3D Isometric Voxel Hologram Projector** (`holoCanvasRef`), and an interactive Single-Byte 8-bit Power Conduit Calculator (`128 | 64 | 32 | 16 | 8 | 4 | 2 | 1`).
+  - **Lab 4 (`MatificLab4Pathfinder.jsx`)**: Added a synchronized 60fps HTML5 Canvas Overlay (`radarCanvasRef`) over the 8×8 space radar that renders glowing golden energy conduits, smooth continuous interpolated spacecraft flight with directional rotation and plasma exhaust, and live X-Ray Vector Force lines ($g$ in Cyan from Start, $h$ Manhattan L-vector in Amber to the Target Planet) when hovering any cell.
+- **Cohesive Spatial Studio App Shell & View Transitions (`src/App.jsx`, `src/index.css`, `src/components/HomeDashboard.jsx`, `src/components/LabPhaseHeader.jsx`, `src/components/LudicLabShell.jsx`)**:
+  - Added native `document.startViewTransition` cross-fade transitions when navigating between the Overworld and Labs or switching between Theory and Interactive phases.
+
+## [0.9.0] - 2026-10-15
+
+### Added, Fixed & Upgraded (All-in-One Elementary CS & AI Platform Overhaul — Deep Pedagogical, Linguistic & Ludic Upgrade)
+- **4 Worlds / Chapters Journey Framing (`src/core/labMeta.js`, `AdventureJourneyMap.jsx`, `TheoryView.jsx`)**:
+  - Structured the 8 labs into 4 progressive worlds aligned with international elementary CS & AI frameworks (CSTA K-5 & AI4K12):
+    1. **עולם 1: שפת המחשב והלוגיקה** (Labs 1–2: Binary representation & Algorithmic loops)
+    2. **עולם 2: אלגוריתמים חכמים וניווט** (Labs 3–4: Decision trees & Heuristic A* search)
+    3. **עולם 3: איך מחשבים לומדים ורואים?** (Labs 5–6: k-NN Machine Learning & Computer Vision Kernels)
+    4. **עולם 4: המוח המלאכותי ויצירת שפה** (Labs 7–8: Perceptrons/Neural Networks & Generative Language Models)
+- **Real-World Connections, Critical AI Literacy & 3-Stage Graded Mini-Quiz (`src/core/labMeta.js`, `TheoryView.jsx`)**:
+  - Added **"🌍 איפה פוגשים את זה בחיים האמיתיים?"** (`realWorldConnections` — 3 concrete daily-life examples per lab, 24 cards total).
+  - Added **"🧠 סוד של מומחים: חשיבה ביקורתית על AI ומחשבים"** (`criticalThinking` callout per lab teaching dataset bias, adversarial examples, heuristic limits, and LLM hallucinations).
+  - Upgraded the Theory tab knowledge check into a **3-Stage Graded Interactive Mini-Quiz ("⚡ אתגר פיצוח הבנה — 3 שאלות קצרות")** (`חימום הבנה`, `חיבור לחיים`, `אתגר מדענים` — 24 interactive questions with instant constructive feedback and studio audio celebration).
+- **Matific Ludic Engine & X-Ray Code Lens Alignment (`MatificPilotLab1.jsx`, `MatificLab3Trees.jsx`, `MatificLab4Pathfinder.jsx`, `MatificLab5Classifier.jsx`, `Lab6_VisionKernels.jsx`, `MatificLab7Perceptron.jsx`, `Lab8_LanguageModelPredictor.jsx`, `MatificLab8Llm.jsx`, `src/data/curriculum.json`)**:
+  - **Lab 1**: Fixed `activePreset` ReferenceError in `Lab1_BinaryPixels.jsx`, added missing `Binary` icon import in `MatificPilotLab1.jsx`, dynamic Heart/Smiley stencil switching for Challenge 2, and decimal byte conversion (`=102`) in X-Ray mode.
+  - **Lab 3**: Unified animals (`עטלף, נשר, חתול, צב`), fixed RTL branch direction in Challenge 1 (`ימין=כן, שמאל=לא`), and added bilingual Hebrew comments to the `[IF/ELSE]` X-Ray badges.
+  - **Lab 4**: Clarified Challenge 2 instructions (`לפחות 4 אסטרואידים או 'בנה מבוך קסם 🧱'`) and simplified the `[f=g+h]` X-Ray legend into kid-friendly Hebrew.
+  - **Lab 5**: Eliminated the Star/UFO vs. Apple/Watermelon metaphor collision by unifying `MatificLab5Classifier.jsx` and `curriculum.json` around the Smart Fruit Scanner (`תפוח אדום 🍎`, `אבטיח ירוק 🍉`, `פרי המסתורין (?)`, and `k-NN` neighbor voting).
+  - **Lab 6**: Updated Challenge 2 completion logic so applying either `horizontalEdge` or `verticalEdge` on the `square` preset completes the challenge, and aligned `curriculum.json` preset names.
+  - **Lab 7**: Upgraded slider labels (`⚡ עוצמת רמז 1`, `☀️ עוצמת רמז 2`, `🎯 סף השכנוע`) and added a plain-Hebrew explanation beneath the `[Σ]` formula.
+  - **Lab 8**: Built a **4-Step Contextual Story Continuation Engine** (`stepVocabularies`) across 3 kid-friendly story prompts (`🤖 תעלומת הרובוט במעבדה`, `🚀 מסע החללית החכמה`, `🎮 המצאת המשחק החדש`) so each generated word advances the story to the next contextual vocabulary step.
+- **Studio MP3 Audio Connection in `LabMissionGuide.jsx`**:
+  - Connected `handleSpeakMission` to `NarrationEngine.play(textToSpeak, '/audio/hints/lab${labNumber}_ch${activeIndex + 1}.mp3?v=0.6.4')` so clicking "הקרא משימה" plays the studio-recorded MP3 files.
+
+## [0.8.2] - 2026-10-15
+
+### Fixed & Improved (Gemini 4 Cross-Stream QA/QC Audit & Next-Gen Architecture Upgrades)
+- **AI Tutor Execution Order Fix & Live Board Telemetry (`ZenAiTutor.jsx`, `functions/api/tutor.js`, `Lab1`–`Lab8`)**:
+  - Prioritized local deterministic `searchKnowledge` before remote `/api/tutor` LLM calls on free-text input so matching questions and hints always use their studio-recorded MP3s (`1.15x`) at zero latency.
+  - Added live board telemetry (`window.__ZEN_LAB_TELEMETRY__`) across Labs 1–8 and passed it to `/api/tutor` for context-aware Socratic hints.
+- **Dynamic Code-Splitting (`React.lazy` + `<Suspense>` in `App.jsx`)**:
+  - Converted `Lab1`–`Lab8` imports to lazy chunks, cutting the initial main bundle well below the 500 kB threshold and eliminating Vite build warnings.
+- **Unified `LudicLabShell` in Lab 1 & Voice Readout in "איך זה עובד?" (`LudicLabShell.jsx`, `MatificPilotLab1.jsx`)**:
+  - Added a `🔊 השמעה` narration button inside the floating "איך זה עובד?" popover card across all Matific labs.
+  - Refactored `MatificPilotLab1.jsx` to consume `LudicLabShell.jsx`, removing ~140 lines of duplicated header and chassis markup.
+- **Zero-PII 6-Character Classroom Save Code (`StorageEngine`, `ClassroomSettingsModal.jsx`)**:
+  - Added `getSaveCode()` and `restoreFromSaveCode()` (`ZN-XXXXXX`) so elementary students on shared school computers can write down a 6-character code in their notebook and restore all 24 challenge stars without accounts or PII.
+- **Cross-Lab Polish & Service Worker Bump (`public/sw.js`, `MatificLab2Robot.jsx`, `TheoryView.jsx`, `MatificLab8Llm.jsx`)**:
+  - Unified `<LabMissionGuide />` visibility in Labs 3, 6, 7, 8, highlighted rolled tokens in `MatificLab8Llm.jsx`, removed residual `animate-ping` instances, updated `docs/lesson_plans/README.md`, and bumped Service Worker `CACHE_NAME` to `zenlab-v0.8.2`.
+
 ## [0.8.1] - 2026-10-14
 
 ### Fixed & Stabilized (Zero-Layout-Shift `CLS = 0` & Zero-Render 60fps Eye Tracking Across Overworld & Labs 1–8)

@@ -29,10 +29,10 @@ const ANIMAL_EMOJIS = {
 const getAnimalEmoji = (animal) => animal?.emoji || ANIMAL_EMOJIS[animal?.id] || '🐾';
 
 const ATTR_SHORT_META = {
-  canFly: { icon: '🪽', short: 'עף באוויר?', code: 'if (animal.canFly)' },
-  hasFur: { icon: '🧶', short: 'יש פרווה?', code: 'if (animal.hasFur)' },
-  legs: { icon: '🐾', short: '4 רגליים?', code: 'if (animal.legs === 4)' },
-  hasShell: { icon: '🛡️', short: 'יש שריון?', code: 'if (animal.hasShell)' }
+  canFly: { icon: '🪽', short: 'עף באוויר?', code: 'if (animal.canFly) // אם עפה באוויר?' },
+  hasFur: { icon: '🧶', short: 'יש פרווה?', code: 'if (animal.hasFur) // אם יש פרווה?' },
+  legs: { icon: '🐾', short: '4 רגליים?', code: 'if (animal.legs === 4) // אם 4 רגליים?' },
+  hasShell: { icon: '🛡️', short: 'יש שריון?', code: 'if (animal.hasShell) // אם יש שריון?' }
 };
 
 export default function MatificLab3Trees({

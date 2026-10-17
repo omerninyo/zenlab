@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, Suspense, lazy } from 'react';
 import { 
   Binary, 
   Bot, 
@@ -39,14 +39,15 @@ import GlossaryModal from './components/GlossaryModal.jsx';
 import ClassroomSettingsModal from './components/ClassroomSettingsModal.jsx';
 import ZenAiTutor from './components/ZenAiTutor.jsx';
 import HomeDashboard from './components/HomeDashboard.jsx';
-import Lab1_BinaryPixels from './labs/Lab1_BinaryPixels.jsx';
-import Lab2_AlgorithmicRobot from './labs/Lab2_AlgorithmicRobot.jsx';
-import Lab3_DecisionTree from './labs/Lab3_DecisionTree.jsx';
-import Lab4_Pathfinder from './labs/Lab4_Pathfinder.jsx';
-import Lab5_MachineLearningClassifier from './labs/Lab5_MachineLearningClassifier.jsx';
-import Lab6_VisionKernels from './labs/Lab6_VisionKernels.jsx';
-import Lab7_Perceptron from './labs/Lab7_Perceptron.jsx';
-import Lab8_LanguageModelPredictor from './labs/Lab8_LanguageModelPredictor.jsx';
+
+const Lab1_BinaryPixels = lazy(() => import('./labs/Lab1_BinaryPixels.jsx'));
+const Lab2_AlgorithmicRobot = lazy(() => import('./labs/Lab2_AlgorithmicRobot.jsx'));
+const Lab3_DecisionTree = lazy(() => import('./labs/Lab3_DecisionTree.jsx'));
+const Lab4_Pathfinder = lazy(() => import('./labs/Lab4_Pathfinder.jsx'));
+const Lab5_MachineLearningClassifier = lazy(() => import('./labs/Lab5_MachineLearningClassifier.jsx'));
+const Lab6_VisionKernels = lazy(() => import('./labs/Lab6_VisionKernels.jsx'));
+const Lab7_Perceptron = lazy(() => import('./labs/Lab7_Perceptron.jsx'));
+const Lab8_LanguageModelPredictor = lazy(() => import('./labs/Lab8_LanguageModelPredictor.jsx'));
 
 export default function App() {
   const [activeLabId, setActiveLabId] = useState(() => StorageEngine.getState().activeLabId || 'lab1');
@@ -119,18 +120,34 @@ export default function App() {
     };
   }, []);
 
+  const runViewTransition = (updateFn) => {
+    if (typeof document !== 'undefined' && typeof document.startViewTransition === 'function') {
+      try {
+        document.startViewTransition(() => {
+          updateFn();
+        });
+        return;
+      } catch {}
+    }
+    updateFn();
+  };
+
   const handleLabSelect = (id) => {
-    setActiveLabId(id);
-    StorageEngine.setActiveLab(id);
-    setViewMode('lab');
-    StorageEngine.setViewMode('lab');
     AudioEngine.playStep();
+    runViewTransition(() => {
+      setActiveLabId(id);
+      StorageEngine.setActiveLab(id);
+      setViewMode('lab');
+      StorageEngine.setViewMode('lab');
+    });
   };
 
   const handleGoHome = () => {
-    setViewMode('home');
-    StorageEngine.setViewMode('home');
     AudioEngine.playStep();
+    runViewTransition(() => {
+      setViewMode('home');
+      StorageEngine.setViewMode('home');
+    });
   };
 
   const handleToggleMute = () => {
@@ -230,28 +247,28 @@ export default function App() {
                   </span>
                 </div>
                 <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium hidden md:block">
-                  From Zero to Neural
+                  מסע במדעי המחשב ובינה מלאכותית
                 </p>
               </div>
             </button>
 
-            {/* Dedicated Home / Roadmap Button (Desktop/Tablet) */}
+            {/* Dedicated Home / Roadmap Button (All Screens) */}
             <button
               type="button"
               onClick={handleGoHome}
-              className={`hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+              className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                 viewMode === 'home'
                   ? isDapimActive
                     ? 'btn-hollow-primary !h-8 !px-3 !text-xs ring-1 ring-[var(--accent-rim)]'
                     : 'bg-blue-600 text-white shadow-xs'
                   : isDapimActive
-                  ? 'btn-hollow !h-8 !px-3 !text-xs'
+                  ? 'btn-hollow !h-8 !px-2.5 !text-xs'
                   : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700'
               }`}
               title="מפת מסלול הלמידה"
             >
               <Home className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              <span className="hidden sm:inline">מפת המסע</span>
+              <span>מפת המסע</span>
             </button>
           </div>
 
@@ -484,7 +501,7 @@ export default function App() {
       </header>
 
       {/* Main Educational Workspace */}
-      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-6">
+      <main className="flex-1 max-w-6xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-4">
         {viewMode === 'home' ? (
           <HomeDashboard
             curriculum={curriculumData}
@@ -497,38 +514,22 @@ export default function App() {
           />
         ) : (
           <div>
-            {/* Quick Breadcrumb back to Home / Roadmap */}
-            <div className="flex items-center justify-between gap-2 mb-4 pb-2.5 border-b border-slate-200/80 dark:border-slate-800 text-xs font-bold text-slate-500 dark:text-slate-400">
-              <button
-                type="button"
-                onClick={handleGoHome}
-                className={`inline-flex items-center gap-1.5 transition-colors cursor-pointer ${
-                  isDapimActive
-                    ? 'btn-hollow !h-8 !px-3 !text-xs font-bold'
-                    : 'text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300'
-                }`}
-              >
-                <ChevronRight className="w-4 h-4" />
-                <span>חזרה למפת המסלול</span>
-              </button>
-              <div className="flex items-center gap-2">
-                <span className="font-medium text-slate-400 dark:text-slate-500">
-                  מעבדה {currentLab.number} מתוך 8
-                </span>
-                <span className="font-mono text-amber-500">
-                  ★ {labStars[activeLabId] || 0}/3
-                </span>
-              </div>
-            </div>
-
-            {activeLabId === 'lab1' && <Lab1_BinaryPixels curriculum={curriculumData} />}
-            {activeLabId === 'lab2' && <Lab2_AlgorithmicRobot curriculum={curriculumData} />}
-            {activeLabId === 'lab3' && <Lab3_DecisionTree curriculum={curriculumData} />}
-            {activeLabId === 'lab4' && <Lab4_Pathfinder curriculum={curriculumData} />}
-            {activeLabId === 'lab5' && <Lab5_MachineLearningClassifier curriculum={curriculumData} />}
-            {activeLabId === 'lab6' && <Lab6_VisionKernels curriculum={curriculumData} />}
-            {activeLabId === 'lab7' && <Lab7_Perceptron curriculum={curriculumData} />}
-            {activeLabId === 'lab8' && <Lab8_LanguageModelPredictor curriculum={curriculumData} />}
+            <Suspense
+              fallback={
+                <div className="p-10 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-center text-sm font-bold text-slate-600 dark:text-slate-300 animate-pulse">
+                  טוען את תחנת המחקר של זֶן...
+                </div>
+              }
+            >
+              {activeLabId === 'lab1' && <Lab1_BinaryPixels curriculum={curriculumData} />}
+              {activeLabId === 'lab2' && <Lab2_AlgorithmicRobot curriculum={curriculumData} />}
+              {activeLabId === 'lab3' && <Lab3_DecisionTree curriculum={curriculumData} />}
+              {activeLabId === 'lab4' && <Lab4_Pathfinder curriculum={curriculumData} />}
+              {activeLabId === 'lab5' && <Lab5_MachineLearningClassifier curriculum={curriculumData} />}
+              {activeLabId === 'lab6' && <Lab6_VisionKernels curriculum={curriculumData} />}
+              {activeLabId === 'lab7' && <Lab7_Perceptron curriculum={curriculumData} />}
+              {activeLabId === 'lab8' && <Lab8_LanguageModelPredictor curriculum={curriculumData} />}
+            </Suspense>
           </div>
         )}
       </main>

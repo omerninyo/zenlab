@@ -237,7 +237,7 @@ export default function MatificLab2Robot({
         <div className="flex flex-wrap items-center justify-between gap-2 bg-slate-950/80 px-4 py-2.5 rounded-2xl border border-white/10">
           <div className="flex items-center gap-3 flex-wrap">
             <span className="text-xs font-bold text-indigo-200 flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
+              <span className="w-2 h-2 rounded-full bg-amber-400 shadow-[0_0_8px_#fbbf24]" />
               <span>מיקום הרובוט:</span>
               <code className="font-mono text-amber-300 bg-indigo-950/90 px-2 py-0.5 rounded-lg border border-indigo-400/30">
                 X:{robotPos.x}, Y:{robotPos.y}

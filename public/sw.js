@@ -5,7 +5,7 @@
  * and resilient network-first navigation for school Chromebooks.
  */
 
-const CACHE_NAME = 'zenlab-v0.7.17';
+const CACHE_NAME = 'zenlab-v1.0.0';
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',

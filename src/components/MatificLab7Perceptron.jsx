@@ -146,7 +146,7 @@ export default function MatificLab7Perceptron({
             <div className="bg-slate-900/90 p-3.5 rounded-2xl border border-slate-800 space-y-2">
               <div className="flex items-center justify-between text-xs">
                 <span className="font-bold text-slate-200">
-                  משקל כניסה 1 (<span className="font-mono text-purple-300">w₁</span>)
+                  ⚡ עוצמת רמז 1 (<span className="font-mono text-purple-300">w₁</span> • כמה הוא חשוב?)
                 </span>
                 <span className="px-2.5 py-0.5 rounded-lg bg-purple-950 border border-purple-500/40 font-mono font-black text-purple-300 text-sm">
                   {w1 > 0 ? `+${w1.toFixed(1)}` : w1.toFixed(1)}
@@ -188,7 +188,7 @@ export default function MatificLab7Perceptron({
             <div className="bg-slate-900/90 p-3.5 rounded-2xl border border-slate-800 space-y-2">
               <div className="flex items-center justify-between text-xs">
                 <span className="font-bold text-slate-200">
-                  משקל כניסה 2 (<span className="font-mono text-purple-300">w₂</span>)
+                  ☀️ עוצמת רמז 2 (<span className="font-mono text-purple-300">w₂</span> • כמה הוא חשוב?)
                 </span>
                 <span className="px-2.5 py-0.5 rounded-lg bg-purple-950 border border-purple-500/40 font-mono font-black text-purple-300 text-sm">
                   {w2 > 0 ? `+${w2.toFixed(1)}` : w2.toFixed(1)}
@@ -230,7 +230,7 @@ export default function MatificLab7Perceptron({
             <div className="bg-slate-900/90 p-3.5 rounded-2xl border border-slate-800 space-y-2">
               <div className="flex items-center justify-between text-xs">
                 <span className="font-bold text-slate-200">
-                  סף החלטה / הטיה (<span className="font-mono text-amber-300">b</span>)
+                  🎯 סף השכנוע (<span className="font-mono text-amber-300">b</span> • כמה קל לנוירון לומר "כן"?)
                 </span>
                 <span className="px-2.5 py-0.5 rounded-lg bg-amber-950 border border-amber-500/40 font-mono font-black text-amber-300 text-sm">
                   {bias > 0 ? `+${bias.toFixed(1)}` : bias.toFixed(1)}
@@ -304,11 +304,16 @@ export default function MatificLab7Perceptron({
             </div>
 
             {/* Live X-Ray Formula Bar — always mounted at constant height */}
-            <div className="p-3 rounded-2xl bg-indigo-950/70 border border-indigo-400/40 text-center font-mono text-xs sm:text-sm text-indigo-200 h-11 flex items-center justify-center" dir="ltr">
+            <div className="p-3 rounded-2xl bg-indigo-950/70 border border-indigo-400/40 text-center space-y-1 min-h-[56px] flex flex-col items-center justify-center">
               {showXRay ? (
-                <span>
-                  <span className="text-amber-300 font-black">Σ</span> = ({w1.toFixed(1)})·x₁ + ({w2.toFixed(1)})·x₂ + ({bias.toFixed(1)})
-                </span>
+                <>
+                  <div className="font-mono text-xs sm:text-sm text-indigo-200" dir="ltr">
+                    <span className="text-amber-300 font-black">Σ</span> = ({w1.toFixed(1)})·x₁ + ({w2.toFixed(1)})·x₂ + ({bias.toFixed(1)})
+                  </div>
+                  <div className="text-[10px] text-amber-200/90 font-bold">
+                    אם הסכום Σ עובר את ה-0 ⬅ הנוירון נדלק (1 = כן ✅)!
+                  </div>
+                </>
               ) : (
                 <span className="text-slate-400 text-xs" dir="rtl">
                   הפעילו את "עדשת משוואת נוירון [Σ]" כדי לחשוף את משוואת הקו החיה

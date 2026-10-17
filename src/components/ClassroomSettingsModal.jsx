@@ -66,6 +66,8 @@ export default function ClassroomSettingsModal({ isOpen, onClose, onOpenGlossary
   const [isMuted, setIsMuted] = useState(() => StorageEngine.getState().isMuted);
   const [activePalette, setActivePalette] = useState(() => StorageEngine.getDapimPalette());
   const [activeTheme, setActiveTheme] = useState(() => StorageEngine.getTheme());
+  const [saveCodeInput, setSaveCodeInput] = useState('');
+  const [currentSaveCode, setCurrentSaveCode] = useState(() => StorageEngine.getSaveCode());
   const fileInputRef = useRef(null);
 
   useEffect(() => {
@@ -73,6 +75,7 @@ export default function ClassroomSettingsModal({ isOpen, onClose, onOpenGlossary
       if (state.dapimPalette) setActivePalette(state.dapimPalette);
       if (state.theme) setActiveTheme(state.theme);
       if (state.isMuted !== undefined) setIsMuted(state.isMuted);
+      setCurrentSaveCode(StorageEngine.getSaveCode());
     });
     return unsub;
   }, []);
@@ -170,6 +173,35 @@ export default function ClassroomSettingsModal({ isOpen, onClose, onOpenGlossary
     };
     reader.readAsText(file);
     e.target.value = '';
+  };
+
+  const handleCopySaveCode = () => {
+    const code = StorageEngine.getSaveCode();
+    setCurrentSaveCode(code);
+    if (navigator?.clipboard?.writeText) {
+      navigator.clipboard.writeText(`ZN-${code}`).catch(() => {});
+    }
+    AudioEngine.playStep();
+    setImportStatus({ type: 'success', text: `קוד השמירה ZN-${code} הועתק! רשמו אותו במחברת.` });
+    setTimeout(() => setImportStatus(null), 3500);
+  };
+
+  const handleRestoreSaveCode = (e) => {
+    if (e) e.preventDefault();
+    const res = StorageEngine.restoreFromSaveCode(saveCodeInput);
+    if (res.success) {
+      AudioEngine.playSuccess();
+      setCurrentSaveCode(StorageEngine.getSaveCode());
+      setSaveCodeInput('');
+      setImportStatus({
+        type: 'success',
+        text: `הקוד שוחזר בהצלחה! סך הכל ${res.totalStars} כוכבים פעילים.`
+      });
+    } else {
+      AudioEngine.playError();
+      setImportStatus({ type: 'error', text: res.error });
+    }
+    setTimeout(() => setImportStatus(null), 4000);
   };
 
   return (
@@ -378,17 +410,45 @@ export default function ClassroomSettingsModal({ isOpen, onClose, onOpenGlossary
           </div>
         )}
 
-        {/* Section 5: Backup and Restore */}
+        {/* Section 5: Backup and Restore (6-Char Classroom Code + JSON) */}
         <div className="p-4 rounded-xl bg-[var(--slate-3)] border border-[var(--slate-6)] space-y-3">
-          <div className="flex items-center gap-2">
-            <FileText className="w-4 h-4 text-[var(--accent-base)]" />
-            <h3 className="text-xs font-bold text-slate-900 dark:text-slate-100">גיבוי וטעינת התקדמות (ללא צורך בחשבון)</h3>
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <FileText className="w-4 h-4 text-[var(--accent-base)]" />
+              <h3 className="text-xs font-bold text-slate-900 dark:text-slate-100">קוד שמירה למחברת וגיבוי התקדמות (Zero-PII)</h3>
+            </div>
+            <button
+              type="button"
+              onClick={handleCopySaveCode}
+              className="px-2.5 py-1 rounded-lg bg-[var(--slate-2)] border border-[var(--accent-rim)] font-mono text-xs font-black text-[var(--accent-base)] hover:opacity-90 cursor-pointer"
+              title="לחצו להעתקת קוד השמירה האישי"
+            >
+              ZN-{currentSaveCode} 📋
+            </button>
           </div>
           <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
-            מתאים למעבר בין מחשבים בכיתת המחשבים או לשמירת ההישגים בבית בסיום השיעור:
+            תלמידים יכולים להעתיק למחברת את קוד 6 התווים למעלה ולהזין אותו בשיעור הבא כדי לשחזר מיד את כל הכוכבים שלהם:
           </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+          <form onSubmit={handleRestoreSaveCode} className="flex items-center gap-2">
+            <input
+              type="text"
+              dir="ltr"
+              maxLength={9}
+              value={saveCodeInput}
+              onChange={(e) => setSaveCodeInput(e.target.value.toUpperCase())}
+              placeholder="הזינו קוד (למשל ZN-5A454E)"
+              className="flex-1 px-3 py-1.5 rounded-lg bg-[var(--slate-2)] border border-[var(--slate-6)] text-xs font-mono font-bold text-center text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[var(--accent-base)]"
+            />
+            <button
+              type="submit"
+              className="btn-glass text-xs !py-1.5 !px-3 font-bold cursor-pointer text-slate-900 dark:text-white shrink-0"
+            >
+              שחזור מקוד
+            </button>
+          </form>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 border-t border-[var(--slate-6)]">
             <button
               type="button"
               onClick={handleExportJSON}

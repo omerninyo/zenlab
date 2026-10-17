@@ -185,6 +185,15 @@ export default function Lab3_DecisionTree({ curriculum }) {
   const rootLabel = labData.attributes.find(a => a.id === rootAttr)?.label || rootAttr;
   const branchLabel = labData.attributes.find(a => a.id === branchAttr)?.label || branchAttr;
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.__ZEN_LAB_TELEMETRY__ = {
+        ...(window.__ZEN_LAB_TELEMETRY__ || {}),
+        lab3: { rootAttr, leftAttr, rightAttr, accuracy: evaluation.accuracy, datasetMode }
+      };
+    }
+  }, [rootAttr, leftAttr, rightAttr, evaluation.accuracy, datasetMode]);
+
   return (
     <div className="space-y-6">
       <LabPhaseHeader
@@ -204,53 +213,14 @@ export default function Lab3_DecisionTree({ curriculum }) {
       )}
 
       {phase === 'interactive' && (
-        <div className="space-y-6 animate-fadeIn">
-          {/* Active Mission Guidance Banner */}
-          <LabMissionGuide
-            challenges={labData.challenges}
-            completedChallenges={completedChallenges}
-            labNumber={3}
-          />
-
-          {/* 100% Reversible Switcher Bar: Matific Ludic Pilot vs Classic Scientific Lab */}
-          <div className="flex flex-wrap items-center justify-between gap-3 bg-slate-900/90 border border-slate-800 rounded-2xl p-2.5 px-4 shadow-md">
-            <div className="flex items-center gap-2 text-xs text-slate-300">
-              <Sparkles className="w-4 h-4 text-amber-400" />
-              <span className="font-bold">סגנון תצוגת מעבדה:</span>
-            </div>
-            <div className="flex items-center gap-1.5 bg-slate-950 p-1 rounded-xl border border-slate-800">
-              <button
-                type="button"
-                onClick={() => {
-                  setViewStyle('matific');
-                  AudioEngine.playStep();
-                }}
-                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                  viewStyle === 'matific'
-                    ? 'bg-amber-400 text-slate-950 shadow-md'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>🌟 פיילוט משחקי (Matific)</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setViewStyle('classic');
-                  AudioEngine.playStep();
-                }}
-                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                  viewStyle === 'classic'
-                    ? 'bg-blue-600 text-white shadow-md'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                <FlaskConical className="w-3.5 h-3.5" />
-                <span>🔬 מעבדה מדעית</span>
-              </button>
-            </div>
-          </div>
+        <div className="space-y-4 animate-fadeIn">
+          {viewStyle !== 'matific' && (
+            <LabMissionGuide
+              challenges={labData.challenges}
+              completedChallenges={completedChallenges}
+              labNumber={3}
+            />
+          )}
 
           {viewStyle === 'matific' ? (
             <MatificLab3Trees
