@@ -68,6 +68,9 @@ export default function LabPhaseHeader({
       if (data.id && data.id !== 'unknown') {
         StorageEngine.setLabPhase(data.id, newPhase);
       }
+      if (typeof window !== 'undefined') {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      }
     };
     if (typeof document !== 'undefined' && typeof document.startViewTransition === 'function') {
       document.startViewTransition(() => {

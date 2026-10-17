@@ -36,7 +36,7 @@ export default function MatificLab6Vision({
 
   const stars = [
     { id: 'lab6_challenge1', done: isCh1Done, label: 'זיהוי קו אנכי' },
-    { id: 'lab6_challenge2', done: isCh2Done, label: 'זיהוי קו אופקי בריבוע' },
+    { id: 'lab6_challenge2', done: isCh2Done, label: 'גילוי קווי המתאר של ריבוע' },
     { id: 'lab6_challenge3', done: isCh3Done, label: 'בדיקת משבצת בעדשה' }
   ];
 
@@ -71,8 +71,8 @@ export default function MatificLab6Vision({
   ];
 
   const kernelButtons = [
-    { key: 'verticalEdge', label: 'מגלה קווים אנכיים ║' },
-    { key: 'horizontalEdge', label: 'מגלה קווים אופקיים ═' },
+    { key: 'verticalEdge', label: 'זיהוי קצוות אנכיים ║' },
+    { key: 'horizontalEdge', label: 'זיהוי קצוות אופקיים ═' },
     { key: 'blur', label: 'טשטוש 🌫️' },
     { key: 'sharpen', label: 'חידוד ✨' }
   ];

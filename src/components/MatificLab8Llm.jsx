@@ -35,7 +35,7 @@ export default function MatificLab8Llm({
 
   const stars = [
     { id: 'lab8_challenge1', done: isCh1Done, label: 'חיזוי קפוא ומדויק (0.0)' },
-    { id: 'lab8_challenge2', done: isCh2Done, label: 'ניצוץ יצירתי וחם (0.9+)' },
+    { id: 'lab8_challenge2', done: isCh2Done, label: 'ניצוץ יצירתי וחם (0.8+)' },
     { id: 'lab8_challenge3', done: isCh3Done, label: 'בניית סיפור של 4 מילים' }
   ];
 
@@ -43,7 +43,7 @@ export default function MatificLab8Llm({
 
   // Thermal state: 'icy' | 'balanced' | 'fiery'
   const thermalMode =
-    temperature <= 0.15 ? 'icy' : temperature >= 0.9 ? 'fiery' : 'balanced';
+    temperature <= 0.15 ? 'icy' : temperature >= 0.8 ? 'fiery' : 'balanced';
 
   const handleCapsuleClick = (token) => {
     setLastSampledToken(token);
@@ -75,7 +75,7 @@ export default function MatificLab8Llm({
       }
       stationMessage={
         generatedTokens.length === 0
-          ? 'בחרו טמפרטורה בידית התרמית ולחצו על "הגרל את המילה הבאה 🎲" או על אחת מקפסולות המילים!'
+          ? 'בחרו טמפרטורה בידית התרמית ולחצו על "גלו את המילה הבאה! 🎲" או על אחת מקפסולות המילים!'
           : `הסיפור של זֶן כולל כעת ${generatedTokens.length} מילים חדשות! המשיכו להגריל מילים או שנו את מד החום.`
       }
       StationIcon={MessageSquare}
@@ -204,7 +204,7 @@ export default function MatificLab8Llm({
               }`}
             >
               <Dices className="w-5 h-5" />
-              <span>הגרל את המילה הבאה 🎲</span>
+              <span>גלו את המילה הבאה! 🎲</span>
             </button>
           </div>
 

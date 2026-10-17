@@ -7,7 +7,9 @@ import {
   Binary,
   Volume2,
   Square,
-  X
+  X,
+  CheckCircle2,
+  Target
 } from 'lucide-react';
 import { AudioEngine } from '../core/audio.js';
 import { NarrationEngine } from '../core/narration.js';
@@ -42,10 +44,10 @@ function inferLabIdFromProps(labIdProp, stars, stationBadge, chassisTitle) {
  * LudicLabShell 3.0 — Flagship iPadOS & Desktop Chrome Studio Stage
  * Features:
  * 1. Zen Dynamic Island Command Bar: Houses the living 60fps eye-tracking Zen Avatar,
- *    current mission telemetry, studio Hebrew voiceover button (`🔊 השמע משימה`),
- *    X-Ray Code Lens toggle, "איך זה עובד?" popover, and 3 Bespoke Star Badges in a single sleek bar.
+ *    active mission instructions (with 1-click Star selector), studio Hebrew voiceover button (`🔊 השמע משימה`),
+ *    hint popover (`💡 רמז`), X-Ray Code Lens toggle, "איך זה עובד?" popover, and 3 Bespoke Star Badges.
  * 2. Zero double yellow borders or vertical robot blockers — moves the interactive canvas
- *    ~220px higher (Above the Fold) on iPhone, iPad, and Desktop Chrome.
+ *    ~220px higher (Above the Fold) on iPhone, iPad, and Desktop Chrome with CLS = 0 (ΔY = 0px).
  */
 export default function LudicLabShell({
   labId = '',
@@ -67,6 +69,8 @@ export default function LudicLabShell({
   children
 }) {
   const [showTheoryCard, setShowTheoryCard] = useState(false);
+  const [showHintCard, setShowHintCard] = useState(false);
+  const [manualChallengeIdx, setManualChallengeIdx] = useState(null);
   const [narrationState, setNarrationState] = useState(() => NarrationEngine.getState());
 
   useEffect(() => {
@@ -76,10 +80,27 @@ export default function LudicLabShell({
   const resolvedLabId = inferLabIdFromProps(labId, stars, stationBadge, chassisTitle);
   const labData = curriculumData?.labs?.[resolvedLabId];
 
-  // Determine active challenge (1, 2, or 3) based on first uncompleted star
+  // Determine active challenge (1, 2, or 3): manual selection if clicked, otherwise first uncompleted star
   const firstPendingIdx = Array.isArray(stars) ? stars.findIndex(s => !s?.done) : 0;
-  const activeChallengeNum = firstPendingIdx === -1 ? 3 : Math.min(3, Math.max(1, firstPendingIdx + 1));
+  const allStarsCompleted = Array.isArray(stars) && stars.length > 0 && firstPendingIdx === -1;
+
+  // Reset manual override automatically when the selected star gets completed
+  useEffect(() => {
+    if (manualChallengeIdx !== null && stars[manualChallengeIdx]?.done && firstPendingIdx !== -1) {
+      setManualChallengeIdx(null);
+    }
+  }, [stars, manualChallengeIdx, firstPendingIdx]);
+
+  const effectiveIdx =
+    manualChallengeIdx !== null
+      ? manualChallengeIdx
+      : firstPendingIdx === -1
+      ? Math.max(0, (stars?.length || 1) - 1)
+      : firstPendingIdx;
+
+  const activeChallengeNum = Math.min(3, Math.max(1, effectiveIdx + 1));
   const activeChallengeData = labData?.challenges?.[activeChallengeNum - 1];
+  const isCurrentMissionDone = Boolean(stars[effectiveIdx]?.done);
 
   const hintAudioSrc = `/audio/hints/${resolvedLabId}_ch${activeChallengeNum}.mp3?v=1.0.0`;
   const labNarrationSrc = labData?.media?.narration?.audioSrc || `/audio/narration/${resolvedLabId}.wav`;
@@ -119,15 +140,15 @@ export default function LudicLabShell({
         <div className="absolute top-20 left-1/3 w-1.5 h-1.5 bg-cyan-300/80 rounded-full" />
       </div>
 
-      {/* 1. ZEN DYNAMIC ISLAND COMMAND BAR (Unified Avatar + Mission + Voice + X-Ray + Stars) */}
-      <div className="relative z-20 flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-2.5 bg-slate-950/75 backdrop-blur-xl px-3 sm:px-4 py-2.5 rounded-2xl border border-white/15 shadow-lg">
+      {/* 1. ZEN DYNAMIC ISLAND COMMAND BAR (Unified Avatar + Mission + Voice + Hint + X-Ray + Stars) */}
+      <div className="relative z-20 flex flex-col xl:flex-row items-stretch xl:items-center justify-between gap-2.5 bg-slate-950/80 backdrop-blur-xl px-3 sm:px-4 py-2.5 rounded-2xl border border-white/15 shadow-lg">
         
-        {/* Right Side (RTL): Living Zen Avatar (Compact) + Mission Telemetry + Voice Button */}
+        {/* Right Side (RTL): Living Zen Avatar (Compact) + Active Mission + Voice & Hint Buttons */}
         <div className="flex items-center gap-3 flex-1 min-w-0">
           {showAvatar ? (
-            <div className="shrink-0 -my-1 hidden xs:block sm:block">
+            <div className="shrink-0 -my-1 hidden sm:block">
               <ZenLivingAvatar
-                mood={robotMood}
+                mood={allStarsCompleted ? 'celebrating' : robotMood}
                 isBeamActive={isBeamActive || narrationState.isPlaying}
                 size="sm"
                 showBeamRay={false}
@@ -141,47 +162,95 @@ export default function LudicLabShell({
 
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-[11px] font-black px-2 py-0.5 rounded-md bg-indigo-500/30 text-indigo-200 border border-indigo-400/30 whitespace-nowrap">
-                {stationBadge}
-              </span>
-              <span className="text-[11px] text-amber-300 font-bold truncate">
+              {activeChallengeData ? (
+                <span
+                  className={`inline-flex items-center gap-1 text-[11px] font-black px-2 py-0.5 rounded-md border whitespace-nowrap ${
+                    allStarsCompleted
+                      ? 'bg-emerald-500/25 text-emerald-200 border-emerald-400/40'
+                      : isCurrentMissionDone
+                      ? 'bg-emerald-500/20 text-emerald-300 border-emerald-400/35'
+                      : 'bg-amber-400/20 text-amber-200 border-amber-400/40'
+                  }`}
+                >
+                  {isCurrentMissionDone ? (
+                    <CheckCircle2 className="w-3 h-3 text-emerald-400 shrink-0" />
+                  ) : (
+                    <Target className="w-3 h-3 text-amber-300 shrink-0" />
+                  )}
+                  <span>
+                    {allStarsCompleted
+                      ? `כל 3 המשימות הושלמו! (משימה ${activeChallengeNum}/3)`
+                      : `משימה ${activeChallengeNum}/3: ${activeChallengeData.title}`}
+                  </span>
+                </span>
+              ) : (
+                <span className="text-[11px] font-black px-2 py-0.5 rounded-md bg-indigo-500/30 text-indigo-200 border border-indigo-400/30 whitespace-nowrap">
+                  {stationBadge}
+                </span>
+              )}
+
+              <span className="text-[11px] text-cyan-300 font-bold truncate">
                 {stationStatus}
               </span>
-              <span className="hidden md:inline-flex items-center gap-1 text-[11px] text-slate-400 font-medium">
+
+              <span className="hidden 2xl:inline-flex items-center gap-1 text-[11px] text-slate-400 font-medium">
                 • <ChassisIcon className="w-3 h-3 text-slate-400 inline" /> {chassisTitle}
               </span>
             </div>
+
             <p className="text-xs sm:text-sm font-bold text-white mt-0.5 leading-snug line-clamp-2">
-              {stationMessage}
+              {activeChallengeData?.instructions || stationMessage}
             </p>
           </div>
 
-          {/* Studio Hebrew Mission Audio Button */}
-          <button
-            type="button"
-            onClick={handlePlayMissionVoice}
-            className={`shrink-0 flex items-center gap-1.5 px-3 py-2 rounded-xl border text-xs font-black transition-all cursor-pointer shadow-sm ${
-              narrationState.isPlaying
-                ? 'bg-rose-500 text-white border-rose-300 shadow-rose-500/30 animate-pulse'
-                : 'bg-amber-400/15 hover:bg-amber-400/25 text-amber-300 border-amber-400/40'
-            }`}
-            title="השמעה קולית של המשימה והרמז בעברית"
-          >
-            {narrationState.isPlaying ? (
-              <>
-                <Square className="w-3.5 h-3.5 fill-current shrink-0" />
-                <span className="hidden sm:inline">עצור הקראה</span>
-              </>
-            ) : (
-              <>
-                <Volume2 className="w-4 h-4 shrink-0" />
-                <span className="hidden sm:inline">השמע משימה</span>
-              </>
+          {/* Studio Hebrew Mission Audio Button + Visual Hint Toggle */}
+          <div className="flex items-center gap-1.5 shrink-0">
+            <button
+              type="button"
+              onClick={handlePlayMissionVoice}
+              className={`shrink-0 flex items-center gap-1.5 px-2.5 sm:px-3 py-2 rounded-xl border text-xs font-black transition-all cursor-pointer shadow-sm ${
+                narrationState.isPlaying
+                  ? 'bg-rose-500 text-white border-rose-300 shadow-rose-500/30 animate-pulse'
+                  : 'bg-amber-400/15 hover:bg-amber-400/25 text-amber-300 border-amber-400/40'
+              }`}
+              title="השמעה קולית של המשימה והרמז בעברית"
+            >
+              {narrationState.isPlaying ? (
+                <>
+                  <Square className="w-3.5 h-3.5 fill-current shrink-0" />
+                  <span className="hidden md:inline">עצור הקראה</span>
+                </>
+              ) : (
+                <>
+                  <Volume2 className="w-4 h-4 shrink-0" />
+                  <span className="hidden md:inline">השמע משימה</span>
+                </>
+              )}
+            </button>
+
+            {activeChallengeData?.hint && (
+              <button
+                type="button"
+                onClick={() => {
+                  setShowHintCard(prev => !prev);
+                  setShowTheoryCard(false);
+                  AudioEngine.playStep();
+                }}
+                className={`shrink-0 flex items-center gap-1 px-2.5 py-2 rounded-xl border text-xs font-black transition-colors cursor-pointer ${
+                  showHintCard
+                    ? 'bg-amber-400 text-slate-950 border-amber-200'
+                    : 'bg-white/10 hover:bg-white/15 text-amber-200 border-white/15'
+                }`}
+                title="הצג רמז למשימה"
+              >
+                <Lightbulb className="w-3.5 h-3.5 shrink-0" />
+                <span className="hidden sm:inline">רמז</span>
+              </button>
             )}
-          </button>
+          </div>
         </div>
 
-        {/* Left Side (RTL): X-Ray Code Lens + How It Works + 3 Star Badges */}
+        {/* Left Side (RTL): X-Ray Code Lens + How It Works + 3 Interactive Star Badges */}
         <div className="flex items-center justify-between sm:justify-end gap-2 shrink-0 flex-wrap pt-1.5 xl:pt-0 border-t xl:border-t-0 border-white/10">
           {onToggleXRay && (
             <button
@@ -207,6 +276,7 @@ export default function LudicLabShell({
               type="button"
               onClick={() => {
                 setShowTheoryCard(!showTheoryCard);
+                setShowHintCard(false);
                 AudioEngine.playStep();
               }}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold transition-colors cursor-pointer ${
@@ -223,30 +293,78 @@ export default function LudicLabShell({
 
           {stars.length > 0 && (
             <div className="flex items-center gap-1.5 bg-slate-900/90 px-2.5 py-1 rounded-xl border border-white/15">
-              <span className="text-[11px] font-bold text-amber-200 hidden sm:inline">כוכבים:</span>
+              <span className="text-[11px] font-bold text-amber-200 hidden sm:inline">משימות:</span>
               <div className="flex items-center gap-1">
-                {stars.map((starObj, sIdx) => (
-                  <div
-                    key={starObj.id || sIdx}
-                    className={`w-6 h-6 rounded-lg flex items-center justify-center transition-colors duration-200 ${
-                      starObj.done
-                        ? 'bg-amber-400/20 border border-amber-400/60'
-                        : 'bg-white/5 text-white/30 border border-white/10'
-                    }`}
-                    title={starObj.label}
-                  >
-                    <BespokeStarBadge size={15} filled={Boolean(starObj.done)} />
-                  </div>
-                ))}
+                {stars.map((starObj, sIdx) => {
+                  const isSelectedMission = effectiveIdx === sIdx;
+                  return (
+                    <button
+                      key={starObj.id || sIdx}
+                      type="button"
+                      onClick={() => {
+                        setManualChallengeIdx(sIdx);
+                        AudioEngine.playStep();
+                      }}
+                      className={`w-7 h-6 rounded-lg flex items-center justify-center gap-0.5 transition-all duration-150 cursor-pointer ${
+                        starObj.done
+                          ? isSelectedMission
+                            ? 'bg-emerald-500/30 border-2 border-emerald-400 shadow-sm'
+                            : 'bg-amber-400/20 border border-amber-400/60 hover:bg-amber-400/30'
+                          : isSelectedMission
+                          ? 'bg-amber-400/25 border-2 border-amber-400 text-white'
+                          : 'bg-white/5 text-white/40 border border-white/10 hover:bg-white/10'
+                      }`}
+                      title={`משימה ${sIdx + 1}: ${starObj.label}`}
+                    >
+                      <BespokeStarBadge size={13} filled={Boolean(starObj.done)} />
+                      <span className="text-[10px] font-black">{sIdx + 1}</span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
           )}
         </div>
       </div>
 
-      {/* Floating Overlay Popover Theory Card (Zero vertical layout shift!) */}
+      {/* Floating Overlay Popover: Visual Hint Card (Absolute = Zero vertical layout shift ΔY = 0px!) */}
+      {showHintCard && activeChallengeData?.hint && (
+        <div className="absolute left-3 right-3 sm:left-5 sm:right-5 top-[82px] z-30 bg-slate-950/95 border-2 border-amber-400/80 rounded-2xl p-4 shadow-2xl backdrop-blur-md text-xs sm:text-sm animate-fadeIn">
+          <div className="flex flex-col sm:flex-row items-start justify-between gap-3">
+            <div className="space-y-1">
+              <h4 className="font-black text-amber-300 flex items-center gap-2 text-sm">
+                <Lightbulb className="w-4 h-4 text-amber-400 shrink-0" />
+                <span>רמז למשימה {activeChallengeNum}: {activeChallengeData.title}</span>
+              </h4>
+              <p className="text-slate-100 leading-relaxed">
+                {activeChallengeData.hint}
+              </p>
+            </div>
+            <div className="flex items-center gap-2 shrink-0 self-end sm:self-start">
+              <button
+                type="button"
+                onClick={handlePlayMissionVoice}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-400/20 hover:bg-amber-400/30 text-amber-200 border border-amber-400/40 text-xs font-bold cursor-pointer transition-colors"
+              >
+                <Volume2 className="w-3.5 h-3.5" />
+                <span>{narrationState.isPlaying ? 'עצור' : 'השמע רמז'}</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowHintCard(false)}
+                className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-black cursor-pointer"
+              >
+                <span>הבנתי!</span>
+                <X className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Floating Overlay Popover: Theory Card (Absolute = Zero vertical layout shift ΔY = 0px!) */}
       {showTheoryCard && theoryText && (
-        <div className="relative z-30 bg-indigo-950/95 border border-amber-400/70 rounded-2xl p-4 shadow-2xl backdrop-blur-md text-xs sm:text-sm animate-fadeIn">
+        <div className="absolute left-3 right-3 sm:left-5 sm:right-5 top-[82px] z-30 bg-indigo-950/95 border-2 border-amber-400/70 rounded-2xl p-4 shadow-2xl backdrop-blur-md text-xs sm:text-sm animate-fadeIn">
           <div className="flex flex-col sm:flex-row items-start justify-between gap-3">
             <div className="space-y-1">
               <h4 className="font-black text-amber-300 flex items-center gap-2 text-sm">

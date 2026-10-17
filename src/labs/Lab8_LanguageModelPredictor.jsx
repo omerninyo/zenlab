@@ -71,8 +71,8 @@ export default function Lab8_LanguageModelPredictor({ curriculum }) {
       }
     }
 
-    // Challenge 2: Creative temp >= 0.9 with at least 1 token
-    if (temperature >= 0.9 && generatedTokens.length >= 1 && !completedChallenges['lab8_challenge2']) {
+    // Challenge 2: Creative temp >= 0.8 with at least 1 token
+    if (temperature >= 0.8 && generatedTokens.length >= 1 && !completedChallenges['lab8_challenge2']) {
       const res = StorageEngine.completeChallenge('lab8', 'lab8_challenge2', 1);
       if (res.isNew) {
         AudioEngine.playSuccess();

@@ -1489,7 +1489,7 @@
       },
       "kernels": {
         "verticalEdge": {
-          "name": "קצוות אנכיים (Vertical Sobel)",
+          "name": "זיהוי קצוות אנכיים",
           "matrix": [
             [
               -1,
@@ -1510,7 +1510,7 @@
           "description": "מזהה מעברים חדים בין חושך לאור מימין לשמאל"
         },
         "horizontalEdge": {
-          "name": "קצוות אופקיים (Horizontal Sobel)",
+          "name": "זיהוי קצוות אופקיים",
           "matrix": [
             [
               -1,
@@ -1531,7 +1531,7 @@
           "description": "מזהה מעברים חדים בין חושך לאור מלמעלה למטה"
         },
         "sharpen": {
-          "name": "חידוד (Sharpen)",
+          "name": "חידוד תמונה",
           "matrix": [
             [
               0,
@@ -1552,7 +1552,7 @@
           "description": "מדגיש פיקסלים בודדים ביחס לשכנים שלהם"
         },
         "blur": {
-          "name": "טשטוש ממוצע (Box Blur)",
+          "name": "טשטוש ממוצע",
           "matrix": [
             [
               0.11,

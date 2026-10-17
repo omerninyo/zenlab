@@ -124,22 +124,48 @@ export default function MatificLab7Perceptron({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
           {/* Chamber 1: בקרת זרם הנוירון (Tactile Sliders + Nudge Buttons + Activation Switch) */}
           <div className="lg:col-span-6 bg-slate-950/90 rounded-3xl border-2 border-purple-500/40 p-4 sm:p-5 flex flex-col justify-between space-y-4 shadow-xl">
-            <div className="flex items-center justify-between border-b border-white/10 pb-3">
+            <div className="flex items-center justify-between border-b border-white/10 pb-3 flex-wrap gap-2">
               <div className="flex items-center gap-2">
                 <Sliders className="w-4 h-4 text-purple-400" />
                 <h3 className="text-xs sm:text-sm font-black text-purple-200">
                   1. בקרת זרם הנוירון (משקולות וסף)
                 </h3>
               </div>
-              <button
-                type="button"
-                onClick={onReset}
-                className="flex items-center gap-1 px-2.5 py-1 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700 text-xs font-bold cursor-pointer active:scale-95"
-                title="איפוס משקולות"
-              >
-                <RotateCcw className="w-3.5 h-3.5" />
-                <span>איפוס</span>
-              </button>
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (selectedGate === 'AND') {
+                      onChangeW1(0.8);
+                      onChangeW2(0.8);
+                      onChangeBias(-1.2);
+                    } else if (selectedGate === 'OR') {
+                      onChangeW1(0.8);
+                      onChangeW2(0.8);
+                      onChangeBias(-0.4);
+                    } else {
+                      onChangeW1(1.0);
+                      onChangeW2(-1.0);
+                      onChangeBias(-0.2);
+                    }
+                    AudioEngine.playStep();
+                  }}
+                  className="flex items-center gap-1 px-2.5 py-1 rounded-xl bg-amber-400/20 hover:bg-amber-400/30 text-amber-200 border border-amber-400/40 text-xs font-black cursor-pointer active:scale-95"
+                  title="כיוון אוטומטי של הידיות לשער הנוכחי"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                  <span>כיוון אוטומטי קסום 🪄</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={onReset}
+                  className="flex items-center gap-1 px-2.5 py-1 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700 text-xs font-bold cursor-pointer active:scale-95"
+                  title="איפוס משקולות"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  <span>איפוס</span>
+                </button>
+              </div>
             </div>
 
             {/* Weight 1 Control */}
@@ -284,7 +310,7 @@ export default function MatificLab7Perceptron({
                       : 'text-slate-400 hover:text-white'
                   }`}
                 >
-                  מדרגה חדה Step
+                  מתג חד (0 או 1)
                 </button>
                 <button
                   type="button"
@@ -298,7 +324,7 @@ export default function MatificLab7Perceptron({
                       : 'text-slate-400 hover:text-white'
                   }`}
                 >
-                  עקומה רכה Sigmoid
+                  מד הדרגתי (0%–100%)
                 </button>
               </div>
             </div>
