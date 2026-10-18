@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2026-10-18
+
+### Added & Transformed (ZenLab 3D — Fullscreen AA 3D Interactive Sci-Fi Game Engine, Blender 5.2 GLB Pipeline, Rapier3D WASM Physics, Custom GLSL Shaders & Diegetic RTL HUD)
+- **Architectural Decoupling & 100% Pedagogical Preservation (`src/game3d/useZenGameStore.js`, `src/App.jsx`)**:
+  - Decoupled all 8 stations' simulation state, 24 star challenges, audio/TTS narration (`NarrationEngine`, `AudioEngine`), curriculum data (`src/data/curriculum.json`, `src/core/labMeta.js`), and Workshop upgrades (`ZEN_WORKSHOP_GADGETS`) into a unified reactive 3D store (`ZenGameStore` / `useZenGameStore()`).
+  - Set the fullscreen (`100vw x 100vh`) AA 3D WebGL2 Game Engine (`src/game3d/ZenGame3DApp.jsx`) as the default experience while preserving 100% of the existing 2D DOM studio interface accessible via the top-bar **"מצב קלאסי / מורה"** toggle (and **"מצב משחק 3D"** button in the 2D header).
+- **Headless Blender 5.2 3D Asset Generation & Procedural PBR Pipeline (`scripts/generate_3d_assets.py`, `public/models/zen_robot.glb`, `public/models/lab_props.glb`, `src/game3d/engine/ProceduralTextures.js`)**:
+  - Authored a headless Blender 5.2 Python generator (`scripts/generate_3d_assets.py`) producing beveled, UV-mapped, PBR-textured `.glb` assets: `public/models/zen_robot.glb` (Zen's titanium chassis, articulated head, emissive visor, thruster cone, antenna, and 4 physical 3D upgrade attachments: `Upgrade_visor_cyber`, `Upgrade_ears_plasma`, `Upgrade_crown_radar`, `Upgrade_halo_neural`) and `public/models/lab_props.glb` (`Prop_Apple`, `Prop_Watermelon`, `Prop_HoloBase`, `Prop_MechanicalSwitch`, `Prop_LogicGateArch`).
+  - Built high-DPI procedural PBR normal/roughness/metalness/emissive maps and crisp RTL Hebrew 3D label sprites (`createHebrewLabelSprite`, `updateHebrewLabelSprite`).
+- **AA WebGL2 Post-Processing Stack, Custom GLSL Shaders & Rapier3D WASM Physics (`src/game3d/ZenGame3DCanvas.jsx`, `src/game3d/shaders/SciFiShaders.js`)**:
+  - Integrated `RoomEnvironment` PMREM HDRI studio lighting, 3-point directional shadow mapping (`2048x2048`), `N8AOPostPass` ambient occlusion (`n8ao`), selective mipmap `BloomEffect`, `VignetteEffect`, and `ACESFilmicToneMapping` (`postprocessing`), alongside asynchronous `@dimforge/rapier3d-compat` WASM physics.
+  - Created 4 custom GLSL shaders: `createHologramMaterial` (animated scanlines + Fresnel rim glow), `createForcefieldMaterial` (volumetric hexagonal lattice + energy ripples), `createLaserPulseMaterial` (animated energy packets along UV conduits), and `createCircuitFloorMaterial` (procedural metallic lab grid with radial circuit traces).
+- **Playable 3D Isometric Overworld & Living 3D Zen Character Controller (`src/game3d/overworld/Overworld3DScene.js`, `src/game3d/zen/Zen3DRobot.js`)**:
+  - Replaced the flat station list with a playable 3D Isometric Sci-Fi Laboratory Complex divided into 4 themed zones with 8 physical interactive station portals, rotating 3D miniature topic sculptures, and 3 physical 3D Star Crystals per portal.
+  - Added WASD / Arrow / Click-to-fly 3D character movement for Zen with banking physics, thruster plasma rings, physical 3D Workshop upgrade attachments, and an 8-bar 3D audio-waveform visor synchronized to `NarrationEngine`.
+- **Diegetic RTL Sci-Fi HUD (`<12%` Screen Area), Floating Zen Radio & Holographic Lesson Modals (`src/game3d/DiegeticHUD.jsx`, `src/game3d/DiegeticLessonModal.jsx`, `src/game3d/ZenRadioFloatingPlayer.jsx`)**:
+  - Designed a sleek RTL glassmorphic HUD covering `8.01%` of the viewport in Overworld mode and `10.77%` in Station mode (`<12%` invariant).
+  - Integrated all 4 learning stages diegetically: (1) Centerpiece 3D Interactive Machine, (2) In-World 3D Holographic Projector (`📽️ מקרן הולוגרמה`: Video, Podcast, Animated Tour, Narration), (3) 3D Warm-Up Gadget & Consolidated 3D Hologram Codex Cards (`🔬 חימום וקודקס` with zero duplicate glossaries), and (4) 3-Lock Laser Energy Reactor Quiz (`⚡ חידון לייזר`), plus a floating **"רדיו זֶן"** podcast player.
+- **8 Centerpiece 3D Physical Station Sandboxes (`src/game3d/stations/Stations3D.js`)**:
+  - **Station 1**: 3D 8×8 Hydraulic Voxel Hologram Table with spring-extruded glowing pillars, wireframe blueprint guides (zero spoiler auto-fill buttons), and a live 3D Laser Byte-Decoder (`128..1`).
+  - **Station 2**: 3D 6×6 Obstacle Chamber where 3D Zen walks, rotates, emits collision sparks, collects a 3D orbiting key, and opens a retracting laser blast gate.
+  - **Station 3**: 3D Branching Mechanical Chute Sorter where animal capsules physically slide through clickable Yes/No splitter gates into 4 leaf pods.
+  - **Station 4**: 3D Holographic Space Sector where `A*` and `BFS` ripple as 3D neon waves before a 3D spacecraft flies along a golden spline tube with $f=g+h$ vector tethers.
+  - **Station 5**: Full-screen 3D Holographic k-NN Arena (`Sweetness × Size`) with glossy 3D Apples and Watermelons; dragging the 3D Mystery Orb (`?`) dynamically expands a translucent 3D volumetric forcefield sphere to radius `r` (exact distance to the $k$-th neighbor) and shoots glowing 3D distance laser tethers (`d=...`) to the $k$ nearest fruits alongside 3D voting pillars.
+  - **Station 6**: 3D Scanning Laser Gantry sweeping a 3×3 convolution kernel across an 8×8 relief sign and extruding a 3D emerald feature-map sculpture via 9 volumetric laser rays.
+  - **Station 7**: 3D Smart Neuron Fusion Core with plasma pipes whose 3D diameters scale with weights (`w1, w2`), a 4-pedestal truth arena, and a tilting 3D laser decision boundary plane.
+  - **Station 8**: 3D Cryo-to-Plasma Temperature Reactor surrounded by 5 hovering Hebrew word cubes atop 3D probability pillars that snap via tractor beam onto a 3D Story Train.
+
 ## [1.0.0] - 2026-10-17
 
 ### Added, Fixed & Upgraded (Flagship iPadOS & Desktop Chrome Studio Architecture, Zen Dynamic Island, 4-Step Interactive Card Deck, Full Hebrew Voice Integration & Pedagogical Copy Audit)

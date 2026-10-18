@@ -39,6 +39,8 @@ import GlossaryModal from './components/GlossaryModal.jsx';
 import ClassroomSettingsModal from './components/ClassroomSettingsModal.jsx';
 import ZenAiTutor from './components/ZenAiTutor.jsx';
 import HomeDashboard from './components/HomeDashboard.jsx';
+import ZenGame3DApp from './game3d/ZenGame3DApp.jsx';
+import { useZenGameStore, ZenGameStore } from './game3d/useZenGameStore.js';
 
 const Lab1_BinaryPixels = lazy(() => import('./labs/Lab1_BinaryPixels.jsx'));
 const Lab2_AlgorithmicRobot = lazy(() => import('./labs/Lab2_AlgorithmicRobot.jsx'));
@@ -50,6 +52,9 @@ const Lab7_Perceptron = lazy(() => import('./labs/Lab7_Perceptron.jsx'));
 const Lab8_LanguageModelPredictor = lazy(() => import('./labs/Lab8_LanguageModelPredictor.jsx'));
 
 export default function App() {
+  const gameStore = useZenGameStore();
+  const appMode = gameStore.appMode || 'game3d';
+
   const [activeLabId, setActiveLabId] = useState(() => StorageEngine.getState().activeLabId || 'lab1');
   const [viewMode, setViewMode] = useState(() => StorageEngine.getViewMode?.() || 'home');
   const [isMuted, setIsMuted] = useState(() => StorageEngine.getState().isMuted);
@@ -71,10 +76,16 @@ export default function App() {
   const [isLabMenuOpen, setIsLabMenuOpen] = useState(false);
 
   useEffect(() => {
-    // Check URL parameters for instant testing on mobile/remote (?design=zen2, ?zen2=true, ?theme=dark|light)
+    // Check URL parameters for instant testing on mobile/remote (?design=zen2, ?zen2=true, ?theme=dark|light, ?mode=classic2d|3d)
     if (typeof window !== 'undefined') {
       try {
         const params = new URLSearchParams(window.location.search);
+        const modeParam = params.get('mode');
+        if (modeParam === 'classic' || modeParam === 'classic2d' || modeParam === '2d' || params.get('classic') === 'true') {
+          ZenGameStore.setAppMode('classic2d');
+        } else if (modeParam === '3d' || modeParam === 'game3d') {
+          ZenGameStore.setAppMode('game3d');
+        }
         const designParam = params.get('design') || params.get('zen2');
         if (designParam === 'zen2' || designParam === 'true' || designParam === '2') {
           StorageEngine.setDapimMode(true);
@@ -203,6 +214,33 @@ export default function App() {
   };
 
   const isDark = theme === 'dark';
+
+  if (appMode === 'game3d') {
+    return (
+      <>
+        <ZenGame3DApp
+          onSwitchToClassic2D={() => ZenGameStore.setAppMode('classic2d')}
+          onOpenCertificate={() => setIsCertificateOpen(true)}
+          onOpenGlossary={() => setIsGlossaryOpen(true)}
+        />
+        <CertificateModal
+          isOpen={isCertificateOpen}
+          onClose={() => setIsCertificateOpen(false)}
+          totalStars={totalStars}
+        />
+        <GlossaryModal
+          isOpen={isGlossaryOpen}
+          onClose={() => setIsGlossaryOpen(false)}
+          curriculum={curriculumData}
+        />
+        <ClassroomSettingsModal
+          isOpen={isSettingsOpen}
+          onClose={() => setIsSettingsOpen(false)}
+          onOpenGlossary={() => setIsGlossaryOpen(true)}
+        />
+      </>
+    );
+  }
 
   return (
     <div
@@ -439,6 +477,20 @@ export default function App() {
 
           {/* Left: Star Counter, Certificate, Audio & More Tools Menu */}
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            {/* Switch back to Fullscreen 3D Game Mode */}
+            <button
+              type="button"
+              onClick={() => {
+                AudioEngine.playStep();
+                ZenGameStore.setAppMode('game3d');
+              }}
+              title="מעבר למנוע המשחק התלת-ממדי (ZenLab 3D)"
+              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-400/50 text-cyan-700 dark:text-cyan-300 text-xs sm:text-sm font-black transition-all shadow-xs cursor-pointer"
+            >
+              <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyan-500" />
+              <span>מצב משחק 3D</span>
+            </button>
+
             {/* Stars Achievement Badge - Tapping opens Certificate */}
             <button
               id="zen-stars-header-badge"
