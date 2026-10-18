@@ -21,6 +21,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Calibrated `NarrationEngine.getEffectivePlaybackRate()` so pre-accelerated (`+12%`) `he-IL-HilaNeural` MP3 files play at natural `1.0x` cadence without double-speed compounding, and expanded `cleanHebrewForSpeech()` for `A*`, `BFS`, `k-NN`, `RGB`, `3×3`, `8×8`, `Gemini`, and `Waze`.
 - **Full-Site Pedagogical Copy & Title Audit for Ages 10–11 (`src/data/curriculum.json`, `src/core/labMeta.js`, `src/components/InteractiveConceptSandbox.jsx`, `src/App.jsx`, `index.html`)**:
   - Removed all English/developer/marketing slogans (`"From Zero to Neural"`, `"בסגנון Brilliant"`, `"NotebookLM Video Explainer"`, `"NotebookLM Audio Deep Dive"`), fixed the `'העליונים'` typo in `labMeta.js`, aligned `lab4.challenges` button names, and synchronized `lab5` narration transcript (`תפוחים לאבטיחים`).
+- **AI Advisor & Crawler Unblocking (`public/robots.txt`, `public/_headers`, `public/llms.txt`, `index.html`)**:
+  - Added explicit `User-agent` rules for `GoogleOther`, `Google-Extended`, `Google-CloudVertexBot`, `Googlebot`, `GPTBot`, `ChatGPT-User`, `ClaudeBot`, `PerplexityBot`, and `Applebot-Extended` with RFC 9309 longest-match `Allow: /*` and `Allow: /` to override Cloudflare zone-level managed AI bot blocks.
+  - Added semantic pre-rendered Hebrew HTML inside `<div id="root">` in `index.html` and published `/llms.txt` so non-JS AI URL fetchers (including Google Gemini) read the complete `v1.0.0` architecture, UI/UX design, and 8-lab curriculum immediately.
 
 ## [0.9.5] - 2026-10-17
 

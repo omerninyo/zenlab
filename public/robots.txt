@@ -1,7 +1,101 @@
-# ZenLab Robots Exclusion Directives
-User-agent: *
-Allow: /
-Disallow: /api/
+# ZenLab Open Educational Platform — Explicit AI & Search Allow Directives
+# All AI assistants, search engines, and educational researchers (including Google Gemini,
+# GoogleOther, Google-Extended, Vertex, ChatGPT, Claude, and Perplexity) are explicitly
+# permitted to crawl, read, analyze, and advise on this site.
 
-# Canonical Sitemap
+User-agent: *
+Content-Signal: search=yes,ai-input=yes,ai-train=yes,use=full
+Allow: /
+Allow: /*
+
+User-agent: Googlebot
+Allow: /
+Allow: /*
+
+User-agent: Google-Extended
+Content-Signal: search=yes,ai-input=yes,ai-train=yes,use=full
+Allow: /
+Allow: /*
+
+User-agent: GoogleOther
+Content-Signal: search=yes,ai-input=yes,ai-train=yes,use=full
+Allow: /
+Allow: /*
+
+User-agent: GoogleOther-Image
+Allow: /
+Allow: /*
+
+User-agent: GoogleOther-Video
+Allow: /
+Allow: /*
+
+User-agent: Google-CloudVertexBot
+Content-Signal: search=yes,ai-input=yes,ai-train=yes,use=full
+Allow: /
+Allow: /*
+
+User-agent: Google-InspectionTool
+Allow: /
+Allow: /*
+
+User-agent: Storebot-Google
+Allow: /
+Allow: /*
+
+User-agent: APIs-Google
+Allow: /
+Allow: /*
+
+User-agent: GPTBot
+Content-Signal: search=yes,ai-input=yes,ai-train=yes,use=full
+Allow: /
+Allow: /*
+
+User-agent: OAI-SearchBot
+Allow: /
+Allow: /*
+
+User-agent: ChatGPT-User
+Allow: /
+Allow: /*
+
+User-agent: ClaudeBot
+Content-Signal: search=yes,ai-input=yes,ai-train=yes,use=full
+Allow: /
+Allow: /*
+
+User-agent: Claude-Web
+Allow: /
+Allow: /*
+
+User-agent: anthropic-ai
+Allow: /
+Allow: /*
+
+User-agent: PerplexityBot
+Allow: /
+Allow: /*
+
+User-agent: Applebot
+Allow: /
+Allow: /*
+
+User-agent: Applebot-Extended
+Allow: /
+Allow: /*
+
+User-agent: CCBot
+Allow: /
+Allow: /*
+
+User-agent: Amazonbot
+Allow: /
+Allow: /*
+
+User-agent: meta-externalagent
+Allow: /
+Allow: /*
+
+# Canonical Sitemap & LLM Index
 Sitemap: https://zenlab.ninyo.co/sitemap.xml

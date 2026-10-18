@@ -23,6 +23,9 @@
   - כיול `getEffectivePlaybackRate()` ב-`NarrationEngine` כך שקובצי ה-MP3 המואצים מראש (`+12%` בקול `he-IL-HilaNeural`) מתנגנים בקצב טבעי ונעים (`1.0x`) ללא האצה כפולה, והרחבת המילון הפונטי לביטויים `A*`, `BFS`, `k-NN`, `RGB`, `3×3`, `8×8`, `Gemini` ו-`Waze`.
 - **ביקורת עומק וליטוש כל הטקסטים והכותרות לגילאי 10–11 (`src/data/curriculum.json`, `src/core/labMeta.js`, `src/components/InteractiveConceptSandbox.jsx`, `src/App.jsx`, `index.html`)**:
   - הסרת כל הכותרות השיווקיות/מערכתיות (`"From Zero to Neural"`, `"בסגנון Brilliant"`, `"NotebookLM Video Explainer"`, `"NotebookLM Audio Deep Dive"`), תיקון שגיאת הכתיב `'העליונים'` ב-`labMeta.js`, התאמת שמות הכפתורים במשימות מעבדה 4, וסנכרון תמליל הקריינות במעבדה 5 (`תפוחים לאבטיחים`).
+- **פתיחת גישה מלאה ליועצי AI ול-Google Gemini (`public/robots.txt`, `public/_headers`, `public/llms.txt`, `index.html`)**:
+  - הוספת הרשאות מפורשות (`Allow: /` ו-`Allow: /*` לפי תקן RFC 9309 Longest-Match) עבור `GoogleOther`, `Google-Extended`, `Google-CloudVertexBot`, `Googlebot`, `GPTBot`, `ChatGPT-User`, `ClaudeBot` ו-`PerplexityBot` לעקיפת חסימת ה-Managed `robots.txt` של Cloudflare.
+  - הטמעת תוכן HTML סמנטי מלא בעברית בתוך `<div id="root">` בקובץ `index.html` ויצירת `/llms.txt` מפורט, כך שכשג'מיני (או כל כלי AI שלא מריץ JavaScript) קורא את האתר, הוא מקבל את כל המבנה, העיצוב, ממשק המשתמש ותוכן 8 המעבדות במלואם.
 
 ## [0.9.5] - 2026-10-17
 
