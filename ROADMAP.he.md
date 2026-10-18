@@ -2,7 +2,7 @@
 ## תוכנית התפתחות רב-שנתית: מווב ועד Native iPadOS, מערכי שיעור, ומחשוב פיזי
 
 **מזהה מסמך:** `ZEN-ROADMAP-HE-2026`  
-**גרסה עדכנית:** `v2.0.0` (עודכן: אוקטובר 2026)  
+**גרסה עדכנית:** `v2.0.1` (עודכן: אוקטובר 2026)  
 **צוות:** Code & AI Explorer Team (`team@learnai.internal`)  
 **משטר פיתוח:** Zero-PII Strict Compliance • 10th Man Red Team Protocol • רישיון פרויקט MIT  
 
@@ -14,7 +14,7 @@
 flowchart LR
     P1["שלב 1-2: 8 מעבדות הליבה בווב\n(הושלם v0.7.23)"] --> P3["שלב 3: מערכי שיעור ו-70 קובצי שמע\n(הושלם במלואו)"]
     P3 --> P3C["שלב 3ג-3ד: חוויית iPadOS Studio\nודסקטופ כרום v1.0.0 (הושלם)"]
-    P3C --> P3E["שלב 3ה: מנוע ZenLab 3D WebGL2\nBlender 5.2 GLB + Rapier3D v2.0.0 (הושלם)"]
+    P3C --> P3E["שלב 3ה: מנוע ZenLab 3D/2.5D Nintendo\nWhisper-Quiet GPU v2.0.1 (הושלם)"]
     P3E --> P4["שלב 4: אפליקציית iPad Native\n(100% Apple HIG & SwiftUI)"]
     P4 --> P5["שלב 5: אפליקציית Android Native\n(Jetpack Compose & Material 3)"]
     P5 --> P6["שלב 6: מחשוב פיזי ו-Edge AI\n(micro:bit & Teachable Machine)"]

@@ -7,6 +7,19 @@
 
 ---
 
+## [2.0.1] - 2026-10-18
+
+### תוקן ושופר (אופטימיזציית GPU שקטה `<15%`, מצלמת 2.5D קבועה בסגנון Nintendo Toy-Board ואפס הקצאות טקסטורה בזמן ריצה)
+- **חיסול צוואר הבקבוק הגרפי והתרמי (`src/game3d/ZenGame3DCanvas.jsx`, `src/game3d/engine/ProceduralTextures.js`)**:
+  - הסרה מוחלטת של שלבי ה-Post-Processing הכבדים (`N8AOPostPass`, `EffectComposer`, `BloomEffect`, `RoomEnvironment` PMREM) והחלפתם בתאורת סטודיו נקייה בסגנון נינטנדו (`HemisphereLight` + `DirectionalLight` ממוקד אחד).
+  - הגבלת `pixelRatio` ל-`Math.min(window.devicePixelRatio, 1.25)` למניעת רינדור כפול במסכי Retina 5K, והגבלת קצב הפריימים ל-60fps עם השהיה אוטומטית כשהלשונית ברקע.
+  - ביטול מוחלט של יצירה או ציור מחדש של `CanvasTexture` בזמן ריחוף עכבר או בתוך `requestAnimationFrame` (`s1CanvasAllocDelta = 0`, `s5CanvasAllocDelta = 0`), באמצעות Cache סטטי (`staticLabelTextureCache`) והצגת חיוויים דינמיים ב-HUD של React.
+- **מצלמת 2.5D נעולה ובהירות מרחבית (`src/game3d/ZenGame3DCanvas.jsx`, `src/game3d/stations/Stations3D.js`, `src/game3d/overworld/Overworld3DScene.js`)**:
+  - נעילת זווית המצלמה בתחנות המחקר לתצוגת **2.5D ברורה ומיושרת** (`controls.enableRotate = false` עם פרלקסה עדינה של $\pm 3^\circ$), ללא סיבוב 360° חופשי שפוגע בתפיסת השורות והעמודות.
+  - מחיקת כל חפצי הרקע התלת-ממדיים בתחנות ("מנעול לייזר", "גאדג׳ט חימום", "מקרן הולוגרמה", קירות אחוריים ורצפות שיידר) ומעבר לרקע פסטל מואר (`#dff2ff`) שבו מופיעים אך ורק לוח המשחק המרכזי והרובוט זֶן.
+  - **בתחנה 1**: יישור 8 תגי המשקלים (`128, 64, 32, 16, 8, 4, 2, 1`) בשורה אופקית מדויקת מעל 8 העמודות של הלוח, וציור שבלונת הלב/סמיילי ישירות על פני האריחים (`getBlueprintTileFaceTextures()`).
+  - **במפת המסע**: עיצוב 4 העולמות כאיים צבעוניים של קוביות צעצוע והצגת שלטי התחנות רק בקרבת הרובוט או בריחוף עכבר (Proximity/Hover Popups) במקום 13 שלטים פתוחים בו-זמנית.
+
 ## [2.0.0] - 2026-10-18
 
 ### נוסף ושודרג מהיסוד (ZenLab 3D — מנוע משחק מדע-בדיוני תלת-ממדי מלא ב-WebGL2, מודלים תלת-ממדיים מ-Blender 5.2, פיזיקת Rapier3D WASM, שיידרים ב-GLSL וממשק HUD הולוגרפי ב-RTL)

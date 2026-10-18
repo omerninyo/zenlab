@@ -626,11 +626,15 @@ function StationCompactControls({ activeLabId, store }) {
   // ===========================================================================
   if (activeLabId === 'lab1') {
     const { lab1 } = store;
-    const activeRowInfo = lab1.rowBytes[lab1.selectedRow] || lab1.rowBytes[0];
+    const displayRowIdx =
+      lab1.hoveredRow !== null && lab1.hoveredRow !== undefined
+        ? lab1.hoveredRow
+        : lab1.selectedRow;
+    const activeRowInfo = lab1.rowBytes[displayRowIdx] || lab1.rowBytes[0];
     return (
       <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
         <div className="flex flex-wrap items-center gap-1.5">
-          <span className="text-[11px] font-black text-slate-400">שקף הולוגרמה להדרכה:</span>
+          <span className="text-[11px] font-black text-slate-400">שקף הדרכה על הלוח:</span>
           {[
             { id: 'heart', label: '❤️ שקף לב' },
             { id: 'smiley', label: '😊 שקף סמיילי' },
@@ -655,7 +659,7 @@ function StationCompactControls({ activeLabId, store }) {
           <span>נורות דולקות: {lab1.litCount}/64</span>
           <span className="text-slate-600">|</span>
           <span>
-            שורה #{lab1.selectedRow + 1}: {activeRowInfo?.bitStr} = {activeRowInfo?.val} (
+            בייט שורה #{displayRowIdx + 1}: {activeRowInfo?.bitStr} = {activeRowInfo?.val} (
             {activeRowInfo?.hex})
           </span>
         </div>

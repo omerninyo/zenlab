@@ -1,68 +1,61 @@
 import * as THREE from 'three';
+import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 import { StorageEngine } from '../../core/storage.js';
 import { AudioEngine } from '../../core/audio.js';
 import { LAB_METADATA } from '../../core/labMeta.js';
 import {
-  createHologramMaterial,
-  createForcefieldMaterial,
-  createLaserPulseMaterial,
-  createCircuitFloorMaterial,
-  updateShaderTime
-} from '../shaders/SciFiShaders.js';
-import {
-  getLabPanelPBRTextures,
   getFruitPBRTextures,
-  createHebrewLabelSprite,
-  updateHebrewLabelSprite
+  createHebrewLabelSprite
 } from '../engine/ProceduralTextures.js';
 import { createZen3DRobot } from '../zen/Zen3DRobot.js';
 
 /**
- * Playable 3D Isometric Sci-Fi Laboratory Complex ("מפת המסע 3D")
+ * Playable Nintendo 2.5D Toy-Board Overworld ("מפת המסע 3D")
  *
- * Features:
- * - 4 Themed Architectural World Zones connected by glowing laser energy bridges
- *   over an animated `createCircuitFloorMaterial` floor.
- * - 8 Interactive 3D Station Portals (`lab1`..`lab8`), each with:
- *   - Beveled octagonal PBR pedestal & glowing forcefield arch
- *   - Unique rotating 3D miniature hologram sculpture per station topic
- *   - 3 physical 3D Star Crystals above the arch synced to `labStars[labId]`
- *   - Crisp RTL Hebrew 3D label sign (`תחנה X: ...`)
- * - Playable 3D Zen Robot character controller (`WASD` / Arrow keys + click-to-fly
- *   floor navigation + direct portal click + cyan/gold thruster particle trail).
+ * Performance & Spatial Clarity Design:
+ * - Bright Nintendo daylight/pastel palette with chunky, colorful tactile toy-block islands
+ *   for the 4 Worlds (zero full-screen shader overdraw).
+ * - Proximity- & Hover-Only Station Popups: Instead of 13 permanently open signs cluttering
+ *   the screen, station title badges smoothly pop up ONLY when Zen approaches a station or
+ *   when the player hovers over a station block.
+ * - Zero runtime CanvasTexture allocations during movement or hover.
  */
 
 const WORLD_ZONES = [
   {
     id: 'world1',
     title: 'עולם 1: שפת המכונה',
-    subtitle: 'ביטים, פיקסלים ואלגוריתמים',
-    color: '#fbbf24',
-    center: [4.9, 0, -3.3],
+    color: '#f59e0b',
+    islandColor: '#fef3c7',
+    trimColor: '#fbbf24',
+    center: [4.6, 0, -2.9],
     labs: ['lab1', 'lab2']
   },
   {
     id: 'world2',
     title: 'עולם 2: חשיבה בלשית וניווט',
-    subtitle: 'עצי החלטות ומציאת מסלול חכם',
     color: '#10b981',
-    center: [-4.9, 0, -3.3],
+    islandColor: '#d1fae5',
+    trimColor: '#34d399',
+    center: [-4.6, 0, -2.9],
     labs: ['lab3', 'lab4']
   },
   {
     id: 'world3',
     title: 'עולם 3: מחשב שלומד ורואה',
-    subtitle: 'סיווג k-NN וראיית מכונה',
-    color: '#38bdf8',
-    center: [4.9, 0, 3.3],
+    color: '#0ea5e9',
+    islandColor: '#e0f2fe',
+    trimColor: '#38bdf8',
+    center: [4.6, 0, 2.9],
     labs: ['lab5', 'lab6']
   },
   {
     id: 'world4',
     title: 'עולם 4: מוח מלאכותי ויצירת שפה',
-    subtitle: 'נוירונים ומודלי שפה (LLM)',
     color: '#f43f5e',
-    center: [-4.9, 0, 3.3],
+    islandColor: '#ffe4e6',
+    trimColor: '#fb7185',
+    center: [-4.6, 0, 2.9],
     labs: ['lab7', 'lab8']
   }
 ];
@@ -75,7 +68,8 @@ const STATION_CONFIGS = [
     title: 'תחנה 1: ציור בפיקסלים',
     subtext: 'ביטים של 0 ו-1',
     color: '#f59e0b',
-    position: [6.4, 0, -2.0]
+    blockColor: '#fffbeb',
+    position: [5.9, 0, -1.7]
   },
   {
     id: 'lab2',
@@ -83,8 +77,9 @@ const STATION_CONFIGS = [
     worldId: 'world1',
     title: 'תחנה 2: לתכנת רובוט',
     subtext: 'אלגוריתם ולולאות',
-    color: '#38bdf8',
-    position: [3.4, 0, -4.6]
+    color: '#0284c7',
+    blockColor: '#f0f9ff',
+    position: [3.2, 0, -4.0]
   },
   {
     id: 'lab3',
@@ -92,8 +87,9 @@ const STATION_CONFIGS = [
     worldId: 'world2',
     title: 'תחנה 3: עץ החלטות בלשי',
     subtext: 'שאלות כן / לא',
-    color: '#10b981',
-    position: [-3.4, 0, -4.6]
+    color: '#059669',
+    blockColor: '#ecfdf5',
+    position: [-3.2, 0, -4.0]
   },
   {
     id: 'lab4',
@@ -101,8 +97,9 @@ const STATION_CONFIGS = [
     worldId: 'world2',
     title: 'תחנה 4: הווייז של הרובוט',
     subtext: 'ניווט חכם A*',
-    color: '#f97316',
-    position: [-6.4, 0, -2.0]
+    color: '#ea580c',
+    blockColor: '#fff7ed',
+    position: [-5.9, 0, -1.7]
   },
   {
     id: 'lab5',
@@ -110,8 +107,9 @@ const STATION_CONFIGS = [
     worldId: 'world3',
     title: 'תחנה 5: איך מחשב לומד?',
     subtext: 'השכנים הקרובים k-NN',
-    color: '#a855f7',
-    position: [6.4, 0, 2.0]
+    color: '#9333ea',
+    blockColor: '#faf5ff',
+    position: [5.9, 0, 1.7]
   },
   {
     id: 'lab6',
@@ -119,8 +117,9 @@ const STATION_CONFIGS = [
     worldId: 'world3',
     title: 'תחנה 6: העיניים של המחשב',
     subtext: 'פילטרים וגילוי קצוות',
-    color: '#06b6d4',
-    position: [3.4, 0, 4.6]
+    color: '#0891b2',
+    blockColor: '#ecfeff',
+    position: [3.2, 0, 4.0]
   },
   {
     id: 'lab7',
@@ -128,8 +127,9 @@ const STATION_CONFIGS = [
     worldId: 'world4',
     title: 'תחנה 7: נוירון חכם',
     subtext: 'משקלים וסף החלטה',
-    color: '#f43f5e',
-    position: [-3.4, 0, 4.6]
+    color: '#e11d48',
+    blockColor: '#fff1f2',
+    position: [-3.2, 0, 4.0]
   },
   {
     id: 'lab8',
@@ -137,25 +137,31 @@ const STATION_CONFIGS = [
     worldId: 'world4',
     title: 'תחנה 8: מודל שפה חכם',
     subtext: 'חיזוי המילה הבאה',
-    color: '#eab308',
-    position: [-6.4, 0, 2.0]
+    color: '#ca8a04',
+    blockColor: '#fefce8',
+    position: [-5.9, 0, 1.7]
   }
 ];
 
 /**
- * Builds the unique 3D miniature hologram sculpture for each station (`lab1`..`lab8`).
+ * Tactile Nintendo Toy Sculpture for each station (`lab1`..`lab8`).
+ * Zero heavy custom fragment shaders — uses clean, vibrant toy-plastic MeshStandardMaterial.
  */
-function createStationHologramSculpture(labId, accentColor) {
+function createStationToySculpture(labId, accentColor) {
   const root = new THREE.Group();
-  root.name = `Hologram_${labId}`;
-  const holoMat = createHologramMaterial({
+  root.name = `ToySculpture_${labId}`;
+  const toyMat = new THREE.MeshStandardMaterial({
     color: accentColor,
-    opacity: 0.78,
-    scanlineScale: 48.0
+    roughness: 0.25,
+    metalness: 0.1
+  });
+  const whiteToyMat = new THREE.MeshStandardMaterial({
+    color: '#ffffff',
+    roughness: 0.2,
+    metalness: 0.05
   });
 
   if (labId === 'lab1') {
-    // 1: 3D Voxel Heart
     const coords = [
       [-1.5, 1], [-0.5, 1], [0.5, 1], [1.5, 1],
       [-1, 2], [1, 2],
@@ -163,144 +169,70 @@ function createStationHologramSculpture(labId, accentColor) {
       [-1, -1], [0, -1], [1, -1],
       [0, -2]
     ];
-    const cubeGeom = new THREE.BoxGeometry(0.11, 0.11, 0.11);
+    const cubeGeom = new THREE.BoxGeometry(0.12, 0.12, 0.12);
     coords.forEach(([cx, cy]) => {
-      const vox = new THREE.Mesh(cubeGeom, holoMat);
-      vox.position.set(cx * 0.12, cy * 0.12 + 0.05, 0);
+      const vox = new THREE.Mesh(cubeGeom, toyMat);
+      vox.position.set(cx * 0.13, cy * 0.13 + 0.05, 0);
       root.add(vox);
     });
   } else if (labId === 'lab2') {
-    // 2: 3D Maze Key
-    const bow = new THREE.Mesh(new THREE.TorusGeometry(0.16, 0.045, 10, 20), holoMat);
+    const goldMat = new THREE.MeshStandardMaterial({ color: '#fbbf24', roughness: 0.2, metalness: 0.3 });
+    const bow = new THREE.Mesh(new THREE.TorusGeometry(0.16, 0.05, 10, 20), goldMat);
     bow.position.y = 0.16;
-    const shaft = new THREE.Mesh(new THREE.CylinderGeometry(0.038, 0.038, 0.36, 10), holoMat);
+    const shaft = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.36, 10), goldMat);
     shaft.position.y = -0.08;
-    const tooth1 = new THREE.Mesh(new THREE.BoxGeometry(0.11, 0.045, 0.045), holoMat);
+    const tooth1 = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.05, 0.05), goldMat);
     tooth1.position.set(0.06, -0.16, 0);
-    const tooth2 = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.045, 0.045), holoMat);
-    tooth2.position.set(0.045, -0.24, 0);
-    root.add(bow, shaft, tooth1, tooth2);
+    root.add(bow, shaft, tooth1);
   } else if (labId === 'lab3') {
-    // 3: 3D Branching Decision Tree
-    const nodeGeom = new THREE.SphereGeometry(0.075, 12, 12);
-    const rootNode = new THREE.Mesh(nodeGeom, holoMat);
-    rootNode.position.set(0, 0.24, 0);
-
-    const leftChild = new THREE.Mesh(nodeGeom, holoMat);
-    leftChild.position.set(-0.22, 0.0, 0);
-    const rightChild = new THREE.Mesh(nodeGeom, holoMat);
-    rightChild.position.set(0.22, 0.0, 0);
-
-    const branchGeom = new THREE.CylinderGeometry(0.02, 0.02, 0.32, 8);
-    const bLeft = new THREE.Mesh(branchGeom, holoMat);
-    bLeft.position.set(-0.11, 0.12, 0);
-    bLeft.rotation.z = -0.68;
-    const bRight = new THREE.Mesh(branchGeom, holoMat);
-    bRight.position.set(0.11, 0.12, 0);
-    bRight.rotation.z = 0.68;
-
-    const leafOffsets = [-0.32, -0.12, 0.12, 0.32];
-    leafOffsets.forEach((lx) => {
-      const leaf = new THREE.Mesh(new THREE.OctahedronGeometry(0.055, 0), holoMat);
-      leaf.position.set(lx, -0.22, 0);
-      root.add(leaf);
-    });
-
-    root.add(rootNode, leftChild, rightChild, bLeft, bRight);
+    const nodeGeom = new THREE.SphereGeometry(0.085, 12, 12);
+    const rootNode = new THREE.Mesh(nodeGeom, toyMat);
+    rootNode.position.set(0, 0.22, 0);
+    const leftChild = new THREE.Mesh(nodeGeom, whiteToyMat);
+    leftChild.position.set(-0.2, -0.05, 0);
+    const rightChild = new THREE.Mesh(nodeGeom, whiteToyMat);
+    rightChild.position.set(0.2, -0.05, 0);
+    root.add(rootNode, leftChild, rightChild);
   } else if (labId === 'lab4') {
-    // 4: 3D Ringed Planet & Orbiting Ship
-    const planet = new THREE.Mesh(new THREE.SphereGeometry(0.16, 16, 16), holoMat);
-    const ring = new THREE.Mesh(new THREE.TorusGeometry(0.30, 0.022, 10, 28), holoMat);
+    const planet = new THREE.Mesh(new THREE.SphereGeometry(0.17, 16, 16), toyMat);
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(0.29, 0.028, 8, 24), whiteToyMat);
     ring.rotation.x = Math.PI / 2.6;
-    ring.rotation.y = 0.3;
-
-    const ship = new THREE.Mesh(new THREE.ConeGeometry(0.065, 0.18, 6), holoMat);
-    ship.position.set(0.32, 0.12, 0);
-    ship.rotation.z = -Math.PI / 3;
-
-    root.add(planet, ring, ship);
+    root.add(planet, ring);
   } else if (labId === 'lab5') {
-    // 5: 3D Apple & Watermelon Orbit
     const fruitTex = getFruitPBRTextures();
     const appleMat = new THREE.MeshStandardMaterial({
       map: fruitTex.appleTexture,
-      normalMap: fruitTex.appleNormalMap,
-      roughness: 0.25,
-      metalness: 0.1,
-      emissive: new THREE.Color('#dc2626'),
-      emissiveIntensity: 0.35
+      roughness: 0.22,
+      metalness: 0.05
     });
     const melonMat = new THREE.MeshStandardMaterial({
       map: fruitTex.melonTexture,
-      normalMap: fruitTex.melonNormalMap,
-      roughness: 0.3,
-      metalness: 0.1,
-      emissive: new THREE.Color('#16a34a'),
-      emissiveIntensity: 0.35
+      roughness: 0.25,
+      metalness: 0.05
     });
-
-    const centerSphere = new THREE.Mesh(new THREE.OctahedronGeometry(0.09, 0), holoMat);
-    const orbitTrack = new THREE.Mesh(new THREE.TorusGeometry(0.26, 0.014, 8, 24), holoMat);
-    orbitTrack.rotation.x = Math.PI / 2;
-
-    const apple = new THREE.Mesh(new THREE.SphereGeometry(0.10, 16, 16), appleMat);
-    apple.position.set(-0.26, 0.04, 0);
-
-    const melon = new THREE.Mesh(new THREE.SphereGeometry(0.125, 16, 16), melonMat);
-    melon.scale.set(1.15, 0.92, 1.0);
-    melon.position.set(0.26, -0.04, 0);
-
-    root.add(centerSphere, orbitTrack, apple, melon);
+    const apple = new THREE.Mesh(new THREE.SphereGeometry(0.12, 14, 14), appleMat);
+    apple.position.set(-0.18, 0.04, 0);
+    const melon = new THREE.Mesh(new THREE.SphereGeometry(0.14, 14, 14), melonMat);
+    melon.scale.set(1.18, 0.92, 1.0);
+    melon.position.set(0.18, -0.02, 0);
+    root.add(apple, melon);
   } else if (labId === 'lab6') {
-    // 6: 3D Scanning Laser Grid (3x3 Kernel + Sweep Beam)
-    const cellGeom = new THREE.BoxGeometry(0.11, 0.11, 0.03);
+    const cellGeom = new THREE.BoxGeometry(0.11, 0.11, 0.04);
     for (let r = -1; r <= 1; r++) {
       for (let c = -1; c <= 1; c++) {
-        const cell = new THREE.Mesh(cellGeom, holoMat);
+        const cell = new THREE.Mesh(cellGeom, (r + c) % 2 === 0 ? toyMat : whiteToyMat);
         cell.position.set(c * 0.14, r * 0.14, 0);
         root.add(cell);
       }
     }
-    const scanBarMat = new THREE.MeshBasicMaterial({
-      color: '#fde047',
-      transparent: true,
-      opacity: 0.9
-    });
-    const scanBar = new THREE.Mesh(new THREE.BoxGeometry(0.48, 0.035, 0.06), scanBarMat);
-    scanBar.name = 'ScanBar';
-    root.add(scanBar);
   } else if (labId === 'lab7') {
-    // 7: 3D Glowing Neuron Core & Synaptic Dendrites
-    const soma = new THREE.Mesh(new THREE.IcosahedronGeometry(0.16, 1), holoMat);
+    const soma = new THREE.Mesh(new THREE.IcosahedronGeometry(0.18, 1), toyMat);
     root.add(soma);
-
-    const dirs = [
-      [1, 0.6, 0],
-      [-1, 0.6, 0],
-      [0.8, -0.7, 0.4],
-      [-0.8, -0.7, -0.4],
-      [0, 1, 0.5],
-      [0, -1, -0.5]
-    ];
-    dirs.forEach(([dx, dy, dz]) => {
-      const vec = new THREE.Vector3(dx, dy, dz).normalize();
-      const dendrite = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.03, 0.28, 8), holoMat);
-      dendrite.position.copy(vec).multiplyScalar(0.20);
-      dendrite.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), vec);
-
-      const synapse = new THREE.Mesh(new THREE.SphereGeometry(0.045, 10, 10), holoMat);
-      synapse.position.copy(vec).multiplyScalar(0.34);
-      root.add(dendrite, synapse);
-    });
   } else {
-    // 8: 3D Orbiting Hebrew Token Cubes
-    const corePrism = new THREE.Mesh(new THREE.OctahedronGeometry(0.14, 0), holoMat);
-    root.add(corePrism);
-
-    for (let i = 0; i < 3; i++) {
-      const angle = (i / 3) * Math.PI * 2;
-      const cube = new THREE.Mesh(new THREE.BoxGeometry(0.13, 0.13, 0.13), holoMat);
-      cube.position.set(Math.cos(angle) * 0.28, (i - 1) * 0.08, Math.sin(angle) * 0.28);
+    const cubeGeom = new THREE.BoxGeometry(0.15, 0.15, 0.15);
+    for (let i = -1; i <= 1; i++) {
+      const cube = new THREE.Mesh(cubeGeom, i === 0 ? toyMat : whiteToyMat);
+      cube.position.set(i * 0.2, Math.abs(i) * 0.06, 0);
       root.add(cube);
     }
   }
@@ -312,100 +244,72 @@ export function createOverworld3DScene({ store = StorageEngine, onSelectStation 
   const group = new THREE.Group();
   group.name = 'Overworld3DComplex';
 
-  const pbr = getLabPanelPBRTextures();
   const raycaster = new THREE.Raycaster();
 
-  // --- Shared Architectural Materials ---
-  const platformMat = new THREE.MeshStandardMaterial({
-    color: new THREE.Color('#0f172a'),
-    metalness: 0.78,
-    roughness: 0.28,
-    normalMap: pbr.normalMap,
-    normalScale: new THREE.Vector2(0.35, 0.35)
+  // --- Shared Nintendo Toy Materials ---
+  const baseBoardMat = new THREE.MeshStandardMaterial({
+    color: '#f8fafc',
+    roughness: 0.38,
+    metalness: 0.04
   });
 
-  const bezelTrimMat = new THREE.MeshStandardMaterial({
-    color: new THREE.Color('#334155'),
-    metalness: 0.85,
-    roughness: 0.22
+  const bridgeToyMat = new THREE.MeshStandardMaterial({
+    color: '#bae6fd',
+    roughness: 0.3,
+    metalness: 0.05
   });
 
   const starEarnedMat = new THREE.MeshStandardMaterial({
-    color: new THREE.Color('#fbbf24'),
-    emissive: new THREE.Color('#f59e0b'),
-    emissiveIntensity: 2.2,
-    metalness: 0.85,
-    roughness: 0.12
+    color: '#fbbf24',
+    emissive: '#f59e0b',
+    emissiveIntensity: 0.5,
+    roughness: 0.2,
+    metalness: 0.3
   });
 
   const starLockedMat = new THREE.MeshStandardMaterial({
-    color: new THREE.Color('#334155'),
-    emissive: new THREE.Color('#0f172a'),
-    emissiveIntensity: 0.2,
-    metalness: 0.5,
-    roughness: 0.45,
-    transparent: true,
-    opacity: 0.65
+    color: '#cbd5e1',
+    roughness: 0.5,
+    metalness: 0.1
   });
 
-  // --- 1. Animated Sci-Fi Circuit Floor ---
-  const floorMaterial = createCircuitFloorMaterial({
-    bgColor: '#040914',
-    gridColor: '#1e293b',
-    pulseColor: '#0ea5e9',
-    gridScale: 1.0
-  });
-  const floorMesh = new THREE.Mesh(new THREE.PlaneGeometry(56, 56), floorMaterial);
+  // --- 1. Clean Bright Toy-Table Base Plane (Zero Shader Overdraw) ---
+  const floorMesh = new THREE.Mesh(
+    new RoundedBoxGeometry(20.5, 0.3, 14.5, 4, 0.12),
+    baseBoardMat
+  );
   floorMesh.name = 'Overworld_Floor';
-  floorMesh.rotation.x = -Math.PI / 2;
-  floorMesh.position.y = -0.05;
+  floorMesh.position.y = -0.18;
   floorMesh.receiveShadow = true;
   group.add(floorMesh);
 
-  // --- 2. Central Command Nexus Plaza ---
-  const nexusGroup = new THREE.Group();
-  nexusGroup.name = 'CommandNexus';
-  group.add(nexusGroup);
-
-  const nexusBase = new THREE.Mesh(
-    new THREE.CylinderGeometry(2.15, 2.35, 0.24, 8),
-    platformMat
+  // Subtle outer wooden/gold toy frame rim
+  const boardRim = new THREE.Mesh(
+    new RoundedBoxGeometry(21.1, 0.24, 15.1, 4, 0.12),
+    new THREE.MeshStandardMaterial({ color: '#93c5fd', roughness: 0.4, metalness: 0.05 })
   );
-  nexusBase.position.y = 0.08;
-  nexusBase.receiveShadow = true;
-  nexusGroup.add(nexusBase);
+  boardRim.position.y = -0.25;
+  group.add(boardRim);
 
-  const nexusRingMat = new THREE.MeshStandardMaterial({
-    color: new THREE.Color('#fbbf24'),
-    emissive: new THREE.Color('#f59e0b'),
-    emissiveIntensity: 1.5,
-    metalness: 0.8,
-    roughness: 0.2
-  });
+  // --- 2. Central Hub Pad ---
+  const nexusBase = new THREE.Mesh(
+    new THREE.CylinderGeometry(1.75, 1.9, 0.24, 24),
+    new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 0.25, metalness: 0.05 })
+  );
+  nexusBase.position.y = 0.06;
+  nexusBase.receiveShadow = true;
+  group.add(nexusBase);
+
   const nexusRing = new THREE.Mesh(
-    new THREE.TorusGeometry(1.95, 0.045, 12, 32),
-    nexusRingMat
+    new THREE.TorusGeometry(1.65, 0.055, 12, 32),
+    new THREE.MeshStandardMaterial({ color: '#38bdf8', roughness: 0.25 })
   );
   nexusRing.rotation.x = Math.PI / 2;
-  nexusRing.position.y = 0.21;
-  nexusGroup.add(nexusRing);
+  nexusRing.position.y = 0.19;
+  group.add(nexusRing);
 
-  const nexusLabel = createHebrewLabelSprite('מרכז הפיקוד ZenLab 3D', {
-    subtext: 'הזיזו את זֶן (WASD / חצים) או לחצו על תחנה כדי להיכנס',
-    accentColor: '#38bdf8',
-    scale: [3.6, 0.92]
-  });
-  nexusLabel.position.set(0, 3.25, -0.4);
-  nexusGroup.add(nexusLabel);
-
-  // --- 3. Four Themed Architectural World Zones & Glowing Energy Bridges ---
+  // --- 3. Four Colorful Nintendo Toy-Block World Islands ---
   const zoneGroups = {};
-  const bridgeLaserMat = createLaserPulseMaterial({
-    color: '#38bdf8',
-    pulseColor: '#fde047',
-    speed: 3.5,
-    opacity: 0.85
-  });
 
   WORLD_ZONES.forEach((zone) => {
     const zGroup = new THREE.Group();
@@ -414,75 +318,48 @@ export function createOverworld3DScene({ store = StorageEngine, onSelectStation 
     group.add(zGroup);
     zoneGroups[zone.id] = zGroup;
 
-    // Beveled Zone Plaza Platform
-    const zonePlat = new THREE.Mesh(
-      new THREE.CylinderGeometry(3.35, 3.6, 0.18, 8),
-      platformMat
+    // Chunky Rounded Toy Island Block
+    const zoneIsland = new THREE.Mesh(
+      new RoundedBoxGeometry(6.2, 0.28, 4.9, 4, 0.12),
+      new THREE.MeshStandardMaterial({
+        color: zone.islandColor,
+        roughness: 0.35,
+        metalness: 0.02
+      })
     );
-    zonePlat.position.y = 0.04;
-    zonePlat.receiveShadow = true;
-    zGroup.add(zonePlat);
+    zoneIsland.position.y = 0.04;
+    zoneIsland.receiveShadow = true;
+    zGroup.add(zoneIsland);
 
-    // Zone Accent Rim
-    const zoneRimMat = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(zone.color),
-      emissive: new THREE.Color(zone.color),
-      emissiveIntensity: 1.15,
-      metalness: 0.7,
-      roughness: 0.25
-    });
-    const zoneRim = new THREE.Mesh(
-      new THREE.TorusGeometry(3.38, 0.038, 8, 8),
-      zoneRimMat
+    // Tactile Colored Trim Border
+    const zoneTrim = new THREE.Mesh(
+      new RoundedBoxGeometry(6.36, 0.18, 5.06, 4, 0.1),
+      new THREE.MeshStandardMaterial({
+        color: zone.trimColor,
+        roughness: 0.3,
+        metalness: 0.05
+      })
     );
-    zoneRim.rotation.x = Math.PI / 2;
-    zoneRim.position.y = 0.14;
-    zGroup.add(zoneRim);
+    zoneTrim.position.y = -0.02;
+    zGroup.add(zoneTrim);
 
-    // Decorative Sci-Fi Telemetry Pillar on outer corner of Zone
-    const pillarSignX = Math.sign(zone.center[0]) * 2.55;
-    const pillarSignZ = Math.sign(zone.center[2]) * 2.15;
-    const pillar = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.14, 0.18, 2.2, 8),
-      bezelTrimMat
-    );
-    pillar.position.set(pillarSignX, 1.1, pillarSignZ);
-    pillar.castShadow = true;
-    zGroup.add(pillar);
-
-    const pillarCap = new THREE.Mesh(
-      new THREE.OctahedronGeometry(0.2, 0),
-      zoneRimMat
-    );
-    pillarCap.position.set(pillarSignX, 2.38, pillarSignZ);
-    zGroup.add(pillarCap);
-
-    // Floating RTL Hebrew World Zone Banner Sign
-    const zoneLabel = createHebrewLabelSprite(zone.title, {
-      subtext: zone.subtitle,
-      accentColor: zone.color,
-      scale: [3.1, 0.84]
-    });
-    zoneLabel.position.set(pillarSignX * 0.45, 3.1, pillarSignZ * 0.55);
-    zGroup.add(zoneLabel);
-
-    // Glowing Energy Bridge connecting Central Nexus `(0,0,0)` to Zone Center
-    const startVec = new THREE.Vector3(0, 0.11, 0);
-    const endVec = new THREE.Vector3(zone.center[0], 0.11, zone.center[2]);
+    // Bridge from Central Hub to World Island
+    const startVec = new THREE.Vector3(0, 0.05, 0);
+    const endVec = new THREE.Vector3(zone.center[0], 0.05, zone.center[2]);
     const bridgeDelta = new THREE.Vector3().subVectors(endVec, startVec);
     const bridgeLen = bridgeDelta.length();
     const bridgeMid = new THREE.Vector3().addVectors(startVec, endVec).multiplyScalar(0.5);
 
     const bridgeMesh = new THREE.Mesh(
-      new THREE.BoxGeometry(0.55, 0.04, bridgeLen),
-      bridgeLaserMat
+      new RoundedBoxGeometry(0.65, 0.12, bridgeLen, 2, 0.04),
+      bridgeToyMat
     );
     bridgeMesh.position.copy(bridgeMid);
     bridgeMesh.lookAt(endVec);
     group.add(bridgeMesh);
   });
 
-  // --- 4. Eight Physical Interactive 3D Station Portals (`lab1`..`lab8`) ---
+  // --- 4. Eight Tactile Toy-Block Station Portals (`lab1`..`lab8`) ---
   const portals = [];
   const portalByLabId = {};
   const interactiveHitMeshes = [];
@@ -496,12 +373,16 @@ export function createOverworld3DScene({ store = StorageEngine, onSelectStation 
     portalGroup.userData = { labId: cfg.id, isPortalGroup: true };
     group.add(portalGroup);
 
-    // 4a. Beveled Octagonal Pedestal
+    // 4a. Chunky Toy Block Pedestal
     const pedestal = new THREE.Mesh(
-      new THREE.CylinderGeometry(1.18, 1.34, 0.28, 8),
-      platformMat
+      new RoundedBoxGeometry(2.1, 0.42, 2.1, 4, 0.1),
+      new THREE.MeshStandardMaterial({
+        color: cfg.blockColor,
+        roughness: 0.28,
+        metalness: 0.04
+      })
     );
-    pedestal.position.y = 0.14;
+    pedestal.position.y = 0.22;
     pedestal.castShadow = true;
     pedestal.receiveShadow = true;
     pedestal.userData = { labId: cfg.id };
@@ -509,80 +390,58 @@ export function createOverworld3DScene({ store = StorageEngine, onSelectStation 
     interactiveHitMeshes.push(pedestal);
 
     const ringColorMat = new THREE.MeshStandardMaterial({
-      color: new THREE.Color(cfg.color),
-      emissive: new THREE.Color(cfg.color),
-      emissiveIntensity: 1.65,
-      metalness: 0.75,
-      roughness: 0.2
+      color: cfg.color,
+      roughness: 0.25,
+      metalness: 0.1
     });
+
     const activationRing = new THREE.Mesh(
-      new THREE.TorusGeometry(1.12, 0.045, 12, 32),
+      new RoundedBoxGeometry(2.22, 0.24, 2.22, 4, 0.08),
       ringColorMat
     );
-    activationRing.rotation.x = Math.PI / 2;
-    activationRing.position.y = 0.29;
+    activationRing.position.y = 0.16;
+    activationRing.userData = { labId: cfg.id };
     portalGroup.add(activationRing);
 
-    // 4b. Glowing Portal Arch Frame + Volumetric Forcefield Disc
+    // 4b. Clean Toy Arch Frame
     const archMesh = new THREE.Mesh(
-      new THREE.TorusGeometry(0.92, 0.075, 14, 32, Math.PI),
-      bezelTrimMat
+      new THREE.TorusGeometry(0.78, 0.085, 12, 28, Math.PI),
+      ringColorMat
     );
-    archMesh.position.y = 1.05;
+    archMesh.position.y = 0.92;
     archMesh.castShadow = true;
     archMesh.userData = { labId: cfg.id };
     portalGroup.add(archMesh);
     interactiveHitMeshes.push(archMesh);
 
-    const archGlowRing = new THREE.Mesh(
-      new THREE.TorusGeometry(0.86, 0.032, 12, 32, Math.PI),
-      ringColorMat
-    );
-    archGlowRing.position.y = 1.05;
-    portalGroup.add(archGlowRing);
-
-    const forcefieldMat = createForcefieldMaterial({
-      color: cfg.color,
-      secondaryColor: '#fbbf24',
-      opacity: 0.34
-    });
-    const forcefieldDisc = new THREE.Mesh(
-      new THREE.CircleGeometry(0.84, 32),
-      forcefieldMat
-    );
-    forcefieldDisc.position.set(0, 1.05, 0);
-    forcefieldDisc.userData = { labId: cfg.id };
-    portalGroup.add(forcefieldDisc);
-    interactiveHitMeshes.push(forcefieldDisc);
-
-    // Invisible generous click hitbox cylinder so children / touchscreens can click effortlessly
+    // Generous Invisible Hitbox for Easy Clicking
     const hitboxMat = new THREE.MeshBasicMaterial({ visible: false });
     const hitboxMesh = new THREE.Mesh(
-      new THREE.CylinderGeometry(1.3, 1.3, 2.7, 12),
+      new THREE.CylinderGeometry(1.25, 1.25, 2.4, 12),
       hitboxMat
     );
-    hitboxMesh.position.y = 1.35;
+    hitboxMesh.position.y = 1.2;
     hitboxMesh.userData = { labId: cfg.id, isPortalHitbox: true };
     portalGroup.add(hitboxMesh);
     interactiveHitMeshes.push(hitboxMesh);
 
-    // 4c. Unique Rotating 3D Miniature Hologram Sculpture
-    const hologramSculpture = createStationHologramSculpture(cfg.id, cfg.color);
-    hologramSculpture.position.set(0, 1.12, 0.14);
+    // 4c. Tactile 3D Toy Sculpture
+    const hologramSculpture = createStationToySculpture(cfg.id, cfg.color);
+    hologramSculpture.position.set(0, 0.96, 0.12);
     portalGroup.add(hologramSculpture);
 
     // 4d. Three Physical 3D Star Crystals above the Arch
     const starCrystals = [];
     const starCountEarned = Number(initialStars[cfg.id] || 0);
     const starOffsets = [
-      [-0.38, 2.15, 0],
-      [0, 2.26, 0],
-      [0.38, 2.15, 0]
+      [-0.34, 1.88, 0],
+      [0, 1.98, 0],
+      [0.34, 1.88, 0]
     ];
     starOffsets.forEach(([sx, sy, sz], idx) => {
       const isEarned = idx < starCountEarned;
       const crystal = new THREE.Mesh(
-        new THREE.OctahedronGeometry(0.125, 0),
+        new THREE.OctahedronGeometry(0.12, 0),
         isEarned ? starEarnedMat : starLockedMat
       );
       crystal.position.set(sx, sy, sz);
@@ -591,18 +450,17 @@ export function createOverworld3DScene({ store = StorageEngine, onSelectStation 
       starCrystals.push(crystal);
     });
 
-    // 4e. Crisp RTL Hebrew 3D Label Sign (`תחנה X: ...`)
-    const metaTitle = LAB_METADATA[cfg.id]?.shortLabel || cfg.title;
-    const labelText = cfg.title.includes('תחנה') ? cfg.title : `תחנה ${cfg.number}: ${metaTitle}`;
+    // 4e. Proximity / Hover-Only Popup Sign — hidden by default, pops up ONLY when Zen is near or hovered!
+    const labelText = cfg.title;
     const labelSprite = createHebrewLabelSprite(labelText, {
-      subtext: `${cfg.subtext} • ★ ${starCountEarned}/3`,
+      subtext: `${cfg.subtext} • לחצו לכניסה ▶`,
       accentColor: cfg.color,
-      scale: [2.55, 0.78]
+      scale: [2.45, 0.76]
     });
-    labelSprite.position.set(0, 2.72, 0);
+    labelSprite.position.set(0, 2.42, 0);
+    labelSprite.visible = false;
     labelSprite.userData.labId = cfg.id;
     portalGroup.add(labelSprite);
-    interactiveHitMeshes.push(labelSprite);
 
     const portalRecord = {
       id: cfg.id,
@@ -615,10 +473,10 @@ export function createOverworld3DScene({ store = StorageEngine, onSelectStation 
       position: new THREE.Vector3(cfg.position[0], cfg.position[1], cfg.position[2]),
       activationRing,
       ringColorMat,
-      forcefieldMat,
       hologramSculpture,
       starCrystals,
       labelSprite,
+      popupScale: 0,
       burstTimer: 0,
       isHovered: false
     };
@@ -627,14 +485,13 @@ export function createOverworld3DScene({ store = StorageEngine, onSelectStation 
     portalByLabId[cfg.id] = portalRecord;
   });
 
-  // --- 5. Playable 3D Zen Robot Character & Thruster Particle Trail ---
+  // --- 5. Playable 3D Zen Robot Character ---
   const zenRobot = createZen3DRobot();
   zenRobot.group.position.set(0, 0.22, 0.55);
   group.add(zenRobot.group);
 
-  // Target destination marker ring on floor when clicking to move
   const targetMarkerMat = new THREE.MeshBasicMaterial({
-    color: '#38bdf8',
+    color: '#0284c7',
     transparent: true,
     opacity: 0.0,
     side: THREE.DoubleSide
@@ -644,31 +501,8 @@ export function createOverworld3DScene({ store = StorageEngine, onSelectStation 
     targetMarkerMat
   );
   targetMarkerRing.rotation.x = -Math.PI / 2;
-  targetMarkerRing.position.y = 0.03;
+  targetMarkerRing.position.y = 0.04;
   group.add(targetMarkerRing);
-
-  // Pooled 3D Thruster Trail Particles (Cyan & Gold)
-  const TRAIL_POOL_SIZE = 28;
-  const trailParticles = [];
-  const trailGeom = new THREE.SphereGeometry(0.075, 8, 8);
-  for (let i = 0; i < TRAIL_POOL_SIZE; i++) {
-    const pMat = new THREE.MeshBasicMaterial({
-      color: i % 2 === 0 ? '#38bdf8' : '#fbbf24',
-      transparent: true,
-      opacity: 0.0
-    });
-    const pMesh = new THREE.Mesh(trailGeom, pMat);
-    pMesh.visible = false;
-    group.add(pMesh);
-    trailParticles.push({
-      mesh: pMesh,
-      life: 0,
-      maxLife: 0.55,
-      velocity: new THREE.Vector3()
-    });
-  }
-  let trailSpawnCursor = 0;
-  let trailSpawnAccumulator = 0;
 
   // --- 6. Keyboard (`WASD` / Arrow Keys) & Pointer Navigation State ---
   const keysPressed = {
@@ -680,7 +514,7 @@ export function createOverworld3DScene({ store = StorageEngine, onSelectStation 
   let moveTarget = null;
   let pendingPortalId = null;
   let hoveredPortalId = null;
-  let portalTriggerCooldown = 0.6; // Grace period on initial spawn
+  let portalTriggerCooldown = 0.6;
   let selectedWorldFilter = 'all';
 
   const onKeyDown = (e) => {
@@ -707,9 +541,6 @@ export function createOverworld3DScene({ store = StorageEngine, onSelectStation 
     window.addEventListener('keyup', onKeyUp);
   }
 
-  /**
-   * Synchronizes the 3 physical 3D Star Crystals and Hebrew label subtext on all 8 portals
-   */
   function syncState(stateObj) {
     const starsMap =
       stateObj?.labStars ||
@@ -724,12 +555,6 @@ export function createOverworld3DScene({ store = StorageEngine, onSelectStation 
         crystal.userData.isEarned = earned;
         crystal.material = earned ? starEarnedMat : starLockedMat;
       });
-      updateHebrewLabelSprite(
-        p.labelSprite,
-        p.title,
-        `${p.subtext} • ★ ${count}/3`,
-        p.color
-      );
     });
   }
 
@@ -740,15 +565,12 @@ export function createOverworld3DScene({ store = StorageEngine, onSelectStation 
     unsubStore = StorageEngine.subscribe(syncState);
   }
 
-  /**
-   * Triggers a portal energy burst, celebrates with Zen, and invokes `onSelectStation(labId)`
-   */
   function triggerStationPortal(labId) {
     const portal = portalByLabId[labId];
     if (!portal) return;
 
-    portal.burstTimer = 0.65;
-    portalTriggerCooldown = 1.1;
+    portal.burstTimer = 0.55;
+    portalTriggerCooldown = 1.0;
     zenRobot.setMood('celebrating');
     AudioEngine.playStep();
 
@@ -757,9 +579,6 @@ export function createOverworld3DScene({ store = StorageEngine, onSelectStation 
     }
   }
 
-  /**
-   * Helper to configure raycaster from flexible arguments `(ndc, camera)` or `(raycaster)`
-   */
   function prepareRaycaster(ndcOrRaycaster, camera) {
     if (!ndcOrRaycaster) return null;
     if (ndcOrRaycaster.isRaycaster) {
@@ -772,9 +591,6 @@ export function createOverworld3DScene({ store = StorageEngine, onSelectStation 
     return null;
   }
 
-  /**
-   * Pointer hover handler: highlights hovered 3D station portal and updates Zen's gaze
-   */
   function handlePointerMove(ndcOrRaycaster, camera) {
     const rc = prepareRaycaster(ndcOrRaycaster, camera);
     if (!rc) return null;
@@ -801,17 +617,10 @@ export function createOverworld3DScene({ store = StorageEngine, onSelectStation 
     return hitLabId;
   }
 
-  /**
-   * Pointer click/tap handler:
-   * - Clicking a Station Portal flies Zen toward the portal, triggers an energy burst,
-   *   and launches the selected station (`onSelectStation(labId)`).
-   * - Clicking anywhere on the 3D floor flies Zen smoothly to that coordinate.
-   */
   function handlePointerDown(ndcOrRaycaster, camera) {
     const rc = prepareRaycaster(ndcOrRaycaster, camera);
     if (!rc) return false;
 
-    // 1. Check station portals first
     const portalHits = rc.intersectObjects(interactiveHitMeshes, true);
     for (let i = 0; i < portalHits.length; i++) {
       let obj = portalHits[i].object;
@@ -833,16 +642,15 @@ export function createOverworld3DScene({ store = StorageEngine, onSelectStation 
       }
     }
 
-    // 2. Otherwise check 3D laboratory floor for click-to-fly navigation
     const floorHits = rc.intersectObject(floorMesh, false);
     if (floorHits.length > 0) {
       const pt = floorHits[0].point;
-      const clampedX = THREE.MathUtils.clamp(pt.x, -9.5, 9.5);
-      const clampedZ = THREE.MathUtils.clamp(pt.z, -7.2, 7.2);
+      const clampedX = THREE.MathUtils.clamp(pt.x, -8.5, 8.5);
+      const clampedZ = THREE.MathUtils.clamp(pt.z, -6.2, 6.2);
       moveTarget = new THREE.Vector3(clampedX, 0.22, clampedZ);
       pendingPortalId = null;
       targetMarkerRing.position.set(clampedX, 0.04, clampedZ);
-      targetMarkerMat.color.set('#38bdf8');
+      targetMarkerMat.color.set('#0284c7');
       targetMarkerMat.opacity = 0.85;
       AudioEngine.playClick();
       return true;
@@ -855,21 +663,15 @@ export function createOverworld3DScene({ store = StorageEngine, onSelectStation 
     return false;
   }
 
-  /**
-   * Filters or highlights a specific World Zone (`all` | `world1`..`world4`)
-   */
   function focusWorld(worldId = 'all') {
     selectedWorldFilter = worldId || 'all';
     portals.forEach((p) => {
       const isMatch = selectedWorldFilter === 'all' || p.worldId === selectedWorldFilter;
       p.group.visible = true;
-      p.group.scale.setScalar(isMatch ? 1.0 : 0.78);
+      p.group.scale.setScalar(isMatch ? 1.0 : 0.8);
     });
   }
 
-  /**
-   * Teleports Zen directly to a station portal
-   */
   function teleportZenToStation(labId) {
     const portal = portalByLabId[labId];
     if (!portal) return;
@@ -877,19 +679,12 @@ export function createOverworld3DScene({ store = StorageEngine, onSelectStation 
     moveTarget = null;
   }
 
-  /**
-   * Main 60fps simulation & animation loop
-   */
   function update(dt = 0.016, elapsedTime = 0) {
-    const safeDt = Math.min(dt || 0.016, 0.1);
+    const safeDt = Math.min(dt || 0.016, 0.05);
     if (portalTriggerCooldown > 0) {
       portalTriggerCooldown = Math.max(0, portalTriggerCooldown - safeDt);
     }
 
-    // 1. Update all custom GLSL shaders (`uTime`)
-    updateShaderTime(group, elapsedTime);
-
-    // 2. Compute Zen Robot velocity from WASD/Arrow keys or click-to-fly target
     const moveSpeed = 5.4;
     let vx = 0;
     let vz = 0;
@@ -927,120 +722,63 @@ export function createOverworld3DScene({ store = StorageEngine, onSelectStation 
       }
     }
 
-    // Apply velocity & clamp within laboratory plaza bounds
     if (Math.hypot(vx, vz) > 0.01) {
       zenRobot.group.position.x = THREE.MathUtils.clamp(
         zenRobot.group.position.x + vx * safeDt,
-        -9.5,
-        9.5
+        -8.5,
+        8.5
       );
       zenRobot.group.position.z = THREE.MathUtils.clamp(
         zenRobot.group.position.z + vz * safeDt,
-        -7.2,
-        7.2
+        -6.2,
+        6.2
       );
 
-      // Smoothly rotate Zen toward travel direction
       const desiredAngle = Math.atan2(vx, vz);
       let angleDiff = desiredAngle - zenRobot.group.rotation.y;
       while (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
       while (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
       zenRobot.group.rotation.y += angleDiff * Math.min(1.0, safeDt * 10.0);
-
-      // Spawn glowing cyan/gold thruster trail particles
-      trailSpawnAccumulator += safeDt;
-      if (trailSpawnAccumulator >= 0.045) {
-        trailSpawnAccumulator = 0;
-        const p = trailParticles[trailSpawnCursor];
-        trailSpawnCursor = (trailSpawnCursor + 1) % TRAIL_POOL_SIZE;
-        p.life = p.maxLife;
-        p.mesh.visible = true;
-        p.mesh.position.set(
-          zenRobot.group.position.x + (Math.random() - 0.5) * 0.16,
-          0.22 + Math.random() * 0.1,
-          zenRobot.group.position.z + (Math.random() - 0.5) * 0.16
-        );
-        p.mesh.scale.setScalar(1.0);
-        p.mesh.material.opacity = 0.85;
-        p.velocity.set(-vx * 0.15, 0.35 + Math.random() * 0.25, -vz * 0.15);
-      }
     }
 
-    // Update thruster trail particles
-    for (let i = 0; i < TRAIL_POOL_SIZE; i++) {
-      const p = trailParticles[i];
-      if (p.life > 0) {
-        p.life -= safeDt;
-        if (p.life <= 0) {
-          p.mesh.visible = false;
-        } else {
-          const ratio = p.life / p.maxLife;
-          p.mesh.position.addScaledVector(p.velocity, safeDt);
-          p.mesh.scale.setScalar(0.35 + ratio * 0.75);
-          p.mesh.material.opacity = ratio * 0.8;
-        }
-      }
-    }
-
-    // Fade floor destination marker ring
     if (targetMarkerMat.opacity > 0) {
-      targetMarkerRing.rotation.z = elapsedTime * 2.5;
+      targetMarkerRing.rotation.z = elapsedTime * 2.0;
       if (!moveTarget) {
         targetMarkerMat.opacity = Math.max(0, targetMarkerMat.opacity - safeDt * 1.8);
       }
     }
 
-    // 3. Update all 8 Station Portals & check proximity activation ring
+    // Update Station Toy Portals & Proximity/Hover Popups
     let lookTarget = null;
     portals.forEach((p, idx) => {
-      // Rotate miniature hologram sculpture
-      p.hologramSculpture.rotation.y = elapsedTime * 1.15 + idx * 0.5;
-      p.hologramSculpture.position.y = 1.12 + Math.sin(elapsedTime * 2.4 + idx) * 0.055;
+      p.hologramSculpture.rotation.y = elapsedTime * 0.9 + idx * 0.5;
 
-      // Special animation for Lab 6 Scanning Laser Bar
-      if (p.id === 'lab6') {
-        const scanBar = p.hologramSculpture.getObjectByName('ScanBar');
-        if (scanBar) {
-          scanBar.position.y = Math.sin(elapsedTime * 3.2) * 0.18;
-        }
-      }
+      const distToZen = Math.hypot(
+        zenRobot.group.position.x - p.position.x,
+        zenRobot.group.position.z - p.position.z
+      );
 
-      // Rotate 3D Star Crystals
-      p.starCrystals.forEach((crystal, sIdx) => {
-        crystal.rotation.y = elapsedTime * 1.8 + sIdx * 1.1;
-        const baseY = sIdx === 1 ? 2.26 : 2.15;
-        crystal.position.y = baseY + Math.sin(elapsedTime * 3.0 + sIdx) * 0.03;
-      });
+      // Show full popup sign ONLY when hovered or when Zen is near (`distToZen < 2.6`)
+      const isNearOrHovered = p.isHovered || distToZen < 2.6;
+      const targetPopup = isNearOrHovered ? 1.0 : 0.0;
+      p.popupScale = THREE.MathUtils.lerp(p.popupScale, targetPopup, Math.min(1, safeDt * 12));
 
-      // Portal hover / burst visual feedback
-      if (p.burstTimer > 0) {
-        p.burstTimer = Math.max(0, p.burstTimer - safeDt);
-        const burstScale = 1.0 + Math.sin((p.burstTimer / 0.65) * Math.PI) * 0.35;
-        p.activationRing.scale.setScalar(burstScale);
-        p.forcefieldMat.uniforms.uPulseIntensity.value = 2.2;
+      if (p.popupScale > 0.05) {
+        p.labelSprite.visible = true;
+        p.labelSprite.scale.set(2.45 * p.popupScale, 0.76 * p.popupScale, 1);
       } else {
-        const hoverScale = p.isHovered ? 1.12 : 1.0 + Math.sin(elapsedTime * 2.5 + idx) * 0.025;
-        p.activationRing.scale.setScalar(
-          THREE.MathUtils.lerp(p.activationRing.scale.x, hoverScale, safeDt * 8.0)
-        );
-        p.forcefieldMat.uniforms.uPulseIntensity.value = p.isHovered ? 1.55 : 1.0;
+        p.labelSprite.visible = false;
       }
 
       if (p.isHovered) {
         lookTarget = p.position;
       }
 
-      // Check if Zen walked into the portal's activation ring
-      const distToZen = Math.hypot(
-        zenRobot.group.position.x - p.position.x,
-        zenRobot.group.position.z - p.position.z
-      );
       if (distToZen < 0.92 && portalTriggerCooldown <= 0 && hasKeyboardInput) {
         triggerStationPortal(p.id);
       }
     });
 
-    // 4. Update Zen 3D Robot character controller
     zenRobot.update(safeDt, elapsedTime, {
       velocity: { x: vx, y: 0, z: vz },
       targetLookAt: lookTarget
@@ -1064,8 +802,8 @@ export function createOverworld3DScene({ store = StorageEngine, onSelectStation 
     zenRobot,
     portals,
     portalByLabId,
-    cameraPosition: new THREE.Vector3(0, 13.8, 15.8),
-    cameraTarget: new THREE.Vector3(0, 0.4, 0),
+    cameraPosition: new THREE.Vector3(0, 14.2, 13.6),
+    cameraTarget: new THREE.Vector3(0, 0.2, 0.3),
     update,
     handlePointerDown,
     handlePointerMove,

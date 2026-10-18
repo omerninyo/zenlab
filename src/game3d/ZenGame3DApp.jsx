@@ -38,7 +38,7 @@ export default function ZenGame3DApp({
     <div
       dir="rtl"
       data-testid="zenlab-3d-root"
-      className="fixed inset-0 w-screen h-screen overflow-hidden bg-[#060b16] text-slate-100 font-sans select-none"
+      className="fixed inset-0 w-screen h-screen overflow-hidden bg-[#dff2ff] text-slate-100 font-sans select-none"
       style={{ width: '100vw', height: '100vh', overflow: 'hidden' }}
     >
       {/* 1. Fullscreen 3D WebGL2 Game Engine Viewport */}

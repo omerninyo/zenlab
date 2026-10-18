@@ -2,7 +2,7 @@
 ## Multi-Year Technical & Pedagogical Evolution: Web SPA, Native iPadOS, Lesson Plans, and Physical Computing
 
 **Document ID:** `ZEN-ROADMAP-EN-2026`  
-**Current Version:** `v2.0.0` (Updated: October 2026)  
+**Current Version:** `v2.0.1` (Updated: October 2026)  
 **Team:** Code & AI Explorer Team (`team@learnai.internal`)  
 **Governance:** Zero-PII Strict Compliance • 10th Man Red Team Protocol • MIT License  
 
@@ -14,7 +14,7 @@ This document serves as the **Central Source of Truth** for all collective memor
 flowchart LR
     P1["Phases 1-2: Core 8 Web Labs\n(Completed v0.7.23)"] --> P3["Phase 3: Classroom Lesson Plans\n& 70 Neural MP3s (Completed)"]
     P3 --> P3C["Phase 3C-3D: iPadOS Studio App\n& Desktop Chrome v1.0.0 (Completed)"]
-    P3C --> P3E["Phase 3E: ZenLab 3D WebGL2 Engine\nBlender 5.2 GLB + Rapier3D v2.0.0 (Completed)"]
+    P3C --> P3E["Phase 3E: ZenLab 3D & 2.5D Nintendo Engine\nWhisper-Quiet GPU v2.0.1 (Completed)"]
     P3E --> P4["Phase 4: Native iPad App\n(100% Apple HIG & SwiftUI)"]
     P4 --> P5["Phase 5: Native Android App\n(Jetpack Compose & Material 3)"]
     P5 --> P6["Phase 6: Physical Computing & Edge AI\n(micro:bit & Teachable Machine)"]

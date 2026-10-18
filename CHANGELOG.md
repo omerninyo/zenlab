@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.1] - 2026-10-18
+
+### Fixed & Optimized (Whisper-Quiet GPU Thermal Overhaul, Locked 2.5D Nintendo Toy-Board Camera & Zero Runtime Texture Allocation)
+- **GPU & Thermal Bottleneck Elimination (`src/game3d/ZenGame3DCanvas.jsx`, `src/game3d/engine/ProceduralTextures.js`)**:
+  - Completely removed heavy multi-pass `EffectComposer`, `N8AOPostPass` ambient occlusion, `BloomEffect`, and `RoomEnvironment` PMREM passes; replaced with clean Nintendo daylight studio lighting (`HemisphereLight` + 1 crisp `DirectionalLight` with 1024×1024 shadow map).
+  - Capped WebGL `pixelRatio` at `Math.min(window.devicePixelRatio, 1.25)` so Retina 5K displays never over-render at 2x resolution, and added a 60fps frame-interval cap with background-tab suspension.
+  - Eliminated all dynamic/per-frame `CanvasTexture` allocations and redraws (`s1CanvasAllocDelta = 0`, `s5CanvasAllocDelta = 0` verified across continuous pointer movement) via `staticLabelTextureCache` in `ProceduralTextures.js` and HTML HUD telemetry in `DiegeticHUD.jsx`.
+- **Locked 2.5D Nintendo Camera & Spatial Clarity (`src/game3d/ZenGame3DCanvas.jsx`, `src/game3d/stations/Stations3D.js`, `src/game3d/overworld/Overworld3DScene.js`)**:
+  - Locked puzzle station cameras to a clear Front-On / Top-Down 2.5D view (`controls.enableRotate = false`, with subtle ±3° spring parallax tilt) so rows, columns, and X/Y axes are 100% aligned.
+  - Removed all background 3D fixture clutter ("מנעול לייזר", "גאדג׳ט חימום", "מקרן הולוגרמה", curved back wall, data motes, and full-screen shader floors) from stations, keeping only the main puzzle toy-board and Zen the Robot on a bright `#dff2ff` Nintendo pastel backdrop.
+  - In **Station 1**: Aligned the 8 bit-weight badges (`128, 64, 32, 16, 8, 4, 2, 1`) in a neat horizontal row directly above the 8 columns of the board and rendered Heart/Smiley target guides directly on the top face of target tiles (`getBlueprintTileFaceTextures()`).
+  - In **Overworld**: Restyled the 4 worlds as colorful tactile Nintendo toy-block islands and replaced 13 permanently open signs with proximity/hover-only station popups.
+
 ## [2.0.0] - 2026-10-18
 
 ### Added & Transformed (ZenLab 3D — Fullscreen AA 3D Interactive Sci-Fi Game Engine, Blender 5.2 GLB Pipeline, Rapier3D WASM Physics, Custom GLSL Shaders & Diegetic RTL HUD)

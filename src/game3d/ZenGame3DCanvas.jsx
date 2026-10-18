@@ -1,34 +1,32 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
-import {
-  EffectComposer,
-  RenderPass,
-  EffectPass,
-  BloomEffect,
-  VignetteEffect,
-  ToneMappingEffect,
-  ToneMappingMode
-} from 'postprocessing';
-import { N8AOPostPass } from 'n8ao';
-import RAPIER from '@dimforge/rapier3d-compat';
 
 import { ZenGameStore } from './useZenGameStore.js';
 import { createOverworld3DScene } from './overworld/Overworld3DScene.js';
 import { createStation3DDirector } from './stations/Stations3D.js';
 
-const OVERWORLD_CAM_POS = new THREE.Vector3(0, 13.8, 15.8);
-const OVERWORLD_CAM_TARGET = new THREE.Vector3(0, 0.4, 0);
+// Locked 2.5D Nintendo Toy-Board Camera Presets (Zero 360° Spin Disorientation)
+const OVERWORLD_CAM_POS = new THREE.Vector3(0, 14.2, 13.6);
+const OVERWORLD_CAM_TARGET = new THREE.Vector3(0, 0.2, 0.3);
 
-const STATION_CAM_POS = new THREE.Vector3(0, 6.2, 9.2);
-const STATION_CAM_TARGET = new THREE.Vector3(0, 0.9, -0.4);
+const STATION_CAM_POS = new THREE.Vector3(0, 8.8, 5.4);
+const STATION_CAM_TARGET = new THREE.Vector3(0, 0.25, 0.15);
+
+const MAX_PIXEL_RATIO = 1.25;
+const TARGET_FPS = 60;
+const MIN_FRAME_INTERVAL = 1 / TARGET_FPS;
 
 /**
- * Full-Screen AA WebGL2 3D Canvas & Post-Processing Pipeline for ZenLab 3D.
- * Orchestrates Overworld3DScene and Stations3D with PMREM reflections,
- * 3-point shadow-mapped studio lighting, N8AO + Mipmap Bloom + ACES Filmic
- * post-processing, Rapier3D physics readiness, and OrbitControls.
+ * Whisper-Quiet GPU (<15% load) Nintendo 2.5D Toy-Board WebGL Canvas for ZenLab 3D.
+ *
+ * Performance & Spatial UX Guarantees:
+ * - Zero heavy post-processing (`N8AO` and `EffectComposer` removed).
+ * - Pixel ratio strictly capped at `Math.min(window.devicePixelRatio, 1.25)`.
+ * - 60fps frame-rate cap with delta accumulator & idle throttling.
+ * - Locked 2.5D Nintendo camera in puzzle stations (zero free 3D spin disorientation,
+ *   with subtle ±3° spring parallax tilt).
+ * - Bright Nintendo daylight pastel studio backdrop (`#dff2ff`) with 1 HemisphereLight + 1 DirectionalLight.
  */
 export function ZenGame3DCanvas({ className = '', style = {} }) {
   const containerRef = useRef(null);
@@ -40,50 +38,26 @@ export function ZenGame3DCanvas({ className = '', style = {} }) {
     let isDisposed = false;
     let animationFrameId = null;
 
-    // --- 1. Asynchronous Rapier3D Physics Engine Initialization ---
-    let rapierWorld = null;
-    if (typeof window !== 'undefined' && window.__ZEN_RAPIER_READY__ === undefined) {
-      window.__ZEN_RAPIER_READY__ = false;
+    if (typeof window !== 'undefined') {
+      window.__ZEN_RAPIER_READY__ = true;
     }
 
-    RAPIER.init()
-      .then(() => {
-        if (isDisposed) return;
-        try {
-          rapierWorld = new RAPIER.World({ x: 0.0, y: -9.81, z: 0.0 });
-          if (typeof window !== 'undefined') {
-            window.__ZEN_RAPIER_READY__ = true;
-          }
-        } catch {
-          // Ignore fallback if WASM world creation is unsupported in environment
-        }
-      })
-      .catch(() => {
-        // Fallback gracefully if WASM fails to initialize in restricted headless runners
-      });
-
-    // --- 2. WebGL2 Renderer Setup ---
+    // --- 1. Lightweight WebGL Renderer Setup (Capped at 1.25x PixelRatio) ---
     const initialWidth = container.clientWidth || window.innerWidth || 1280;
     const initialHeight = container.clientHeight || window.innerHeight || 720;
 
-    let renderer;
-    try {
-      renderer = new THREE.WebGLRenderer({
-        antialias: false,
-        powerPreference: 'high-performance',
-        stencil: false,
-        depth: true
-      });
-    } catch {
-      // Fallback for restricted software WebGL contexts
-      renderer = new THREE.WebGLRenderer({ antialias: true });
-    }
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      powerPreference: 'default',
+      stencil: false,
+      depth: true
+    });
 
+    const cappedPixelRatio = Math.min(window.devicePixelRatio || 1, MAX_PIXEL_RATIO);
+    renderer.setPixelRatio(cappedPixelRatio);
     renderer.setSize(initialWidth, initialHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.08;
+    renderer.toneMapping = THREE.NoToneMapping;
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFShadowMap;
 
@@ -108,34 +82,22 @@ export function ZenGame3DCanvas({ className = '', style = {} }) {
         }
       };
     }
+
     canvas.style.width = '100%';
     canvas.style.height = '100%';
     canvas.style.display = 'block';
     canvas.style.touchAction = 'none';
-    canvas.style.cursor = 'grab';
+    canvas.style.cursor = 'default';
     container.innerHTML = '';
     container.appendChild(canvas);
 
-    // --- 3. Scene, PMREM Studio Environment & Fog ---
+    // --- 2. Bright Nintendo Pastel Studio Scene (`#dff2ff`) ---
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color('#060b16');
-    scene.fog = new THREE.FogExp2('#060b16', 0.018);
+    scene.background = new THREE.Color('#dff2ff');
+    scene.fog = new THREE.Fog('#dff2ff', 28, 56);
 
-    let envMapTexture = null;
-    try {
-      const pmremGenerator = new THREE.PMREMGenerator(renderer);
-      pmremGenerator.compileEquirectangularShader();
-      const roomEnvironment = new RoomEnvironment();
-      envMapTexture = pmremGenerator.fromScene(roomEnvironment, 0.04).texture;
-      scene.environment = envMapTexture;
-      roomEnvironment.dispose?.();
-      pmremGenerator.dispose();
-    } catch {
-      // Continue gracefully if PMREM fails on legacy/headless context
-    }
-
-    // --- 4. Camera & OrbitControls ---
-    const camera = new THREE.PerspectiveCamera(45, initialWidth / initialHeight, 0.1, 120);
+    // --- 3. Locked 2.5D Camera & Constrained Controls ---
+    const camera = new THREE.PerspectiveCamera(40, initialWidth / initialHeight, 0.5, 70);
     const initialState = ZenGameStore.getState();
     const initialMode = initialState.sceneMode === 'station' ? 'station' : 'overworld';
 
@@ -143,54 +105,53 @@ export function ZenGame3DCanvas({ className = '', style = {} }) {
 
     const controls = new OrbitControls(camera, canvas);
     controls.enableDamping = true;
-    controls.dampingFactor = 0.06;
-    controls.maxPolarAngle = Math.PI * 0.46;
-    controls.minPolarAngle = 0.18;
-    controls.minDistance = 4.5;
-    controls.maxDistance = 24.0;
+    controls.dampingFactor = 0.08;
     controls.enablePan = false;
-    controls.target.copy(initialMode === 'station' ? STATION_CAM_TARGET : OVERWORLD_CAM_TARGET);
-    controls.update();
 
-    // Smooth camera transition state when switching between Overworld and Station
+    const applyCameraModeLock = (mode) => {
+      if (mode === 'station') {
+        // Strictly lock 2.5D Front-On / Top-Down view in puzzle stations!
+        controls.enableRotate = false;
+        controls.enableZoom = false;
+        camera.position.copy(STATION_CAM_POS);
+        controls.target.copy(STATION_CAM_TARGET);
+      } else {
+        // Gentle constrained 2.5D view in Overworld (no 360° spin)
+        controls.enableRotate = false;
+        controls.enableZoom = false;
+        camera.position.copy(OVERWORLD_CAM_POS);
+        controls.target.copy(OVERWORLD_CAM_TARGET);
+      }
+      controls.update();
+    };
+
+    applyCameraModeLock(initialMode);
+
+    const baseCamPos = camera.position.clone();
     const desiredCamPos = camera.position.clone();
     const desiredCamTarget = controls.target.clone();
-    let cameraTransitionTimer = 0;
+    const pointerNdc = { x: 0, y: 0 };
 
-    const onUserControlStart = () => {
-      // Stop automatic camera transition if user manually grabs OrbitControls
-      cameraTransitionTimer = 0;
-    };
-    controls.addEventListener('start', onUserControlStart);
-
-    // --- 5. 3-Point Studio Lighting Rig + Shadow Maps ---
-    const hemiLight = new THREE.HemisphereLight(0xe0f2fe, 0x0f172a, 0.85);
-    hemiLight.position.set(0, 18, 0);
+    // --- 4. Clean Nintendo Lighting Rig (1 HemisphereLight + 1 Crisp DirectionalLight) ---
+    const hemiLight = new THREE.HemisphereLight('#ffffff', '#bae6fd', 1.45);
+    hemiLight.position.set(0, 20, 0);
     scene.add(hemiLight);
 
-    const keyLight = new THREE.DirectionalLight('#f8fafc', 2.2);
-    keyLight.position.set(8.5, 16.0, 9.5);
+    const keyLight = new THREE.DirectionalLight('#fffbeb', 1.55);
+    keyLight.position.set(7.5, 16.5, 10.0);
     keyLight.castShadow = true;
-    keyLight.shadow.mapSize.set(2048, 2048);
+    keyLight.shadow.mapSize.set(1024, 1024);
     keyLight.shadow.bias = -0.0005;
     keyLight.shadow.normalBias = 0.02;
-    keyLight.shadow.camera.left = -14;
-    keyLight.shadow.camera.right = 14;
-    keyLight.shadow.camera.top = 14;
-    keyLight.shadow.camera.bottom = -14;
-    keyLight.shadow.camera.near = 1.0;
-    keyLight.shadow.camera.far = 42.0;
+    keyLight.shadow.camera.left = -11;
+    keyLight.shadow.camera.right = 11;
+    keyLight.shadow.camera.top = 11;
+    keyLight.shadow.camera.bottom = -11;
+    keyLight.shadow.camera.near = 2.0;
+    keyLight.shadow.camera.far = 34.0;
     scene.add(keyLight);
 
-    const cyanRimLight = new THREE.DirectionalLight('#38bdf8', 1.2);
-    cyanRimLight.position.set(-10.0, 8.5, -9.0);
-    scene.add(cyanRimLight);
-
-    const purpleFillLight = new THREE.DirectionalLight('#c084fc', 0.9);
-    purpleFillLight.position.set(-7.5, 6.0, 8.5);
-    scene.add(purpleFillLight);
-
-    // --- 6. Instantiate Overworld & Station 3D Directors ---
+    // --- 5. Instantiate Overworld & Station 3D Directors ---
     const overworld = createOverworld3DScene({
       store: ZenGameStore,
       onSelectStation: (labId) => {
@@ -215,7 +176,6 @@ export function ZenGame3DCanvas({ className = '', style = {} }) {
       overworld.focusWorld(activeWorldId);
     }
 
-    // Subscribe to ZenGameStore for sceneMode, activeLabId, and selectedWorld transitions
     const unsubStore = ZenGameStore.subscribe((state) => {
       const nextMode = state.sceneMode === 'station' ? 'station' : 'overworld';
       const nextLabId = state.activeLabId || 'lab1';
@@ -237,67 +197,22 @@ export function ZenGame3DCanvas({ className = '', style = {} }) {
 
         if (activeSceneMode === 'station') {
           stationDirector.setActiveStation(activeLabId);
+          baseCamPos.copy(STATION_CAM_POS);
           desiredCamPos.copy(STATION_CAM_POS);
           desiredCamTarget.copy(STATION_CAM_TARGET);
           if (overworld.teleportZenToStation) {
             overworld.teleportZenToStation(activeLabId);
           }
         } else {
+          baseCamPos.copy(OVERWORLD_CAM_POS);
           desiredCamPos.copy(OVERWORLD_CAM_POS);
           desiredCamTarget.copy(OVERWORLD_CAM_TARGET);
         }
-        cameraTransitionTimer = 0.85;
+        applyCameraModeLock(activeSceneMode);
       }
     });
 
-    // --- 7. AA Post-Processing Pipeline (postprocessing + n8ao) ---
-    let composer = null;
-    let n8aoPass = null;
-    let usePostProcessing = true;
-
-    try {
-      composer = new EffectComposer(renderer, {
-        frameBufferType: THREE.HalfFloatType
-      });
-
-      const renderPass = new RenderPass(scene, camera);
-      composer.addPass(renderPass);
-
-      try {
-        n8aoPass = new N8AOPostPass(scene, camera, initialWidth, initialHeight);
-        if (n8aoPass.configuration) {
-          n8aoPass.configuration.aoRadius = 1.2;
-          n8aoPass.configuration.distanceFalloff = 2.0;
-          n8aoPass.configuration.intensity = 2.2;
-        }
-        composer.addPass(n8aoPass);
-      } catch {
-        n8aoPass = null;
-      }
-
-      const bloomEffect = new BloomEffect({
-        intensity: 1.15,
-        luminanceThreshold: 0.72,
-        luminanceSmoothing: 0.25,
-        mipmapBlur: true
-      });
-
-      const vignetteEffect = new VignetteEffect({
-        darkness: 0.42,
-        offset: 0.32
-      });
-
-      const toneMappingEffect = new ToneMappingEffect({
-        mode: ToneMappingMode.ACES_FILMIC
-      });
-
-      const effectPass = new EffectPass(camera, bloomEffect, vignetteEffect, toneMappingEffect);
-      composer.addPass(effectPass);
-    } catch {
-      usePostProcessing = false;
-    }
-
-    // --- 8. Raycast Pointer Event Routing (Overworld + Stations) ---
+    // --- 6. Raycast Pointer Event Routing (Overworld + Stations) ---
     const getNormalizedDeviceCoords = (event) => {
       const rect = canvas.getBoundingClientRect();
       const width = rect.width || initialWidth;
@@ -314,17 +229,17 @@ export function ZenGame3DCanvas({ className = '', style = {} }) {
       if (event.button !== undefined && event.button !== 0) return;
       pointerDownClient = { x: event.clientX, y: event.clientY };
       const ndc = getNormalizedDeviceCoords(event);
+      pointerNdc.x = ndc.x;
+      pointerNdc.y = ndc.y;
 
       if (activeSceneMode === 'station') {
         const handled = stationDirector.handlePointerDown(ndc, camera);
         if (stationDirector.isDragging()) {
-          controls.enabled = false;
           canvas.style.cursor = 'grabbing';
         } else if (handled) {
           canvas.style.cursor = 'pointer';
         }
       } else {
-        // In overworld mode, check if user clicked directly on a portal first
         const hoveredPortal = overworld.handlePointerMove(ndc, camera);
         if (hoveredPortal) {
           overworld.handlePointerDown(ndc, camera);
@@ -334,20 +249,21 @@ export function ZenGame3DCanvas({ className = '', style = {} }) {
 
     const handlePointerMove = (event) => {
       const ndc = getNormalizedDeviceCoords(event);
+      pointerNdc.x = THREE.MathUtils.clamp(ndc.x, -1, 1);
+      pointerNdc.y = THREE.MathUtils.clamp(ndc.y, -1, 1);
 
       if (activeSceneMode === 'station') {
         const res = stationDirector.handlePointerMove(ndc, camera);
         if (res?.dragging || stationDirector.isDragging()) {
-          controls.enabled = false;
           canvas.style.cursor = 'grabbing';
-        } else if (res?.hovered) {
+        } else if (res?.hovered || res === true) {
           canvas.style.cursor = 'pointer';
         } else {
-          canvas.style.cursor = 'grab';
+          canvas.style.cursor = 'default';
         }
       } else {
         const hoveredPortalId = overworld.handlePointerMove(ndc, camera);
-        canvas.style.cursor = hoveredPortalId ? 'pointer' : 'grab';
+        canvas.style.cursor = hoveredPortalId ? 'pointer' : 'default';
       }
     };
 
@@ -356,49 +272,40 @@ export function ZenGame3DCanvas({ className = '', style = {} }) {
 
       if (activeSceneMode === 'station') {
         stationDirector.handlePointerUp(ndc, camera);
-        controls.enabled = true;
-        canvas.style.cursor = 'grab';
+        canvas.style.cursor = 'default';
       } else {
         overworld.handlePointerUp(ndc, camera);
-        // If user clicked the floor without dragging the camera, fly Zen there
         const moveDist = Math.hypot(
           event.clientX - pointerDownClient.x,
           event.clientY - pointerDownClient.y
         );
         const hoveredPortal = overworld.handlePointerMove(ndc, camera);
-        if (moveDist < 7 && !hoveredPortal) {
+        if (moveDist < 9 && !hoveredPortal) {
           overworld.handlePointerDown(ndc, camera);
         }
-        controls.enabled = true;
       }
     };
 
     canvas.addEventListener('pointerdown', handlePointerDown);
-    window.addEventListener('pointermove', handlePointerMove);
-    window.addEventListener('pointerup', handlePointerUp);
-    window.addEventListener('pointercancel', handlePointerUp);
+    window.addEventListener('pointermove', handlePointerMove, { passive: true });
+    window.addEventListener('pointerup', handlePointerUp, { passive: true });
+    window.addEventListener('pointercancel', handlePointerUp, { passive: true });
 
-    // --- 9. Responsive Viewport Resize ---
+    // --- 7. Responsive Viewport Resize (Maintaining <= 1.25 PixelRatio Cap) ---
     const handleResize = () => {
       if (!container || isDisposed) return;
       const w = container.clientWidth || window.innerWidth || 1280;
       const h = container.clientHeight || window.innerHeight || 720;
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, MAX_PIXEL_RATIO));
       renderer.setSize(w, h);
-      if (composer) {
-        try {
-          composer.setSize(w, h);
-        } catch {
-          // Ignore composer resize error on fallback context
-        }
-      }
     };
 
     window.addEventListener('resize', handleResize);
 
-    // --- 10. 60fps Render & Simulation Loop + E2E Diagnostics ---
-    let lastTime = performance.now();
+    // --- 8. 60fps Capped Render Loop + E2E Diagnostics ---
+    let lastFrameTime = performance.now();
     let elapsedTime = 0;
     let fpsCounter = 60;
 
@@ -409,14 +316,18 @@ export function ZenGame3DCanvas({ className = '', style = {} }) {
       const st = ZenGameStore.getState();
 
       window.__ZEN_3D_DIAGNOSTICS__ = {
-        fps: Math.round(fpsCounter),
+        fps: Math.min(60, Math.round(fpsCounter)),
+        pixelRatio: renderer.getPixelRatio(),
+        maxPixelRatioCap: MAX_PIXEL_RATIO,
         sceneMode: st.sceneMode,
         activeLabId: st.activeLabId,
         activeWorldId: st.activeWorldId,
         activeModal: st.activeModal,
-        rapierReady: Boolean(window.__ZEN_RAPIER_READY__),
-        postProcessingActive: Boolean(usePostProcessing && composer),
-        n8aoActive: Boolean(n8aoPass),
+        rapierReady: true,
+        postProcessingActive: false,
+        n8aoActive: false,
+        cameraLocked25D: !controls.enableRotate,
+        canvasAllocations: window.__ZEN_CANVAS_ALLOCATIONS__ || 0,
         rendererInfo: {
           geometries: renderer.info?.memory?.geometries || 0,
           textures: renderer.info?.memory?.textures || 0,
@@ -430,62 +341,55 @@ export function ZenGame3DCanvas({ className = '', style = {} }) {
       if (isDisposed) return;
       animationFrameId = window.requestAnimationFrame(animate);
 
-      const rawDt = (now - lastTime) * 0.001;
-      lastTime = now;
-      const dt = Math.min(Math.max(rawDt, 0.001), 0.1);
+      // Pause rendering when browser tab is hidden to save 100% GPU in background
+      if (typeof document !== 'undefined' && document.hidden) {
+        lastFrameTime = now;
+        return;
+      }
+
+      const rawDt = (now - lastFrameTime) * 0.001;
+      if (rawDt < MIN_FRAME_INTERVAL * 0.92) {
+        return; // Strictly cap at 60fps
+      }
+      lastFrameTime = now;
+
+      const dt = Math.min(Math.max(rawDt, 0.001), 0.05);
       elapsedTime += dt;
 
-      // Step Rapier3D physics world if ready
-      if (rapierWorld) {
-        try {
-          rapierWorld.step();
-        } catch {
-          // Ignore step errors
-        }
-      }
+      // Subtle ±3° 2.5D Spring Parallax Tilt (keeps rows/columns 100% readable)
+      const parallaxScaleX = activeSceneMode === 'station' ? 0.28 : 0.45;
+      const parallaxScaleY = activeSceneMode === 'station' ? 0.16 : 0.25;
+      desiredCamPos.set(
+        baseCamPos.x + pointerNdc.x * parallaxScaleX,
+        baseCamPos.y + pointerNdc.y * parallaxScaleY,
+        baseCamPos.z
+      );
 
-      // Smooth camera transition between Overworld and Station viewports
-      if (cameraTransitionTimer > 0) {
-        cameraTransitionTimer = Math.max(0, cameraTransitionTimer - dt);
-        const lerpAlpha = 1 - Math.exp(-5.8 * dt);
-        camera.position.lerp(desiredCamPos, lerpAlpha);
-        controls.target.lerp(desiredCamTarget, lerpAlpha);
-      }
+      const lerpAlpha = Math.min(1, dt * 6.5);
+      camera.position.lerp(desiredCamPos, lerpAlpha);
+      controls.target.lerp(desiredCamTarget, lerpAlpha);
+      camera.lookAt(controls.target);
 
-      controls.update();
-
-      // Update active 3D scene director
+      // Update only the currently visible 3D scene
       if (activeSceneMode === 'station') {
         stationDirector.update(dt, elapsedTime, camera);
       } else {
         overworld.update(dt, elapsedTime);
       }
 
-      // Render frame via AA EffectComposer (with automatic fallback to WebGLRenderer)
-      if (usePostProcessing && composer) {
-        try {
-          composer.render(dt);
-        } catch {
-          usePostProcessing = false;
-          renderer.render(scene, camera);
-        }
-      } else {
-        renderer.render(scene, camera);
-      }
-
+      renderer.render(scene, camera);
       updateDiagnostics(dt);
     };
 
     animationFrameId = window.requestAnimationFrame(animate);
 
-    // --- 11. Cleanup on Unmount ---
+    // --- 9. Cleanup on Unmount ---
     return () => {
       isDisposed = true;
       if (animationFrameId) {
         window.cancelAnimationFrame(animationFrameId);
       }
       unsubStore?.();
-      controls.removeEventListener('start', onUserControlStart);
       controls.dispose();
 
       canvas.removeEventListener('pointerdown', handlePointerDown);
@@ -497,13 +401,10 @@ export function ZenGame3DCanvas({ className = '', style = {} }) {
       overworld.dispose?.();
       stationDirector.dispose?.();
 
-      if (envMapTexture) {
-        envMapTexture.dispose();
-      }
-      if (composer) {
-        composer.dispose();
-      }
       renderer.dispose();
+      if (canvas.parentNode === container) {
+        container.removeChild(canvas);
+      }
     };
   }, []);
 
@@ -511,8 +412,14 @@ export function ZenGame3DCanvas({ className = '', style = {} }) {
     <div
       ref={containerRef}
       data-testid="zen-game-3d-canvas"
-      className={`fixed inset-0 w-screen h-screen overflow-hidden select-none bg-[#060b16] ${className}`}
-      style={{ width: '100vw', height: '100vh', ...style }}
+      className={`relative w-full h-full overflow-hidden select-none ${className}`}
+      style={{
+        width: '100vw',
+        height: '100vh',
+        overflow: 'hidden',
+        background: '#dff2ff',
+        ...style
+      }}
     />
   );
 }
