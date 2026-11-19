@@ -109,7 +109,7 @@ export default function DaylightHomePath({
 
   useEffect(() => {
     if (typeof document !== 'undefined') {
-      document.title = 'ZenLab | הרפתקת מדעי המחשב ובינה מלאכותית לילדים';
+      document.title = 'ZenLab | מעבדת מדעי המחשב והבינה המלאכותית לילדים';
     }
     const unsub = StorageEngine.subscribe((s) => {
       setStorageMeta({
@@ -269,11 +269,13 @@ export default function DaylightHomePath({
 
       {/* Main Centered Learning Path */}
       <main className="max-w-lg mx-auto px-4 py-6 sm:py-8 space-y-8 pb-20">
+        <h1 className="sr-only">ZenLab — מעבדת מדעי המחשב והבינה המלאכותית לילדים</h1>
         {/* Top Greeting with Zen Mascot */}
         <section>
           <ZenMascot
             pose={totalStars === 24 ? 'cheer' : 'wave'}
             size="md"
+            priority
             message={greetingText}
             audioSrc={greetingAudioSrc}
             spokenFallback={greetingText}

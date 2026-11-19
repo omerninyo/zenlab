@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.1] - 2026-11-19
+
+### Added, Fixed & Optimized (Daylight Social Thumbnail, PWA Icons, Deep-Link SEO & Audio Cache Hygiene)
+- **Daylight Brand Visuals & Social Preview (`public/og-image.png`, `public/favicon.svg`, `public/favicon.ico`, `public/icon-192.png`, `public/icon-512.png`, `public/icon-maskable-512.png`, `public/apple-touch-icon.png`, `scripts/generate_brand_assets.mjs`)**:
+  - Replaced legacy v1.0 dark neon social banner (`1200×630`) and pitch-black CPU app icons with crisp RTL Daylight artwork featuring the smiling 2D Zen mascot, tactile unit pills, vector squircle SVG favicon, multi-size `.ico`, and safe-padded `maskable` icon.
+- **Crawler Metadata, Structured Data & Semantic Alignment (`index.html`, `public/manifest.webmanifest`, `public/sitemap.xml`, `public/llms.txt`, `public/_headers`)**:
+  - Updated `<main class="sr-only">` pre-rendered crawler summary and `public/llms.txt` to reflect the current v3.1 Daylight 4-unit curriculum, 8 linear stations, Zero-PII posture, and Google Gemini natural Hebrew TTS (`Puck` + `/api/tts`).
+  - Expanded Schema.org JSON-LD `@graph` with `WebSite`, `WebApplication` (`softwareVersion: 3.1.1`), `EducationalAudience` (ages 9–12), 8 canonical `/lab/1`..`/lab/8` `ItemList` parts, and a Hebrew `FAQPage`.
+  - Upgraded `public/manifest.webmanifest` with `"id": "/"`, split `"any"` vs `"maskable"` icon entries, and `"screenshots"` banner preview; migrated `public/sitemap.xml` from `#labN` fragments to `/lab/1`..`/lab/8` with image metadata.
+- **Deep-Link Routing, Hero LCP & Service Worker Hygiene (`src/App.jsx`, `src/daylight/DaylightHomePath.jsx`, `src/daylight/ZenMascot.jsx`, `src/main.jsx`, `public/sw.js`)**:
+  - Added `History API` deep-link routing (`/lab/1`..`/lab/8`, normalizing legacy `#labN` hashes) alongside dynamic `<link rel="canonical">` and `<meta name="description">` synchronization.
+  - Added `<h1 class="sr-only">` landmark on the Home Path, `<link rel="preload" as="image" fetchpriority="high">` for `zen_wave.png`, and explicit `width`/`height` + `fetchPriority="high"` on the hero mascot.
+  - Disabled Service Worker registration in local Vite dev (`import.meta.env.DEV`) with cache purging, bypassed HTTP Range requests in `public/sw.js` (`zenlab-v3.1.2`), re-recorded lively `home_welcome.mp3`, and bumped static audio URLs to `?v=3.1.1`.
+
 ## [3.1.0] - 2026-11-19
 
 ### Fixed, Refined & Upgraded (Deep Pedagogical QA/QC & Google Gemini 3.8 Natural Hebrew TTS Overhaul)

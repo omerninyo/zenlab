@@ -7,6 +7,20 @@
 
 ---
 
+## [3.1.1] - 2026-11-19
+
+### תוספת, תיקון ואופטימיזציה (תמונת שיתוף Daylight, אייקונים, קישורי תחנה ישירים, SEO וניקוי מטמון שמע)
+- **נכסי מיתוג ותצוגה מקדימה ברשתות (`public/og-image.png`, `public/favicon.svg`, `public/favicon.ico`, `public/icon-192.png`, `public/icon-512.png`, `public/icon-maskable-512.png`, `public/apple-touch-icon.png`, `scripts/generate_brand_assets.mjs`)**:
+  - הוחלפו באנר ה-OpenGraph הכהה (`1200×630`, שהכיל טקסט חתוך מגרסה v1.0) והאייקונים השחורים בעיצוב Daylight בהיר בעברית מלאה עם דמות זֶן החייכנית, כרטיסי היחידות, פביקון וקטורי, קובץ `.ico` רב-גדלים ואייקון `maskable` עם שולי ביטחון.
+- **מטא-דאטה, Structured Data ותאימות סורקים (`index.html`, `public/manifest.webmanifest`, `public/sitemap.xml`, `public/llms.txt`, `public/_headers`)**:
+  - עודכנו אזור ה-`<main class="sr-only">` ב-`index.html` ו-`public/llms.txt` לתיאור העדכני של גרסה v3.1 Daylight (4 יחידות, 8 תחנות, פרטיות Zero-PII ומנוע הקריינות Google Gemini `Puck` + `/api/tts`).
+  - הורחב מבנה ה-JSON-LD Schema.org עם `WebSite`, `EducationalAudience` (גילאי 9–12), רשימת `ItemList` עבור `/lab/1`..`/lab/8` ושאלות נפוצות (`FAQPage`) להורים ומורים.
+  - הופרד `purpose` במניפסט (`any` מול `maskable`), נוסף שדה `screenshots`, והוחלפו כתובות `#labN` ב-`sitemap.xml` בנתיבים תקניים `/lab/1`..`/lab/8`.
+- **ניתוב ישיר לתחנות (`/lab/1`–`/lab/8`), עדיפות טעינה (LCP) וניקוי מטמון (`src/App.jsx`, `src/daylight/DaylightHomePath.jsx`, `src/daylight/ZenMascot.jsx`, `src/main.jsx`, `public/sw.js`)**:
+  - נוסף ניתוב URL ישיר לתחנות (`/lab/1`..`/lab/8` והמרת `#labN`) כולל ניווט חזור/קדימה וסנכרון דינמי של `canonical` ותיאור העמוד.
+  - נוספו כותרת `<h1>` מובנית במסך הבית, `<link rel="preload" as="image" fetchpriority="high">` לדמות זֶן וממדי `width`/`height` למניעת קפיצות פריסה (CLS).
+  - בוטל רישום ה-Service Worker בסביבת פיתוח מקומית, עודכן `public/sw.js` (`zenlab-v3.1.2`) לדילוג על בקשות Range (`206`), הופקה מחדש ברכת הפתיחה החמה (`home_welcome.mp3`) וקודמו מזהי השמע ל-`?v=3.1.1`.
+
 ## [3.1.0] - 2026-11-19
 
 ### תיקון, ליטוש ושדרוג מקיף (QA/QC פדגוגי מעמיק ומערך קול טבעי Google Gemini 3.8 TTS)

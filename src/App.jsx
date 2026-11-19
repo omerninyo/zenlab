@@ -29,9 +29,24 @@ const STATION_COMPONENTS = {
   lab8: Station8LlmLesson
 };
 
+const HOME_CANONICAL_URL = 'https://zenlab.ninyo.co/';
+const DEFAULT_META_DESCRIPTION =
+  'פלטפורמת למידה אינטראקטיבית וחינמית בעברית לילדים (גילאי 9–12). 8 תחנות משחק עם הקראה קולית טבעית: מפיקסלים ורובוטים אלגוריתמיים, דרך עצי החלטה וניווט חכם (A*), ועד ללמידת מכונה (k-NN), ראייה ממוחשבת, נוירונים ומודלי שפה (LLM).';
+
+function parseLabFromUrl() {
+  if (typeof window === 'undefined') return null;
+  const pathMatch = window.location.pathname.match(/^\/lab\/([1-8])\/?$/);
+  if (pathMatch) return `lab${pathMatch[1]}`;
+  const hashMatch = window.location.hash.match(/^#lab([1-8])$/);
+  if (hashMatch) return `lab${hashMatch[1]}`;
+  return null;
+}
+
 export default function App() {
-  const [activeLabId, setActiveLabId] = useState(() => StorageEngine.getState().activeLabId || 'lab1');
-  const [viewMode, setViewMode] = useState(() => StorageEngine.getViewMode?.() || 'home');
+  const [activeLabId, setActiveLabId] = useState(
+    () => parseLabFromUrl() || StorageEngine.getState().activeLabId || 'lab1'
+  );
+  const [viewMode, setViewMode] = useState(() => (parseLabFromUrl() ? 'lab' : 'home'));
   const [totalStars, setTotalStars] = useState(() => StorageEngine.getState().totalStars);
   const [labStars, setLabStars] = useState(() => StorageEngine.getState().labStars);
 
@@ -39,6 +54,39 @@ export default function App() {
   const [isCertificateOpen, setIsCertificateOpen] = useState(false);
   const [isGlossaryOpen, setIsGlossaryOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
+  // Sync initial URL route & legacy #labN hash normalization
+  useEffect(() => {
+    const initialLab = parseLabFromUrl();
+    if (initialLab) {
+      const targetPath = `/lab/${initialLab.replace('lab', '')}`;
+      if (window.location.pathname !== targetPath || window.location.hash) {
+        window.history.replaceState({ viewMode: 'lab', labId: initialLab }, '', targetPath);
+      }
+      StorageEngine.setActiveLab(initialLab);
+      StorageEngine.setViewMode('lab');
+    } else if (window.location.pathname === '/' && StorageEngine.getViewMode?.() !== 'home') {
+      StorageEngine.setViewMode('home');
+    }
+  }, []);
+
+  // Keep canonical link and meta description aligned with the active view
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    const isLab = viewMode === 'lab' && /^lab[1-8]$/.test(activeLabId);
+    const labNum = isLab ? activeLabId.replace('lab', '') : null;
+    const canonicalUrl = isLab ? `${HOME_CANONICAL_URL}lab/${labNum}` : HOME_CANONICAL_URL;
+    const canonicalEl = document.querySelector('link[rel="canonical"]');
+    if (canonicalEl) canonicalEl.setAttribute('href', canonicalUrl);
+
+    const labInfo = isLab ? curriculumData?.labs?.[activeLabId] : null;
+    const nextDescription =
+      labInfo?.subtitle
+        ? `${labInfo.title}: ${labInfo.subtitle} — תחנה ${labNum} ב-ZenLab לילדים.`
+        : DEFAULT_META_DESCRIPTION;
+    const descEl = document.querySelector('meta[name="description"]');
+    if (descEl) descEl.setAttribute('content', nextDescription);
+  }, [viewMode, activeLabId]);
 
   useEffect(() => {
     const unsubStorage = StorageEngine.subscribe((state) => {
@@ -57,8 +105,25 @@ export default function App() {
       if (state.viewMode) setViewMode(state.viewMode);
       if (state.activeLabId) setActiveLabId(state.activeLabId);
     });
+
+    const handlePopState = () => {
+      NarrationEngine.stop?.();
+      const urlLab = parseLabFromUrl();
+      if (urlLab) {
+        setActiveLabId(urlLab);
+        setViewMode('lab');
+        StorageEngine.setActiveLab(urlLab);
+        StorageEngine.setViewMode('lab');
+      } else {
+        setViewMode('home');
+        StorageEngine.setViewMode('home');
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
     return () => {
       unsubStorage();
+      window.removeEventListener('popstate', handlePopState);
     };
   }, []);
 
@@ -77,6 +142,11 @@ export default function App() {
   const handleLabSelect = (id) => {
     AudioEngine.playStep();
     NarrationEngine.stop?.();
+    const labNum = String(id).replace('lab', '');
+    const targetPath = `/lab/${labNum}`;
+    if (typeof window !== 'undefined' && window.location.pathname !== targetPath) {
+      window.history.pushState({ viewMode: 'lab', labId: id }, '', targetPath);
+    }
     runViewTransition(() => {
       setActiveLabId(id);
       StorageEngine.setActiveLab(id);
@@ -88,17 +158,23 @@ export default function App() {
   const handleGoHome = () => {
     AudioEngine.playStep();
     NarrationEngine.stop?.();
+    if (typeof window !== 'undefined' && window.location.pathname !== '/') {
+      window.history.pushState({ viewMode: 'home' }, '', '/');
+    }
     runViewTransition(() => {
       setViewMode('home');
       StorageEngine.setViewMode('home');
       if (typeof document !== 'undefined') {
-        document.title = 'ZenLab | הרפתקת מדעי המחשב ובינה מלאכותית לילדים';
+        document.title = 'ZenLab | מעבדת מדעי המחשב והבינה המלאכותית לילדים';
       }
     });
   };
 
   const handleOpenCertFromLesson = () => {
     NarrationEngine.stop?.();
+    if (typeof window !== 'undefined' && window.location.pathname !== '/') {
+      window.history.pushState({ viewMode: 'home' }, '', '/');
+    }
     runViewTransition(() => {
       setViewMode('home');
       StorageEngine.setViewMode('home');

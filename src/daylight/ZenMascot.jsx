@@ -14,6 +14,7 @@ export default function ZenMascot({
   audioSrc = null,
   spokenFallback = '',
   size = 'md',
+  priority = false,
   className = ''
 }) {
   const [narrationState, setNarrationState] = useState(() => NarrationEngine.getState());
@@ -50,6 +51,9 @@ export default function ZenMascot({
         <img
           src={`/illustrations/zen_${validPose}.png`}
           alt="זֶן"
+          width={512}
+          height={512}
+          {...(priority ? { fetchpriority: 'high' } : {})}
           className="w-full h-full object-contain select-none"
           draggable={false}
         />
