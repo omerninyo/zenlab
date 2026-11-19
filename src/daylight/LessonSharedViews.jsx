@@ -46,6 +46,7 @@ export function QuizStepView({
   quizItem,
   selectedChoiceIdx,
   onSelectChoice,
+  audioSrc = '',
   badgeText = 'חידת הבנה מהירה'
 }) {
   useEffect(() => {
@@ -77,7 +78,7 @@ export function QuizStepView({
             {quizItem.question}
           </h1>
         </div>
-        <AudioHintButton text={quizItem.question} />
+        <AudioHintButton text={quizItem.question} audioSrc={audioSrc} />
       </div>
 
       <div className="space-y-3">
@@ -123,6 +124,7 @@ export function RealWorldStepView({
   title,
   mascotMessage,
   spokenFallback,
+  audioSrc = '',
   labMeta
 }) {
   return (
@@ -135,7 +137,8 @@ export function RealWorldStepView({
         pose="wave"
         size="sm"
         message={mascotMessage}
-        spokenFallback={spokenFallback}
+        audioSrc={audioSrc}
+        spokenFallback={spokenFallback || mascotMessage}
       />
 
       <div className="space-y-3">

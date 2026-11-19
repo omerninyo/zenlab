@@ -13,6 +13,34 @@ const TOTAL_STEPS = 7;
 const GRID_SIZE = 8;
 const START_PT = { x: 0, y: 0 };
 const GOAL_PT = { x: 7, y: 7 };
+const WARMUP_ROCK_SET = new Set(['1,0', '1,1']);
+
+function computeWarmupDistances() {
+  const dist = new Map([['0,0', 0]]);
+  const queue = [{ x: 0, y: 0 }];
+  const dirs = [
+    { x: 1, y: 0 },
+    { x: 0, y: 1 },
+    { x: -1, y: 0 },
+    { x: 0, y: -1 }
+  ];
+  while (queue.length > 0) {
+    const cur = queue.shift();
+    const curD = dist.get(`${cur.x},${cur.y}`);
+    for (const d of dirs) {
+      const nx = cur.x + d.x;
+      const ny = cur.y + d.y;
+      const k = `${nx},${ny}`;
+      if (nx >= 0 && nx < 5 && ny >= 0 && ny < 5 && !WARMUP_ROCK_SET.has(k) && !dist.has(k)) {
+        dist.set(k, curD + 1);
+        queue.push({ x: nx, y: ny });
+      }
+    }
+  }
+  return dist;
+}
+
+const WARMUP_DISTANCES = computeWarmupDistances();
 
 export default function Station4PathfinderLesson({
   curriculum,
@@ -44,8 +72,8 @@ export default function Station4PathfinderLesson({
   const [lastAstarCount, setLastAstarCount] = useState(null);
   const [lastBfsCount, setLastBfsCount] = useState(null);
 
-  // Step 0 tile probe
-  const [inspectedTile, setInspectedTile] = useState({ x: 3, y: 2 });
+  // Step 0 tile probe (positioned behind asteroid rocks so f shows true detour cost)
+  const [inspectedTile, setInspectedTile] = useState({ x: 2, y: 1 });
 
   // Quizzes
   const [quiz1Choice, setQuiz1Choice] = useState(null);
@@ -234,12 +262,23 @@ export default function Station4PathfinderLesson({
 
     if (step === 2) {
       if (wallCount < 4) {
-        recordRetry('הניחו לפחות 4 אסטרואידים על המפה (או לחצו על "הצב חומת אסטרואידים").');
+        recordRetry('הניחו לפחות 4 אסטרואידים על המפה (או לחצו על "הצב חומת אסטרואידים אוטומטית").');
       } else if (!solution.found) {
         recordRetry('חסמתם לגמרי את כל הדרך לכוכב! מחקו אסטרואיד אחד כדי ליצור פתח.');
-      } else if (!hasRunDetour) {
-        triggerScanAnimation('astar');
       } else {
+        const astarDetour = AIService.solvePathfinder({
+          grid,
+          width: GRID_SIZE,
+          height: GRID_SIZE,
+          start: START_PT,
+          goal: GOAL_PT,
+          algorithm: 'astar'
+        });
+        setAlgorithm('astar');
+        setIsPlaying(false);
+        setCurrentStepIndex(astarDetour.visitedOrder.length);
+        setLastAstarCount(astarDetour.totalExplored);
+        setHasRunDetour(true);
         StorageEngine.completeChallenge('lab4', 'lab4_challenge2', 1);
         recordPass(
           labData.challenges?.[1]?.successMessage ||
@@ -311,13 +350,13 @@ export default function Station4PathfinderLesson({
 
   const hintConfig = useMemo(() => {
     if (step === 1) {
-      return { text: labData.challenges?.[0]?.hint, audioSrc: '/audio/hints/lab4_ch1.mp3?v=1.0.0' };
+      return { text: labData.challenges?.[0]?.hint, audioSrc: '/audio/hints/lab4_ch1.mp3?v=3.1.1' };
     }
     if (step === 2) {
-      return { text: labData.challenges?.[1]?.hint, audioSrc: '/audio/hints/lab4_ch2.mp3?v=1.0.0' };
+      return { text: labData.challenges?.[1]?.hint, audioSrc: '/audio/hints/lab4_ch2.mp3?v=3.1.1' };
     }
     if (step === 4) {
-      return { text: labData.challenges?.[2]?.hint, audioSrc: '/audio/hints/lab4_ch3.mp3?v=1.0.0' };
+      return { text: labData.challenges?.[2]?.hint, audioSrc: '/audio/hints/lab4_ch3.mp3?v=3.1.1' };
     }
     return { text: '', audioSrc: '' };
   }, [step, labData.challenges]);
@@ -375,13 +414,13 @@ export default function Station4PathfinderLesson({
             pose="teach"
             size="md"
             message="במקום לחפש באקראי, המצפן החכם מחשב בכל משבצת שני מספרים: כמה צעדים כבר צעדנו (g) וכמה צעדים נשארו ליעד (h)."
-            audioSrc="/audio/narration/lab4.wav"
-            spokenFallback={labData?.media?.narration?.transcript}
+            audioSrc="/audio/steps/lab4_intro.mp3?v=3.1.1"
+            spokenFallback="במקום לחפש באקראי, המצפן החכם מחשב בכל משבצת שני מספרים: כמה צעדים כבר צעדנו (g) וכמה צעדים נשארו ליעד (h)."
           />
 
           <div className="bg-[#F7F7F5] border-2 border-[#E5E5E5] rounded-3xl p-4 sm:p-5 space-y-4">
             <p className="text-xs sm:text-sm font-extrabold text-[#3C3C3C] text-center">
-              לחצו על כל משבצת במפה כדי לראות את ציון המרחק שלה (f = g + h):
+              לחצו על כל משבצת במפה כדי להשוות דרך פתוחה (ציון 8) מול עיקוף מאחורי סלעים (10 או 12):
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-5">
@@ -389,47 +428,69 @@ export default function Station4PathfinderLesson({
                 {Array.from({ length: 25 }).map((_, idx) => {
                   const x = idx % 5;
                   const y = Math.floor(idx / 5);
+                  const k = `${x},${y}`;
                   const isStart = x === 0 && y === 0;
                   const isGoal = x === 4 && y === 4;
-                  const isSelected = inspectedTile.x === x && inspectedTile.y === y;
+                  const isRock = WARMUP_ROCK_SET.has(k);
+                  const isSelected = !isRock && inspectedTile.x === x && inspectedTile.y === y;
+                  const cellG = WARMUP_DISTANCES.get(k) ?? 0;
+                  const cellH = Math.abs(4 - x) + Math.abs(4 - y);
+                  const cellF = cellG + cellH;
                   return (
                     <button
                       key={idx}
                       type="button"
+                      disabled={isRock}
                       onClick={() => {
                         setInspectedTile({ x, y });
                         AudioEngine.playStep();
                       }}
-                      className={`w-11 h-11 rounded-xl border-2 font-extrabold text-sm cursor-pointer transition-transform active:translate-y-[2px] ${
-                        isStart
-                          ? 'bg-[#1CB0F6] border-[#1899D6] text-white'
+                      className={`w-11 h-11 rounded-xl border-2 font-extrabold text-sm transition-transform active:translate-y-[2px] ${
+                        isRock
+                          ? 'bg-[#4B4B4B] border-[#3C3C3C] text-white cursor-default'
+                          : isStart
+                          ? 'bg-[#1CB0F6] border-[#1899D6] text-white cursor-pointer'
                           : isGoal
-                          ? 'bg-[#58CC02] border-[#58A700] text-white'
+                          ? 'bg-[#58CC02] border-[#58A700] text-white cursor-pointer'
                           : isSelected
-                          ? 'bg-[#FFC800] border-[#E5A800] text-[#3C3C3C]'
-                          : 'bg-white border-[#E5E5E5] text-[#777777] hover:bg-[#DDF4FF]'
+                          ? 'bg-[#FFC800] border-[#E5A800] text-[#3C3C3C] cursor-pointer'
+                          : cellF > 8
+                          ? 'bg-[#FFF0D6] border-[#FFC800] text-[#9A6700] hover:bg-[#FFE4B5] cursor-pointer'
+                          : 'bg-white border-[#E5E5E5] text-[#467E00] hover:bg-[#DDF4FF] cursor-pointer'
                       }`}
                     >
-                      {isStart ? '🚀' : isGoal ? '⭐' : x + y + (8 - x - y)}
+                      {isRock ? '🪨' : isStart ? '🚀' : isGoal ? '⭐' : cellF}
                     </button>
                   );
                 })}
               </div>
 
-              <div className="bg-white border-2 border-[#E5E5E5] rounded-2xl p-4 space-y-2 text-sm min-w-[200px]">
-                <div className="font-extrabold text-[#3C3C3C]">
-                  משבצת ({inspectedTile.x}, {inspectedTile.y})
-                </div>
-                <div className="text-xs font-bold text-[#1899D6]">
-                  צעדים מההתחלה (g): {inspectedTile.x + inspectedTile.y}
-                </div>
-                <div className="text-xs font-bold text-[#58A700]">
-                  מרחק שנותר ליעד (h): {Math.abs(4 - inspectedTile.x) + Math.abs(4 - inspectedTile.y)}
-                </div>
-                <div className="pt-1 border-t border-[#E5E5E5] font-extrabold text-[#3C3C3C]">
-                  ציון כולל: f = {inspectedTile.x + inspectedTile.y + Math.abs(4 - inspectedTile.x) + Math.abs(4 - inspectedTile.y)}
-                </div>
-              </div>
+              {(() => {
+                const selG =
+                  WARMUP_DISTANCES.get(`${inspectedTile.x},${inspectedTile.y}`) ??
+                  inspectedTile.x + inspectedTile.y;
+                const selH = Math.abs(4 - inspectedTile.x) + Math.abs(4 - inspectedTile.y);
+                const selF = selG + selH;
+                return (
+                  <div className="bg-white border-2 border-[#E5E5E5] rounded-2xl p-4 space-y-2 text-sm min-w-[215px]">
+                    <div className="font-extrabold text-[#3C3C3C]">
+                      משבצת ({inspectedTile.x}, {inspectedTile.y})
+                    </div>
+                    <div className="text-xs font-bold text-[#1899D6]">
+                      צעדים בפועל מההתחלה (g): {selG}
+                    </div>
+                    <div className="text-xs font-bold text-[#58A700]">
+                      מרחק שנותר ליעד (h): {selH}
+                    </div>
+                    <div className="pt-1 border-t border-[#E5E5E5] font-extrabold text-[#3C3C3C]">
+                      ציון כולל: f = {selF}{' '}
+                      <span className="text-xs font-bold text-[#777777]">
+                        {selF > 8 ? '(עיקוף ארוך יותר)' : '(מסלול קצר!)'}
+                      </span>
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
           </div>
         </div>
@@ -444,7 +505,7 @@ export default function Station4PathfinderLesson({
                 ? 'משימה 1: שגרו את המצפן החכם (A*)'
                 : step === 2
                 ? 'משימה 2: הניחו 4+ אסטרואידים וראו עקיפה חכמה'
-                : 'משימה 3: תחרות חכם (A*) מול גלי מכ״ם (BFS)'}
+                : 'משימה 3: מצפן חכם (A*) מול גלי מכ״ם (BFS)'}
             </h1>
             <AudioHintButton
               text={
@@ -456,10 +517,10 @@ export default function Station4PathfinderLesson({
               }
               audioSrc={
                 step === 1
-                  ? '/audio/hints/lab4_ch1.mp3?v=1.0.0'
+                  ? '/audio/steps/lab4_inst1.mp3?v=3.1.1'
                   : step === 2
-                  ? '/audio/hints/lab4_ch2.mp3?v=1.0.0'
-                  : '/audio/hints/lab4_ch3.mp3?v=1.0.0'
+                  ? '/audio/steps/lab4_inst2.mp3?v=3.1.1'
+                  : '/audio/steps/lab4_inst3.mp3?v=3.1.1'
               }
             />
           </div>
@@ -674,6 +735,7 @@ export default function Station4PathfinderLesson({
         <QuizStepView
           quizItem={labMeta.miniQuiz[0]}
           selectedChoiceIdx={quiz1Choice}
+          audioSrc="/audio/steps/lab4_quiz1.mp3?v=3.1.1"
           onSelectChoice={(idx) => {
             setFeedback(null);
             setQuiz1Choice(idx);
@@ -686,6 +748,7 @@ export default function Station4PathfinderLesson({
         <QuizStepView
           quizItem={labMeta.miniQuiz[2]}
           selectedChoiceIdx={quiz2Choice}
+          audioSrc="/audio/steps/lab4_quiz2.mp3?v=3.1.1"
           onSelectChoice={(idx) => {
             setFeedback(null);
             setQuiz2Choice(idx);
@@ -699,7 +762,8 @@ export default function Station4PathfinderLesson({
         <RealWorldStepView
           title="איפה עובד אלגוריתם הניווט בחיים האמיתיים?"
           mascotMessage="מהנסיעה המשפחתית עם Waze ועד רכבי מחקר בכוכב מאדים — אלגוריתמי ניווט מוצאים דרכים מהירות בכל רגע:"
-          spokenFallback={labData?.conceptExplanation?.realWorldAnalogy}
+          spokenFallback="מהנסיעה המשפחתית עם Waze ועד רכבי מחקר בכוכב מאדים — אלגוריתמי ניווט מוצאים דרכים מהירות בכל רגע:"
+          audioSrc="/audio/steps/lab4_realworld.mp3?v=3.1.1"
           labMeta={labMeta}
         />
       )}

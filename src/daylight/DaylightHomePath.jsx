@@ -168,7 +168,11 @@ export default function DaylightHomePath({
   const greetingText =
     totalStars === 24
       ? 'כל הכבוד! סיימתם את כל 8 התחנות ואספתם 24 כוכבים. תעודת ההצטיינות שלכם מוכנה!'
-      : `שלום! אני זֶן. בואו נגלה איך מחשבים ובינה מלאכותית פועלים — התחנה הבאה שלנו היא "${activeMeta.title}".`;
+      : 'שלום! אני זֶן. בואו נגלה יחד איך מחשבים ובינה מלאכותית פועלים — צעד אחר צעד!';
+  const greetingAudioSrc =
+    totalStars === 24
+      ? '/audio/steps/home_complete.mp3?v=3.1.1'
+      : '/audio/steps/home_welcome.mp3?v=3.1.1';
 
   const mediaLabData = mediaLabId ? curriculum?.labs?.[mediaLabId] : null;
   const activeChestBadge = activeChestWorldId ? UNIT_TROPHY_BADGES[activeChestWorldId] : null;
@@ -271,7 +275,7 @@ export default function DaylightHomePath({
             pose={totalStars === 24 ? 'cheer' : 'wave'}
             size="md"
             message={greetingText}
-            audioSrc="/audio/tutor/home_welcome.mp3?v=1.0.0"
+            audioSrc={greetingAudioSrc}
             spokenFallback={greetingText}
           />
         </section>

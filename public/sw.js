@@ -5,7 +5,7 @@
  * and resilient network-first navigation for school Chromebooks.
  */
 
-const CACHE_NAME = 'zenlab-v3.0.0';
+const CACHE_NAME = 'zenlab-v3.1.1';
 const PRECACHE_ASSETS = [
   '/',
   '/index.html',
@@ -38,8 +38,14 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
-  // Skip non-GET requests and API calls
-  if (event.request.method !== 'GET' || url.pathname.startsWith('/api/')) {
+  // Skip non-GET requests, API calls, Vite dev modules, and HTTP Range media requests
+  if (
+    event.request.method !== 'GET' ||
+    url.pathname.startsWith('/api/') ||
+    url.pathname.startsWith('/src/') ||
+    url.pathname.startsWith('/@') ||
+    event.request.headers.has('range')
+  ) {
     return;
   }
 

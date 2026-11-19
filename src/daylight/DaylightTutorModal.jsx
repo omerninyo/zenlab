@@ -52,7 +52,7 @@ export default function DaylightTutorModal({ isOpen, onClose, currentLabId = 'ho
         id: `welcome-${effectiveLabId}`,
         sender: 'tutor',
         text: welcomeText,
-        audioSrc: `/audio/tutor/${effectiveLabId}_welcome.mp3?v=1.0.0`,
+        audioSrc: `/audio/tutor/${effectiveLabId}_welcome.mp3?v=3.1.1`,
         suggestedNext: (CURATED_TUTOR_KNOWLEDGE[effectiveLabId]?.prompts || []).slice(0, 3)
       }
     ]);
@@ -162,7 +162,7 @@ export default function DaylightTutorModal({ isOpen, onClose, currentLabId = 'ho
             sender: 'tutor',
             text: cleanTutorText(curatedAnswer),
             audioSrc:
-              promptIndex !== -1 ? `/audio/tutor/${effectiveLabId}_q${promptIndex}.mp3?v=1.0.0` : null,
+              promptIndex !== -1 ? `/audio/tutor/${effectiveLabId}_q${promptIndex}.mp3?v=3.1.1` : null,
             suggestedNext: labKnowledge.prompts.filter((p) => p !== trimmed).slice(0, 2)
           }
         ]);

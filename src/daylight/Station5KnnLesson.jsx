@@ -10,6 +10,7 @@ import LessonShell from './LessonShell.jsx';
 import { AudioHintButton, QuizStepView, RealWorldStepView } from './LessonSharedViews.jsx';
 
 const TOTAL_STEPS = 7;
+const OUTLIER_MELON = { id: 'outlier-melon', x: 29, y: 36, label: 'B', isOutlier: true };
 
 export default function Station5KnnLesson({
   curriculum,
@@ -31,11 +32,15 @@ export default function Station5KnnLesson({
   const [bestLessonStreak, setBestLessonStreak] = useState(0);
   const [retryCount, setRetryCount] = useState(0);
 
-  // Interactive k-NN Plot state
-  const [points, setPoints] = useState(() => [...initialData]);
-  const [toolMode, setToolMode] = useState('A'); // 'A' (Apple) | 'B' (Watermelon) | 'MOVE'
-  const [kValue, setKValue] = useState(3);
-  const [testPoint, setTestPoint] = useState({ x: 50, y: 50 });
+  // Interactive k-NN Plot state (seed clear outlier demo if resuming directly on Step 4)
+  const [points, setPoints] = useState(() =>
+    step === 4 ? [...initialData, OUTLIER_MELON] : [...initialData]
+  );
+  const [toolMode, setToolMode] = useState(() => (step === 2 || step === 4 ? 'MOVE' : 'A'));
+  const [kValue, setKValue] = useState(() => (step === 4 ? 1 : 3));
+  const [testPoint, setTestPoint] = useState(() =>
+    step === 4 ? { x: 30, y: 35 } : { x: 50, y: 50 }
+  );
   const [isDraggingTest, setIsDraggingTest] = useState(false);
 
   // Quiz answers
@@ -45,11 +50,26 @@ export default function Station5KnnLesson({
   const svgRef = useRef(null);
   const isDraggingRef = useRef(false);
 
-  // Switch helpful default tool when stepping through tasks
-  const syncModeForStep = (targetStep) => {
+  // Switch helpful default tool & outlier state when stepping through tasks
+  const syncModeForStep = (targetStep, currentStep) => {
     if (targetStep === 1) setToolMode((m) => (m === 'MOVE' ? 'A' : m));
-    if (targetStep === 2 || targetStep === 4) setToolMode('MOVE');
-    if (targetStep === 4 && kValue !== 5) setKValue(1);
+    if (targetStep === 2) {
+      setToolMode('MOVE');
+      setKValue(3);
+    }
+    if (targetStep === 4) {
+      setToolMode('MOVE');
+      setKValue(1);
+      setTestPoint({ x: 30, y: 35 });
+      setPoints((prev) =>
+        prev.some((p) => p.isOutlier) ? prev : [...prev, OUTLIER_MELON]
+      );
+    } else {
+      setPoints((prev) => prev.filter((p) => !p.isOutlier));
+      if (currentStep === 4) {
+        setTestPoint({ x: 50, y: 50 });
+      }
+    }
   };
 
   const classification = useMemo(() => {
@@ -100,7 +120,7 @@ export default function Station5KnnLesson({
     const clamped = Math.max(0, Math.min(TOTAL_STEPS - 1, nextStep));
     setFeedback(null);
     setRetryCount(0);
-    syncModeForStep(clamped);
+    syncModeForStep(clamped, step);
     setStep(clamped);
     StorageEngine.setLabStep('lab5', clamped);
     AudioEngine.playStep();
@@ -249,9 +269,9 @@ export default function Station5KnnLesson({
   }, [feedback, step]);
 
   const hintConfig = useMemo(() => {
-    if (step === 1) return { text: labData.challenges?.[0]?.hint, audioSrc: '/audio/hints/lab5_ch1.mp3?v=1.0.0' };
-    if (step === 2) return { text: labData.challenges?.[1]?.hint, audioSrc: '/audio/hints/lab5_ch2.mp3?v=1.0.0' };
-    if (step === 4) return { text: labData.challenges?.[2]?.hint, audioSrc: '/audio/hints/lab5_ch3.mp3?v=1.0.0' };
+    if (step === 1) return { text: labData.challenges?.[0]?.hint, audioSrc: '/audio/hints/lab5_ch1.mp3?v=3.1.1' };
+    if (step === 2) return { text: labData.challenges?.[1]?.hint, audioSrc: '/audio/hints/lab5_ch2.mp3?v=3.1.1' };
+    if (step === 4) return { text: labData.challenges?.[2]?.hint, audioSrc: '/audio/hints/lab5_ch3.mp3?v=3.1.1' };
     return { text: '', audioSrc: '' };
   }, [step, labData.challenges]);
 
@@ -296,8 +316,8 @@ export default function Station5KnnLesson({
             pose="teach"
             size="md"
             message="במקום לכתוב למחשב חוקים קבועים, מניחים לו דוגמאות לפי תכונות — מתיקות וגודל. פירות דומים יושבים קרוב זה לזה!"
-            audioSrc="/audio/narration/lab5.wav"
-            spokenFallback={labData?.media?.narration?.transcript}
+            audioSrc="/audio/steps/lab5_intro.mp3?v=3.1.1"
+            spokenFallback="במקום לכתוב למחשב חוקים קבועים, מניחים לו דוגמאות לפי תכונות — מתיקות וגודל. פירות דומים יושבים קרוב זה לזה!"
           />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -340,10 +360,10 @@ export default function Station5KnnLesson({
               }
               audioSrc={
                 step === 1
-                  ? '/audio/hints/lab5_ch1.mp3?v=1.0.0'
+                  ? '/audio/steps/lab5_inst1.mp3?v=3.1.1'
                   : step === 2
-                  ? '/audio/hints/lab5_ch2.mp3?v=1.0.0'
-                  : '/audio/hints/lab5_ch3.mp3?v=1.0.0'
+                  ? '/audio/steps/lab5_inst2.mp3?v=3.1.1'
+                  : '/audio/steps/lab5_inst3.mp3?v=3.1.1'
               }
             />
           </div>
@@ -405,6 +425,15 @@ export default function Station5KnnLesson({
                   const isApple = pt.label === 'A';
                   return (
                     <g key={pt.id} transform={`translate(${pt.x}, ${100 - pt.y})`}>
+                      {pt.isOutlier && (
+                        <circle
+                          r="6.4"
+                          fill="none"
+                          stroke="#FF9600"
+                          strokeWidth="0.9"
+                          strokeDasharray="1.6 1.2"
+                        />
+                      )}
                       <circle
                         r="4.5"
                         fill={isApple ? '#FFF5F5' : '#D7FFB8'}
@@ -519,7 +548,10 @@ export default function Station5KnnLesson({
               {step >= 2 && (
                 <div className="card-duo p-4 space-y-3">
                   {step === 4 && (
-                    <div className="space-y-1.5">
+                    <div className="space-y-2">
+                      <p className="text-[11px] font-bold text-[#9A6700] bg-[#FFF6D6] border border-[#FFC800] rounded-xl px-2.5 py-1.5">
+                        שימו לב לפרי החריג המסומן בכתום! ב-k=1 המחשב טועה, והמעבר ל-k=5 מתקן לפי הצבעת הרוב.
+                      </p>
                       <div className="text-xs font-extrabold text-[#3C3C3C]">
                         כמה שכנים קרובים שואלים? (k)
                       </div>
@@ -572,8 +604,14 @@ export default function Station5KnnLesson({
               <button
                 type="button"
                 onClick={() => {
-                  setPoints([...initialData]);
-                  setTestPoint({ x: 50, y: 50 });
+                  if (step === 4) {
+                    setPoints([...initialData, OUTLIER_MELON]);
+                    setTestPoint({ x: 30, y: 35 });
+                    setKValue(1);
+                  } else {
+                    setPoints([...initialData]);
+                    setTestPoint({ x: 50, y: 50 });
+                  }
                   setFeedback(null);
                   AudioEngine.playStep();
                 }}
@@ -592,6 +630,7 @@ export default function Station5KnnLesson({
         <QuizStepView
           quizItem={labMeta.miniQuiz[0]}
           selectedChoiceIdx={quiz1Choice}
+          audioSrc="/audio/steps/lab5_quiz1.mp3?v=3.1.1"
           onSelectChoice={(idx) => {
             setFeedback(null);
             setQuiz1Choice(idx);
@@ -604,6 +643,7 @@ export default function Station5KnnLesson({
         <QuizStepView
           quizItem={labMeta.miniQuiz[2]}
           selectedChoiceIdx={quiz2Choice}
+          audioSrc="/audio/steps/lab5_quiz2.mp3?v=3.1.1"
           onSelectChoice={(idx) => {
             setFeedback(null);
             setQuiz2Choice(idx);
@@ -617,7 +657,8 @@ export default function Station5KnnLesson({
         <RealWorldStepView
           title="איפה למידת מכונה עובדת סביבנו כל יום?"
           mascotMessage="אלגוריתם השכנים הקרובים (k-NN) עוזר למחשבים להמליץ על מוזיקה, למיין יבול חקלאי ולעזור לרופאים:"
-          spokenFallback={labData?.conceptExplanation?.realWorldAnalogy}
+          spokenFallback="אלגוריתם השכנים הקרובים (k-NN) עוזר למחשבים להמליץ על מוזיקה, למיין יבול חקלאי ולעזור לרופאים:"
+          audioSrc="/audio/steps/lab5_realworld.mp3?v=3.1.1"
           labMeta={labMeta}
         />
       )}

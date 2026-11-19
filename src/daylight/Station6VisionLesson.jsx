@@ -69,6 +69,22 @@ export default function Station6VisionLesson({
     );
   }, [convolutionResult, inspectedCell]);
 
+  const inspectedMatrixCells = useMemo(() => {
+    if (!inspectedCell) return [];
+    const cells = [];
+    for (let ky = -1; ky <= 1; ky++) {
+      for (let kx = -1; kx <= 1; kx++) {
+        const nx = inspectedCell.x + kx;
+        const ny = inspectedCell.y + ky;
+        const px = nx >= 0 && nx < 8 && ny >= 0 && ny < 8 ? inputGrid[ny * 8 + nx] || 0 : 0;
+        const kw = currentKernel.matrix?.[ky + 1]?.[kx + 1] ?? 0;
+        const prod = px * kw;
+        cells.push({ px, kw, prod, isCenter: kx === 0 && ky === 0 });
+      }
+    }
+    return cells;
+  }, [inspectedCell, inputGrid, currentKernel]);
+
   const goToStep = (nextStep) => {
     const clamped = Math.max(0, Math.min(TOTAL_STEPS - 1, nextStep));
     setFeedback(null);
@@ -207,9 +223,9 @@ export default function Station6VisionLesson({
   }, [feedback, step]);
 
   const hintConfig = useMemo(() => {
-    if (step === 1) return { text: labData.challenges?.[0]?.hint, audioSrc: '/audio/hints/lab6_ch1.mp3?v=1.0.0' };
-    if (step === 2) return { text: labData.challenges?.[1]?.hint, audioSrc: '/audio/hints/lab6_ch2.mp3?v=1.0.0' };
-    if (step === 4) return { text: labData.challenges?.[2]?.hint, audioSrc: '/audio/hints/lab6_ch3.mp3?v=1.0.0' };
+    if (step === 1) return { text: labData.challenges?.[0]?.hint, audioSrc: '/audio/hints/lab6_ch1.mp3?v=3.1.1' };
+    if (step === 2) return { text: labData.challenges?.[1]?.hint, audioSrc: '/audio/hints/lab6_ch2.mp3?v=3.1.1' };
+    if (step === 4) return { text: labData.challenges?.[2]?.hint, audioSrc: '/audio/hints/lab6_ch3.mp3?v=3.1.1' };
     return { text: '', audioSrc: '' };
   }, [step, labData.challenges]);
 
@@ -254,8 +270,8 @@ export default function Station6VisionLesson({
             pose="teach"
             size="md"
             message="מצלמה מעבירה למחשב טבלה ענקית של מספרים. בעזרת פילטר בגודל 3×3, המחשב סורק כל פיקסל ושכניו ומגלה איפה מסתתרים קווים וצורות!"
-            audioSrc="/audio/narration/lab6.wav"
-            spokenFallback={labData?.media?.narration?.transcript}
+            audioSrc="/audio/steps/lab6_intro.mp3?v=3.1.1"
+            spokenFallback="מצלמה מעבירה למחשב טבלה ענקית של מספרים. בעזרת פילטר בגודל 3×3, המחשב סורק כל פיקסל ושכניו ומגלה איפה מסתתרים קווים וצורות!"
           />
 
           <div className="card-duo p-5 bg-[#F7F7F5] space-y-3 text-center">
@@ -306,10 +322,10 @@ export default function Station6VisionLesson({
               }
               audioSrc={
                 step === 1
-                  ? '/audio/hints/lab6_ch1.mp3?v=1.0.0'
+                  ? '/audio/steps/lab6_inst1.mp3?v=3.1.1'
                   : step === 2
-                  ? '/audio/hints/lab6_ch2.mp3?v=1.0.0'
-                  : '/audio/hints/lab6_ch3.mp3?v=1.0.0'
+                  ? '/audio/steps/lab6_inst2.mp3?v=3.1.1'
+                  : '/audio/steps/lab6_inst3.mp3?v=3.1.1'
               }
             />
           </div>
@@ -484,15 +500,25 @@ export default function Station6VisionLesson({
                       זכוכית מגדלת (3×3) במשבצת ({inspectedCell.x}, {inspectedCell.y})
                     </span>
                   </div>
-                  <div className="grid grid-cols-3 gap-1 max-w-[180px] mx-auto" dir="ltr">
-                    {inspectedDetail.products.map((p, i) => (
-                      <div
-                        key={i}
-                        className="py-1 rounded-lg bg-white border border-[#E5E5E5] font-mono text-[11px] font-bold text-[#3C3C3C]"
-                      >
-                        {Number.isInteger(p) ? p : p.toFixed(1)}
-                      </div>
-                    ))}
+                  <div className="grid grid-cols-3 gap-1.5 max-w-[280px] mx-auto" dir="ltr">
+                    {inspectedMatrixCells.map((cell, i) => {
+                      const prodStr = Number.isInteger(cell.prod) ? cell.prod : cell.prod.toFixed(1);
+                      const kwStr = cell.kw < 0 ? `(${cell.kw})` : cell.kw;
+                      return (
+                        <div
+                          key={i}
+                          className={`py-1 px-1.5 rounded-lg border font-mono text-[10px] font-bold ${
+                            cell.isCenter
+                              ? 'bg-[#FFFDF2] border-[#FF9600] text-[#3C3C3C]'
+                              : cell.prod !== 0
+                              ? 'bg-[#DDF4FF] border-[#84D8FF] text-[#1899D6]'
+                              : 'bg-white border-[#E5E5E5] text-[#777777]'
+                          }`}
+                        >
+                          {cell.px}×{kwStr}={prodStr}
+                        </div>
+                      );
+                    })}
                   </div>
                   <div className="text-xs font-extrabold text-[#3C3C3C]">
                     סכום 9 המשבצות: <span className="font-mono">{inspectedDetail.sum.toFixed(1)}</span>{' '}
@@ -514,6 +540,7 @@ export default function Station6VisionLesson({
         <QuizStepView
           quizItem={labMeta.miniQuiz[1]}
           selectedChoiceIdx={quiz1Choice}
+          audioSrc="/audio/steps/lab6_quiz1.mp3?v=3.1.1"
           onSelectChoice={(idx) => {
             setFeedback(null);
             setQuiz1Choice(idx);
@@ -526,6 +553,7 @@ export default function Station6VisionLesson({
         <QuizStepView
           quizItem={labMeta.miniQuiz[2]}
           selectedChoiceIdx={quiz2Choice}
+          audioSrc="/audio/steps/lab6_quiz2.mp3?v=3.1.1"
           onSelectChoice={(idx) => {
             setFeedback(null);
             setQuiz2Choice(idx);
@@ -539,7 +567,8 @@ export default function Station6VisionLesson({
         <RealWorldStepView
           title="איפה פועלת ראייה ממוחשבת בחיים האמיתיים?"
           mascotMessage="הפילטרים שסורקים 9 פיקסלים הם אבן הבניין של פתיחת טלפון עם פנים ורכבים בטיחותיים:"
-          spokenFallback={labData?.conceptExplanation?.realWorldAnalogy}
+          spokenFallback="הפילטרים שסורקים 9 פיקסלים הם אבן הבניין של פתיחת טלפון עם פנים ורכבים בטיחותיים:"
+          audioSrc="/audio/steps/lab6_realworld.mp3?v=3.1.1"
           labMeta={labMeta}
         />
       )}

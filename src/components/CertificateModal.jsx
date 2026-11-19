@@ -21,11 +21,11 @@ export default function CertificateModal({ isOpen, onClose, totalStars = 0 }) {
   const rank = totalStars === 24
     ? 'מאסטר בינה מלאכותית'
     : totalStars >= 18
-    ? 'מהנדס/ת רשתות'
+    ? 'מהנדס/ת למידת מכונה'
     : totalStars >= 12
     ? 'נווט/ת אלגוריתמים'
     : totalStars >= 6
-    ? 'בלש/ית קוד'
+    ? 'בלש/ית לוגיקה'
     : 'חוקר/ת מתחיל/ה';
 
   return (

@@ -39,6 +39,7 @@ export default function Station8LlmLesson({
   const [selectedPromptId, setSelectedPromptId] = useState(prompts[0]?.id || 'robotics');
   const [temperature, setTemperature] = useState(0.5);
   const [generatedTokens, setGeneratedTokens] = useState([]);
+  const [rollCount, setRollCount] = useState(0);
   const [didColdSample, setDidColdSample] = useState(false);
   const [didHotSample, setDidHotSample] = useState(false);
 
@@ -52,11 +53,14 @@ export default function Station8LlmLesson({
 
   const activeVocabulary = useMemo(() => {
     if (Array.isArray(activePrompt.stepVocabularies) && activePrompt.stepVocabularies.length > 0) {
+      if (step === 1 || step === 2) {
+        return activePrompt.stepVocabularies[0];
+      }
       const idx = Math.min(generatedTokens.length, activePrompt.stepVocabularies.length - 1);
       return activePrompt.stepVocabularies[idx];
     }
     return activePrompt.vocabulary || [];
-  }, [activePrompt, generatedTokens.length]);
+  }, [activePrompt, generatedTokens.length, step]);
 
   const tokenDistribution = useMemo(() => {
     return AIService.computeTokenProbabilities(activeVocabulary, temperature);
@@ -66,6 +70,7 @@ export default function Station8LlmLesson({
     const clamped = Math.max(0, Math.min(TOTAL_STEPS - 1, nextStep));
     setFeedback(null);
     setRetryCount(0);
+    setRollCount(0);
     if (clamped === 1) {
       setTemperature(0.5);
       setGeneratedTokens([]);
@@ -102,9 +107,14 @@ export default function Station8LlmLesson({
     setFeedback(null);
     const chosen = AIService.sampleToken(tokenDistribution, temperature);
     if (!chosen) return;
-    setGeneratedTokens((prev) => [...prev, chosen]);
-    if (step === 1 && temperature <= 0.05) setDidColdSample(true);
-    if (step === 2 && temperature >= 0.8) setDidHotSample(true);
+    if (step === 1 || step === 2) {
+      setGeneratedTokens([chosen]);
+      setRollCount((c) => c + 1);
+      if (step === 1 && temperature <= 0.05) setDidColdSample(true);
+      if (step === 2 && temperature >= 0.8) setDidHotSample(true);
+    } else {
+      setGeneratedTokens((prev) => [...prev, chosen]);
+    }
     AudioEngine.playToken();
   };
 
@@ -213,9 +223,9 @@ export default function Station8LlmLesson({
   }, [feedback, step]);
 
   const hintConfig = useMemo(() => {
-    if (step === 1) return { text: labData.challenges?.[0]?.hint, audioSrc: '/audio/hints/lab8_ch1.mp3?v=1.0.0' };
-    if (step === 2) return { text: labData.challenges?.[1]?.hint, audioSrc: '/audio/hints/lab8_ch2.mp3?v=1.0.0' };
-    if (step === 4) return { text: labData.challenges?.[2]?.hint, audioSrc: '/audio/hints/lab8_ch3.mp3?v=1.0.0' };
+    if (step === 1) return { text: labData.challenges?.[0]?.hint, audioSrc: '/audio/hints/lab8_ch1.mp3?v=3.1.1' };
+    if (step === 2) return { text: labData.challenges?.[1]?.hint, audioSrc: '/audio/hints/lab8_ch2.mp3?v=3.1.1' };
+    if (step === 4) return { text: labData.challenges?.[2]?.hint, audioSrc: '/audio/hints/lab8_ch3.mp3?v=3.1.1' };
     return { text: '', audioSrc: '' };
   }, [step, labData.challenges]);
 
@@ -261,8 +271,8 @@ export default function Station8LlmLesson({
             pose="teach"
             size="md"
             message="מכירים את 3 המילים המוצעות מעל המקלדת בטלפון? מודלי שפה עובדים באותה שיטה בדיוק — ניחוש המילה הבאה מילה אחר מילה!"
-            audioSrc="/audio/narration/lab8.wav"
-            spokenFallback={labData?.media?.narration?.transcript}
+            audioSrc="/audio/steps/lab8_intro.mp3?v=3.1.1"
+            spokenFallback="מכירים את 3 המילים המוצעות מעל המקלדת בטלפון? מודלי שפה עובדים באותה שיטה בדיוק — ניחוש המילה הבאה מילה אחר מילה!"
           />
 
           <div className="bg-[#F7F7F5] border-2 border-[#E5E5E5] rounded-3xl p-5 space-y-4 text-center">
@@ -321,10 +331,10 @@ export default function Station8LlmLesson({
               }
               audioSrc={
                 step === 1
-                  ? '/audio/hints/lab8_ch1.mp3?v=1.0.0'
+                  ? '/audio/steps/lab8_inst1.mp3?v=3.1.1'
                   : step === 2
-                  ? '/audio/hints/lab8_ch2.mp3?v=1.0.0'
-                  : '/audio/hints/lab8_ch3.mp3?v=1.0.0'
+                  ? '/audio/steps/lab8_inst2.mp3?v=3.1.1'
+                  : '/audio/steps/lab8_inst3.mp3?v=3.1.1'
               }
             />
           </div>
@@ -357,7 +367,13 @@ export default function Station8LlmLesson({
           {/* Story Output Book Box */}
           <div className="card-duo p-4 sm:p-5 bg-[#FFFDF2] border-[#E5E5E5] space-y-3">
             <div className="flex items-center justify-between gap-2 text-xs font-extrabold text-[#777777]">
-              <span>המשפט שנבנה ({generatedTokens.length} מילים נוספו)</span>
+              <span>
+                {step === 4
+                  ? `המשפט שנבנה (${generatedTokens.length}/4 מילים נוספו)`
+                  : rollCount > 0
+                  ? `ניחוש המילה הבאה (הגרלה #${rollCount})`
+                  : 'מוכנים לנחש את המילה הבאה'}
+              </span>
               {generatedTokens.length > 0 && (
                 <div className="flex items-center gap-2">
                   <button
@@ -372,6 +388,7 @@ export default function Station8LlmLesson({
                     type="button"
                     onClick={() => {
                       setGeneratedTokens([]);
+                      setRollCount(0);
                       setFeedback(null);
                       AudioEngine.playStep();
                     }}
@@ -394,7 +411,7 @@ export default function Station8LlmLesson({
                   {tok}
                 </span>
               ))}
-              {generatedTokens.length < 4 && (
+              {(step === 4 ? generatedTokens.length < 4 : generatedTokens.length === 0) && (
                 <span className="inline-block mx-1 px-2.5 py-0.5 rounded-xl border-2 border-dashed border-[#1CB0F6] text-[#1CB0F6] text-sm">
                   ?
                 </span>
@@ -501,6 +518,7 @@ export default function Station8LlmLesson({
         <QuizStepView
           quizItem={labMeta.miniQuiz[1]}
           selectedChoiceIdx={quiz1Choice}
+          audioSrc="/audio/steps/lab8_quiz1.mp3?v=3.1.1"
           onSelectChoice={(idx) => {
             setFeedback(null);
             setQuiz1Choice(idx);
@@ -513,6 +531,7 @@ export default function Station8LlmLesson({
         <QuizStepView
           quizItem={labMeta.miniQuiz[2]}
           selectedChoiceIdx={quiz2Choice}
+          audioSrc="/audio/steps/lab8_quiz2.mp3?v=3.1.1"
           onSelectChoice={(idx) => {
             setFeedback(null);
             setQuiz2Choice(idx);
@@ -526,7 +545,8 @@ export default function Station8LlmLesson({
         <RealWorldStepView
           title="איך מודלי שפה עובדים בעולם — ומתי להיזהר מהזיות?"
           mascotMessage="עכשיו אתם מבינים איך פועלים צ׳אטבוטים ושיחות AI — וזוכרים שתמיד כדאי לאמת עובדות:"
-          spokenFallback={labData?.conceptExplanation?.realWorldAnalogy}
+          spokenFallback="עכשיו אתם מבינים איך פועלים צ׳אטבוטים ושיחות AI — וזוכרים שתמיד כדאי לאמת עובדות:"
+          audioSrc="/audio/steps/lab8_realworld.mp3?v=3.1.1"
           labMeta={labMeta}
         />
       )}

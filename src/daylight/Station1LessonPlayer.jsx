@@ -433,25 +433,25 @@ export default function Station1LessonPlayer({
     if (step === 1) {
       return {
         text: labData.challenges?.[0]?.hint,
-        audioSrc: '/audio/hints/lab1_ch1.mp3?v=1.0.0'
+        audioSrc: '/audio/hints/lab1_ch1.mp3?v=3.1.1'
       };
     }
     if (step === 2) {
       return {
         text: 'כדי להגיע בדיוק ל-10, הדליקו את המתג שמעליו כתוב 8 ואת המתג שמעליו כתוב 2.',
-        audioSrc: ''
+        audioSrc: '/audio/steps/lab1_step2_hint.mp3?v=3.1.1'
       };
     }
     if (step === 4) {
       return {
         text: labData.challenges?.[1]?.hint,
-        audioSrc: '/audio/hints/lab1_ch2.mp3?v=1.0.0'
+        audioSrc: '/audio/hints/lab1_ch2.mp3?v=3.1.1'
       };
     }
     if (step === 6) {
       return {
         text: labData.challenges?.[2]?.hint,
-        audioSrc: '/audio/hints/lab1_ch3.mp3?v=1.0.0'
+        audioSrc: '/audio/hints/lab1_ch3.mp3?v=3.1.1'
       };
     }
     return { text: '', audioSrc: '' };
@@ -496,8 +496,8 @@ export default function Station1LessonPlayer({
             pose="teach"
             size="md"
             message="בתוך כל מסך יש מיליוני נקודות אור שנקראות פיקסלים. כל נקודה היא כמו מתג קטן: 0 זה כבוי, ו-1 זה דולק!"
-            audioSrc="/audio/narration/lab1.wav"
-            spokenFallback={labData?.media?.narration?.transcript}
+            audioSrc="/audio/steps/lab1_intro.mp3?v=3.1.1"
+            spokenFallback="בתוך כל מסך יש מיליוני נקודות אור שנקראות פיקסלים. כל נקודה היא כמו מתג קטן: 0 זה כבוי, ו-1 זה דולק!"
           />
 
           <div className="text-center space-y-5 pt-2">
@@ -564,7 +564,7 @@ export default function Station1LessonPlayer({
             </h1>
             <AudioHintButton
               text={labData.challenges?.[0]?.instructions || 'ציירו לב על לוח המשבצות.'}
-              audioSrc="/audio/hints/lab1_ch1.mp3?v=1.0.0"
+              audioSrc="/audio/steps/lab1_inst1.mp3?v=3.1.1"
             />
           </div>
 
@@ -642,7 +642,8 @@ export default function Station1LessonPlayer({
             pose="think"
             size="md"
             message="לכל מתג בשורה יש משקל משלו — בדיוק כפול מזה שלימינו! כשמדליקים כמה מתגים, המחשב פשוט מחבר אותם."
-            spokenFallback="לכל מתג בשורה יש משקל משלו, כפול מזה שלימינו. הדליקו את המתגים הנכונים כדי להגיע למספר 10."
+            audioSrc="/audio/steps/lab1_step2.mp3?v=3.1.1"
+            spokenFallback="לכל מתג בשורה יש משקל משלו — בדיוק כפול מזה שלימינו! כשמדליקים כמה מתגים, המחשב פשוט מחבר אותם."
           />
 
           <div className="bg-[#F7F7F5] border-2 border-[#E5E5E5] rounded-3xl p-4 sm:p-6 space-y-5">
@@ -704,7 +705,7 @@ export default function Station1LessonPlayer({
                     <strong className="text-xl text-[#3C3C3C]">{byteSum}</strong>
                   </span>
                 ) : (
-                  <span className="text-[#AFAFAF]">0 :סכום נוכחי</span>
+                  <span dir="rtl" className="text-[#AFAFAF]">סכום נוכחי: 0</span>
                 )}
               </div>
               <div className="flex items-center gap-2 text-xs sm:text-sm font-bold text-[#777777]">
@@ -726,6 +727,7 @@ export default function Station1LessonPlayer({
         <QuizStepView
           quizItem={quizItem}
           selectedChoiceIdx={selectedChoiceIdx}
+          audioSrc="/audio/steps/lab1_quiz1.mp3?v=3.1.1"
           onSelectChoice={(idx) => {
             setFeedback(null);
             setSelectedChoiceIdx(idx);
@@ -742,7 +744,7 @@ export default function Station1LessonPlayer({
             </h1>
             <AudioHintButton
               text={labData.challenges?.[1]?.instructions || 'ציירו סמיילי שמח על הלוח.'}
-              audioSrc="/audio/hints/lab1_ch2.mp3?v=1.0.0"
+              audioSrc="/audio/steps/lab1_inst2.mp3?v=3.1.1"
             />
           </div>
 
@@ -849,7 +851,8 @@ export default function Station1LessonPlayer({
         <RealWorldStepView
           title="איפה מסתתרים הפיקסלים בחיים האמיתיים?"
           mascotMessage="עכשיו כשאתם יודעים מה זה פיקסל וביט, שימו לב איפה המחשב משתמש בזה כל יום:"
-          spokenFallback={labData?.conceptExplanation?.realWorldAnalogy}
+          spokenFallback="עכשיו כשאתם יודעים מה זה פיקסל וביט, שימו לב איפה המחשב משתמש בזה כל יום:"
+          audioSrc="/audio/steps/lab1_realworld.mp3?v=3.1.1"
           labMeta={labMeta}
         />
       )}
@@ -863,7 +866,7 @@ export default function Station1LessonPlayer({
             </h1>
             <AudioHintButton
               text={labData.challenges?.[2]?.instructions || 'ציירו סמל או את האות הראשונה של השם שלכם.'}
-              audioSrc="/audio/hints/lab1_ch3.mp3?v=1.0.0"
+              audioSrc="/audio/steps/lab1_inst3.mp3?v=3.1.1"
             />
           </div>
 

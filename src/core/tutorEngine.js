@@ -23,10 +23,10 @@ export const CURATED_TUTOR_KNOWLEDGE = {
       'מה נעשה בכל מעבדה?'
     ],
     answers: {
-      'מאיפה הכי כדאי להתחיל?': 'אם אתם חדשים כאן, הכי כדאי להתחיל במעבדה 1 – "ציור בפיקסלים", שם לומדים איך מחשב בונה תמונות בעזרת מתגים של 0 ו-1. אם כבר צברתם כוכבים, לחצו על כפתור "התחנה הבאה שלכם" כדי להמשיך ברצף!',
-      'מה ההבדל בין שני המסלולים?': 'מסלול א׳ (מעבדות 1-4) מלמד איך מחשב פועל בצורה הגיונית ומסודרת לפי פקודות וחוקים. מסלול ב׳ (מעבדות 5-8) הוא עולם הבינה המלאכותית – איך המחשב לומד מדוגמאות, מזהה תמונות ומנחש מילים ממש כמונו!',
-      'איך משיגים תעודת הצטיינות?': 'בכל מעבדה יש 3 אתגרים מעשיים. כשתפתרו אותם תצברו כוכבים. כשתגיעו ל-24 כוכבים, תקבלו תעודת מאסטר בינה מלאכותית רשמית שתוכלו להדפיס או לשמור כ-PDF!',
-      'מה נעשה בכל מעבדה?': 'בכל מעבדה יש סרטון קצר, פודקאסט ומשחק אינטראקטיבי שבו אתם המדענים – מזיזים מתגים, מאמנים רובוט, סורקים פיקסלים וכותבים עם מודל שפה.'
+      'מאיפה הכי כדאי להתחיל?': 'אם אתם חדשים כאן, הכי כדאי להתחיל בתחנה 1 – "ציור בפיקסלים וביטים", שם לומדים איך מחשב בונה תמונות בעזרת מתגים של 0 ו-1. אם כבר צברתם כוכבים, לחצו על הכפתור הירוק בכרטיס ההתקדמות כדי להמשיך ברצף!',
+      'מה ההבדל בין שני המסלולים?': 'יחידות 1 ו-2 (תחנות 1–4) מלמדות איך מחשב פועל בצורה הגיונית ומסודרת לפי פקודות, עצי החלטות וניווט חכם. יחידות 3 ו-4 (תחנות 5–8) הן עולם הבינה המלאכותית – איך המחשב לומד מדוגמאות, מזהה קווים בתמונות ומנחש מילים!',
+      'איך משיגים תעודת הצטיינות?': 'בכל תחנה יש 3 משימות כוכבים. כשתפתרו אותן תצברו כוכבים ותפתחו תיבות פרס בסיום כל יחידה. כשתגיעו ל-24 כוכבים, תזכו בתעודת מאסטר בינה מלאכותית רשמית להדפסה!',
+      'מה נעשה בכל מעבדה?': 'בכל תחנה מחכה לכם מסלול קצר ומודרך שלב-אחר-שלב, יחד עם סרטון הסבר ופודקאסט, שבו אתם המדענים – מדליקים מתגים, מתכנתים רובוט, בונים עץ בלשי ומאמנים בינה מלאכותית.'
     }
   },
   lab1: {
@@ -114,7 +114,7 @@ export const CURATED_TUTOR_KNOWLEDGE = {
     ],
     answers: {
       'איך מחשב "רואה" תמונה?': 'בשביל המחשב, תמונה היא לא ציור אלא טבלה ענקית של מספרים! כל מספר מייצג כמה בהיר או כהה הפיקסל באותה נקודה.',
-      'מה זה פילטר או קונבולוציה?': 'פילטר הוא כמו זכוכית מגדלת קטנה בגודל 3 על 3 שעוברת על כל פיקסל ומחשבת ממוצע עם השכנים שלו. הוא יכול לטשטש, לחדד, או למצוא קווי מתאר!',
+      'מה זה פילטר או קונבולוציה?': 'פילטר הוא כמו זכוכית מגדלת קטנה בגודל 3 על 3 שעוברת על כל פיקסל ומחשבת סכום משוקלל עם השכנים שלו. כך הוא יכול למצוא קווי מתאר, לחדד תמונה או לטשטש רעשים!',
       'איך מוצאים קצוות של חפצים בתמונה?': 'קצה הוא מקום שבו יש קפיצה חדה בצבע (למשל פיקסל שחור ליד פיקסל לבן). הפילטר מחשב את ההפרש בין פיקסלים סמוכים ומאיר את הקווים הבולטים!',
       'רמז לזיהוי צורות': 'הפעילו את פילטר זיהוי הקצוות ושימו לב כיצד הקווים החיצוניים של האובייקט נשארים בהירים בעוד שהרקע הופך לשחור.'
     }
@@ -408,7 +408,7 @@ export function getLabCategories(labId) {
       icon: 'Lightbulb',
       payload: {
         text: displayText,
-        audioSrc: `/audio/hints/${labId}_ch${idx + 1}.mp3?v=0.6.4`,
+        audioSrc: `/audio/hints/${labId}_ch${idx + 1}.mp3?v=3.1.1`,
         category: 'רמז מעשי לאתגר'
       }
     };
@@ -470,7 +470,7 @@ export function searchKnowledge(userQuery, currentLabId = 'lab1') {
     return {
       matched: true,
       text: welcomeText,
-      audioSrc: `/audio/tutor/${currentLabId}_welcome.mp3?v=0.6.4`,
+      audioSrc: `/audio/tutor/${currentLabId}_welcome.mp3?v=3.1.1`,
       category: 'ברכת שלום',
       suggestedNext: (CURATED_TUTOR_KNOWLEDGE[currentLabId]?.prompts || []).slice(0, 3)
     };
@@ -483,7 +483,7 @@ export function searchKnowledge(userQuery, currentLabId = 'lab1') {
     return {
       matched: true,
       text: currentLabCurated.answers[cleanQuery],
-      audioSrc: promptIndex !== -1 ? `/audio/tutor/${currentLabId}_q${promptIndex}.mp3?v=0.6.4` : null,
+      audioSrc: promptIndex !== -1 ? `/audio/tutor/${currentLabId}_q${promptIndex}.mp3?v=3.1.1` : null,
       category: 'תשובת חונך מוקלטת',
       suggestedNext: currentLabCurated.prompts.filter(p => p !== cleanQuery).slice(0, 2)
     };
@@ -514,7 +514,7 @@ export function searchKnowledge(userQuery, currentLabId = 'lab1') {
         return {
           matched: true,
           text: displayText,
-          audioSrc: `/audio/hints/${currentLabId}_ch${i + 1}.mp3?v=0.6.4`,
+          audioSrc: `/audio/hints/${currentLabId}_ch${i + 1}.mp3?v=3.1.1`,
           category: `רמז לאתגר ${i + 1}`,
           suggestedNext: [
             i + 1 < currentLab.challenges.length ? `רמז לאתגר ${i + 2}` : 'איך זה עובד בעולם האמיתי?',
@@ -536,7 +536,7 @@ export function searchKnowledge(userQuery, currentLabId = 'lab1') {
         labId: labKey,
         title: promptText,
         text: data.answers[promptText],
-        audioSrc: `/audio/tutor/${labKey}_q${idx}.mp3?v=0.6.4`,
+        audioSrc: `/audio/tutor/${labKey}_q${idx}.mp3?v=3.1.1`,
         category: labKey === currentLabId ? 'תשובת חונך' : `מתוך מעבדה ${labKey}`,
         tokens: tokenizeQuery(promptText)
       });
@@ -571,7 +571,7 @@ export function searchKnowledge(userQuery, currentLabId = 'lab1') {
         labId: currentLabId,
         title: `רמז לאתגר ${idx + 1}: ${ch.title}`,
         text: displayText,
-        audioSrc: `/audio/hints/${currentLabId}_ch${idx + 1}.mp3?v=0.6.4`,
+        audioSrc: `/audio/hints/${currentLabId}_ch${idx + 1}.mp3?v=3.1.1`,
         category: `רמז לאתגר ${idx + 1}`,
         tokens: tokenizeQuery(`${ch.title} ${hintText} ${instText} רמז אתגר ${idx + 1}`)
       });

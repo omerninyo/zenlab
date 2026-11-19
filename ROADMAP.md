@@ -2,7 +2,7 @@
 ## Multi-Year Technical & Pedagogical Evolution: Web SPA, Native iPadOS, Lesson Plans, and Physical Computing
 
 **Document ID:** `ZEN-ROADMAP-EN-2026`  
-**Current Version:** `v3.0.0` (Updated: November 2026)  
+**Current Version:** `v3.1.0` (Updated: November 2026)  
 **Team:** Code & AI Explorer Team (`team@learnai.internal`)  
 **Governance:** Zero-PII Strict Compliance • 10th Man Red Team Protocol • MIT License  
 
@@ -112,9 +112,10 @@ Strategic UI/UX transformation bridging tactile early-childhood manipulatives (M
   - **`TheoryView 3.0` (4-Step Interactive Card Deck + Full-Page Toggle)**: Replaced the 4,000px vertical scroll wall with a 4-step studio deck (`1. סרטון וסיפור` | `2. נסו בעצמכם` | `3. בעולם האמיתי` | `4. חידון הבנה`), keyboard navigation (`←`/`→`), studio voice buttons, and a 1-click full-page view toggle.
   - **`AdventureJourneyMap 3.0` (World Filter Hub)**: Added World Filter Pills (`כל העולמות (8)` | `עולם 1–4`), collapsible `שדרוגי זֶן` drawer, and `🔊 שמעו את זֶן` studio welcome audio button (`/audio/tutor/home_welcome.mp3`).
   - **Acoustic Rate Calibration & Age 10–11 Copy Audit**: Prevented double-acceleration of pre-rendered `+12%` MP3s (`getEffectivePlaybackRate()`), expanded Hebrew TTS phonetic rules, removed all developer/marketing slogans (`From Zero to Neural`, `NotebookLM`, `בסגנון Brilliant`), and aligned Lab 4–8 challenge instructions with UI button labels.
-- [x] **Phase 3E: Full-Platform Daylight Lesson Player & Tween Progression Overhaul (`v3.0.0`)**:
+- [x] **Phase 3E: Full-Platform Daylight Lesson Player & Tween Progression Overhaul (`v3.0.0` – `v3.1.0`)**:
   - Retired heavy WebGL 3D & legacy dark/neon wrappers in favor of fast, zero-thermal `#FFFFFF` daylight surfaces with 2D illustrated mascot poses (`public/illustrations/zen_*.png`).
   - Converted all 8 labs (`Station1..Station8`) into unified 7-step distraction-free Lesson Players with step auto-resume, combo streaks, graded hints, keyboard shortcuts, Explorer Ranks, and 4 Unit Trophy Chests.
+  - Completed comprehensive pedagogical QA/QC (`v3.1.0`, aligning every hint, simulation mechanic, Step 0 warm-up obstacle graph, `k=1` outlier contrast, and 2-neuron XOR corridor) alongside 136 Google `gemini-3.8-flash-tts` (`Puck`) Hebrew studio MP3s and live `/api/tts` edge synthesis.
 - [ ] **Phase 3F: Live Family / Child Playtesting & Pedagogical Copy Refinements (Next)**:
   - Observe real ages 9–11 playtesting across Stations 1–8 and refine phrasing, pacing, and challenge difficulty curves before native app porting.
 - [ ] **Future External Ludic Engine Research (Optional Phase 4+ Bridge)**:

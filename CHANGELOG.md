@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.0] - 2026-11-19
+
+### Fixed, Refined & Upgraded (Deep Pedagogical QA/QC & Google Gemini 3.8 Natural Hebrew TTS Overhaul)
+- **End-to-End Pedagogical & Mechanics Audit (`src/data/curriculum.json`, `src/core/labMeta.js`, `src/core/tutorEngine.js`, `src/components/CertificateModal.jsx`, `src/daylight/`)**:
+  - **Curriculum & Tutor Alignment**: Eliminated legacy 3D/X-Ray references (`"עדשת הרנטגן"`, `"ריבוע"` vs `"ריבוע מרכזי"`, phantom preset buttons, obsolete `toolMode`/bar hints) across all 8 labs, corrected smiley row numbers (rows 3, 5, 6) in Lab 1, fixed Lab 6 filter formula explanation (`סכום משוקלל` in `tutorEngine.js`), aligned `CertificateModal` Explorer Rank titles 100% with `DaylightHomePath`, and updated home Tutor FAQs to describe the 4-Unit Daylight UI & Trophy Chests.
+  - **Station 1–8 Interactive Pedagogy Upgrades**:
+    - *Station 1*: Fixed RTL ordering (`dir="rtl"`) for `"סכום נוכחי: 0"` on the Single Byte step.
+    - *Station 2*: Auto-passes & celebrates directly upon completing `"הפעל רובוט"` when the active step's objective (`hasKey`, `isGateUnlocked`, or `reachedGoal`) succeeds.
+    - *Station 3*: Replaced the misleading Step 1 `דיוק העץ: 0%` indicator with a live root-split indicator (`חלוקת השורש: X ב"כן" מול Y ב"לא"`), and fixed the impossible Step 3 `accuracy >= 75%` pigeonhole check so isolating one 2-animal branch (`accuracy >= 50%`) passes cleanly before completing the full tree in Step 4 (`100%`).
+    - *Station 4*: Upgraded the Step 0 `5×5` warm-up grid with two obstacle rocks (`🪨`) computing true shortest-path `g` + Manhattan `h` so optimal cells show `8` vs detour cells `10`/`12`, enabled single-click Step 2 check after placing 4+ obstacles, and fixed the Step 4 heading typo.
+    - *Station 5*: Seeded a highlighted outlier watermelon (`🍉`) inside the apple cluster on Step 4 (`k=1` vs `k=5`) so learners directly observe `k=1` misclassifying (`100%` watermelon) and `k=5` recovering majority consensus (`🍎`).
+    - *Station 6*: Upgraded the Step 4 `3×3` neighborhood inspector to render explicit `pixel × weight = product` cells across all 9 neighbors.
+    - *Station 7*: Shaded the diagonal green corridor polygon between both XOR boundary lines when the 2-neuron team is activated and replaced single-neuron sliders with a clear 2-neuron teamwork summary card.
+    - *Station 8*: Changed Steps 1 & 2 `"גלו את המילה הבאה!"` to repeatedly re-sample slot 0 (with a live roll counter) so learners can contrast deterministic `T=0.0` vs random `T>=0.8` on demand while Step 4 chains full 4-word stories.
+- **Google `gemini-3.8-flash-tts` (`Puck`) 136-Clip Studio Audio & Live `/api/tts` Synthesis (`scripts/generate_gemini_tts_all.mjs`, `functions/api/tts.js`, `src/core/speechUtils.js`, `src/core/narration.js`, `vite.config.js`)**:
+  - Replaced legacy `edge-tts` (`HilaNeural`) MP3s and heavy 19MB raw `.wav` narrations with 136 compact, natural Israeli Hebrew MP3 masters synthesized via `gemini-3.8-flash-tts` (`voiceName: 'Puck'`) using pure phonetically normalized Hebrew prompts (`cleanHebrewForSpeech()`).
+  - Wired deterministic word-for-word studio MP3s (`?v=3.1.0`) to every `ZenMascot` bubble, Mission header `AudioHintButton`, Hint drawer, Quiz question (`QuizStepView`), Real-World bubble (`RealWorldStepView`), and Tutor answer, removing legacy `1.08x` playback warping (`this.rate = 1.0`).
+  - Added Cloudflare Pages Serverless Function `POST /api/tts` (plus local Vite dev API proxy middleware reading `.dev.vars` server-side only) and client-side object-URL caching in `NarrationEngine` for dynamic Station 8 stories and custom Tutor responses, with automatic Web Speech fallback offline.
+
 ## [3.0.0] - 2026-11-19
 
 ### Transformed (Full Daylight Linear Lesson Architecture, 2D Storybook Mascot & Ages 9–11 Gameplay/Progression Overhaul)

@@ -214,19 +214,17 @@ export default function Station3TreeLesson({
     }
 
     if (step === 3) {
-      if (treeEval.accuracy >= 75 || (Boolean(yesBranchAttr) && Boolean(noBranchAttr))) {
-        if (treeEval.accuracy >= 75) {
-          StorageEngine.completeChallenge('lab3', 'lab3_challenge2', 1);
-          recordPass(
-            labData.challenges?.[1]?.successMessage ||
-              'יופי של שאלות המשך! עץ ההחלטות מזהה עכשיו ב-75% הצלחה לפחות.'
-          );
-          return;
-        }
+      if (treeEval.accuracy >= 50) {
+        StorageEngine.completeChallenge('lab3', 'lab3_challenge2', 1);
+        recordPass(
+          labData.challenges?.[1]?.successMessage ||
+            'יופי של שאלת המשך! שתי החיות בענף קיבלו עלים נפרדים משלהן.'
+        );
+      } else {
+        recordRetry(
+          'השאלה שבחרתם לא הפרידה בין שתי החיות באותו ענף — שתיהן קיבלו אותה תשובה! נסו שאלה כמו "בעל פרווה?" או "בעל שריון?".'
+        );
       }
-      recordRetry(
-        `הדיוק כרגע הוא ${treeEval.accuracy}%. בחרו בענפי ההמשך שאלות שמפרידות בין עטלף לנשר או בין חתול לצב!`
-      );
       return;
     }
 
@@ -272,13 +270,13 @@ export default function Station3TreeLesson({
 
   const hintConfig = useMemo(() => {
     if (step === 1) {
-      return { text: labData.challenges?.[0]?.hint, audioSrc: '/audio/hints/lab3_ch1.mp3?v=1.0.0' };
+      return { text: labData.challenges?.[0]?.hint, audioSrc: '/audio/hints/lab3_ch1.mp3?v=3.1.1' };
     }
     if (step === 3) {
-      return { text: labData.challenges?.[1]?.hint, audioSrc: '/audio/hints/lab3_ch2.mp3?v=1.0.0' };
+      return { text: labData.challenges?.[1]?.hint, audioSrc: '/audio/hints/lab3_ch2.mp3?v=3.1.1' };
     }
     if (step === 4) {
-      return { text: labData.challenges?.[2]?.hint, audioSrc: '/audio/hints/lab3_ch3.mp3?v=1.0.0' };
+      return { text: labData.challenges?.[2]?.hint, audioSrc: '/audio/hints/lab3_ch3.mp3?v=3.1.1' };
     }
     return { text: '', audioSrc: '' };
   }, [step, labData.challenges]);
@@ -341,8 +339,8 @@ export default function Station3TreeLesson({
             pose="teach"
             size="md"
             message="כדי לזהות חיה ב-2 שאלות בלבד, מתחילים בשאלה שמחלקת את החיות לשתי קבוצות שוות!"
-            audioSrc="/audio/narration/lab3.wav"
-            spokenFallback={labData?.media?.narration?.transcript}
+            audioSrc="/audio/steps/lab3_intro.mp3?v=3.1.1"
+            spokenFallback="כדי לזהות חיה ב-2 שאלות בלבד, מתחילים בשאלה שמחלקת את החיות לשתי קבוצות שוות!"
           />
 
           <div className="bg-[#F7F7F5] border-2 border-[#E5E5E5] rounded-3xl p-4 sm:p-5 space-y-4">
@@ -424,10 +422,10 @@ export default function Station3TreeLesson({
               }
               audioSrc={
                 step === 1
-                  ? '/audio/hints/lab3_ch1.mp3?v=1.0.0'
+                  ? '/audio/steps/lab3_inst1.mp3?v=3.1.1'
                   : step === 3
-                  ? '/audio/hints/lab3_ch2.mp3?v=1.0.0'
-                  : '/audio/hints/lab3_ch3.mp3?v=1.0.0'
+                  ? '/audio/steps/lab3_inst2.mp3?v=3.1.1'
+                  : '/audio/steps/lab3_inst3.mp3?v=3.1.1'
               }
             />
           </div>
@@ -446,7 +444,18 @@ export default function Station3TreeLesson({
                 }}
               />
             ))}
-            {rootAttr && (
+            {rootAttr && step === 1 && (
+              <span
+                className={`px-3 py-1 rounded-xl border text-xs font-extrabold ${
+                  treeEval.nodes.leftGroup.count === 2 && treeEval.nodes.rightGroup.count === 2
+                    ? 'bg-[#D7FFB8] border-[#58CC02] text-[#467E00]'
+                    : 'bg-[#FFF6D6] border-[#FFC800] text-[#9A6700]'
+                }`}
+              >
+                חלוקת השורש: {treeEval.nodes.leftGroup.count} ב&quot;כן&quot; מול {treeEval.nodes.rightGroup.count} ב&quot;לא&quot;
+              </span>
+            )}
+            {rootAttr && step >= 3 && (
               <span className="px-3 py-1 rounded-xl bg-[#FFF6D6] border border-[#FFC800] text-xs font-extrabold text-[#9A6700]">
                 דיוק העץ: {treeEval.accuracy}%
               </span>
@@ -658,6 +667,7 @@ export default function Station3TreeLesson({
         <QuizStepView
           quizItem={labMeta.miniQuiz[1]}
           selectedChoiceIdx={quizChoice}
+          audioSrc="/audio/steps/lab3_quiz1.mp3?v=3.1.1"
           onSelectChoice={(idx) => {
             setFeedback(null);
             setQuizChoice(idx);
@@ -676,7 +686,8 @@ export default function Station3TreeLesson({
             pose="think"
             size="sm"
             message="עם 4 חיות הגענו ל-100%, אבל ברגע שמצטרפות חיות חדשות כמו יען או פינגווין, 2 שאלות כבר לא מספיקות!"
-            spokenFallback="ברגע שמצטרפות חיות חדשות, עץ קטן מתבלבל וצריך להוסיף לו עוד ענפים."
+            audioSrc="/audio/steps/lab3_step5.mp3?v=3.1.1"
+            spokenFallback="עם 4 חיות הגענו ל-100%, אבל ברגע שמצטרפות חיות חדשות כמו יען או פינגווין, 2 שאלות כבר לא מספיקות!"
           />
 
           <div className="bg-[#F7F7F5] border-2 border-[#E5E5E5] rounded-3xl p-4 space-y-4">
@@ -805,7 +816,8 @@ export default function Station3TreeLesson({
         <RealWorldStepView
           title="איפה עובדים עצי החלטות בחיים האמיתיים?"
           mascotMessage="מעצי שאלות של כן ולא בונים היום מערכות אבחון, משחקי ניחוש וממליצי תוכן חכמים:"
-          spokenFallback={labData?.conceptExplanation?.realWorldAnalogy}
+          spokenFallback="מעצי שאלות של כן ולא בונים היום מערכות אבחון, משחקי ניחוש וממליצי תוכן חכמים:"
+          audioSrc="/audio/steps/lab3_realworld.mp3?v=3.1.1"
           labMeta={labMeta}
         />
       )}

@@ -1,97 +1,46 @@
 /**
  * Narration Engine for ZenLab Platform
- * 
- * Provides high-quality child-friendly Hebrew voiceover & narration.
- * Automatically identifies and prioritizes natural/neural speech synthesis
- * voices (e.g. Google עברית, Microsoft Natural, Siri/Enhanced), phonetically
- * normalizes technical jargon into natural spoken Hebrew, and calibrates
- * pace and warmth for elementary school learners.
+ *
+ * Provides warm, natural Israeli Hebrew voiceover across:
+ * 1. Pre-rendered Google Gemini 3.8 Flash TTS studio MP3 masters (`/audio/...`)
+ * 2. Live server-side `/api/tts` Google Gemini 3.8 TTS synthesis for dynamic text
+ *    (custom Station 8 stories, open Tutor responses, glossary items)
+ * 3. Graceful offline fallback to the browser's native Web Speech API
  */
 
 import { StorageEngine } from './storage.js';
+import { cleanHebrewForSpeech } from './speechUtils.js';
 
-/**
- * Phonetically normalize Hebrew text for child-friendly speech synthesis:
- * Replaces English acronyms, slashes, and symbols that cause robotic stuttering.
- */
-function cleanHebrewForSpeech(text) {
-  if (!text) return '';
-  return text
-    // Remove markdown asterisks, bold marks, backticks, bullets, braces
-    .replace(/[*_`#~]/g, '')
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // markdown links
-    .replace(/[•&bull;]/g, '')
-    // Strip emojis (💡, 📖, 🔍, ❓, ⭐, 🤖, ✨, 🔑, etc.) so speech synthesizers don't pause or stutter
-    .replace(/[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu, '')
-    // Replace quotes that cause robotic engines to vocalize 'quotation mark'
-    .replace(/["'״׳]/g, ' ')
-    // Normalize technical terms to natural spoken Hebrew
-    .replace(/\bCPU\b/gi, 'סִי-פִּי-יוּ, המעבד המרכזי')
-    .replace(/\bRAM\b/gi, 'רָאם, הזיכרון הראשי')
-    .replace(/\bALU\b/gi, 'אֵיי-אֵל-יוּ, יחידת החישוב')
-    .replace(/\bLLM\b/gi, 'אֵל-אֵל-אֵם, מודל שפה')
-    .replace(/\bLLMs\b/gi, 'מודלי שפה')
-    .replace(/\*A|A\*/gi, 'אֵיי סטאר')
-    .replace(/\bBFS\b/gi, 'בִּי אֵף אֵס')
-    .replace(/\bk-NN\b/gi, 'קֵיי אֵן אֵן, השכנים הקרובים')
-    .replace(/\bk=5\b/gi, 'קֵיי שווה חמש')
-    .replace(/\bk=3\b/gi, 'קֵיי שווה שלוש')
-    .replace(/\bk=1\b/gi, 'קֵיי שווה אחת')
-    .replace(/\bRGB\b/gi, 'אָר גִ׳י בִּי')
-    .replace(/3[×xX]3/g, 'שלוש על שלוש')
-    .replace(/8[×xX]8/g, 'שמונה על שמונה')
-    .replace(/6[×xX]6/g, 'שש על שש')
-    .replace(/\bAI\b/gi, 'בִּינָה מְלָאכוּתִית')
-    .replace(/\bXOR\b/gi, 'אֶקְס-אוֹר')
-    .replace(/\bAND\b/gi, 'שער וְגַם')
-    .replace(/\bOR\b/gi, 'שער אוֹ')
-    .replace(/\bNOT\b/gi, 'שער שְׁלִילָה')
-    .replace(/\bNAND\b/gi, 'נָאנְד')
-    .replace(/\bPC\b/gi, 'מונה פקודות')
-    .replace(/\bIR\b/gi, 'אוגר פקודה')
-    .replace(/\bACC\b/gi, 'אוגר הצובר')
-    .replace(/\bChatGPT\b/gi, 'צָ׳אט גִ׳י פִּי טִי')
-    .replace(/\bGemini\b/gi, 'גֶ׳מִינַיי')
-    .replace(/\bWaze\b/gi, 'וֵוייז')
-    .replace(/\bZen\b/gi, 'זֶן')
-    .replace(/\bזן\b/g, 'זֶן')
-    .replace(/0\s*ו-1/g, 'אפס ואחת')
-    .replace(/10₂/g, 'עשר בבינארית, שזה שתיים')
-    .replace(/\+/g, ' ועוד ')
-    .replace(/=/g, ' שווה ')
-    .replace(/\//g, ' או ')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
+const MAX_DYNAMIC_CACHE_ENTRIES = 30;
 
 class NarrationEngineClass {
   constructor() {
     this.html5Audio = null;
     this.currentAudioSrc = '';
     this.currentUtterance = null;
+    this.activeAbortController = null;
+    this.playSessionId = 0;
+    this.dynamicAudioCache = new Map();
     this.isPlaying = false;
     this.isPaused = false;
-    this.progress = 0; // 0 to 100
-    this.rate = 1.08; // Lively, natural cadence for studio WAVs; pre-accelerated MP3s auto-calibrate to 1.0x
-    this.pitch = 1.0; // natural, non-robotic acoustic pitch
+    this.progress = 0;
+    this.rate = 1.0; // Natural studio pace for Google Gemini 3.8 Puck audio
+    this.pitch = 1.0;
     this.currentText = '';
     this.spokenText = '';
     this.currentVoiceName = '';
     this.listeners = new Set();
     this.progressTimer = null;
-    this.estimatedDuration = 60; // seconds
+    this.estimatedDuration = 60;
 
-    // Check speech synthesis availability
     this.hasSpeech = typeof window !== 'undefined' && 'speechSynthesis' in window;
-    
-    // Subscribe to storage changes
+
     if (typeof window !== 'undefined') {
-      StorageEngine.subscribe(state => {
+      StorageEngine.subscribe((state) => {
         if (!state.isNarrationEnabled && this.isPlaying) {
           this.stop();
         }
       });
-      // Pre-warm voices list (browsers load voices asynchronously)
       if (this.hasSpeech) {
         window.speechSynthesis.onvoiceschanged = () => {
           this.notify();
@@ -112,7 +61,7 @@ class NarrationEngineClass {
 
   notify() {
     const state = this.getState();
-    this.listeners.forEach(fn => fn(state));
+    this.listeners.forEach((fn) => fn(state));
   }
 
   getState() {
@@ -130,13 +79,7 @@ class NarrationEngineClass {
     };
   }
 
-  getEffectivePlaybackRate(src = this.currentAudioSrc) {
-    // Studio hint & tutor MP3s are already synthesized with +12% rate via he-IL-HilaNeural.
-    // Avoid double-accelerating them unless the user explicitly changed the speed multiplier.
-    const isPreAcceleratedMp3 = src && (src.includes('/audio/hints/') || src.includes('/audio/tutor/'));
-    if (isPreAcceleratedMp3) {
-      return Math.max(0.8, Math.min(1.5, Number((this.rate / 1.08).toFixed(2))));
-    }
+  getEffectivePlaybackRate() {
     return this.rate;
   }
 
@@ -158,20 +101,17 @@ class NarrationEngineClass {
     this.notify();
   }
 
-  /**
-   * Get all installed Hebrew voices sorted by acoustic naturalness
-   */
   getAvailableHebrewVoices() {
     if (!this.hasSpeech) return [];
     try {
       const voices = window.speechSynthesis.getVoices() || [];
-      const hebrewVoices = voices.filter(v => 
-        (v.lang && (v.lang.startsWith('he') || v.lang.startsWith('iw'))) ||
-        v.name.includes('Hebrew') ||
-        v.name.includes('עברית')
+      const hebrewVoices = voices.filter(
+        (v) =>
+          (v.lang && (v.lang.startsWith('he') || v.lang.startsWith('iw'))) ||
+          v.name.includes('Hebrew') ||
+          v.name.includes('עברית')
       );
 
-      // Score voices: Natural/Online/Google/Enhanced first
       return hebrewVoices.sort((a, b) => {
         const score = (v) => {
           let s = 0;
@@ -190,19 +130,71 @@ class NarrationEngineClass {
     }
   }
 
-  /**
-   * Find the single best natural Hebrew voice
-   */
   getBestHebrewVoice() {
     const list = this.getAvailableHebrewVoices();
     return list.length > 0 ? list[0] : null;
   }
 
+  playHtml5AudioUrl(url, sessionId, onFallback) {
+    try {
+      this.html5Audio = new Audio(url);
+      if ('preservesPitch' in this.html5Audio) {
+        this.html5Audio.preservesPitch = true;
+      } else if ('webkitPreservesPitch' in this.html5Audio) {
+        this.html5Audio.webkitPreservesPitch = true;
+      }
+      this.html5Audio.playbackRate = this.getEffectivePlaybackRate();
+      this.currentVoiceName = 'זֶן — קריינות טבעית (Google Gemini)';
+
+      this.html5Audio.addEventListener('play', () => {
+        if (this.html5Audio) {
+          this.html5Audio.playbackRate = this.getEffectivePlaybackRate();
+        }
+      });
+
+      this.html5Audio.addEventListener('timeupdate', () => {
+        if (this.html5Audio && this.html5Audio.duration) {
+          this.progress = (this.html5Audio.currentTime / this.html5Audio.duration) * 100;
+          this.notify();
+        }
+      });
+
+      this.html5Audio.addEventListener('ended', () => {
+        if (sessionId === this.playSessionId) {
+          this.handleEnded();
+        }
+      });
+
+      this.html5Audio.addEventListener('error', () => {
+        if (sessionId === this.playSessionId) {
+          this.html5Audio = null;
+          onFallback?.();
+        }
+      });
+
+      this.html5Audio
+        .play()
+        .then(() => {
+          if (sessionId !== this.playSessionId) return;
+          this.isPlaying = true;
+          this.isPaused = false;
+          this.notify();
+        })
+        .catch(() => {
+          if (sessionId === this.playSessionId) {
+            this.html5Audio = null;
+            onFallback?.();
+          }
+        });
+    } catch {
+      this.html5Audio = null;
+      onFallback?.();
+    }
+  }
+
   /**
-   * Play narration for text and/or optional audio source
-   * @param {string} text - Hebrew narration text
-   * @param {string} [audioSrc] - Optional URL to audio file
-   * @param {number} [durationSec] - Estimated duration in seconds
+   * Play narration for text and/or optional studio audio source.
+   * Falls back to live `/api/tts` when `audioSrc` is omitted, then Web Speech API offline.
    */
   play(text, audioSrc = '', durationSec = 60) {
     if (!StorageEngine.getState().isNarrationEnabled) {
@@ -210,63 +202,88 @@ class NarrationEngineClass {
     }
 
     this.stop();
+    const sessionId = ++this.playSessionId;
     this.currentText = text;
     this.currentAudioSrc = audioSrc || '';
     this.spokenText = cleanHebrewForSpeech(text);
     this.estimatedDuration = durationSec || 60;
     this.progress = 0;
 
-    // 1. If audioSrc is provided and valid, try HTML5 Audio
+    // 1. Pre-rendered Studio MP3 Master (instant 0ms playback, 100% offline capable)
     if (audioSrc && typeof window !== 'undefined') {
-      try {
-        this.html5Audio = new Audio(audioSrc);
-        if ('preservesPitch' in this.html5Audio) {
-          this.html5Audio.preservesPitch = true;
-        } else if ('webkitPreservesPitch' in this.html5Audio) {
-          this.html5Audio.webkitPreservesPitch = true;
+      this.playHtml5AudioUrl(audioSrc, sessionId, () => {
+        this.playDynamicOrFallback(sessionId);
+      });
+      return;
+    }
+
+    // 2. Dynamic text without pre-rendered MP3 -> live `/api/tts` (cached) -> Web Speech fallback
+    this.playDynamicOrFallback(sessionId);
+  }
+
+  async playDynamicOrFallback(sessionId) {
+    if (typeof window === 'undefined' || !this.spokenText) {
+      if (sessionId === this.playSessionId) {
+        this.playSpeechSynthesis(this.spokenText);
+      }
+      return;
+    }
+
+    const cacheKey = this.spokenText;
+    const cachedUrl = this.dynamicAudioCache.get(cacheKey);
+    if (cachedUrl) {
+      this.playHtml5AudioUrl(cachedUrl, sessionId, () => {
+        this.playSpeechSynthesis(this.spokenText);
+      });
+      return;
+    }
+
+    this.isPlaying = true;
+    this.isPaused = false;
+    this.currentVoiceName = 'זֶן — מפיק קול טבעי...';
+    this.notify();
+
+    try {
+      this.activeAbortController = new AbortController();
+      const res = await fetch('/api/tts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: this.spokenText }),
+        signal: this.activeAbortController.signal
+      });
+
+      if (sessionId !== this.playSessionId) return;
+
+      const contentType = res.headers.get('content-type') || '';
+      if (res.ok && contentType.startsWith('audio/')) {
+        const blob = await res.blob();
+        if (sessionId !== this.playSessionId) return;
+
+        if (this.dynamicAudioCache.size >= MAX_DYNAMIC_CACHE_ENTRIES) {
+          const oldestKey = this.dynamicAudioCache.keys().next().value;
+          const oldestUrl = this.dynamicAudioCache.get(oldestKey);
+          this.dynamicAudioCache.delete(oldestKey);
+          if (oldestUrl) URL.revokeObjectURL(oldestUrl);
         }
-        const effectiveRate = this.getEffectivePlaybackRate(audioSrc);
-        this.html5Audio.playbackRate = effectiveRate;
-        this.currentVoiceName = 'קריינות אולפן (הילה)';
 
-        this.html5Audio.addEventListener('play', () => {
-          if (this.html5Audio) {
-            this.html5Audio.playbackRate = this.getEffectivePlaybackRate(audioSrc);
-          }
-        });
-
-        this.html5Audio.addEventListener('timeupdate', () => {
-          if (this.html5Audio && this.html5Audio.duration) {
-            this.progress = (this.html5Audio.currentTime / this.html5Audio.duration) * 100;
-            this.notify();
-          }
-        });
-
-        this.html5Audio.addEventListener('ended', () => {
-          this.handleEnded();
-        });
-
-        this.html5Audio.addEventListener('error', () => {
-          this.html5Audio = null;
-          this.playSpeechSynthesis(this.spokenText);
-        });
-
-        this.html5Audio.play().then(() => {
-          this.isPlaying = true;
-          this.isPaused = false;
-          this.notify();
-        }).catch(() => {
-          this.html5Audio = null;
+        const objectUrl = URL.createObjectURL(blob);
+        this.dynamicAudioCache.set(cacheKey, objectUrl);
+        this.playHtml5AudioUrl(objectUrl, sessionId, () => {
           this.playSpeechSynthesis(this.spokenText);
         });
         return;
-      } catch {
-        this.html5Audio = null;
       }
+    } catch (err) {
+      if (err?.name === 'AbortError' || sessionId !== this.playSessionId) {
+        return;
+      }
+    } finally {
+      this.activeAbortController = null;
     }
 
-    // 2. Otherwise, use upgraded Web Speech API
-    this.playSpeechSynthesis(this.spokenText);
+    if (sessionId === this.playSessionId) {
+      this.playSpeechSynthesis(this.spokenText);
+    }
   }
 
   playSpeechSynthesis(phoneticText) {
@@ -283,7 +300,6 @@ class NarrationEngineClass {
       utterance.rate = this.rate;
       utterance.pitch = this.pitch;
 
-      // Select highest quality natural voice
       const bestVoice = this.getBestHebrewVoice();
       if (bestVoice) {
         utterance.voice = bestVoice;
@@ -293,7 +309,6 @@ class NarrationEngineClass {
       }
 
       const totalChars = phoneticText.length;
-      let startTimestamp = Date.now();
 
       utterance.onboundary = (event) => {
         if (event.charIndex !== undefined && totalChars > 0) {
@@ -305,7 +320,6 @@ class NarrationEngineClass {
       utterance.onstart = () => {
         this.isPlaying = true;
         this.isPaused = false;
-        startTimestamp = Date.now();
         this.startTimer(totalChars);
         this.notify();
       };
@@ -350,7 +364,7 @@ class NarrationEngineClass {
 
   startTimer(totalChars) {
     clearInterval(this.progressTimer);
-    const approxDurationSec = Math.max(8, (totalChars / 12) / this.rate);
+    const approxDurationSec = Math.max(8, totalChars / 12 / this.rate);
 
     this.progressTimer = setInterval(() => {
       if (this.isPlaying && !this.isPaused && this.progress < 95) {
@@ -395,6 +409,15 @@ class NarrationEngineClass {
   }
 
   stop() {
+    this.playSessionId += 1;
+    if (this.activeAbortController) {
+      try {
+        this.activeAbortController.abort();
+      } catch {
+        // ignore abort error
+      }
+      this.activeAbortController = null;
+    }
     if (this.html5Audio) {
       this.html5Audio.pause();
       this.html5Audio.currentTime = 0;

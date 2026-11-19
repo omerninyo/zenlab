@@ -1,8 +1,18 @@
 # מחקר ארכיטקטוני והשוואתי: מודרניזציית קול והשמעת עברית טבעית ב-ZenLab (2026)
 
 **מחברים:** צוות ארכיטקטורת מערכת וסאונד (`team@learnai.internal`)  
-**גרסה:** 1.0.0 | **תאריך:** אוקטובר 2026  
-**סטטוס:** מסמך מחקר והמלצות יישום (Research & Architectural Decision Record)
+**גרסה:** 2.0.0 | **עודכן:** נובמבר 2026 (`ZenLab v3.1.0`)  
+**סטטוס:** מיושם בפרודקשן (Google Gemini 3.8 Flash TTS `Puck` + `/api/tts`)
+
+---
+
+## עדכון יישום v3.1.0 (נובמבר 2026): מעבר ל-Google `gemini-3.8-flash-tts` (`Puck`) והקראה חיה ב-`/api/tts`
+
+בגרסה `v3.1.0` הוחלף מנוע ה-`edge_tts` הישן (`HilaNeural` המואץ ל-`+12%`) וקובצי ה-WAV הכבדים של הנרטיב בצינור שמע מודרני של Google:
+1. **136 קובצי מאסטר ב-MP3 מאת `gemini-3.8-flash-tts` (`voiceName: 'Puck'`)**: כיסוי מילה-במילה של כל 8 נרטיבי המעבדה, 24 הרמזים, 45 קובצי החונך, בועות הפתיחה והעולם האמיתי, כותרות המשימה ו-14 שאלות החידון בנגנים (`public/audio/steps/*.mp3`).
+2. **כלל פרומפט קריטי (Pure Hebrew Invariant)**: במודל `gemini-3.8-flash-tts` אסור להוסיף הנחיית סגנון באנגלית בתחילת ה-`parts[0].text` (המודל מקריא את ההנחיה באנגלית בקול רם); במקום זאת מוזרק טקסט עברי מונרמל בלבד דרך `cleanHebrewForSpeech()` ב-`src/core/speechUtils.js`, והתוצאה טבעית, חמה ונקייה ללא שום זיוף פונטי.
+3. **כיול קצב ל-`1.0x`**: הסרת פקטור הפיצוי ההיסטורי `1.08` מ-`NarrationEngine` — השמעה טבעית בדיוק בקצב הדגימה המקורי.
+4. **הקראה חיה בזמן אמת (`POST /api/tts`)**: Cloudflare Pages Serverless Function (`functions/api/tts.js`, וגשר פיתוח תואם ב-`vite.config.js`) עם מפל מודלים רב-שכבתי (`gemini-3.8-flash-lite-tts` ← `gemini-3.8-flash-tts` ← `gemini-2.5-flash-preview-tts` ← גיבוי Gemini Live `gemini-2.5-flash-native-audio-latest` / `gemini-3.1-flash-live-preview` הכולל זיהוי פעילות קולית PCM VAD ואימות תמלול בזמן אמת), מטמון `ObjectURL` מקומי בדפדפן ונפילה שקטה ל-Web Speech באופליין.
 
 ---
 

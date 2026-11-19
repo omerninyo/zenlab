@@ -317,10 +317,20 @@ export default function Station2RobotLesson({
 
       const reachedGoal = next.x === board.goal.x && next.y === board.goal.y;
       if (reachedGoal) {
+        StorageEngine.completeChallenge('lab2', 'lab2_challenge1', 1);
+        StorageEngine.completeChallenge('lab2', 'lab2_challenge2', 1);
         StorageEngine.completeChallenge('lab2', 'lab2_challenge3', 1);
         stopTimer();
         setExecutingIndex(-1);
-        AudioEngine.playZenChime();
+        if (step === 5) {
+          fireChampagneConfetti();
+          recordPass(
+            labData.challenges?.[2]?.successMessage ||
+              'אלגוריתם מושלם! הרובוט אסף את המפתח, פתח את השער והגיע אל היעד.'
+          );
+        } else {
+          AudioEngine.playZenChime();
+        }
         return;
       }
 
@@ -328,6 +338,20 @@ export default function Station2RobotLesson({
       if (idx >= commands.length) {
         stopTimer();
         setExecutingIndex(-1);
+        if (step === 1 && next.hasKey) {
+          StorageEngine.completeChallenge('lab2', 'lab2_challenge1', 1);
+          recordPass(
+            labData.challenges?.[0]?.successMessage ||
+              'המפתח אצלכם! עכשיו אפשר להתקדם אל השער הנעול.'
+          );
+        } else if (step === 3 && next.isGateUnlocked) {
+          StorageEngine.completeChallenge('lab2', 'lab2_challenge1', 1);
+          StorageEngine.completeChallenge('lab2', 'lab2_challenge2', 1);
+          recordPass(
+            labData.challenges?.[1]?.successMessage ||
+              'השער נפתח בהצלחה! הדרך לגביע הניצחון פתוחה.'
+          );
+        }
       }
     }, 220);
   };
@@ -497,19 +521,19 @@ export default function Station2RobotLesson({
     if (step === 1) {
       return {
         text: labData.challenges?.[0]?.hint,
-        audioSrc: '/audio/hints/lab2_ch1.mp3?v=1.0.0'
+        audioSrc: '/audio/hints/lab2_ch1.mp3?v=3.1.1'
       };
     }
     if (step === 3) {
       return {
         text: labData.challenges?.[1]?.hint,
-        audioSrc: '/audio/hints/lab2_ch2.mp3?v=1.0.0'
+        audioSrc: '/audio/hints/lab2_ch2.mp3?v=3.1.1'
       };
     }
     if (step === 5) {
       return {
         text: labData.challenges?.[2]?.hint,
-        audioSrc: '/audio/hints/lab2_ch3.mp3?v=1.0.0'
+        audioSrc: '/audio/hints/lab2_ch3.mp3?v=3.1.1'
       };
     }
     return { text: '', audioSrc: '' };
@@ -524,10 +548,10 @@ export default function Station2RobotLesson({
       : 'משימה 3: הגיעו אל הגביע המנצח (🏆)';
   const puzzleAudio =
     step === 1
-      ? '/audio/hints/lab2_ch1.mp3?v=1.0.0'
+      ? '/audio/steps/lab2_inst1.mp3?v=3.1.1'
       : step === 3
-      ? '/audio/hints/lab2_ch2.mp3?v=1.0.0'
-      : '/audio/hints/lab2_ch3.mp3?v=1.0.0';
+      ? '/audio/steps/lab2_inst2.mp3?v=3.1.1'
+      : '/audio/steps/lab2_inst3.mp3?v=3.1.1';
   const puzzleInstruction =
     step === 1
       ? labData.challenges?.[0]?.instructions
@@ -574,8 +598,8 @@ export default function Station2RobotLesson({
             pose="teach"
             size="md"
             message="רובוט לא מנחש לבד — הוא מבצע בדיוק את רשימת הפקודות שאתם מכינים לו צעד אחר צעד!"
-            audioSrc="/audio/narration/lab2.wav"
-            spokenFallback={labData?.media?.narration?.transcript}
+            audioSrc="/audio/steps/lab2_intro.mp3?v=3.1.1"
+            spokenFallback="רובוט לא מנחש לבד — הוא מבצע בדיוק את רשימת הפקודות שאתם מכינים לו צעד אחר צעד!"
           />
 
           <div className="bg-[#F7F7F5] border-2 border-[#E5E5E5] rounded-3xl p-5 space-y-5 text-center">
@@ -881,6 +905,7 @@ export default function Station2RobotLesson({
         <QuizStepView
           quizItem={labMeta.miniQuiz[0]}
           selectedChoiceIdx={quiz1Choice}
+          audioSrc="/audio/steps/lab2_quiz1.mp3?v=3.1.1"
           onSelectChoice={(idx) => {
             setFeedback(null);
             setQuiz1Choice(idx);
@@ -893,6 +918,7 @@ export default function Station2RobotLesson({
         <QuizStepView
           quizItem={labMeta.miniQuiz[2]}
           selectedChoiceIdx={quiz2Choice}
+          audioSrc="/audio/steps/lab2_quiz2.mp3?v=3.1.1"
           onSelectChoice={(idx) => {
             setFeedback(null);
             setQuiz2Choice(idx);
@@ -906,7 +932,8 @@ export default function Station2RobotLesson({
         <RealWorldStepView
           title="איפה פועלים אלגוריתמים בחיים האמיתיים?"
           mascotMessage="בדיוק כמו שהרובוט ביצע את ההוראות שלכם במבוך, מכונות ומשחקים סביבנו עוקבים אחרי אלגוריתמים כל יום:"
-          spokenFallback={labData?.conceptExplanation?.realWorldAnalogy}
+          spokenFallback="בדיוק כמו שהרובוט ביצע את ההוראות שלכם במבוך, מכונות ומשחקים סביבנו עוקבים אחרי אלגוריתמים כל יום:"
+          audioSrc="/audio/steps/lab2_realworld.mp3?v=3.1.1"
           labMeta={labMeta}
         />
       )}

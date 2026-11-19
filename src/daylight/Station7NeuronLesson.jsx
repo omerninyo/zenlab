@@ -253,9 +253,9 @@ export default function Station7NeuronLesson({
   }, [feedback, step]);
 
   const hintConfig = useMemo(() => {
-    if (step === 1) return { text: labData.challenges?.[0]?.hint, audioSrc: '/audio/hints/lab7_ch1.mp3?v=1.0.0' };
-    if (step === 2) return { text: labData.challenges?.[1]?.hint, audioSrc: '/audio/hints/lab7_ch2.mp3?v=1.0.0' };
-    if (step === 4) return { text: labData.challenges?.[2]?.hint, audioSrc: '/audio/hints/lab7_ch3.mp3?v=1.0.0' };
+    if (step === 1) return { text: labData.challenges?.[0]?.hint, audioSrc: '/audio/hints/lab7_ch1.mp3?v=3.1.1' };
+    if (step === 2) return { text: labData.challenges?.[1]?.hint, audioSrc: '/audio/hints/lab7_ch2.mp3?v=3.1.1' };
+    if (step === 4) return { text: labData.challenges?.[2]?.hint, audioSrc: '/audio/hints/lab7_ch3.mp3?v=3.1.1' };
     return { text: '', audioSrc: '' };
   }, [step, labData.challenges]);
 
@@ -302,8 +302,8 @@ export default function Station7NeuronLesson({
             pose="teach"
             size="md"
             message="דמיינו שאתם מחליטים אם לצאת לשחק כדורגל: כל רמז מקבל משקל חשיבות, ואם עוברים את הסף — הנוירון נדלק ואומר כן!"
-            audioSrc="/audio/narration/lab7.wav"
-            spokenFallback={labData?.media?.narration?.transcript}
+            audioSrc="/audio/steps/lab7_intro.mp3?v=3.1.1"
+            spokenFallback="דמיינו שאתם מחליטים אם לצאת לשחק כדורגל: כל רמז מקבל משקל חשיבות, ואם עוברים את הסף — הנוירון נדלק ואומר כן!"
           />
 
           <div className="bg-[#F7F7F5] border-2 border-[#E5E5E5] rounded-3xl p-5 space-y-4">
@@ -385,10 +385,10 @@ export default function Station7NeuronLesson({
               }
               audioSrc={
                 step === 1
-                  ? '/audio/hints/lab7_ch1.mp3?v=1.0.0'
+                  ? '/audio/steps/lab7_inst1.mp3?v=3.1.1'
                   : step === 2
-                  ? '/audio/hints/lab7_ch2.mp3?v=1.0.0'
-                  : '/audio/hints/lab7_ch3.mp3?v=1.0.0'
+                  ? '/audio/steps/lab7_inst2.mp3?v=3.1.1'
+                  : '/audio/steps/lab7_inst3.mp3?v=3.1.1'
               }
             />
           </div>
@@ -428,6 +428,7 @@ export default function Station7NeuronLesson({
                 <g clipPath="url(#neuron-plot-clip)">
                   {networkActivated && selectedGate === 'XOR' ? (
                     <>
+                      <polygon points="12,54 48,8 110,68 74,112" fill="#D7FFB8" fillOpacity="0.45" />
                       <line x1="12" y1="54" x2="74" y2="112" stroke="#CE82FF" strokeWidth="2.8" />
                       <line x1="48" y1="8" x2="110" y2="68" stroke="#1CB0F6" strokeWidth="2.8" />
                     </>
@@ -512,50 +513,61 @@ export default function Station7NeuronLesson({
                 </button>
               )}
 
-              {[
-                { label: 'משקל רמז 1 (w₁)', val: w1, setter: setW1 },
-                { label: 'משקל רמז 2 (w₂)', val: w2, setter: setW2 },
-                { label: 'סף השכנוע (Bias)', val: bias, setter: setBias }
-              ].map((ctrl) => (
-                <div
-                  key={ctrl.label}
-                  className="bg-white border-2 border-[#E5E5E5] rounded-2xl p-3 space-y-2"
-                >
-                  <div className="flex items-center justify-between text-xs font-extrabold">
-                    <span className="text-[#3C3C3C]">{ctrl.label}</span>
-                    <span className="font-mono text-[#1899D6] bg-[#DDF4FF] px-2 py-0.5 rounded-lg" dir="ltr">
-                      {ctrl.val > 0 ? `+${ctrl.val.toFixed(1)}` : ctrl.val.toFixed(1)}
-                    </span>
+              {step === 4 && networkActivated ? (
+                <div className="bg-[#D7FFB8] border-2 border-[#58CC02] rounded-2xl p-4 space-y-2 text-right">
+                  <div className="text-sm font-extrabold text-[#467E00]">
+                    צוות של 2 נוירונים פועל יחד!
                   </div>
-                  <div className="flex items-center gap-2" dir="ltr">
-                    <button
-                      type="button"
-                      onClick={() => handleSliderUpdate(ctrl.setter)(ctrl.val - 0.1)}
-                      className="w-7 h-7 rounded-lg border-2 border-[#E5E5E5] bg-[#F7F7F5] flex items-center justify-center cursor-pointer"
-                      aria-label={`הקטן ${ctrl.label}`}
-                    >
-                      <Minus className="w-3.5 h-3.5" />
-                    </button>
-                    <input
-                      type="range"
-                      min="-3"
-                      max="3"
-                      step="0.1"
-                      value={ctrl.val}
-                      onChange={(e) => handleSliderUpdate(ctrl.setter)(parseFloat(e.target.value))}
-                      className="w-full accent-[#1CB0F6] cursor-pointer"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => handleSliderUpdate(ctrl.setter)(ctrl.val + 0.1)}
-                      className="w-7 h-7 rounded-lg border-2 border-[#E5E5E5] bg-[#F7F7F5] flex items-center justify-center cursor-pointer"
-                      aria-label={`הגדל ${ctrl.label}`}
-                    >
-                      <Plus className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
+                  <p className="text-xs sm:text-sm font-bold text-[#3C3C3C] leading-relaxed">
+                    הנוירון הסגול מצייר קו תחתון והנוירון הכחול מצייר קו עליון — יחד הם יוצרים מסדרון אלכסוני ירוק שתוחם בדיוק את (0,1) ואת (1,0) ב-100% דיוק!
+                  </p>
                 </div>
-              ))}
+              ) : (
+                [
+                  { label: 'משקל רמז 1 (w₁)', val: w1, setter: setW1 },
+                  { label: 'משקל רמז 2 (w₂)', val: w2, setter: setW2 },
+                  { label: 'סף השכנוע (Bias)', val: bias, setter: setBias }
+                ].map((ctrl) => (
+                  <div
+                    key={ctrl.label}
+                    className="bg-white border-2 border-[#E5E5E5] rounded-2xl p-3 space-y-2"
+                  >
+                    <div className="flex items-center justify-between text-xs font-extrabold">
+                      <span className="text-[#3C3C3C]">{ctrl.label}</span>
+                      <span className="font-mono text-[#1899D6] bg-[#DDF4FF] px-2 py-0.5 rounded-lg" dir="ltr">
+                        {ctrl.val > 0 ? `+${ctrl.val.toFixed(1)}` : ctrl.val.toFixed(1)}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2" dir="ltr">
+                      <button
+                        type="button"
+                        onClick={() => handleSliderUpdate(ctrl.setter)(ctrl.val - 0.1)}
+                        className="w-7 h-7 rounded-lg border-2 border-[#E5E5E5] bg-[#F7F7F5] flex items-center justify-center cursor-pointer"
+                        aria-label={`הקטן ${ctrl.label}`}
+                      >
+                        <Minus className="w-3.5 h-3.5" />
+                      </button>
+                      <input
+                        type="range"
+                        min="-3"
+                        max="3"
+                        step="0.1"
+                        value={ctrl.val}
+                        onChange={(e) => handleSliderUpdate(ctrl.setter)(parseFloat(e.target.value))}
+                        className="w-full accent-[#1CB0F6] cursor-pointer"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleSliderUpdate(ctrl.setter)(ctrl.val + 0.1)}
+                        className="w-7 h-7 rounded-lg border-2 border-[#E5E5E5] bg-[#F7F7F5] flex items-center justify-center cursor-pointer"
+                        aria-label={`הגדל ${ctrl.label}`}
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
 
               <div className="flex gap-2">
                 {step !== 4 && (
@@ -593,6 +605,7 @@ export default function Station7NeuronLesson({
         <QuizStepView
           quizItem={labMeta.miniQuiz[1]}
           selectedChoiceIdx={quiz1Choice}
+          audioSrc="/audio/steps/lab7_quiz1.mp3?v=3.1.1"
           onSelectChoice={(idx) => {
             setFeedback(null);
             setQuiz1Choice(idx);
@@ -605,6 +618,7 @@ export default function Station7NeuronLesson({
         <QuizStepView
           quizItem={labMeta.miniQuiz[2]}
           selectedChoiceIdx={quiz2Choice}
+          audioSrc="/audio/steps/lab7_quiz2.mp3?v=3.1.1"
           onSelectChoice={(idx) => {
             setFeedback(null);
             setQuiz2Choice(idx);
@@ -618,7 +632,8 @@ export default function Station7NeuronLesson({
         <RealWorldStepView
           title="איפה עובדים נוירונים ורשתות עמוקות בחיים?"
           mascotMessage="כשמחברים המון נוירונים יחד בשכבות, הם מזהים ספאם ב-Gmail, מתרגמים שפות ומפעילים מוח מלאכותי:"
-          spokenFallback={labData?.conceptExplanation?.realWorldAnalogy}
+          spokenFallback="כשמחברים המון נוירונים יחד בשכבות, הם מזהים ספאם ב-Gmail, מתרגמים שפות ומפעילים מוח מלאכותי:"
+          audioSrc="/audio/steps/lab7_realworld.mp3?v=3.1.1"
           labMeta={labMeta}
         />
       )}
