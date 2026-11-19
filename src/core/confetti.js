@@ -22,7 +22,7 @@ export function fireChampagneConfetti() {
   canvas.height = window.innerHeight * dpr;
   ctx.scale(dpr, dpr);
 
-  const colors = ['#ca8a04', '#eab308', '#facc15', '#0f172a', '#38bdf8', '#10b981'];
+  const colors = ['#58CC02', '#1CB0F6', '#FFC800', '#FF9600', '#CE82FF', '#FF4B4B'];
   const particleCount = 45;
   const particles = [];
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Award, Printer, X, Star, CheckCircle, Sparkles } from 'lucide-react';
+import { Award, Printer, X, Star } from 'lucide-react';
 import { AudioEngine } from '../core/audio.js';
 
 export default function CertificateModal({ isOpen, onClose, totalStars = 0 }) {
@@ -18,9 +18,9 @@ export default function CertificateModal({ isOpen, onClose, totalStars = 0 }) {
     day: 'numeric'
   }).format(new Date());
 
-  const rank = totalStars === 24 
-    ? 'מאסטר בינה מלאכותית (דרגת על)'
-    : totalStars >= 18 
+  const rank = totalStars === 24
+    ? 'מאסטר בינה מלאכותית'
+    : totalStars >= 18
     ? 'מהנדס/ת רשתות'
     : totalStars >= 12
     ? 'נווט/ת אלגוריתמים'
@@ -29,37 +29,47 @@ export default function CertificateModal({ isOpen, onClose, totalStars = 0 }) {
     : 'חוקר/ת מתחיל/ה';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="relative w-full max-w-2xl max-h-[92vh] flex flex-col bg-slate-900 border-2 border-slate-700 rounded-2xl shadow-2xl overflow-hidden print:m-0 print:border-none print:shadow-none print:bg-white print:text-black">
-        {/* Modal Controls Header (Hidden in Print) */}
-        <div className="flex items-center justify-between p-3.5 sm:p-4 bg-slate-950 border-b border-slate-800 shrink-0 print:hidden">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/45"
+      role="dialog"
+      aria-modal="true"
+      onClick={onClose}
+    >
+      <div
+        className="relative w-full max-w-2xl max-h-[92vh] flex flex-col bg-white border-2 border-[#E5E5E5] rounded-3xl overflow-hidden print:m-0 print:border-none print:shadow-none"
+        dir="rtl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Modal Controls Header */}
+        <div className="flex items-center justify-between p-4 bg-[#F7F7F5] border-b-2 border-[#E5E5E5] shrink-0 print:hidden">
           <div className="flex items-center gap-2">
-            <Award className="w-5 h-5 text-amber-400" />
-            <h3 className="text-sm font-bold text-white">תעודת הישגים והצטיינות</h3>
+            <Award className="w-5 h-5 text-[#FFC800]" />
+            <h3 className="text-base font-extrabold text-[#3C3C3C]">תעודת הישגים והצטיינות</h3>
           </div>
           <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={handlePrint}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-sm transition-colors"
+              className="btn-duo-blue px-3.5 py-2 text-xs"
             >
               <Printer className="w-3.5 h-3.5" />
-              <span className="hidden xs:inline">הדפסה / שמירה כ-PDF</span>
-              <span className="xs:hidden">הדפסה</span>
+              <span className="hidden sm:inline">הדפסה / שמירה כ-PDF</span>
+              <span className="sm:hidden">הדפסה</span>
             </button>
             <button
               type="button"
               onClick={onClose}
-              className="p-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-800 transition-colors"
+              className="w-9 h-9 rounded-xl bg-white hover:bg-[#F7F7F7] text-[#777777] hover:text-[#3C3C3C] border-2 border-[#E5E5E5] flex items-center justify-center cursor-pointer"
+              aria-label="סגירה"
             >
               <X className="w-4 h-4" />
             </button>
           </div>
         </div>
 
-        {/* Name Input Bar (Hidden in Print) */}
-        <div className="p-3.5 sm:p-4 bg-slate-900/80 border-b border-slate-800/80 shrink-0 print:hidden">
-          <label className="block text-xs font-medium text-slate-300 mb-1.5">
+        {/* Name Input Bar */}
+        <div className="p-4 bg-white border-b-2 border-[#E5E5E5] shrink-0 print:hidden">
+          <label className="block text-xs font-bold text-[#4B4B4B] mb-1.5">
             הקלידו את שמכם לתעודה (נשמר במכשיר בלבד ללא שום איסוף מידע):
           </label>
           <input
@@ -67,63 +77,58 @@ export default function CertificateModal({ isOpen, onClose, totalStars = 0 }) {
             placeholder="למשל: דניאל כהן"
             value={studentName}
             onChange={e => setStudentName(e.target.value)}
-            className="w-full max-w-sm px-3.5 py-1.5 sm:py-2 rounded-lg bg-slate-950 border border-slate-700 text-white text-xs sm:text-sm focus:outline-none focus:border-blue-500"
+            className="w-full max-w-sm px-3.5 py-2 rounded-xl bg-[#F7F7F5] border-2 border-[#E5E5E5] text-[#3C3C3C] text-sm focus:outline-none focus:border-[#1CB0F6]"
           />
         </div>
 
-        {/* The Certificate Canvas (Printed Page) */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-8 md:p-12 text-center space-y-4 sm:space-y-6 print:p-8 bg-gradient-to-b from-slate-900 to-slate-950 print:from-white print:to-white">
-          {/* Certificate Border Frame */}
-          <div className="border-4 border-double border-amber-500/40 p-4 sm:p-6 md:p-8 rounded-xl relative">
-            {/* Top Emblem */}
+        {/* Printable Certificate Canvas */}
+        <div className="flex-1 overflow-y-auto p-5 sm:p-8 text-center space-y-5 bg-white print:p-8">
+          <div className="border-4 border-double border-[#FFC800] p-5 sm:p-8 rounded-2xl relative bg-[#FFFDF5] print:bg-white">
             <div className="flex justify-center mb-3">
-              <div className="w-16 h-16 rounded-full bg-amber-500/10 border-2 border-amber-500/50 flex items-center justify-center text-amber-400 shadow-inner">
+              <div className="w-16 h-16 rounded-full bg-[#FFC800] border-2 border-[#E5A800] flex items-center justify-center text-white">
                 <Award className="w-8 h-8" />
               </div>
             </div>
 
-            <div className="uppercase tracking-widest text-[11px] font-mono text-amber-400 font-bold mb-1">
-              ZenLab • From Zero to Neural
+            <div className="text-xs font-extrabold text-[#58CC02] mb-1">
+              ZenLab • מביטים בודדים ועד בינה מלאכותית
             </div>
 
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-white print:text-black tracking-tight mb-2">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#3C3C3C] tracking-tight mb-2">
               תעודת הצטיינות
             </h1>
 
-            <p className="text-xs text-slate-400 print:text-slate-600 mb-6">
+            <p className="text-sm text-[#777777] mb-5">
               מוענקת בזאת בהערכה ובהוקרה ל:
             </p>
 
-            {/* Recipient Name */}
-            <div className="text-2xl sm:text-3xl font-black text-amber-300 print:text-black border-b-2 border-slate-700 print:border-black max-w-md mx-auto pb-2 mb-4 min-h-[44px]">
+            <div className="text-2xl sm:text-3xl font-extrabold text-[#3C3C3C] border-b-2 border-[#E5E5E5] print:border-black max-w-md mx-auto pb-2 mb-4 min-h-[44px]">
               {studentName.trim() || 'חוקר/ת מדעי המחשב'}
             </div>
 
-            <p className="text-xs sm:text-sm text-slate-300 print:text-slate-700 max-w-lg mx-auto leading-relaxed mb-6">
-              על השלמת מסלול הלמידה במעבדות <strong className="text-white print:text-black">ZenLab</strong>, 
-              גילוי סקרנות מדעית, חשיבה אלגוריתמית מעמיקה ושליטה בעקרונות ליבה במדעי המחשב ובלמידת מכונה.
+            <p className="text-sm text-[#4B4B4B] max-w-lg mx-auto leading-relaxed mb-6">
+              על השלמת מסלול הלמידה במעבדות <strong className="text-[#3C3C3C]">ZenLab</strong>,
+              גילוי סקרנות מדעית, חשיבה אלגוריתמית מעמיקה והבנת עקרונות היסוד במדעי המחשב ובבינה מלאכותית.
             </p>
 
-            {/* Stars & Rank Badge */}
-            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-xl bg-slate-950 print:bg-slate-100 border border-slate-800 print:border-slate-300 mb-6">
-              <div className="flex items-center gap-1 text-amber-400 font-bold font-mono text-sm">
-                <Star className="w-4 h-4 fill-amber-400" />
+            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-white border-2 border-[#E5E5E5] mb-6">
+              <div className="flex items-center gap-1.5 text-[#3C3C3C] font-extrabold text-sm">
+                <Star className="w-4 h-4 fill-[#FFC800] text-[#FFC800]" />
                 <span>{totalStars} / 24 כוכבים</span>
               </div>
-              <span className="text-slate-600 print:text-slate-400">|</span>
-              <span className="text-xs font-semibold text-emerald-400 print:text-emerald-700">
+              <span className="text-[#E5E5E5]">|</span>
+              <span className="text-xs font-extrabold text-[#58A700]">
                 {rank}
               </span>
             </div>
 
-            {/* Footer Signatures & Date */}
-            <div className="pt-6 border-t border-slate-800/80 print:border-slate-300 grid grid-cols-2 gap-4 text-xs text-slate-400 print:text-slate-600">
+            <div className="pt-5 border-t-2 border-[#E5E5E5] grid grid-cols-2 gap-4 text-xs text-[#777777]">
               <div className="text-right">
-                <span className="block font-bold text-slate-200 print:text-black">תאריך הנפקה:</span>
+                <span className="block font-bold text-[#3C3C3C]">תאריך הנפקה:</span>
                 <span>{formattedDate}</span>
               </div>
               <div className="text-left">
-                <span className="block font-bold text-slate-200 print:text-black">צוות פיתוח ופדגוגיה:</span>
+                <span className="block font-bold text-[#3C3C3C]">צוות פיתוח ופדגוגיה:</span>
                 <span className="font-mono">Code &amp; AI Explorer Team</span>
               </div>
             </div>

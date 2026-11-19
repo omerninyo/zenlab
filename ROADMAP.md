@@ -2,7 +2,7 @@
 ## Multi-Year Technical & Pedagogical Evolution: Web SPA, Native iPadOS, Lesson Plans, and Physical Computing
 
 **Document ID:** `ZEN-ROADMAP-EN-2026`  
-**Current Version:** `v2.0.1` (Updated: October 2026)  
+**Current Version:** `v3.0.0` (Updated: November 2026)  
 **Team:** Code & AI Explorer Team (`team@learnai.internal`)  
 **Governance:** Zero-PII Strict Compliance • 10th Man Red Team Protocol • MIT License  
 
@@ -14,7 +14,7 @@ This document serves as the **Central Source of Truth** for all collective memor
 flowchart LR
     P1["Phases 1-2: Core 8 Web Labs\n(Completed v0.7.23)"] --> P3["Phase 3: Classroom Lesson Plans\n& 70 Neural MP3s (Completed)"]
     P3 --> P3C["Phase 3C-3D: iPadOS Studio App\n& Desktop Chrome v1.0.0 (Completed)"]
-    P3C --> P3E["Phase 3E: ZenLab 3D & 2.5D Nintendo Engine\nWhisper-Quiet GPU v2.0.1 (Completed)"]
+    P3C --> P3E["Phase 3E: ZenLab Daylight Linear Architecture\n& Kids UX Overhaul v3.0.0 (Completed)"]
     P3E --> P4["Phase 4: Native iPad App\n(100% Apple HIG & SwiftUI)"]
     P4 --> P5["Phase 5: Native Android App\n(Jetpack Compose & Material 3)"]
     P5 --> P6["Phase 6: Physical Computing & Edge AI\n(micro:bit & Teachable Machine)"]
@@ -112,6 +112,11 @@ Strategic UI/UX transformation bridging tactile early-childhood manipulatives (M
   - **`TheoryView 3.0` (4-Step Interactive Card Deck + Full-Page Toggle)**: Replaced the 4,000px vertical scroll wall with a 4-step studio deck (`1. סרטון וסיפור` | `2. נסו בעצמכם` | `3. בעולם האמיתי` | `4. חידון הבנה`), keyboard navigation (`←`/`→`), studio voice buttons, and a 1-click full-page view toggle.
   - **`AdventureJourneyMap 3.0` (World Filter Hub)**: Added World Filter Pills (`כל העולמות (8)` | `עולם 1–4`), collapsible `שדרוגי זֶן` drawer, and `🔊 שמעו את זֶן` studio welcome audio button (`/audio/tutor/home_welcome.mp3`).
   - **Acoustic Rate Calibration & Age 10–11 Copy Audit**: Prevented double-acceleration of pre-rendered `+12%` MP3s (`getEffectivePlaybackRate()`), expanded Hebrew TTS phonetic rules, removed all developer/marketing slogans (`From Zero to Neural`, `NotebookLM`, `בסגנון Brilliant`), and aligned Lab 4–8 challenge instructions with UI button labels.
+- [x] **Phase 3E: Full-Platform Daylight Lesson Player & Tween Progression Overhaul (`v3.0.0`)**:
+  - Retired heavy WebGL 3D & legacy dark/neon wrappers in favor of fast, zero-thermal `#FFFFFF` daylight surfaces with 2D illustrated mascot poses (`public/illustrations/zen_*.png`).
+  - Converted all 8 labs (`Station1..Station8`) into unified 7-step distraction-free Lesson Players with step auto-resume, combo streaks, graded hints, keyboard shortcuts, Explorer Ranks, and 4 Unit Trophy Chests.
+- [ ] **Phase 3F: Live Family / Child Playtesting & Pedagogical Copy Refinements (Next)**:
+  - Observe real ages 9–11 playtesting across Stations 1–8 and refine phrasing, pacing, and challenge difficulty curves before native app porting.
 - [ ] **Future External Ludic Engine Research (Optional Phase 4+ Bridge)**:
   - Evaluation of Rive State Machines, Godot 4 Wasm, or Flutter + Flame for native mobile parity while keeping `curriculum.json` decoupled.
 

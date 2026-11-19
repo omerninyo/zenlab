@@ -1,109 +1,49 @@
-import React, { useState, useEffect, useMemo, Suspense, lazy } from 'react';
-import { 
-  Binary, 
-  Bot, 
-  GitBranch, 
-  Compass, 
-  Network, 
-  Eye, 
-  Zap, 
-  Sparkles, 
-  Volume2, 
-  VolumeX, 
-  RotateCcw, 
-  Star, 
-  BookOpen, 
-  Cpu, 
-  Headphones, 
-  Award, 
-  Filter, 
-  CheckCircle2, 
-  Settings,
-  Sun,
-  Moon,
-  ChevronRight,
-  ChevronLeft,
-  ChevronDown,
-  MoreVertical,
-  Home,
-  Palette
-} from 'lucide-react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import curriculumData from './data/curriculum.json';
 import { StorageEngine } from './core/storage.js';
 import { AudioEngine } from './core/audio.js';
 import { NarrationEngine } from './core/narration.js';
-import { LAB_METADATA } from './core/labMeta.js';
 import { fireChampagneConfetti } from './core/confetti.js';
 import CertificateModal from './components/CertificateModal.jsx';
 import GlossaryModal from './components/GlossaryModal.jsx';
 import ClassroomSettingsModal from './components/ClassroomSettingsModal.jsx';
-import ZenAiTutor from './components/ZenAiTutor.jsx';
-import HomeDashboard from './components/HomeDashboard.jsx';
-import ZenGame3DApp from './game3d/ZenGame3DApp.jsx';
-import { useZenGameStore, ZenGameStore } from './game3d/useZenGameStore.js';
+import DaylightHomePath from './daylight/DaylightHomePath.jsx';
 
-const Lab1_BinaryPixels = lazy(() => import('./labs/Lab1_BinaryPixels.jsx'));
-const Lab2_AlgorithmicRobot = lazy(() => import('./labs/Lab2_AlgorithmicRobot.jsx'));
-const Lab3_DecisionTree = lazy(() => import('./labs/Lab3_DecisionTree.jsx'));
-const Lab4_Pathfinder = lazy(() => import('./labs/Lab4_Pathfinder.jsx'));
-const Lab5_MachineLearningClassifier = lazy(() => import('./labs/Lab5_MachineLearningClassifier.jsx'));
-const Lab6_VisionKernels = lazy(() => import('./labs/Lab6_VisionKernels.jsx'));
-const Lab7_Perceptron = lazy(() => import('./labs/Lab7_Perceptron.jsx'));
-const Lab8_LanguageModelPredictor = lazy(() => import('./labs/Lab8_LanguageModelPredictor.jsx'));
+const Station1LessonPlayer = lazy(() => import('./daylight/Station1LessonPlayer.jsx'));
+const Station2RobotLesson = lazy(() => import('./daylight/Station2RobotLesson.jsx'));
+const Station3TreeLesson = lazy(() => import('./daylight/Station3TreeLesson.jsx'));
+const Station4PathfinderLesson = lazy(() => import('./daylight/Station4PathfinderLesson.jsx'));
+const Station5KnnLesson = lazy(() => import('./daylight/Station5KnnLesson.jsx'));
+const Station6VisionLesson = lazy(() => import('./daylight/Station6VisionLesson.jsx'));
+const Station7NeuronLesson = lazy(() => import('./daylight/Station7NeuronLesson.jsx'));
+const Station8LlmLesson = lazy(() => import('./daylight/Station8LlmLesson.jsx'));
+
+const STATION_COMPONENTS = {
+  lab1: Station1LessonPlayer,
+  lab2: Station2RobotLesson,
+  lab3: Station3TreeLesson,
+  lab4: Station4PathfinderLesson,
+  lab5: Station5KnnLesson,
+  lab6: Station6VisionLesson,
+  lab7: Station7NeuronLesson,
+  lab8: Station8LlmLesson
+};
 
 export default function App() {
-  const gameStore = useZenGameStore();
-  const appMode = gameStore.appMode || 'game3d';
-
   const [activeLabId, setActiveLabId] = useState(() => StorageEngine.getState().activeLabId || 'lab1');
   const [viewMode, setViewMode] = useState(() => StorageEngine.getViewMode?.() || 'home');
-  const [isMuted, setIsMuted] = useState(() => StorageEngine.getState().isMuted);
   const [totalStars, setTotalStars] = useState(() => StorageEngine.getState().totalStars);
   const [labStars, setLabStars] = useState(() => StorageEngine.getState().labStars);
-  const [isNarrationEnabled, setIsNarrationEnabled] = useState(() => StorageEngine.getState().isNarrationEnabled);
-  const [narrationState, setNarrationState] = useState(() => NarrationEngine.getState());
-  const [theme, setTheme] = useState(() => StorageEngine.getTheme());
-  const [isDapimActive, setIsDapimActive] = useState(() => StorageEngine.getDapimMode());
-  const [dapimPalette, setDapimPalette] = useState(() => StorageEngine.getDapimPalette());
 
-  // Track filter state: 'all' | 'algorithms' | 'ai'
-  const [selectedTrack, setSelectedTrack] = useState('all');
-
-  // Modals & Menu Drawers state
+  // Modals state
   const [isCertificateOpen, setIsCertificateOpen] = useState(false);
   const [isGlossaryOpen, setIsGlossaryOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [isLabMenuOpen, setIsLabMenuOpen] = useState(false);
 
   useEffect(() => {
-    // Check URL parameters for instant testing on mobile/remote (?design=zen2, ?zen2=true, ?theme=dark|light, ?mode=classic2d|3d)
-    if (typeof window !== 'undefined') {
-      try {
-        const params = new URLSearchParams(window.location.search);
-        const modeParam = params.get('mode');
-        if (modeParam === 'classic' || modeParam === 'classic2d' || modeParam === '2d' || params.get('classic') === 'true') {
-          ZenGameStore.setAppMode('classic2d');
-        } else if (modeParam === '3d' || modeParam === 'game3d') {
-          ZenGameStore.setAppMode('game3d');
-        }
-        const designParam = params.get('design') || params.get('zen2');
-        if (designParam === 'zen2' || designParam === 'true' || designParam === '2') {
-          StorageEngine.setDapimMode(true);
-        }
-        const paletteParam = params.get('palette');
-        if (paletteParam) {
-          StorageEngine.setDapimPalette(paletteParam);
-        }
-        const themeParam = params.get('theme');
-        if (themeParam === 'dark' || themeParam === 'light') {
-          StorageEngine.setTheme(themeParam);
-        }
-      } catch {}
-    }
-
-    const unsubStorage = StorageEngine.subscribe(state => {
+    const unsubStorage = StorageEngine.subscribe((state) => {
       setTotalStars(state.totalStars);
-      setLabStars(prevStars => {
+      setLabStars((prevStars) => {
         if (state.labStars) {
           Object.entries(state.labStars).forEach(([labId, count]) => {
             if (count === 3 && (prevStars?.[labId] || 0) < 3) {
@@ -114,20 +54,11 @@ export default function App() {
         }
         return state.labStars;
       });
-      setIsMuted(state.isMuted);
-      setIsNarrationEnabled(state.isNarrationEnabled);
-      if (state.theme) setTheme(state.theme);
       if (state.viewMode) setViewMode(state.viewMode);
       if (state.activeLabId) setActiveLabId(state.activeLabId);
-      if (typeof state.dapimMode === 'boolean') setIsDapimActive(state.dapimMode);
-      if (state.dapimPalette) setDapimPalette(state.dapimPalette);
-    });
-    const unsubNarration = NarrationEngine.subscribe(state => {
-      setNarrationState(state);
     });
     return () => {
       unsubStorage();
-      unsubNarration();
     };
   }, []);
 
@@ -145,6 +76,7 @@ export default function App() {
 
   const handleLabSelect = (id) => {
     AudioEngine.playStep();
+    NarrationEngine.stop?.();
     runViewTransition(() => {
       setActiveLabId(id);
       StorageEngine.setActiveLab(id);
@@ -155,485 +87,76 @@ export default function App() {
 
   const handleGoHome = () => {
     AudioEngine.playStep();
+    NarrationEngine.stop?.();
     runViewTransition(() => {
       setViewMode('home');
       StorageEngine.setViewMode('home');
+      if (typeof document !== 'undefined') {
+        document.title = 'ZenLab | הרפתקת מדעי המחשב ובינה מלאכותית לילדים';
+      }
     });
   };
 
-  const handleToggleMute = () => {
-    const nextMuted = !isMuted;
-    setIsMuted(nextMuted);
-    StorageEngine.setMuted(nextMuted);
+  const handleOpenCertFromLesson = () => {
+    NarrationEngine.stop?.();
+    runViewTransition(() => {
+      setViewMode('home');
+      StorageEngine.setViewMode('home');
+      setIsCertificateOpen(true);
+    });
   };
 
-  const handleToggleTheme = () => {
-    const nextTheme = StorageEngine.toggleTheme();
-    setTheme(nextTheme);
-    AudioEngine.playStep();
-  };
-
-  const handleToggleNarration = () => {
-    const next = StorageEngine.toggleNarration();
-    setIsNarrationEnabled(next);
-    if (!next) {
-      NarrationEngine.stop();
-    } else {
-      const curLab = curriculumData.labs[activeLabId];
-      if (curLab?.media?.narration?.transcript) {
-        NarrationEngine.play(curLab.media.narration.transcript, curLab.media.narration.audioSrc);
-      }
-    }
-  };
-
-  const navItems = [
-    LAB_METADATA.lab1,
-    LAB_METADATA.lab2,
-    LAB_METADATA.lab3,
-    LAB_METADATA.lab4,
-    LAB_METADATA.lab5,
-    LAB_METADATA.lab6,
-    LAB_METADATA.lab7,
-    LAB_METADATA.lab8
-  ];
-
-  const currentIdx = navItems.findIndex(item => item.id === activeLabId);
-  const currentLab = navItems[currentIdx] || navItems[0];
-  const CurrentIcon = currentLab.icon;
-
-  const handlePrevLab = () => {
-    if (currentIdx > 0) {
-      handleLabSelect(navItems[currentIdx - 1].id);
-    }
-  };
-
-  const handleNextLab = () => {
-    if (currentIdx < navItems.length - 1) {
-      handleLabSelect(navItems[currentIdx + 1].id);
-    }
-  };
-
-  const isDark = theme === 'dark';
-
-  if (appMode === 'game3d') {
-    return (
-      <>
-        <ZenGame3DApp
-          onSwitchToClassic2D={() => ZenGameStore.setAppMode('classic2d')}
-          onOpenCertificate={() => setIsCertificateOpen(true)}
-          onOpenGlossary={() => setIsGlossaryOpen(true)}
-        />
-        <CertificateModal
-          isOpen={isCertificateOpen}
-          onClose={() => setIsCertificateOpen(false)}
-          totalStars={totalStars}
-        />
-        <GlossaryModal
-          isOpen={isGlossaryOpen}
-          onClose={() => setIsGlossaryOpen(false)}
-          curriculum={curriculumData}
-        />
-        <ClassroomSettingsModal
-          isOpen={isSettingsOpen}
-          onClose={() => setIsSettingsOpen(false)}
-          onOpenGlossary={() => setIsGlossaryOpen(true)}
-        />
-      </>
-    );
-  }
+  const ActiveStationComponent = STATION_COMPONENTS[activeLabId] || Station1LessonPlayer;
 
   return (
-    <div
-      className={`min-h-screen flex flex-col font-sans transition-colors duration-200 ${
-        isDapimActive
-          ? 'dapim-preview-container'
-          : isDark
-          ? 'bg-slate-950 text-slate-100 selection:bg-slate-800'
-          : 'bg-slate-50 text-slate-800 selection:bg-blue-100 selection:text-blue-900'
-      }`}
-      data-theme={dapimPalette}
-      dir="rtl"
-    >
-      {/* Top Application Bar - Apple Minimalist & Child-Friendly / Liquid Glass */}
-      <header className={isDapimActive ? 'header-glass' : 'sticky top-0 z-40 bg-white/95 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 shadow-xs'}>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-2 sm:gap-4">
-          
-          {/* Right (RTL): Brand Identity & Dedicated Home Button */}
-          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-            <button
-              type="button"
-              onClick={handleGoHome}
-              className="flex items-center gap-2 group text-right cursor-pointer"
-              title="חזרה למפת המסע של ZenLab"
-            >
-              <div className={`w-8 h-8 sm:w-9 sm:h-9 rounded-lg flex items-center justify-center transition-all ${
-                isDapimActive
-                  ? 'bg-[var(--slate-3)] border border-[var(--slate-6)] text-[var(--accent-base)] shadow-xs group-hover:border-[var(--accent-rim)]'
-                  : 'bg-blue-600 text-white shadow-xs group-hover:bg-blue-500'
-              }`}>
-                <Cpu className="w-4 h-4 sm:w-5 sm:h-5" />
+    <div className="min-h-screen bg-white text-[#3C3C3C]" dir="rtl">
+      {viewMode === 'home' ? (
+        <DaylightHomePath
+          curriculum={curriculumData}
+          labStars={labStars}
+          totalStars={totalStars}
+          onSelectLab={handleLabSelect}
+          onOpenCertificate={() => setIsCertificateOpen(true)}
+          onOpenGlossary={() => setIsGlossaryOpen(true)}
+          onOpenSettings={() => setIsSettingsOpen(true)}
+        />
+      ) : (
+        <Suspense
+          fallback={
+            <div className="min-h-screen bg-white flex items-center justify-center p-6">
+              <div className="px-6 py-4 rounded-2xl border-2 border-[#E5E5E5] bg-[#F7F7F5] text-sm font-extrabold text-[#777777]">
+                טוען את השיעור...
               </div>
-              <div>
-                <div className="flex items-center gap-1.5">
-                  <span className="text-sm sm:text-base font-black tracking-tight text-slate-900 dark:text-white">ZenLab</span>
-                  <span className={`text-[10px] sm:text-[11px] font-bold px-1.5 py-0.5 rounded-md hidden sm:inline ${
-                    isDapimActive
-                      ? 'badge-glass badge-glass-accent !text-[10px] !px-1.5 !py-0'
-                      : 'bg-blue-100 dark:bg-slate-800 text-blue-800 dark:text-slate-300 border border-blue-200/60 dark:border-slate-700'
-                  }`}>
-                    בית ספר יסודי
-                  </span>
-                </div>
-                <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium hidden md:block">
-                  מסע במדעי המחשב ובינה מלאכותית
-                </p>
-              </div>
-            </button>
-
-            {/* Dedicated Home / Roadmap Button (All Screens) */}
-            <button
-              type="button"
-              onClick={handleGoHome}
-              className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                viewMode === 'home'
-                  ? isDapimActive
-                    ? 'btn-hollow-primary !h-8 !px-3 !text-xs ring-1 ring-[var(--accent-rim)]'
-                    : 'bg-blue-600 text-white shadow-xs'
-                  : isDapimActive
-                  ? 'btn-hollow !h-8 !px-2.5 !text-xs'
-                  : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700'
-              }`}
-              title="מפת מסלול הלמידה"
-            >
-              <Home className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              <span>מפת המסע</span>
-            </button>
-          </div>
-
-          {/* Center: Stations Quick-Picker or Active Lab Stepper */}
-          <div className="relative flex items-center justify-center">
-            {viewMode === 'home' ? (
-              <button
-                type="button"
-                onClick={() => { setIsLabMenuOpen(!isLabMenuOpen); AudioEngine.playStep(); }}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition-colors cursor-pointer ${
-                  isDapimActive
-                    ? 'btn-hollow !h-8 !px-3 !text-xs !font-bold'
-                    : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700 text-xs font-bold'
-                }`}
-                title="לחצו לבחירת תחנה מתוך 8"
-              >
-                <div className={`w-4 h-4 rounded-md flex items-center justify-center shrink-0 ${
-                  isDapimActive ? 'text-[var(--accent-base)]' : 'text-blue-600 dark:text-blue-400'
-                }`}>
-                  <BookOpen className="w-3.5 h-3.5" />
-                </div>
-                <span className="text-xs font-bold">מעבדות מחקר (8)</span>
-                <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 shrink-0 ${isLabMenuOpen ? 'rotate-180' : ''}`} />
-              </button>
-            ) : (
-              <div className={
-                isDapimActive
-                  ? "segmented-glass-container"
-                  : "flex items-center bg-slate-100 dark:bg-slate-800/80 p-0.5 sm:p-1 rounded-lg border border-slate-200/80 dark:border-slate-700/80 shadow-inner"
-              }>
-                {/* Prev Button (In RTL, ChevronRight moves to previous index) */}
-                <button
-                  type="button"
-                  onClick={handlePrevLab}
-                  disabled={currentIdx === 0}
-                  className={`p-1 sm:p-1.5 rounded-md disabled:opacity-30 disabled:pointer-events-none transition-colors ${
-                    isDapimActive 
-                      ? 'text-slate-400 hover:text-white' 
-                      : 'text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700'
-                  }`}
-                  title="מעבדה קודמת"
-                >
-                  <ChevronRight className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
-                </button>
-
-                {/* Lab Selector Center Button with Icon and Title */}
-                <button
-                  type="button"
-                  onClick={() => { setIsLabMenuOpen(!isLabMenuOpen); AudioEngine.playStep(); }}
-                  className={`flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1 rounded-md transition-colors cursor-pointer ${
-                    isDapimActive
-                      ? 'segmented-glass-item segmented-glass-item-active !px-2.5 !py-1'
-                      : 'hover:bg-white dark:hover:bg-slate-700 text-slate-900 dark:text-white'
-                  }`}
-                  title="לחצו לבחירת מעבדה מתוך 8"
-                >
-                  <div className={`w-4 h-4 sm:w-5 sm:h-5 rounded-md flex items-center justify-center shrink-0 shadow-xs ${
-                    isDapimActive
-                      ? 'bg-[var(--slate-4)] text-[var(--accent-base)]'
-                      : currentLab.track === 'ai' ? 'bg-indigo-600 text-white' : 'bg-blue-600 text-white'
-                  }`}>
-                    <CurrentIcon className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                  </div>
-                  <span className="text-xs sm:text-sm font-bold truncate max-w-[120px] xs:max-w-[180px] sm:max-w-[240px]">
-                    <span className="sm:hidden">מעבדה {currentLab.number}</span>
-                    <span className="hidden sm:inline">מעבדה {currentLab.number}: {currentLab.label || currentLab.shortLabel || currentLab.title}</span>
-                  </span>
-                  <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 shrink-0 ${isLabMenuOpen ? 'rotate-180' : ''}`} />
-                </button>
-
-                {/* Next Button (In RTL, ChevronLeft moves to next index) */}
-                <button
-                  type="button"
-                  onClick={handleNextLab}
-                  disabled={currentIdx === navItems.length - 1}
-                  className={`p-1 sm:p-1.5 rounded-md disabled:opacity-30 disabled:pointer-events-none transition-colors ${
-                    isDapimActive 
-                      ? 'text-slate-400 hover:text-white' 
-                      : 'text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700'
-                  }`}
-                  title="מעבדה הבאה"
-                >
-                  <ChevronLeft className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
-                </button>
-              </div>
-            )}
-
-            {/* Popover Grid: All 8 Labs */}
-            {isLabMenuOpen && (
-              <>
-                <div 
-                  className="fixed inset-0 z-40 bg-slate-950/40 backdrop-blur-xs" 
-                  onClick={() => setIsLabMenuOpen(false)} 
-                />
-                <div className={
-                  isDapimActive
-                    ? "fixed inset-x-3 top-16 sm:absolute sm:top-full sm:inset-x-auto sm:mt-2 z-50 sm:w-[460px] max-h-[80vh] overflow-y-auto card-tactile !p-3 sm:!p-4 shadow-2xl animate-in fade-in zoom-in-95 duration-150"
-                    : "fixed inset-x-3 top-16 sm:absolute sm:top-full sm:inset-x-auto sm:mt-2 z-50 sm:w-[460px] max-h-[80vh] overflow-y-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-3 sm:p-4 shadow-2xl animate-in fade-in zoom-in-95 duration-150"
-                }>
-                  <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-slate-100 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 font-bold">
-                    <button
-                      type="button"
-                      onClick={() => { handleGoHome(); setIsLabMenuOpen(false); }}
-                      className={`flex items-center gap-1.5 hover:underline cursor-pointer ${
-                        isDapimActive ? 'text-[var(--accent-base)]' : 'text-blue-600 dark:text-blue-400'
-                      }`}
-                    >
-                      <Home className="w-3.5 h-3.5" />
-                      <span>חזרה למפת המסע</span>
-                    </button>
-                    <span className="font-mono text-amber-500">★ {totalStars}/24 כוכבים</span>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    {navItems.map((item) => {
-                      const Icon = item.icon;
-                      const isActive = activeLabId === item.id;
-                      const stars = labStars[item.id] || 0;
-
-                      return (
-                        <button
-                          key={item.id}
-                          type="button"
-                          onClick={() => {
-                            handleLabSelect(item.id);
-                            setIsLabMenuOpen(false);
-                          }}
-                          className={`flex items-center justify-between p-2.5 rounded-lg border text-right transition-all cursor-pointer ${
-                            isDapimActive
-                              ? isActive
-                                ? 'bg-[var(--accent-wash)] border-[var(--accent-rim)] text-white shadow-sm'
-                                : 'bg-[var(--slate-3)] hover:bg-[var(--slate-4)] border-[var(--slate-6)] text-slate-200'
-                              : isActive
-                              ? 'bg-blue-50 dark:bg-blue-950/60 border-blue-400 dark:border-blue-600 ring-2 ring-blue-400/20'
-                              : 'bg-white hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-800/80 border-slate-200 dark:border-slate-800'
-                          }`}
-                        >
-                          <div className="flex items-center gap-2.5">
-                            <div className={`w-8 h-8 rounded-md flex items-center justify-center shrink-0 shadow-xs ${
-                              isDapimActive
-                                ? 'bg-[var(--slate-4)] text-[var(--accent-base)]'
-                                : item.track === 'ai' ? 'bg-indigo-600 text-white' : 'bg-blue-600 text-white'
-                            }`}>
-                              <Icon className="w-4 h-4" />
-                            </div>
-                            <div>
-                              <span className="block text-xs font-bold text-slate-900 dark:text-white leading-tight">
-                                {item.label}
-                              </span>
-                              <span className="block text-[10px] text-slate-500 dark:text-slate-400 font-medium">
-                                {item.trackName}
-                              </span>
-                            </div>
-                          </div>
-
-                          <div className="flex items-center gap-1 font-mono text-xs font-bold text-amber-500 shrink-0">
-                            <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-500" />
-                            <span>{stars}/3</span>
-                          </div>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              </>
-            )}
-          </div>
-
-          {/* Left: Star Counter, Certificate, Audio & More Tools Menu */}
-          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-            {/* Switch back to Fullscreen 3D Game Mode */}
-            <button
-              type="button"
-              onClick={() => {
-                AudioEngine.playStep();
-                ZenGameStore.setAppMode('game3d');
-              }}
-              title="מעבר למנוע המשחק התלת-ממדי (ZenLab 3D)"
-              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-400/50 text-cyan-700 dark:text-cyan-300 text-xs sm:text-sm font-black transition-all shadow-xs cursor-pointer"
-            >
-              <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyan-500" />
-              <span>מצב משחק 3D</span>
-            </button>
-
-            {/* Stars Achievement Badge - Tapping opens Certificate */}
-            <button
-              id="zen-stars-header-badge"
-              type="button"
-              onClick={() => { setIsCertificateOpen(true); AudioEngine.playStep(); }}
-              title="כוכבים שהושגו - לחצו לצפייה בתעודה"
-              className={
-                isDapimActive
-                  ? "flex items-center gap-1 sm:gap-1.5 bg-[var(--slate-3)] hover:bg-[var(--slate-4)] px-2 sm:px-2.5 py-1.5 rounded-lg border border-[var(--slate-6)] text-xs sm:text-sm font-bold text-amber-500 shadow-xs transition-colors cursor-pointer"
-                  : "flex items-center gap-1 sm:gap-1.5 bg-amber-50 dark:bg-slate-950 px-2 sm:px-2.5 py-1.5 rounded-lg border border-amber-300/80 dark:border-slate-800 text-xs sm:text-sm font-bold text-amber-900 dark:text-amber-300 shadow-xs hover:bg-amber-100 transition-colors cursor-pointer"
-              }
-            >
-              <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-500 fill-amber-400" />
-              <span className="font-mono">{totalStars}</span>
-              <span className="text-slate-500 font-normal hidden sm:inline">/ 24</span>
-            </button>
-
-            {/* Certificate Button (Desktop Only) */}
-            <button
-              type="button"
-              onClick={() => { setIsCertificateOpen(true); AudioEngine.playStep(); }}
-              title="צפייה והדפסת תעודת הצטיינות"
-              className={
-                isDapimActive
-                  ? "btn-hollow !h-8 !px-3 !text-xs !font-bold hidden sm:flex items-center gap-1.5 text-amber-500"
-                  : "hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-100 hover:bg-amber-200 dark:bg-amber-950/60 dark:hover:bg-amber-900/60 border border-amber-300 dark:border-amber-700/60 text-xs sm:text-sm font-bold text-amber-900 dark:text-amber-300 transition-colors shadow-xs cursor-pointer"
-              }
-            >
-              <Award className="w-4 h-4 text-amber-500" />
-              <span>תעודה</span>
-            </button>
-
-            {/* Audio Mute Switch (Desktop Only) */}
-            <button
-              type="button"
-              onClick={handleToggleMute}
-              title={isMuted ? 'הפעלת צלילים' : 'השתקת צלילים'}
-              className={
-                isDapimActive
-                  ? "btn-hollow !h-8 !w-8 !p-0 hidden sm:flex items-center justify-center"
-                  : "hidden sm:flex p-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700 transition-colors cursor-pointer"
-              }
-            >
-              {isMuted ? <VolumeX className="w-4 h-4 text-slate-400" /> : <Volume2 className={`w-4 h-4 ${isDapimActive ? 'text-[var(--accent-base)]' : 'text-blue-600 dark:text-blue-400'}`} />}
-            </button>
-
-            {/* Central Unified Settings Button */}
-            <button
-              type="button"
-              onClick={() => { setIsSettingsOpen(true); AudioEngine.playStep(); }}
-              title="הגדרות מעבדה ותצוגה"
-              className="btn-hollow !h-8 !w-8 !p-0 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-[var(--accent-base)] cursor-pointer"
-            >
-              <Settings className="w-4 h-4" />
-            </button>
-
-          </div>
-
-        </div>
-      </header>
-
-      {/* Main Educational Workspace */}
-      <main className="flex-1 max-w-6xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-4">
-        {viewMode === 'home' ? (
-          <HomeDashboard
+            </div>
+          }
+        >
+          <ActiveStationComponent
+            key={activeLabId}
             curriculum={curriculumData}
-            labStars={labStars}
-            totalStars={totalStars}
-            onSelectLab={handleLabSelect}
-            onOpenCertificate={() => setIsCertificateOpen(true)}
-            onOpenGlossary={() => setIsGlossaryOpen(true)}
-            isDapimActive={isDapimActive}
+            onExit={handleGoHome}
+            onNextStation={handleLabSelect}
+            onOpenCertificate={handleOpenCertFromLesson}
           />
-        ) : (
-          <div>
-            <Suspense
-              fallback={
-                <div className="p-10 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-center text-sm font-bold text-slate-600 dark:text-slate-300 animate-pulse">
-                  טוען את תחנת המחקר של זֶן...
-                </div>
-              }
-            >
-              {activeLabId === 'lab1' && <Lab1_BinaryPixels curriculum={curriculumData} />}
-              {activeLabId === 'lab2' && <Lab2_AlgorithmicRobot curriculum={curriculumData} />}
-              {activeLabId === 'lab3' && <Lab3_DecisionTree curriculum={curriculumData} />}
-              {activeLabId === 'lab4' && <Lab4_Pathfinder curriculum={curriculumData} />}
-              {activeLabId === 'lab5' && <Lab5_MachineLearningClassifier curriculum={curriculumData} />}
-              {activeLabId === 'lab6' && <Lab6_VisionKernels curriculum={curriculumData} />}
-              {activeLabId === 'lab7' && <Lab7_Perceptron curriculum={curriculumData} />}
-              {activeLabId === 'lab8' && <Lab8_LanguageModelPredictor curriculum={curriculumData} />}
-            </Suspense>
-          </div>
-        )}
-      </main>
+        </Suspense>
+      )}
 
-      {/* Certificate Modal */}
       <CertificateModal
         isOpen={isCertificateOpen}
         onClose={() => setIsCertificateOpen(false)}
         totalStars={totalStars}
       />
 
-      {/* Glossary Modal */}
       <GlossaryModal
         isOpen={isGlossaryOpen}
         onClose={() => setIsGlossaryOpen(false)}
         curriculum={curriculumData}
       />
 
-      {/* Classroom Settings Modal */}
       <ClassroomSettingsModal
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}
         onOpenGlossary={() => setIsGlossaryOpen(true)}
       />
-
-      {/* Zen AI Tutor Floating Classroom Companion */}
-      <ZenAiTutor 
-        currentLabId={viewMode === 'home' ? 'home' : activeLabId} 
-        isDapimActive={isDapimActive}
-      />
-
-      {/* Footer Notice with Zero-PII Hygiene */}
-      <footer className={
-        isDapimActive
-          ? "bg-[var(--slate-2)] border-t border-[var(--slate-6)] py-6 text-xs text-slate-400"
-          : "bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-6 text-xs text-slate-500 dark:text-slate-400"
-      }>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
-            <span className="font-bold text-slate-700 dark:text-slate-300">ZenLab &copy; 2026</span>
-            <span>&bull;</span>
-            <span>רישיון קוד פתוח MIT</span>
-            <span>&bull;</span>
-            <span>Code &amp; AI Explorer Team</span>
-          </div>
-          <div className="flex items-center gap-4 text-slate-500 dark:text-slate-400 font-medium">
-            <span>פועל במלואו בדפדפן (Client-Side SPA)</span>
-            <span>&bull;</span>
-            <span>ללא איסוף נתונים (Zero-PII)</span>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

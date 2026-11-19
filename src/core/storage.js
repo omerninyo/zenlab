@@ -36,10 +36,13 @@ const defaultState = {
   },
   activeLabId: 'lab1',
   viewMode: 'home', // 'home' (roadmap overview) | 'lab' (active lab workspace)
-  theme: 'light', // 'light' (default bright classroom mode) | 'dark'
-  dapimMode: true, // Zen 2.0 Liquid Glass & Hollow Restraint canonical design system
-  dapimPalette: 'champagne-gold', // 'champagne-gold' (default) | 'matte-amber' | 'nordic-ice' | 'emerald-sanctuary'
-  customAnimals: [] // User-created sandbox animals for Lab 3
+  theme: 'light', // Always daylight white
+  dapimMode: false, // Legacy token backdrop disabled for Daylight UI
+  dapimPalette: 'champagne-gold',
+  customAnimals: [], // User-created sandbox animals for Lab 3
+  labStepProgress: {}, // Maps labId -> last active step index for auto-resume
+  bestStreak: 0, // Highest consecutive first-try pass streak
+  openedChests: {} // Maps world1..world4 -> true once trophy chest is opened
 };
 
 class StorageEngineClass {
@@ -48,22 +51,13 @@ class StorageEngineClass {
     this.listeners = new Set();
     AudioEngine.setMuted(this.state.isMuted);
 
-    // Apply theme and Dapim attributes to document
+    // Enforce daylight surface defaults on document root
     if (typeof document !== 'undefined') {
-      const activeTheme = this.state.theme || 'light';
-      if (activeTheme === 'dark') {
-        document.documentElement.classList.add('dark');
-        document.documentElement.classList.remove('light');
-      } else {
-        document.documentElement.classList.add('light');
-        document.documentElement.classList.remove('dark');
-      }
-
-      if (this.state.dapimMode) {
-        document.body.classList.add('dapim-mode');
-      }
-      if (this.state.dapimPalette) {
-        document.documentElement.setAttribute('data-theme', this.state.dapimPalette);
+      document.documentElement.classList.add('light');
+      document.documentElement.classList.remove('dark');
+      document.documentElement.removeAttribute('data-theme');
+      if (document.body) {
+        document.body.classList.remove('dapim-mode');
       }
     }
   }
@@ -82,9 +76,12 @@ class StorageEngineClass {
         labStars: { ...defaultState.labStars, ...(parsed.labStars || {}) },
         completedChallenges: { ...(parsed.completedChallenges || {}) },
         viewMode: parsed.viewMode || 'home',
-        theme: parsed.theme || 'light',
-        dapimMode: true, // Zen 2.0 is canonical and permanent
-        dapimPalette: parsed.dapimPalette || 'champagne-gold'
+        theme: 'light',
+        dapimMode: false,
+        dapimPalette: parsed.dapimPalette || 'champagne-gold',
+        labStepProgress: { ...(parsed.labStepProgress || {}) },
+        bestStreak: Number(parsed.bestStreak) || 0,
+        openedChests: { ...(parsed.openedChests || {}) }
       };
     } catch {
       return { ...defaultState };
@@ -171,6 +168,44 @@ class StorageEngineClass {
     return this.state.labPhases?.[labId] || 'theory';
   }
 
+  getLabStep(labId) {
+    const val = this.state.labStepProgress?.[labId];
+    return Number.isInteger(val) && val >= 0 ? val : 0;
+  }
+
+  setLabStep(labId, stepIndex) {
+    if (!this.state.labStepProgress) this.state.labStepProgress = {};
+    const safeStep = Number.isInteger(stepIndex) && stepIndex >= 0 ? stepIndex : 0;
+    if (this.state.labStepProgress[labId] === safeStep) return;
+    this.state.labStepProgress[labId] = safeStep;
+    this.saveState();
+  }
+
+  clearLabStep(labId) {
+    if (!this.state.labStepProgress || !(labId in this.state.labStepProgress)) return;
+    delete this.state.labStepProgress[labId];
+    this.saveState();
+  }
+
+  recordStreak(streak) {
+    const val = Number(streak) || 0;
+    if (val > (this.state.bestStreak || 0)) {
+      this.state.bestStreak = val;
+      this.saveState();
+    }
+  }
+
+  isChestOpened(worldId) {
+    return Boolean(this.state.openedChests?.[worldId]);
+  }
+
+  openChest(worldId) {
+    if (!this.state.openedChests) this.state.openedChests = {};
+    if (this.state.openedChests[worldId]) return;
+    this.state.openedChests[worldId] = true;
+    this.saveState();
+  }
+
   setActiveLab(labId) {
     this.state.activeLabId = labId;
     this.saveState();
@@ -186,55 +221,40 @@ class StorageEngineClass {
   }
 
   getTheme() {
-    return this.state.theme || 'light';
+    return 'light';
   }
 
-  setTheme(theme) {
-    const validTheme = theme === 'dark' ? 'dark' : 'light';
-    this.state.theme = validTheme;
-    this.saveState();
+  setTheme() {
+    this.state.theme = 'light';
     if (typeof document !== 'undefined') {
-      if (validTheme === 'dark') {
-        document.documentElement.classList.add('dark');
-        document.documentElement.classList.remove('light');
-      } else {
-        document.documentElement.classList.add('light');
-        document.documentElement.classList.remove('dark');
-      }
+      document.documentElement.classList.add('light');
+      document.documentElement.classList.remove('dark');
     }
-    this.notify();
+    this.saveState();
   }
 
   toggleTheme() {
-    const next = (this.state.theme || 'light') === 'dark' ? 'light' : 'dark';
-    this.setTheme(next);
-    return next;
+    this.setTheme('light');
+    return 'light';
   }
 
   getDapimMode() {
-    return true; // Zen 2.0 is permanently active
+    return false;
   }
 
-  setDapimMode(active = true) {
-    this.state.dapimMode = true;
-    if (typeof document !== 'undefined') {
-      document.body.classList.add('dapim-mode');
-      const activeTheme = this.state.theme || 'light';
-      if (activeTheme === 'dark') {
-        document.documentElement.classList.add('dark');
-        document.documentElement.classList.remove('light');
-      } else {
-        document.documentElement.classList.add('light');
-        document.documentElement.classList.remove('dark');
-      }
+  setDapimMode() {
+    this.state.dapimMode = false;
+    if (typeof document !== 'undefined' && document.body) {
+      document.body.classList.remove('dapim-mode');
+      document.documentElement.classList.add('light');
+      document.documentElement.classList.remove('dark');
     }
     this.saveState();
   }
 
   toggleDapimMode() {
-    // Kept for backward compatibility, no-op since Zen 2.0 is canonical
-    this.setDapimMode(true);
-    return true;
+    this.setDapimMode(false);
+    return false;
   }
 
   getDapimPalette() {
@@ -242,12 +262,7 @@ class StorageEngineClass {
   }
 
   setDapimPalette(palette) {
-    const validPalettes = ['champagne-gold', 'matte-amber', 'nordic-ice', 'emerald-sanctuary'];
-    const selected = validPalettes.includes(palette) ? palette : 'champagne-gold';
-    this.state.dapimPalette = selected;
-    if (typeof document !== 'undefined') {
-      document.documentElement.setAttribute('data-theme', selected);
-    }
+    this.state.dapimPalette = palette || 'champagne-gold';
     this.saveState();
   }
 
@@ -303,7 +318,10 @@ class StorageEngineClass {
       activeLabId: 'lab1',
       viewMode: 'home',
       isMuted: this.state.isMuted,
-      isNarrationEnabled: this.state.isNarrationEnabled
+      isNarrationEnabled: this.state.isNarrationEnabled,
+      labStepProgress: {},
+      bestStreak: 0,
+      openedChests: {}
     };
     this.saveState();
   }

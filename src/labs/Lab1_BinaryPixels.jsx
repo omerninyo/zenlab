@@ -12,7 +12,6 @@ import {
   Layers,
   ArrowRight,
   Download,
-  Gamepad2,
   FlaskConical
 } from 'lucide-react';
 import { AudioEngine } from '../core/audio.js';
@@ -23,7 +22,6 @@ import TheoryView from '../components/TheoryView.jsx';
 import LabMissionGuide from '../components/LabMissionGuide.jsx';
 import SvgBinaryAnimation from '../components/animations/SvgBinaryAnimation.jsx';
 import SvgLogicGatesAnimation from '../components/animations/SvgLogicGatesAnimation.jsx';
-import Lab1MissionArcadeView from '../components/Lab1MissionArcadeView.jsx';
 import MatificPilotLab1 from '../components/MatificPilotLab1.jsx';
 
 export default function Lab1_BinaryPixels({ curriculum }) {
@@ -271,21 +269,6 @@ export default function Lab1_BinaryPixels({ curriculum }) {
               completedChallenges={completedChallenges}
               earnedStars={earnedStars}
               labData={labData}
-            />
-          ) : viewStyle === 'arcade' ? (
-            <Lab1MissionArcadeView
-              labData={labData}
-              grid={grid}
-              onCellClick={handleCellClick}
-              onApplyPreset={handleApplyPreset}
-              onClear={handleClear}
-              onInvert={handleInvert}
-              onDownloadImage={handleDownloadImage}
-              completedChallenges={completedChallenges}
-              activeCount={activeCount}
-              binaryString={binaryString}
-              hexBytes={hexBytes}
-              earnedStars={earnedStars}
             />
           ) : (
             <>

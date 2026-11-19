@@ -7,6 +7,18 @@
 
 ---
 
+## [3.0.0] - 2026-11-19
+
+### שדרוג מקיף (עיצוב Daylight בהיר ומרווח בכל האתר, מערכת התקדמות ומשחקיות לגילאי 9–11 ו-8 נגני שיעור ליניאריים)
+- **יישור כל הפלטפורמה לשפת העיצוב הבהירה (`src/daylight/`, `src/App.jsx`, `src/index.css`)**:
+  - הסרה מלאה של שכבת התלת-ממד הכבדה (`src/game3d/`, `three`, `rapier3d`, `n8ao`, `postprocessing`, `public/models/`) וניתוק מעטפת החלל הכהה הישנה מנתיב הבנייה הראשי, לטובת משטחי `#FFFFFF` / `#F7F7F5` נקיים, מסגרות `2px` וכפתורים טקטיליים בצבעי מאט ברורים.
+  - שילוב 4 איורים דו-ממדיים עקביים של זֶן (`public/illustrations/zen_wave.png`, `zen_teach.png`, `zen_think.png`, `zen_cheer.png`) ברכיב `ZenMascot.jsx` לצד פקדי `<dialog>` ו-`<progress>` תקניים.
+- **העברת כל 8 התחנות למתכונת שיעור ממוקד בן 7 שלבים (`Station1..8`, `LessonShell.jsx`, `LessonSharedViews.jsx`)**:
+  - בניית כל 8 המעבדות (`Station1LessonPlayer`, `Station2RobotLesson`, `Station3TreeLesson`, `Station4PathfinderLesson`, `Station5KnnLesson`, `Station6VisionLesson`, `Station7NeuronLesson`, `Station8LlmLesson`) במבנה אחיד של שלב-אחר-שלב עם נעילת לוחות חישוב וניווט לכיוון `dir="ltr"` בתוך ממשק עברי RTL.
+  - שימור מלא של כל 24 מזהי הכוכבים (`lab1_challenge1`..`lab8_challenge3`), הקלטות האולפן והווידאו, תעודת ההצטיינות, מילון המושגים, קוד השמירה הכיתתי, והמחשת פתרון חידת ה-XOR באמצעות רשת של 2 נוירונים בתחנה 7.
+- **מערכת משחקיות, מוטיבציה ופיגומים לילדים (`src/core/storage.js`, `src/core/audio.js`, `src/daylight/DaylightHomePath.jsx`, `DaylightTutorModal.jsx`)**:
+  - שמירת התקדמות אוטומטית בתוך שיעור (`labStepProgress`), צבירת רצפי הצלחות לא-עונשיים עם צליל עולה (`playCombo`, `bestStreak`), חלון הגנה בעת יציאה באמצע שיעור, מגירת רמזים מדורגת עם קריינות אולפן, קיצורי מקלדת (`1–4` לבחירה בחידון, `Enter` להמשך), חלון חונך מואר (`DaylightTutorModal`), מערכת דרגות חוקר/ת ותיבות פרס לאיסוף בסיום כל יחידה (4 תגי בונוס עם עובדות מדע וחלל לילדים).
+
 ## [2.0.1] - 2026-10-18
 
 ### תוקן ושופר (אופטימיזציית GPU שקטה `<15%`, מצלמת 2.5D קבועה בסגנון Nintendo Toy-Board ואפס הקצאות טקסטורה בזמן ריצה)

@@ -173,6 +173,22 @@ class AudioEngineClass {
     this.playZenChime();
   }
 
+  playCombo(streakCount = 2) {
+    if (this.muted) return;
+    this.init();
+    if (!this.ctx) return;
+
+    const clamped = Math.max(0, Math.min(streakCount - 2, 4));
+    const base = 523.25 * Math.pow(1.06, clamped);
+    const notes = [base, base * 1.25, base * 1.5];
+
+    notes.forEach((freq, idx) => {
+      setTimeout(() => {
+        this.playTone(freq, 'triangle', 0.11, 0.08);
+      }, idx * 55);
+    });
+  }
+
   playError() {
     if (this.muted) return;
     this.init();

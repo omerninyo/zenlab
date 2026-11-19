@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0] - 2026-11-19
+
+### Transformed (Full Daylight Linear Lesson Architecture, 2D Storybook Mascot & Ages 9–11 Gameplay/Progression Overhaul)
+- **Full-Platform Daylight Design System Alignment (`src/daylight/`, `src/App.jsx`, `src/index.css`)**:
+  - Retired heavy WebGL 3D rendering (`src/game3d/`, `three`, `@dimforge/rapier3d-compat`, `n8ao`, `postprocessing`, `public/models/`) and legacy dark/neon wrappers (`LudicLabShell` decoupled from production routing), unifying all routes onto pure `#FFFFFF` / `#F7F7F5` daylight surfaces with crisp `2px` `#E5E5E5` borders and matte Duolingo-style tactile buttons.
+  - Integrated 4 genuine transparent 2D illustrated mascot poses (`public/illustrations/zen_wave.png`, `zen_teach.png`, `zen_think.png`, `zen_cheer.png`) into `ZenMascot.jsx` alongside native `<dialog>` and `<progress>` semantics.
+- **All 8 Stations Rebuilt as Focused 7-Step Linear Lesson Players (`src/daylight/Station1..8*.jsx`, `LessonShell.jsx`, `LessonSharedViews.jsx`)**:
+  - Migrated **Stations 1–8** (`Station1LessonPlayer`, `Station2RobotLesson`, `Station3TreeLesson`, `Station4PathfinderLesson`, `Station5KnnLesson`, `Station6VisionLesson`, `Station7NeuronLesson`, `Station8LlmLesson`) inside a shared distraction-free `LessonShell` enforcing strict `dir="ltr"` spatial coordinate grids surrounded by native Hebrew RTL typography.
+  - Preserved all 24 challenge star IDs (`lab1_challenge1` .. `lab8_challenge3`), studio audio/video/podcast assets, `CertificateModal`, `GlossaryModal`, `ClassroomSettingsModal` (Zero-PII 6-char hex classroom save codes), and interactive 2-neuron XOR unlock visualization in Station 7.
+- **Tween (Ages 9–11) Gameplay, Progression & Scaffolding Features (`src/core/storage.js`, `src/core/audio.js`, `src/daylight/DaylightHomePath.jsx`, `DaylightTutorModal.jsx`)**:
+  - Added automatic per-station step persistence (`labStepProgress`) so learners resume mid-lesson seamlessly, non-punitive first-try combo streak chimes (`AudioEngine.playCombo`, `bestStreak`), a safe mid-lesson exit `<dialog>` guard, graded just-in-time hint drawers, keyboard shortcuts (`1–4` for quiz choices, `Enter` to advance, `Esc` for modals), a clean Daylight `DaylightTutorModal`, Explorer Rank tiers, and 4 interactive Unit Milestone Trophy Chests unlocking collectible NASA/science fun facts at 6 stars per unit.
+
 ## [2.0.1] - 2026-10-18
 
 ### Fixed & Optimized (Whisper-Quiet GPU Thermal Overhaul, Locked 2.5D Nintendo Toy-Board Camera & Zero Runtime Texture Allocation)

@@ -1,79 +1,32 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { 
-  Settings, 
-  RotateCcw, 
-  Download, 
-  Upload, 
-  Volume2, 
-  VolumeX, 
-  ShieldCheck, 
-  X, 
-  AlertCircle, 
+import {
+  Settings,
+  RotateCcw,
+  Download,
+  Upload,
+  Volume2,
+  VolumeX,
+  ShieldCheck,
+  X,
+  AlertCircle,
   Check,
   Music,
   FileText,
-  Palette,
-  Sun,
-  Moon,
-  BookOpen,
-  Sparkles
+  BookOpen
 } from 'lucide-react';
 import { AudioEngine } from '../core/audio.js';
 import { StorageEngine } from '../core/storage.js';
-
-export const ZEN_THEMES = [
-  {
-    id: 'champagne-gold',
-    name: 'זהב שמפניה',
-    englishName: 'Champagne Gold',
-    badge: 'ברירת מחדל',
-    tagline: 'חם, יוקרתי וממוקד ללמידה ממושכת',
-    accentLight: '#ca8a04',
-    accentDark: '#eab308'
-  },
-  {
-    id: 'nordic-ice',
-    name: 'קרח נורדי',
-    englishName: 'Nordic Ice',
-    badge: 'סייבר וחלל',
-    tagline: 'טכנולוגי, קריר וחד לקונסולות תוכנה',
-    accentLight: '#0284c7',
-    accentDark: '#38bdf8'
-  },
-  {
-    id: 'emerald-sanctuary',
-    name: 'ברקת עמוקה',
-    englishName: 'Emerald Sanctuary',
-    badge: 'טבע ומחקר',
-    tagline: 'אורגני ומרגיע המפחית עייפות בעיניים',
-    accentLight: '#059669',
-    accentDark: '#10b981'
-  },
-  {
-    id: 'matte-amber',
-    name: 'ענבר חם',
-    englishName: 'Matte Amber',
-    badge: 'ספרייה קלאסית',
-    tagline: 'טרקוטה ארכיונית חמימה ואינטימית',
-    accentLight: '#c26928',
-    accentDark: '#d48344'
-  }
-];
 
 export default function ClassroomSettingsModal({ isOpen, onClose, onOpenGlossary }) {
   const [confirmReset, setConfirmReset] = useState(false);
   const [importStatus, setImportStatus] = useState(null);
   const [isMuted, setIsMuted] = useState(() => StorageEngine.getState().isMuted);
-  const [activePalette, setActivePalette] = useState(() => StorageEngine.getDapimPalette());
-  const [activeTheme, setActiveTheme] = useState(() => StorageEngine.getTheme());
   const [saveCodeInput, setSaveCodeInput] = useState('');
   const [currentSaveCode, setCurrentSaveCode] = useState(() => StorageEngine.getSaveCode());
   const fileInputRef = useRef(null);
 
   useEffect(() => {
     const unsub = StorageEngine.subscribe(state => {
-      if (state.dapimPalette) setActivePalette(state.dapimPalette);
-      if (state.theme) setActiveTheme(state.theme);
       if (state.isMuted !== undefined) setIsMuted(state.isMuted);
       setCurrentSaveCode(StorageEngine.getSaveCode());
     });
@@ -92,8 +45,6 @@ export default function ClassroomSettingsModal({ isOpen, onClose, onOpenGlossary
 
   if (!isOpen) return null;
 
-  const isDark = activeTheme === 'dark';
-
   const handleToggleMute = () => {
     const nextMuted = !isMuted;
     setIsMuted(nextMuted);
@@ -101,19 +52,6 @@ export default function ClassroomSettingsModal({ isOpen, onClose, onOpenGlossary
     if (!nextMuted) {
       AudioEngine.playStep();
     }
-  };
-
-  const handleSetThemeMode = (mode) => {
-    if (activeTheme === mode) return;
-    StorageEngine.setTheme(mode);
-    setActiveTheme(mode);
-    AudioEngine.playStep();
-  };
-
-  const handleSelectPalette = (paletteId) => {
-    setActivePalette(paletteId);
-    StorageEngine.setDapimPalette(paletteId);
-    AudioEngine.playStep();
   };
 
   const handleTestSound = () => {
@@ -161,9 +99,9 @@ export default function ClassroomSettingsModal({ isOpen, onClose, onOpenGlossary
         const result = StorageEngine.importStateJSON(content);
         if (result.success) {
           AudioEngine.playSuccess();
-          setImportStatus({ 
-            type: 'success', 
-            text: `ההתקדמות נטענה בהצלחה! סך הכל ${result.totalStars} כוכבים.` 
+          setImportStatus({
+            type: 'success',
+            text: `ההתקדמות נטענה בהצלחה! סך הכל ${result.totalStars} כוכבים.`
           });
         } else {
           setImportStatus({ type: 'error', text: `שגיאה בטעינת הקובץ: ${result.error}` });
@@ -205,229 +143,130 @@ export default function ClassroomSettingsModal({ isOpen, onClose, onOpenGlossary
   };
 
   return (
-    <div 
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-md animate-in fade-in duration-200"
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/45"
       role="dialog"
       aria-modal="true"
       aria-labelledby="settings-modal-title"
       onClick={onClose}
     >
-      <div 
-        className="relative bg-[var(--slate-2)] text-[var(--text-primary)] border border-[var(--slate-6)] rounded-2xl max-w-lg w-full p-5 sm:p-6 shadow-2xl space-y-5 max-h-[92vh] overflow-y-auto animate-in zoom-in-95 duration-200"
+      <div
+        className="relative bg-white text-[#3C3C3C] border-2 border-[#E5E5E5] rounded-3xl max-w-lg w-full p-5 sm:p-6 space-y-5 max-h-[92vh] overflow-y-auto"
         dir="rtl"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-[var(--slate-6)] pb-4">
-          <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-[var(--accent-wash)] border border-[var(--accent-rim)] flex items-center justify-center text-[var(--accent-base)] shadow-xs">
+        <div className="flex items-center justify-between border-b-2 border-[#E5E5E5] pb-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-[#DDF4FF] border-2 border-[#84D8FF] flex items-center justify-center text-[#1899D6]">
               <Settings className="w-5 h-5" />
             </div>
             <div>
-              <h2 id="settings-modal-title" className="text-base font-bold text-slate-900 dark:text-white">
-                הגדרות מעבדה ותצוגה
+              <h2 id="settings-modal-title" className="text-base sm:text-lg font-extrabold text-[#3C3C3C]">
+                הגדרות כיתה וניהול התקדמות
               </h2>
-              <p className="text-xs text-slate-600 dark:text-slate-400">
-                התאמה אישית, תאורה, צלילים וניהול התקדמות
+              <p className="text-xs text-[#777777] font-medium">
+                צלילים, קוד שמירה למחברת, ייצוא ואיפוס
               </p>
             </div>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-[var(--slate-4)] transition-colors cursor-pointer"
-            title="סגירה (Esc)"
+            className="w-9 h-9 rounded-xl bg-white hover:bg-[#F7F7F7] text-[#777777] hover:text-[#3C3C3C] border-2 border-[#E5E5E5] flex items-center justify-center cursor-pointer"
+            title="סגירה"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Status Notification */}
         {importStatus && (
-          <div className={`p-3 rounded-xl border text-xs flex items-center gap-2 ${
-            importStatus.type === 'success' 
-              ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-300 dark:border-emerald-800/60 text-emerald-900 dark:text-emerald-300' 
-              : 'bg-rose-50 dark:bg-rose-950/40 border-rose-300 dark:border-rose-800/60 text-rose-900 dark:text-rose-300'
+          <div className={`p-3 rounded-2xl border-2 text-xs flex items-center gap-2 ${
+            importStatus.type === 'success'
+              ? 'bg-[#D7FFB8] border-[#58CC02] text-[#58A700]'
+              : 'bg-[#FFDFE0] border-[#FF4B4B] text-[#EA2B2B]'
           }`}>
             {importStatus.type === 'success' ? (
-              <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+              <Check className="w-4 h-4 shrink-0" />
             ) : (
-              <AlertCircle className="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0" />
+              <AlertCircle className="w-4 h-4 shrink-0" />
             )}
-            <span className="font-medium">{importStatus.text}</span>
+            <span className="font-bold">{importStatus.text}</span>
           </div>
         )}
 
-        {/* Section 1: Lighting Register (Day / Night Mode) */}
-        <div className="p-4 rounded-xl bg-[var(--slate-3)] border border-[var(--slate-6)] space-y-2.5">
-          <div className="flex items-center justify-between text-xs font-bold text-slate-900 dark:text-slate-100">
-            <span className="flex items-center gap-1.5">
-              <Sun className="w-4 h-4 text-amber-500" />
-              <span>תאורת סביבת העבודה</span>
-            </span>
-            <span className="text-[11px] font-normal text-slate-600 dark:text-slate-400">
-              {isDark ? 'מצב כהה פעיל' : 'מצב מואר פעיל (ברירת מחדל)'}
-            </span>
-          </div>
-
-          <div className="grid grid-cols-2 gap-2">
-            <button
-              type="button"
-              onClick={() => handleSetThemeMode('light')}
-              className={`flex items-center justify-center gap-2 py-2 px-3 rounded-lg border text-xs font-bold transition-all cursor-pointer ${
-                !isDark
-                  ? 'bg-white text-slate-900 border-slate-300 shadow-sm ring-2 ring-[var(--accent-base)]'
-                  : 'bg-[var(--slate-2)] text-slate-700 dark:text-slate-300 border-[var(--slate-6)] hover:bg-[var(--slate-4)]'
-              }`}
-            >
-              <Sun className="w-4 h-4 text-amber-500" />
-              <span>מצב מואר (כיתה/יום)</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => handleSetThemeMode('dark')}
-              className={`flex items-center justify-center gap-2 py-2 px-3 rounded-lg border text-xs font-bold transition-all cursor-pointer ${
-                isDark
-                  ? 'bg-slate-900 text-white border-slate-700 shadow-sm ring-2 ring-[var(--accent-base)]'
-                  : 'bg-[var(--slate-2)] text-slate-700 dark:text-slate-300 border-[var(--slate-6)] hover:bg-[var(--slate-4)]'
-              }`}
-            >
-              <Moon className="w-4 h-4 text-blue-400" />
-              <span>מצב כהה (סייבר/לילה)</span>
-            </button>
-          </div>
-        </div>
-
-        {/* Section 2: Themes & Laboratory Color Presets */}
-        <div className="p-4 rounded-xl bg-[var(--slate-3)] border border-[var(--slate-6)] space-y-3">
+        {/* Section 1: Audio Feedback */}
+        <div className="p-4 rounded-2xl bg-[#F7F7F5] border-2 border-[#E5E5E5] space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Palette className="w-4 h-4 text-[var(--accent-base)]" />
-              <span className="text-xs font-bold text-slate-900 dark:text-slate-100">ערכות צבעי מעבדה (Themes)</span>
-            </div>
-            <span className="text-[10px] font-mono font-medium text-[var(--accent-base)] bg-[var(--slate-2)] px-2 py-0.5 rounded-full border border-[var(--accent-rim)]">
-              Zen 2.0
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-            {ZEN_THEMES.map((theme) => {
-              const isSelected = activePalette === theme.id;
-              const displayHex = isDark ? theme.accentDark : theme.accentLight;
-
-              return (
-                <button
-                  key={theme.id}
-                  type="button"
-                  onClick={() => handleSelectPalette(theme.id)}
-                  className={`text-right p-3 rounded-xl border transition-all cursor-pointer flex flex-col justify-between ${
-                    isSelected
-                      ? 'bg-[var(--accent-wash)] border-[var(--accent-base)] shadow-xs ring-1 ring-[var(--accent-base)]'
-                      : 'bg-[var(--slate-2)] hover:bg-[var(--slate-4)] border-[var(--slate-6)]'
-                  }`}
-                >
-                  <div className="flex items-center justify-between mb-1.5">
-                    <div className="flex items-center gap-2 min-w-0">
-                      <span 
-                        className="w-4 h-4 rounded-full shrink-0 shadow-xs ring-2 ring-white/60 dark:ring-black/40"
-                        style={{ backgroundColor: displayHex }}
-                      />
-                      <span className="text-xs font-bold text-slate-900 dark:text-slate-100 truncate">
-                        {theme.name}
-                      </span>
-                    </div>
-                    {isSelected ? (
-                      <span className="flex items-center gap-1 text-[10px] font-bold text-[var(--accent-base)] bg-[var(--slate-2)] px-1.5 py-0.5 rounded-md border border-[var(--accent-rim)]">
-                        <Check className="w-3 h-3 stroke-[3]" />
-                        <span>נבחר</span>
-                      </span>
-                    ) : (
-                      <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">
-                        {theme.badge}
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-[11px] leading-relaxed text-slate-600 dark:text-slate-300">
-                    {theme.tagline}
-                  </p>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Section 3: Audio Feedback */}
-        <div className="p-4 rounded-xl bg-[var(--slate-3)] border border-[var(--slate-6)] space-y-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Music className="w-4 h-4 text-[var(--accent-base)]" />
-              <span className="text-xs font-bold text-slate-900 dark:text-slate-100">צלילי משוב אינטראקטיביים</span>
+              <Music className="w-4 h-4 text-[#1CB0F6]" />
+              <span className="text-sm font-extrabold text-[#3C3C3C]">צלילי משוב בכיתה</span>
             </div>
             <button
               type="button"
               onClick={handleToggleMute}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold border transition-colors cursor-pointer ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold border-2 cursor-pointer transition-colors ${
                 isMuted
-                  ? 'bg-rose-50 dark:bg-rose-950/40 border-rose-300 dark:border-rose-800/60 text-rose-800 dark:text-rose-300'
-                  : 'btn-glass text-slate-900 dark:text-white'
+                  ? 'bg-[#FFDFE0] border-[#FF4B4B] text-[#EA2B2B]'
+                  : 'bg-[#D7FFB8] border-[#58CC02] text-[#58A700]'
               }`}
             >
               {isMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
               <span>{isMuted ? 'מושתק' : 'פעיל'}</span>
             </button>
           </div>
-          <div className="flex items-center justify-between text-[11px] text-slate-600 dark:text-slate-400 pt-1 border-t border-[var(--slate-6)]">
-            <span>צלילי סינתזה בזמן אמת (Web Audio API)</span>
+          <div className="flex items-center justify-between text-xs text-[#777777] pt-2 border-t border-[#E5E5E5]">
+            <span>סינתזת צלילים מקומית בדפדפן</span>
             <button
               type="button"
               onClick={handleTestSound}
               disabled={isMuted}
-              className="text-[var(--accent-base)] hover:underline disabled:opacity-40 font-bold cursor-pointer"
+              className="text-[#1899D6] hover:underline disabled:opacity-40 font-bold cursor-pointer"
             >
               בדיקת צליל
             </button>
           </div>
         </div>
 
-        {/* Section 4: Scientific Glossary Shortcut */}
+        {/* Section 2: Glossary Shortcut */}
         {onOpenGlossary && (
-          <div className="p-4 rounded-xl bg-[var(--slate-3)] border border-[var(--slate-6)] flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <BookOpen className="w-4 h-4 text-[var(--accent-base)]" />
+          <div className="p-4 rounded-2xl bg-[#F7F7F5] border-2 border-[#E5E5E5] flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5">
+              <BookOpen className="w-4 h-4 text-[#1CB0F6] shrink-0" />
               <div>
-                <span className="text-xs font-bold text-slate-900 dark:text-slate-100 block">מילון מושגים מדעי</span>
-                <span className="text-[11px] text-slate-600 dark:text-slate-400">הגדרות פשוטות לכל מונחי המחשוב והבינה המלאכותית</span>
+                <span className="text-sm font-extrabold text-[#3C3C3C] block">מילון מושגים</span>
+                <span className="text-xs text-[#777777]">הגדרות פשוטות לכל מונחי הלמידה</span>
               </div>
             </div>
             <button
               type="button"
               onClick={() => { onClose(); onOpenGlossary(); AudioEngine.playStep(); }}
-              className="btn-glass text-xs !py-1.5 !px-3 font-bold cursor-pointer"
+              className="btn-duo-white text-xs px-3.5 py-2 shrink-0"
             >
               פתיחת מילון
             </button>
           </div>
         )}
 
-        {/* Section 5: Backup and Restore (6-Char Classroom Code + JSON) */}
-        <div className="p-4 rounded-xl bg-[var(--slate-3)] border border-[var(--slate-6)] space-y-3">
+        {/* Section 3: Backup and Restore (6-Char Classroom Code + JSON) */}
+        <div className="p-4 rounded-2xl bg-[#F7F7F5] border-2 border-[#E5E5E5] space-y-3">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
-              <FileText className="w-4 h-4 text-[var(--accent-base)]" />
-              <h3 className="text-xs font-bold text-slate-900 dark:text-slate-100">קוד שמירה למחברת וגיבוי התקדמות (Zero-PII)</h3>
+              <FileText className="w-4 h-4 text-[#FF9600]" />
+              <h3 className="text-sm font-extrabold text-[#3C3C3C]">קוד שמירה למחברת (Zero-PII)</h3>
             </div>
             <button
               type="button"
               onClick={handleCopySaveCode}
-              className="px-2.5 py-1 rounded-lg bg-[var(--slate-2)] border border-[var(--accent-rim)] font-mono text-xs font-black text-[var(--accent-base)] hover:opacity-90 cursor-pointer"
+              className="px-3 py-1 rounded-xl bg-white border-2 border-[#E5E5E5] font-mono text-xs font-extrabold text-[#1899D6] hover:bg-[#DDF4FF] cursor-pointer"
               title="לחצו להעתקת קוד השמירה האישי"
             >
-              ZN-{currentSaveCode} 📋
+              ZN-{currentSaveCode}
             </button>
           </div>
-          <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
-            תלמידים יכולים להעתיק למחברת את קוד 6 התווים למעלה ולהזין אותו בשיעור הבא כדי לשחזר מיד את כל הכוכבים שלהם:
+          <p className="text-xs text-[#777777] leading-relaxed">
+            תלמידים יכולים לרשום במחברת את קוד 6 התווים ולהזין אותו בשיעור הבא כדי לשחזר את כל הכוכבים:
           </p>
 
           <form onSubmit={handleRestoreSaveCode} className="flex items-center gap-2">
@@ -437,57 +276,57 @@ export default function ClassroomSettingsModal({ isOpen, onClose, onOpenGlossary
               maxLength={9}
               value={saveCodeInput}
               onChange={(e) => setSaveCodeInput(e.target.value.toUpperCase())}
-              placeholder="הזינו קוד (למשל ZN-5A454E)"
-              className="flex-1 px-3 py-1.5 rounded-lg bg-[var(--slate-2)] border border-[var(--slate-6)] text-xs font-mono font-bold text-center text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[var(--accent-base)]"
+              placeholder="למשל ZN-5A454E"
+              className="flex-1 px-3 py-2 rounded-xl bg-white border-2 border-[#E5E5E5] text-xs font-mono font-bold text-center text-[#3C3C3C] focus:outline-none focus:border-[#1CB0F6]"
             />
             <button
               type="submit"
-              className="btn-glass text-xs !py-1.5 !px-3 font-bold cursor-pointer text-slate-900 dark:text-white shrink-0"
+              className="btn-duo-blue text-xs px-4 py-2 shrink-0"
             >
               שחזור מקוד
             </button>
           </form>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 border-t border-[var(--slate-6)]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2 border-t border-[#E5E5E5]">
             <button
               type="button"
               onClick={handleExportJSON}
-              className="btn-glass flex items-center justify-center gap-2 text-xs !py-2 cursor-pointer font-bold text-slate-900 dark:text-white"
+              className="btn-duo-white text-xs py-2.5 px-3"
             >
-              <Download className="w-3.5 h-3.5 text-[var(--accent-base)]" />
+              <Download className="w-3.5 h-3.5 text-[#1CB0F6]" />
               <span>ייצוא התקדמות (JSON)</span>
             </button>
 
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="btn-glass flex items-center justify-center gap-2 text-xs !py-2 cursor-pointer font-bold text-slate-900 dark:text-white"
+              className="btn-duo-white text-xs py-2.5 px-3"
             >
-              <Upload className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+              <Upload className="w-3.5 h-3.5 text-[#58CC02]" />
               <span>טעינת התקדמות מקובץ</span>
             </button>
-            <input 
+            <input
               ref={fileInputRef}
-              type="file" 
-              accept=".json" 
-              className="hidden" 
+              type="file"
+              accept=".json"
+              className="hidden"
               onChange={handleFileChange}
             />
           </div>
         </div>
 
-        {/* Section 6: Reset Progress */}
-        <div className="p-4 rounded-xl bg-[var(--slate-3)] border border-[var(--slate-6)] space-y-3">
-          <div className="flex items-center justify-between">
+        {/* Section 4: Reset Progress */}
+        <div className="p-4 rounded-2xl bg-[#F7F7F5] border-2 border-[#E5E5E5] space-y-3">
+          <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
-              <RotateCcw className="w-4 h-4 text-amber-500" />
-              <span className="text-xs font-bold text-slate-900 dark:text-slate-100">איפוס התקדמות לשיעור חדש</span>
+              <RotateCcw className="w-4 h-4 text-[#FF9600]" />
+              <span className="text-sm font-extrabold text-[#3C3C3C]">איפוס התקדמות לשיעור חדש</span>
             </div>
             {!confirmReset ? (
               <button
                 type="button"
                 onClick={() => setConfirmReset(true)}
-                className="px-3 py-1.5 rounded-lg bg-amber-50 dark:bg-amber-950/30 hover:bg-amber-100 dark:hover:bg-amber-900/50 border border-amber-300 dark:border-amber-800/60 text-xs font-bold text-amber-900 dark:text-amber-300 transition-colors cursor-pointer"
+                className="px-3.5 py-2 rounded-xl bg-white hover:bg-[#FFDFE0] border-2 border-[#E5E5E5] hover:border-[#FF4B4B] text-xs font-bold text-[#EA2B2B] transition-colors cursor-pointer"
               >
                 איפוס נתונים
               </button>
@@ -496,14 +335,14 @@ export default function ClassroomSettingsModal({ isOpen, onClose, onOpenGlossary
                 <button
                   type="button"
                   onClick={handleResetProgress}
-                  className="px-2.5 py-1 rounded-md bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold transition-colors cursor-pointer"
+                  className="px-3 py-1.5 rounded-xl bg-[#FF4B4B] hover:bg-[#EA2B2B] text-white text-xs font-bold transition-colors cursor-pointer"
                 >
                   אישור מחיקה
                 </button>
                 <button
                   type="button"
                   onClick={() => setConfirmReset(false)}
-                  className="btn-glass text-xs !py-1 !px-2 font-bold cursor-pointer"
+                  className="btn-duo-white text-xs px-3 py-1.5"
                 >
                   ביטול
                 </button>
@@ -511,23 +350,22 @@ export default function ClassroomSettingsModal({ isOpen, onClose, onOpenGlossary
             )}
           </div>
           {confirmReset && (
-            <p className="text-[11px] text-amber-900 dark:text-amber-300 leading-relaxed bg-amber-50 dark:bg-amber-950/30 p-2.5 rounded-lg border border-amber-200 dark:border-amber-900/50 font-medium">
-              שימו לב: פעולה זו תאפס את כל הכוכבים והאתגרים שנפתרו ותחזיר את המעבדות למצב ההתחלתי.
+            <p className="text-xs text-[#EA2B2B] leading-relaxed bg-[#FFDFE0] p-3 rounded-xl border-2 border-[#FF4B4B] font-bold">
+              שימו לב: פעולה זו תאפס את כל הכוכבים והאתגרים שנפתרו ותחזיר את התחנות למצב ההתחלתי.
             </p>
           )}
         </div>
 
-        {/* Section 7: Privacy & Zero-PII Card */}
-        <div className="p-3.5 rounded-xl bg-[var(--slate-2)] border border-[var(--slate-6)] text-[11px] text-slate-600 dark:text-slate-400 space-y-1.5">
-          <div className="flex items-center gap-1.5 text-slate-900 dark:text-slate-200 font-bold">
-            <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-            <span>התחייבות לבטיחות ופרטיות מלאה (Zero-PII)</span>
+        {/* Section 5: Privacy & Zero-PII Card */}
+        <div className="p-4 rounded-2xl bg-white border-2 border-[#E5E5E5] text-xs text-[#777777] space-y-1">
+          <div className="flex items-center gap-1.5 text-[#3C3C3C] font-extrabold">
+            <ShieldCheck className="w-4 h-4 text-[#58CC02]" />
+            <span>בטיחות ופרטיות מלאה (Zero-PII)</span>
           </div>
           <p className="leading-relaxed">
-            ZenLab פועלת 100% במחשב המקומי (Client-side). המערכת אינה דורשת הרשמה, אינה שומרת עוגיות (Cookies), אינה מפעילה מעקבים ואינה אוספת שום פרט מזהה על התלמידים.
+            ZenLab פועלת בדפדפן בלבד ללא הרשמה, ללא עוגיות מעקב וללא איסוף מידע אישי על התלמידים.
           </p>
         </div>
-
       </div>
     </div>
   );

@@ -1,20 +1,11 @@
 import React, { useState, useMemo } from 'react';
-import { 
-  BookOpen, 
-  Search, 
-  X, 
-  Layers, 
-  Tag, 
-  HelpCircle,
-  Sparkles
-} from 'lucide-react';
+import { BookOpen, Search, X, HelpCircle } from 'lucide-react';
 import { AudioEngine } from '../core/audio.js';
 
 export default function GlossaryModal({ isOpen, onClose, curriculum }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedLabId, setSelectedLabId] = useState('all');
 
-  // Extract all glossary terms with their lab metadata
   const allTerms = useMemo(() => {
     if (!curriculum?.labs) return [];
     const list = [];
@@ -35,14 +26,13 @@ export default function GlossaryModal({ isOpen, onClose, curriculum }) {
     return list;
   }, [curriculum]);
 
-  // Filter terms by search query and selected lab
   const filteredTerms = useMemo(() => {
     return allTerms.filter(item => {
       const matchesLab = selectedLabId === 'all' || item.labId === selectedLabId;
       const q = searchQuery.trim().toLowerCase();
       if (!q) return matchesLab;
-      const matchesQuery = 
-        item.term.toLowerCase().includes(q) || 
+      const matchesQuery =
+        item.term.toLowerCase().includes(q) ||
         item.definition.toLowerCase().includes(q) ||
         item.labTitle.toLowerCase().includes(q);
       return matchesLab && matchesQuery;
@@ -64,30 +54,36 @@ export default function GlossaryModal({ isOpen, onClose, curriculum }) {
   ];
 
   return (
-    <div 
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200"
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45"
       role="dialog"
       aria-modal="true"
+      onClick={onClose}
     >
-      <div 
-        className="bg-slate-900 border border-slate-800 rounded-2xl max-w-2xl w-full p-6 shadow-2xl space-y-5 text-slate-100 max-h-[90vh] flex flex-col"
+      <div
+        className="bg-white border-2 border-[#E5E5E5] rounded-3xl max-w-2xl w-full p-5 sm:p-6 space-y-4 text-[#3C3C3C] max-h-[90vh] flex flex-col"
         dir="rtl"
+        onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
-        <div className="flex items-center justify-between border-b border-slate-800 pb-4 shrink-0">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-blue-600/20 border border-blue-500/40 flex items-center justify-center text-blue-400">
-              <BookOpen className="w-4 h-4" />
+        <div className="flex items-center justify-between border-b-2 border-[#E5E5E5] pb-4 shrink-0">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-[#DDF4FF] border-2 border-[#84D8FF] flex items-center justify-center text-[#1899D6]">
+              <BookOpen className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-white">מילון מונחי מדעי המחשב והבינה המלאכותית</h2>
-              <p className="text-xs text-slate-400">מושגי מפתח, הגדרות פשוטות ודוגמאות לתלמידי בית ספר יסודי</p>
+              <h2 className="text-base sm:text-lg font-extrabold text-[#3C3C3C]">
+                מילון מושגים
+              </h2>
+              <p className="text-xs sm:text-sm text-[#777777] font-medium">
+                מושגי מפתח והסברים פשוטים במדעי המחשב ו-AI
+              </p>
             </div>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-slate-200 transition-colors"
+            className="w-9 h-9 rounded-xl bg-white hover:bg-[#F7F7F7] text-[#777777] hover:text-[#3C3C3C] border-2 border-[#E5E5E5] flex items-center justify-center cursor-pointer"
             title="סגירה"
           >
             <X className="w-4 h-4" />
@@ -96,27 +92,27 @@ export default function GlossaryModal({ isOpen, onClose, curriculum }) {
 
         {/* Search Input Bar */}
         <div className="relative shrink-0">
-          <Search className="w-4 h-4 absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+          <Search className="w-4 h-4 absolute right-3.5 top-1/2 -translate-y-1/2 text-[#AFAFAF]" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="חיפוש מונח או הסבר (למשל: ביט, אלגוריתם, נוירון, מילים)..."
-            className="w-full bg-slate-950 border border-slate-800 rounded-xl pr-10 pl-4 py-2.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors"
+            placeholder="חיפוש מונח או הסבר (למשל: ביט, פיקסל, אלגוריתם)..."
+            className="w-full bg-[#F7F7F5] border-2 border-[#E5E5E5] rounded-2xl pr-10 pl-14 py-2.5 text-sm text-[#3C3C3C] placeholder-[#AFAFAF] focus:outline-none focus:border-[#1CB0F6] transition-colors"
           />
           {searchQuery && (
             <button
               type="button"
               onClick={() => setSearchQuery('')}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 text-xs"
+              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#1899D6] hover:underline text-xs font-bold cursor-pointer"
             >
               ניקוי
             </button>
           )}
         </div>
 
-        {/* Lab Filter Pills */}
-        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar shrink-0 pb-1">
+        {/* Filter Buttons */}
+        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar shrink-0 pb-1">
           {labFilters.map(filter => (
             <button
               key={filter.id}
@@ -125,10 +121,10 @@ export default function GlossaryModal({ isOpen, onClose, curriculum }) {
                 setSelectedLabId(filter.id);
                 AudioEngine.playStep();
               }}
-              className={`px-2.5 py-1 rounded-lg text-[11px] font-medium whitespace-nowrap transition-colors border ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-colors border-2 cursor-pointer ${
                 selectedLabId === filter.id
-                  ? 'bg-blue-600 text-white border-blue-500 font-bold'
-                  : 'bg-slate-950 text-slate-400 hover:text-slate-200 border-slate-800'
+                  ? 'bg-[#DDF4FF] text-[#1899D6] border-[#84D8FF]'
+                  : 'bg-white text-[#4B4B4B] hover:bg-[#F7F7F7] border-[#E5E5E5]'
               }`}
             >
               {filter.label}
@@ -136,45 +132,44 @@ export default function GlossaryModal({ isOpen, onClose, curriculum }) {
           ))}
         </div>
 
-        {/* Terms List (Scrollable) */}
-        <div className="flex-1 overflow-y-auto space-y-3 pr-1">
+        {/* Terms List */}
+        <div className="flex-1 overflow-y-auto space-y-3 pl-1">
           {filteredTerms.length > 0 ? (
             filteredTerms.map(item => (
-              <div 
+              <div
                 key={item.id}
-                className="bg-slate-950 p-4 rounded-xl border border-slate-800/80 hover:border-slate-700/80 transition-colors space-y-1.5"
+                className="bg-[#F7F7F5] p-4 rounded-2xl border-2 border-[#E5E5E5] space-y-1.5"
               >
-                <div className="flex items-center justify-between gap-2">
-                  <h3 className="text-xs font-bold text-blue-300 flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-blue-400" />
-                    <span>{item.term}</span>
+                <div className="flex items-center justify-between gap-2 flex-wrap">
+                  <h3 className="text-sm font-extrabold text-[#3C3C3C]">
+                    {item.term}
                   </h3>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800 shrink-0">
-                    מעבדה {item.labNumber}: {item.labTitle}
+                  <span className="text-xs font-bold px-2.5 py-0.5 rounded-lg bg-white text-[#777777] border border-[#E5E5E5] shrink-0">
+                    תחנה {item.labNumber}: {item.labTitle}
                   </span>
                 </div>
-                <p className="text-xs text-slate-300 leading-relaxed">
+                <p className="text-sm text-[#4B4B4B] leading-relaxed">
                   {item.definition}
                 </p>
               </div>
             ))
           ) : (
-            <div className="py-12 text-center text-slate-500 space-y-2">
-              <HelpCircle className="w-8 h-8 mx-auto text-slate-600 opacity-60" />
-              <p className="text-xs">לא נמצאו מונחים התואמים את החיפוש.</p>
+            <div className="py-12 text-center text-[#777777] space-y-2">
+              <HelpCircle className="w-8 h-8 mx-auto text-[#AFAFAF]" />
+              <p className="text-sm font-bold">לא נמצאו מונחים התואמים את החיפוש.</p>
             </div>
           )}
         </div>
 
         {/* Modal Footer */}
-        <div className="shrink-0 pt-2 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
-          <span>מוצגים <strong className="text-white">{filteredTerms.length}</strong> מונחים מתוך {allTerms.length}</span>
+        <div className="shrink-0 pt-3 border-t-2 border-[#E5E5E5] flex items-center justify-between text-xs text-[#777777]">
+          <span>מוצגים <strong className="text-[#3C3C3C]">{filteredTerms.length}</strong> מונחים מתוך {allTerms.length}</span>
           <button
             type="button"
             onClick={onClose}
-            className="px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 transition-colors"
+            className="btn-duo-white px-4 py-2 text-xs"
           >
-            סגור
+            סגירה
           </button>
         </div>
       </div>
